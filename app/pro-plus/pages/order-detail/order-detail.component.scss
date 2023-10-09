@@ -1,0 +1,117 @@
+@import '../../../../../node_modules/foundation-sites/scss/foundation.scss';
+@import '../../../../sass/variables';
+@import '../../../../sass/mixins';
+
+.list-group {
+    position: relative;
+    display: block;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+.total {
+    margin: 40px 0px 40px 0px;
+}
+.list-address {
+    list-style-type: none;
+    padding: 0px 15px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.img-prod {
+    margin: 10px 20px 10px 0px;
+    max-width: 70px !important;
+}
+
+.button {
+    margin-top: 100px;
+}
+
+.spacing {
+    margin: 30px 0px 30px 0px;
+}
+.custom-tooltip {
+    font-size: large;
+}
+
+.summary-text {
+    font-weight: bolder;
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.summary-text-total {
+    font-weight: bolder;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.summary-value-total {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.summary-value {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.container {
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    padding-top: 2%;
+}
+
+.mat-icon {
+    font-size: 17px;
+}
+
+div.button-bar {
+    button {
+        margin: 5px;
+    }
+}
+
+div.order-line-item {
+    border: solid thin lightgray;
+    margin: 15px 0px;
+}
+
+#order-header {
+    div.cell {
+        padding: 0.5ex 0ex;
+    }
+    div.label {
+        text-align: right;
+        label {
+            @include breakpoint(small down) {
+                font-size: 12px;
+            }
+            font-size: 16px;
+            margin: 0px;
+            padding: 0px;
+            font-weight: bolder;
+        }
+    }
+}

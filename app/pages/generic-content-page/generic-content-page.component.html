@@ -1,0 +1,38 @@
+<ng-container
+  *ngIf="isCorrectTemplate || reRouted || isPageNotFound; else findTemplate"
+>
+  <app-breadcrumb
+    *ngIf="!isPageNotFound"
+    [configuration]="breadcrumbConfig"
+  ></app-breadcrumb>
+
+  <div class="grid-container">
+    <div class="container">
+      <app-login-page></app-login-page>
+    </div>
+  </div>
+  <div class="grid-container generic-content-page">
+    <div class="grid-x grid-margin-x">
+      <div class="cell large-12">
+        <h1 class="content-title">{{ pageTitle }}</h1>
+        <ng-container brComponent="seo-component"></ng-container>
+      </div>
+      <div *ngIf="!isTwoColumn; else twoColumn" class="cell large-12">
+        <ng-container brComponent="main"></ng-container>
+      </div>
+      <ng-template #twoColumn>
+        <div class="cell large-9">
+          <ng-container brComponent="main"></ng-container>
+        </div>
+        <div class="cell large-3 right-rail">
+          <ng-container brComponent="sidebar"></ng-container>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</ng-container>
+<ng-template #findTemplate>
+  <app-page-component-rerouter
+    [pageName]="pageName"
+  ></app-page-component-rerouter>
+</ng-template>

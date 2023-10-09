@@ -1,0 +1,11 @@
+.grid-x button {
+  margin: 10px 0 10px 0;
+}
+
+div>div.cell {
+  text-align: center !important;
+}
+
+::ng-deep mat-form-field>div>div.mat-form-field-flex {
+  padding: 0px 8px !important;
+}

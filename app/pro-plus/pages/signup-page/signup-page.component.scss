@@ -1,0 +1,53 @@
+@import '../../../../sass/variables';
+@import '../../../../sass/mixins';
+
+.horizontal-center {
+    text-align: center;
+}
+
+div.login-container {
+    background-image: url(/assets/images/pro-banner-2-min.png);
+    padding-top: 0.5in;
+    padding-bottom: 0.5in;
+    padding-left: 2.5in;
+}
+
+form.login {
+    background-color: white;
+    width: 400px;
+    min-height: 500px;
+    padding: 10px;
+}
+
+form.login {
+    font-size: large;
+
+    .row {
+        padding-top: 10px;
+    }
+
+    img.proplus-logo {
+        height: 75px;
+    }
+
+    label {
+        padding-top: 10px;
+        font-weight: bold;
+        display: block;
+
+        input.textbox {
+            display: block;
+            width: 100%;
+            height: 2.5rem;
+            padding: 15px 10px;
+        }
+
+        button {
+            margin: 10px;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+    }
+}

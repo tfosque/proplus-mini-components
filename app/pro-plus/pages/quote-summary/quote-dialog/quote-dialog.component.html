@@ -1,0 +1,133 @@
+<h3>Create Quote</h3>
+<div class="grid-x">
+    <div class="cell medium-4 large-4">
+        <mat-form-field class="formInput" floatLabel="auto">
+            <input
+                matInput
+                placeholder="Quote Name"
+                [formControl]="quoteFormControl"
+                [errorStateMatcher]="matcher"
+                [(ngModel)]="request.quoteName"
+                required
+            />
+            <mat-error *ngIf="quoteFormControl.hasError('required')">
+                This field is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-4 large-4">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                matInput
+                placeholder="Phone Number"
+                (keyup)="addDash()"
+                [formControl]="phoneFormControl"
+                [errorStateMatcher]="matcher"
+                maxlength="12"
+                placeholder="Phone Number"
+                [(ngModel)]="request.phone"
+                required
+            />
+            <mat-error *ngIf="phoneFormControl.hasError('required')">
+                This field is required
+            </mat-error>
+            <mat-error *ngIf="phoneFormControl.hasError('pattern')">
+                Only numerical values allowed
+            </mat-error>
+            <mat-error *ngIf="phoneFormControl.hasError('min')">
+                Must be 10 digits
+            </mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div class="grid-x">
+    <div class="cell medium-4 large-4">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                matInput
+                placeholder="City"
+                maxlength="20"
+                [formControl]="cityFormControl"
+                [errorStateMatcher]="matcher"
+                [(ngModel)]="request.city"
+                name="city"
+                required
+            />
+            <mat-error *ngIf="cityFormControl.hasError('required')">
+                This field is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-4 large-4">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <mat-select
+                placeholder="Work Type"
+                [(ngModel)]="request.workType"
+                [formControl]="workFormControl"
+                [errorStateMatcher]="matcher"
+                required
+            >
+                <mat-option [value]="'N'"> New Construction </mat-option>
+                <mat-option [value]="'R'"> Remodel </mat-option>
+            </mat-select>
+            <mat-error *ngIf="workFormControl.hasError('required')">
+                This field is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div class="grid-x">
+    <div class="cell medium-4 large-4">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <mat-select
+                placeholder="Job"
+                [(ngModel)]="request.jobAccount"
+                name="job"
+                [formControl]="jobFormControl"
+                [errorStateMatcher]="matcher"
+                required
+            >
+                <mat-option *ngFor="let job of jobs?.jobs" [value]="job">
+                    {{ job.jobName }} {{ job.jobNumber }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="jobFormControl.hasError('required')">
+                This field is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-4 large-4">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <mat-select
+                placeholder="State"
+                [(ngModel)]="request.state"
+                [formControl]="stateFormControl"
+                [errorStateMatcher]="matcher"
+                required
+            >
+                <mat-option *ngFor="let state of states" [value]="state.key">
+                    {{ state.key }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="stateFormControl.hasError('required')">
+                This field is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        mat-button
+        color="primary"
+        [mat-dialog-close]="request"
+        cdkFocusInitial
+        [disabled]="canSave"
+    >
+        Create
+    </button>
+</mat-dialog-actions>

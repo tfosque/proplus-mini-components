@@ -1,0 +1,112 @@
+.header {
+    margin-bottom: 20px;
+}
+
+.header-title {
+    font-family: "titling-gothic-fb-compressed-bold", "arial", sans-serif;
+    color: #025F9E;
+    font-size: 2em;
+    text-transform: uppercase;
+    margin: 0.67em 0 0.1em 0;
+}
+
+.sub-title {
+    font-family: "titling-gothic-fb-compressed-bold", "arial", sans-serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: 700;
+    // margin: 0.67em 0 0.1em 0;
+}
+
+.left-margin {
+    margin-left: 90px;
+}
+
+.rebate-promo-items{
+    .promo-card{
+      background: #F0F1F2;
+      text-align: center;
+      width: 280px;
+    }
+
+    .promo-card-no-border{
+        background: white;
+        text-align: center;
+        width: 234px;
+    }
+
+    .rebate-name {
+        color: #285D99;
+        margin-top: 24px;
+        margin-bottom: 8px;
+    }
+
+    .card-text {
+        font-weight: 500;
+        margin-bottom: 24px;
+    }
+
+    ::ng-deep button.mat-raised-button {
+        font-size: 14px !important;
+        width: 186px;
+    }
+
+    ::ng-deep .mat-grid-tile .mat-figure {
+        align-items: initial;
+        height: 100%;
+        margin: 10px 0;
+        display: block;
+    }
+
+    ::ng-deep .mat-grid-tile {
+        overflow: visible;
+    }
+
+    .fixed-height {
+        height: 50px;
+    }
+
+    .fixed-height-large {
+        height: 80px;
+    }
+
+    .narrow-line-height {
+        line-height: 1.25;
+    }
+}
+
+.small-margin-bottom {
+    margin-bottom: 10px;
+}
+
+.title-margin {
+    // margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.unregistered {
+    ::ng-deep .mat-card:not([class*=mat-elevation-z]) {
+        box-shadow: none;
+    }
+}
+
+.centered {
+    align-items: center;
+}
+
+.text-bold-bigger {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.small-margin-left {
+    margin-left: 16px;
+}
+
+.large-margin-bottom {
+    margin-bottom: 50px;
+}
+
+.image-height {
+    height: 100px;
+}

@@ -1,0 +1,37 @@
+<div class="loading-container" *ngIf="isLoading; else article">
+    <app-loading-container></app-loading-container>
+</div>
+
+<ng-template #article>
+    <div class="grid-container page-container">
+        <div class="grid-x grid-margin-x" *ngIf="articlePage$ | async as a">
+            <ng-container *ngIf="a.featured_data as f">
+                <div
+                    class="cell banner-container"
+                    [style.background-image]="a.imageUrl"
+                >
+                    <!-- Background Image -->
+                </div>
+            </ng-container>
+
+            <div class="cell medium-10 title">
+                <h3 class="title">{{ a.title }}</h3>
+                <p class="subtitle">
+                    {{
+                        a && a.featured_data && a.featured_data.featured_caption
+                    }}
+                </p>
+                <div class="article-credentials">
+                    {{ a.publishedDate | date }}
+                    <span *ngIf="a.author">by {{ a.author }}</span>
+                </div>
+            </div>
+            <div
+                *ngIf="a.body"
+                class="cell medium-10"
+                [innerHTML]="a.body | safe: 'html'"
+            ></div>
+            <!-- <app-dump-grid [input]="a"></app-dump-grid> -->
+        </div>
+    </div>
+</ng-template>

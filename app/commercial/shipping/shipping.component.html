@@ -1,0 +1,801 @@
+<div>
+    <!-- <div class="loading-container" *ngIf="loading">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div> -->
+
+    <!--  <h1>
+    <mat-icon style="margin-right: 10px; font-size: 30px">local_shipping</mat-icon>Shipping
+  </h1> -->
+    <!-- Delivery Option -->
+    <div *ngIf="shippingInfoFullfilment"></div>
+    <div>
+        <p style="font-weight: bold">CHOOSE YOUR DELIVERY OPTION</p>
+        <mat-divider class="divider"></mat-divider>
+        <mat-radio-group
+            [value]="edited.shippingOnHold"
+            (change)="setScheduledOption($event.value)"
+        >
+            <div>
+                <mat-radio-button color="primary" [value]="'scheduled'">
+                    Schedule Delivery Or Pick-Up</mat-radio-button
+                >
+            </div>
+            <div>
+                <mat-radio-button color="primary" [value]="'onHold'">
+                    Place Order On Hold</mat-radio-button
+                >
+            </div>
+        </mat-radio-group>
+    </div>
+    <!-- Choose Delivery Method -->
+    <div>
+        <p style="font-weight: bold">CHOOSE YOUR DELIVERY METHOD</p>
+        <mat-divider class="divider"></mat-divider>
+        <mat-radio-group
+            [value]="edited.shippingMethod"
+            (change)="setShippingMethod($event.value)"
+        >
+            <div>
+                <mat-radio-button
+                    color="primary"
+                    [value]="'Pick_up'"
+                    [checked]=""
+                >
+                    Pick Up In Store
+                </mat-radio-button>
+            </div>
+            <div>
+                <mat-radio-button
+                    color="primary"
+                    [value]="'Ship_to'"
+                    [checked]=""
+                    (change)="addDash()"
+                >
+                    Shipping To Address
+                </mat-radio-button>
+            </div>
+        </mat-radio-group>
+    </div>
+    <!-- Pickup / Deliverty Time -->
+    <div *ngIf="isScheduled">
+        <div class="grid-x">
+            <div class="medium-7">
+                <p style="font-weight: bold">
+                    PREFERRED PICKUP/DELIVERY DATE AND TIME
+                </p>
+            </div>
+            <!-- <div *ngIf="edited.showPickupMsg" class="medium-5 site-color jq-select-time-in-store-notes">
+          Note: While Beacon will do everything in our power to meet your needs, your items may take longer to prepare
+          for pickup. Please <span class="jq-select-time-in-store-notes-highlight">call</span> before heading to the
+          branch.
+        </div> -->
+        </div>
+        <!-- Date and Time inputs -->
+        <form>
+            <div class="grid-x grid-padding-x">
+                <div class="datetimeinputs cell small-12 medium-6">
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            matInput
+                            [matDatepickerFilter]="isWorkDay"
+                            [max]="maxDate"
+                            [min]="minDate"
+                            [matDatepicker]="pick"
+                            (focus)="pick.open()"
+                            placeholder="Choose a date"
+                            [value]="edited.date"
+                            (dateChange)="setScheduledDate($event.value)"
+                            [formControl]="dateAndTimeFormControl"
+                            [errorStateMatcher]="matcher"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="pick"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #pick disabled="false"></mat-datepicker>
+                        <mat-error
+                            *ngIf="dateAndTimeFormControl.hasError('required')"
+                        >
+                            Date is required
+                        </mat-error>
+                        <!-- <mat-error *ngIf="edited.isValidDate"
+                                >Date can not be before today</mat-error
+                            > -->
+                    </mat-form-field>
+                </div>
+                <div class="datetimeinputs cell small-12 medium-6">
+                    <ng-container *ngIf="availablePickupTimes as times">
+                        <mat-form-field class="full-width" floatLabel="auto">
+                            <mat-select
+                                placeholder="Time"
+                                [(ngModel)]="edited.time"
+                                [formControl]="timeFormControl"
+                                [errorStateMatcher]="matcher"
+                                (opened)="(times)"
+                                required
+                            >
+                                <mat-option>--Select a Time--</mat-option>
+                                <mat-option *ngIf="times.length === 0" disabled
+                                    >No times available for pickup
+                                </mat-option>
+                                <mat-option
+                                    *ngFor="let t of times"
+                                    [value]="t.value"
+                                    [disabled]="t.disabled"
+                                >
+                                    {{ t.displayName }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="timeFormControl.hasError('required')"
+                            >
+                                Time is required
+                            </mat-error>
+                        </mat-form-field>
+                    </ng-container>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Address -->
+    <div *ngIf="!isDelivery">
+        <mat-divider class="divider"></mat-divider>
+        <div>
+            <p style="font-weight: bold">
+                STORE PICK-UP ADDRESS
+                <span class="change-location-btn">
+                    <a *ngIf="!changeLocation" (click)="toggleChangeLocation()"
+                        >Change Location</a
+                    >
+                    <a *ngIf="changeLocation" (click)="toggleChangeLocation()"
+                        >Hide Location</a
+                    >
+                </span>
+            </p>
+        </div>
+        <!-- Selected Branch -->
+        <div>
+            <div class="grid-container">
+                <div class="grid-x grid-margin-x grid-margin-y">
+                    <div
+                        class="cell medium-7"
+                        *ngIf="edited.selectedPickupBranch as pb"
+                    >
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ pb.branchName }}
+                        </p>
+                        <ng-container *ngIf="pb.address as ba">
+                            <p style="margin-top: 0px; margin-bottom: 2px">
+                                {{ ba.address1 }}
+                            </p>
+                            <p style="margin-top: 0px; margin-bottom: 2px">
+                                {{ ba.address2 }}
+                            </p>
+                            <p style="margin-top: 0px; margin-bottom: 2px">
+                                {{ ba.city }}, {{ ba.state }}
+                                {{ ba.postalCode }}
+                            </p>
+                            <p style="margin-top: 0px; margin-bottom: 2px">
+                                {{ pb.branchPhone }}
+                            </p>
+                        </ng-container>
+                    </div>
+                    <!-- <div
+                        *ngIf="
+                            edited.showPickupMsg &&
+                            edited.locationValidMsg !== ''
+                        "
+                        class="medium-5 site-color jq-select-time-in-store-notes"
+                        style="vertical-align: top"
+                    >
+                        {{ edited.locationValidMsg }}
+                    </div> -->
+                </div>
+            </div>
+            <!-- Form Change Location-->
+            <div
+                *ngIf="changeLocation"
+                class="container-fluid"
+                style="background: #e8e8e8; padding: 15px; margin-top: 15px"
+            >
+                <div>
+                    <div
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-start;
+                        "
+                    >
+                        <input
+                            mat-input
+                            type="search"
+                            [(ngModel)]="mapInfo.zipSearch"
+                            width="190"
+                        />
+                        <span>&nbsp; Search area &nbsp;</span>
+                        <mat-select
+                            style="width: 200px"
+                            [(ngModel)]="mapInfo.range"
+                        >
+                            <mat-option
+                                *ngFor="let opt of distanceOptions"
+                                [value]="opt.value"
+                                >{{ opt.text }}</mat-option
+                            >
+                        </mat-select>
+                    </div>
+                    <br />
+                    <div style="text-align: left">
+                        <button mat-raised-button>Reset</button>
+                        <span>&nbsp;</span>
+                        <button
+                            mat-button
+                            color="primary"
+                            (click)="mapInfo.setZipCode()"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
+                <!-- Map -->
+                <div class="grid-x">
+                    <div class="cell large-9">
+                        <div class="map-section">
+                            <agm-map
+                                class="map"
+                                [mapDraggable]="true"
+                                [draggableCursor]="'default'"
+                                [disableDefaultUI]="true"
+                                [scrollwheel]="false"
+                                [latitude]="mapInfo.latitude"
+                                [longitude]="mapInfo.longitude"
+                                [zoom]="mapInfo.zoom"
+                                [maxZoom]="mapInfo.maxZoom"
+                                [fitBounds]="mapInfo.fitBounds"
+                                (centerChange)="mapInfo.mapCenterChange($event)"
+                                (boundsChange)="mapInfo.boundsChange($event)"
+                                (zoomChange)="mapInfo.zoomChange($event)"
+                            >
+                                <agm-marker
+                                    *ngFor="
+                                        let loc of mapInfo.locations$ | async
+                                    "
+                                    [latitude]="loc.latitude"
+                                    [longitude]="loc.longitude"
+                                    [iconUrl]="'/assets/images/finder-icon.png'"
+                                    [label]="{
+                                        text: loc.label,
+                                        color: '#fff',
+                                        fontWeight: '700',
+                                        fontFamily: 'Catamaran',
+                                        fontSize: '16px'
+                                    }"
+                                    [title]="' '"
+                                    [agmFitBounds]="true"
+                                    [markerClickable]="true"
+                                >
+                                    <agm-info-window>
+                                        <div>
+                                            <b>{{ loc.branchName }}</b>
+                                        </div>
+                                        <div>
+                                            <i>Distance {{ loc.distance }}</i>
+                                        </div>
+                                        <div>
+                                            {{ loc.address.address1 }}
+                                        </div>
+                                        <div>
+                                            {{ loc.address.address2 }}
+                                        </div>
+                                        <div>
+                                            {{ loc.address.city }},
+                                            {{ loc.address.state }}
+                                        </div>
+                                        <div>
+                                            {{ loc.address.postalCode }}
+                                        </div>
+                                        <div>
+                                            {{ formatPhone(loc.branchPhone) }}
+                                        </div>
+                                        <div *ngIf="loc.address as a">
+                                            <a
+                                                href="https://www.google.com/maps/dir/?api=1&destination={{
+                                                    encodeUri(a.address1)
+                                                }} {{ encodeUri(a.city) }} {{
+                                                    encodeUri(a.state)
+                                                }} {{
+                                                    encodeUri(a.postalCode)
+                                                }}"
+                                                target="_blank"
+                                                >Get Directions</a
+                                            >
+                                        </div>
+                                        <div *ngIf="!isBranchSelected(loc)">
+                                            <a
+                                                (click)="
+                                                    changePickupLocation(loc)
+                                                "
+                                            >
+                                                <span
+                                                    >Change Location to
+                                                    Here</span
+                                                >
+                                            </a>
+                                        </div>
+                                    </agm-info-window>
+                                </agm-marker>
+                            </agm-map>
+                        </div>
+                    </div>
+                    <div class="cell large-3 location-options">
+                        <div
+                            class="location-option"
+                            *ngFor="let loc of mapInfo.locations$ | async"
+                        >
+                            <div>
+                                <div>
+                                    <b
+                                        >{{ loc.label }} -
+                                        {{ loc.branchName }}</b
+                                    >
+                                </div>
+                                <div>
+                                    <i>Distance {{ loc.distance }}</i>
+                                </div>
+                                <div>{{ loc.address.address1 }}</div>
+                                <div>{{ loc.address.address2 }}</div>
+                                <div>
+                                    {{ loc.address.city }},
+                                    {{ loc.address.state }}
+                                </div>
+                                <div>{{ loc.address.postalCode }}</div>
+                                <div>{{ loc.branchPhone }}</div>
+                                <div></div>
+                                <div *ngIf="!isBranchSelected(loc)">
+                                    <a (click)="changePickupLocation(loc)">
+                                        Change Location to Here
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- shipping address form -->
+    <div [hidden]="!isDelivery">
+        <div>
+            <p style="font-weight: bold">ENTER THE "SHIP TO" ADDRESS</p>
+        </div>
+        <mat-divider class="divider"></mat-divider>
+        <div>
+            <p class="required text-right">*Indicates a required field</p>
+        </div>
+        <form class="delivery-method">
+            <!-- Address Book -->
+            <!-- <div class="grid-x">
+                    <div class="cell small-12 medium-12 large-12">
+                        <mat-form-field class="full-width" floatLabel="auto">
+                            <mat-select
+                                placeholder="Address Book"
+                                [(value)]="edited$.shippingAddress"
+                                (selectionChange)="
+                                    [
+                                        edited$.dispatch.setAddressBook(
+                                            $event.value
+                                        ),
+                                        addDash()
+                                    ]
+                                "
+                            >
+                                <mat-option
+                                    (click)="selectCustom()"
+                                    [value]="emptyAddressBookEntry"
+                                    >Use custom one</mat-option
+                                >
+                                <mat-option
+                                    *ngFor="let a of edited$.addressBooks"
+                                    [value]="a"
+                                >
+                                    {{
+                                        a.addressBookInfo.nickName ||
+                                            '' +
+                                                a.addressBookInfo.firstName +
+                                                ' ' +
+                                                a.addressBookInfo.lastName
+                                    }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div> -->
+            <!-- Nickname / First Name -->
+            <div class="grid-x grid-padding-x align-justify">
+                <div class="cell medium-6 large-5">
+                    <label for="nickName" class="block">Nickname</label>
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            id="nickName"
+                            matInput
+                            value=""
+                            [(ngModel)]="edited.shippingAddress.nickName"
+                            name="nickName"
+                        />
+                    </mat-form-field>
+                    <!-- <input
+                        id="nickName"
+                        value=""
+                        [(ngModel)]="edited.address.nickName"
+                        name="nickName"
+                        class="full-width form-control"
+                    /> -->
+                </div>
+                <div class="cell medium-6 large-5">
+                    <label for="firstName" class="block">First Name</label>
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            id="firstName"
+                            matInput
+                            value=""
+                            [(ngModel)]="edited.shippingAddress.firstName"
+                            name="firstName"
+                        />
+                    </mat-form-field>
+                    <!-- <input
+                        id="firstName"
+                        value=""
+                        [(ngModel)]="edited.address.firstName"
+                        name="firstName"
+                        class="full-width form-control"
+                    /> -->
+                </div>
+            </div>
+            <!-- Last Name / Address 1 -->
+            <div class="grid-x grid-padding-x align-justify">
+                <div class="cell medium-6 large-5">
+                    <label for="lastName"
+                        >Last Name<sup class="required">*</sup></label
+                    >
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            id="lastName"
+                            matInput
+                            [formControl]="lastNameFormControl"
+                            [errorStateMatcher]="matcher"
+                            [(ngModel)]="edited.shippingAddress.lastName"
+                            name="lastName"
+                            required
+                        />
+                        <mat-error
+                            *ngIf="lastNameFormControl.hasError('required')"
+                        >
+                            This field is required
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- <input
+                        id="lastName"
+                        [(ngModel)]="edited.address.lastName"
+                        name="lastName"
+                        class="full-width form-control"
+                        required
+                    /> -->
+                </div>
+                <!-- Address 1 -->
+                <div class="cell medium-6 large-5">
+                    <label for="address1" class="block"
+                        >Address 1<sup class="required">*</sup></label
+                    >
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            matInput
+                            id="address1"
+                            class="form-control"
+                            value=""
+                            [formControl]="addressFormControl"
+                            [errorStateMatcher]="matcher"
+                            [(ngModel)]="edited.shippingAddress.address1"
+                            name="address1"
+                            (change)="address1Change()"
+                            #newAddress1
+                        />
+                        <!-- (keyup)="getStreetWildSearch($event.target.value)" -->
+                        <!-- Remove the displayWith function from autocomplete because it causes problem with the address 1 input field binding -->
+                        <!-- <mat-autocomplete #autoAddress1="matAutocomplete">
+                                <ng-container
+                                    *ngIf="iaStreets$ | async as streets"
+                                >
+                                    <mat-option
+                                        *ngFor="let street of streets"
+                                        [value]="
+                                            street.StandardizedAddress.Street1
+                                        "
+                                        (click)="streetClick(street)"
+                                    >
+                                        {{
+                                            street.StandardizedAddress.Street1
+                                        }},
+                                        {{
+                                            street.StandardizedAddress
+                                                .CityStateZip
+                                        }}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete> -->
+                        <mat-error
+                            *ngIf="addressFormControl.hasError('required')"
+                        >
+                            This field is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x align-justify">
+                <div class="cell medium-6 large-5">
+                    <label for="address2" class="block">Address 2</label>
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            matInput
+                            id="address2"
+                            [(ngModel)]="edited.shippingAddress.address2"
+                            name="address2"
+                            #newAddress2
+                        />
+                    </mat-form-field>
+                </div>
+                <!-- City -->
+                <div class="cell medium-6 large-5">
+                    <label for="city" class="block"
+                        >City<sup class="required">*</sup></label
+                    >
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            matInput
+                            id="city"
+                            [formControl]="cityFormControl"
+                            [errorStateMatcher]="matcher"
+                            [(ngModel)]="edited.shippingAddress.city"
+                            name="city"
+                            required
+                            #newCity
+                        />
+                        <mat-error *ngIf="cityFormControl.hasError('required')">
+                            This field is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- State / Zip -->
+            <div class="grid-x grid-padding-x align-justify">
+                <div class="cell medium-6 large-5">
+                    <label for="state" class="block"
+                        >State<sup class="required">*</sup></label
+                    >
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <mat-select
+                            id="state"
+                            [formControl]="stateFormControl"
+                            [errorStateMatcher]="matcher"
+                            [(ngModel)]="edited.shippingAddress.stateValue"
+                            required
+                            name="state"
+                            #newState
+                        >
+                            <mat-option
+                                *ngFor="let state of states"
+                                [value]="state.key"
+                            >
+                                {{ state.value }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="stateFormControl.hasError('required')"
+                        >
+                            This field is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- <select
+                        class="form-control ia_state"
+                        id="state"
+                        [formControl]="stateFormControl"
+                        [(ngModel)]="edited.address.stateValue"
+                        required
+                        name="state"
+                        #newState
+                    >
+                        <option value="">Select a State</option>
+                        <option
+                            *ngFor="let state of states"
+                            [value]="state.key"
+                        >
+                            {{ state.value }}
+                        </option>
+                    </select> -->
+                </div>
+                <!-- Zip Code -->
+                <div class="cell medium-6 large-5">
+                    <label for="zipCode" class="block"
+                        >Zip/Postal Code<sup class="required">*</sup></label
+                    >
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            matInput
+                            id="zipCode"
+                            [formControl]="zipFormControl"
+                            [errorStateMatcher]="matcher"
+                            [(ngModel)]="edited.shippingAddress.zip"
+                            name="postalCode"
+                            required
+                            #newZipCode
+                        />
+                        <mat-error *ngIf="zipFormControl.hasError('required')">
+                            This field is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- Country -->
+            <div class="grid-x grid-padding-x align-justify">
+                <div class="cell medium-6 large-5">
+                    <label for="country" class="block">Country</label>
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <mat-select
+                            id="country"
+                            aria-placeholder=""
+                            [(ngModel)]="edited.shippingAddress.countryValue"
+                            name="country"
+                            #newCountry
+                        >
+                            <mat-option [value]="'USA'">
+                                United States
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="cell medium-6 large-5">
+                    <label for="phoneNumber" class="block"
+                        >Phone Number<sup class="required">*</sup></label
+                    >
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            matInput
+                            (keyup)="addDash()"
+                            id="phoneNumber"
+                            name="phone"
+                            [formControl]="phoneFormControl"
+                            [errorStateMatcher]="matcher"
+                            maxlength="12"
+                            [(ngModel)]="edited.shippingAddress.phone"
+                            required
+                        />
+                        <mat-error
+                            *ngIf="phoneFormControl.hasError('required')"
+                        >
+                            This field is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <input
+                type="hidden"
+                class="form-control"
+                [value]="getStateFilter()"
+            />
+            <input
+                type="hidden"
+                class="form-control"
+                [value]="getCityFilter()"
+            />
+            <input
+                type="hidden"
+                class="form-control"
+                [value]="getZipcodeFilter()"
+            /> -->
+        </form>
+        <!-- <div *ngIf="!edited.savedOrderId">
+                <mat-checkbox
+                    color="primary"
+                    [(ngModel)]="edited.saveShippingAddressToAddressBook"
+                    (change)="
+                        edited$.dispatch.setSaveShippingAddressToAddressBook(
+                            $event.checked
+                        )
+                    "
+                >
+                    <span>Save to Address Book</span>
+                </mat-checkbox>
+            </div> -->
+    </div>
+    <!-- <app-instant-address></app-instant-address> -->
+    <div>
+        <p>
+            <span style="font-weight: bold">ORDER NOTES</span>&nbsp;
+            <span class="font-small"
+                >(Hold Number, Special Instructions, Missing Items, etc.)</span
+            >
+        </p>
+    </div>
+    <div>
+        <mat-form-field class="full-width" floatLabel="auto">
+            <textarea
+                matInput
+                maxlength="234"
+                [value]="edited.specialInstructions"
+                (input)="
+                    setInstructions(
+                        $event.target.value.length > 234
+                            ? $event.target.value.substring(0, 234)
+                            : $event.target.value
+                    )
+                "
+                [formControl]="orderNotesFormControl"
+                [errorStateMatcher]="matcher"
+            ></textarea>
+            <mat-error *ngIf="orderNotesFormControl.hasError('maxLength')">
+                Maximum of 234 characters are allowed for this field
+            </mat-error>
+        </mat-form-field>
+        <div *ngIf="edited.specialInstructions.length > 0" class="font-small">
+            {{ 234 - edited.specialInstructions.length }} more characters
+            allowed
+        </div>
+    </div>
+    <!-- <div
+            class="callout alert"
+            *ngIf="edited.errorMessage && reviewBtnClicked"
+        >
+            <div *ngFor="let msg of convertMsg(edited.errorMessage)">
+                {{ msg }}<br />
+            </div>
+        </div>
+        <div
+            class="callout alert"
+            *ngIf="!addressValid && reviewBtnClicked && edited.DeliveryMethod"
+        >
+            Address cannot be validated
+        </div> -->
+    <!-- buttons to go between views -->
+    <div class="flexContainerButton">
+        <p>
+            <!--  <button color="secondary" mat-raised-button type="button" (click)="goBack()">
+          <mat-icon>navigate_before</mat-icon>
+          <span>Back to Cart</span>
+        </button> -->
+
+            <!-- <button color="emphasis" mat-raised-button (click)="saveShipping()">
+        <span>Save</span>
+        <mat-icon>save</mat-icon>
+      </button> -->
+        </p>
+        <div>
+            <!-- <div *ngIf="edited.canProceed; else Button"> -->
+            <!--  <p>
+          <button color="emphasis" mat-raised-button (click)="goToOrderReview()">
+            <span>Order Review</span>
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </p> -->
+        </div>
+        <!-- <ng-template #Button>
+            <p>
+                <button color="disabled" mat-raised-button disabled>
+                    <span>Order Review</span>
+                    <mat-icon>navigate_next</mat-icon>
+                </button>
+            </p>
+        </ng-template> -->
+    </div>
+    <!-- <h3>Shipping Info</h3>
+  <app-dump-grid [input]="edited.shippingInfo"></app-dump-grid> -->
+    <!-- <h3>Save Form</h3>
+  <app-dump-grid [input]="edited.saveForm"></app-dump-grid> -->
+    <!-- <h3>Form</h3>
+  <app-dump-grid [input]="edited"></app-dump-grid> -->
+    <!-- <h3>Map</h3>
+  <app-dump-grid [input]="mapInfo"></app-dump-grid> -->
+    <!-- <h3>Edited</h3>
+  <app-dump-grid [input]="edited"></app-dump-grid>
+
+  <div>atgOrderId: {{ atgOrderId }}</div> -->
+</div>

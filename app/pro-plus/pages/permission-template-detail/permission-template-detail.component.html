@@ -1,0 +1,167 @@
+<div *ngIf="isLoading; else loaded" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #loaded>
+    <div *ngIf="templateId === 'new'; else edit">
+        <h1>Create Permissions Template</h1>
+    </div>
+    <ng-template #edit>
+        <div>
+            <h1>Edit Permissions Template</h1>
+        </div>
+    </ng-template>
+    <mat-divider class="divider"></mat-divider>
+    <div>
+        <mat-form-field style="margin-top: 10px" floatLabel="auto">
+            <input
+                matInput
+                maxlength="20"
+                placeholder="Template Name"
+                [(ngModel)]="templateName"
+                [formControl]="nameControl"
+                [errorStateMatcher]="matcher"
+                required
+            />
+            <mat-error *ngIf="nameControl.hasError('required')">
+                This field is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group
+        [disabled]="placeOrd === 'false' || placeOrd === '700001'"
+        [(ngModel)]="approveOrd"
+    >
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Approve Orders</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10700002">Yes</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [(ngModel)]="price">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Price</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100001">Yes</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group
+        [disabled]="approveOrd === 'p10700002'"
+        [(ngModel)]="placeOrd"
+    >
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Place Order</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100005"
+                    >Place Order, Yes</mat-radio-button
+                >
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10700003"
+                    >Yes, with Approval</mat-radio-button
+                >
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [(ngModel)]="orderHist">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Order History</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100002"
+                    >Yes, w/out Pricing</mat-radio-button
+                >
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100004"
+                    >Yes With Pricing</mat-radio-button
+                >
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [(ngModel)]="quotes">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Quotes</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100009">View</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100006">Manage</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [(ngModel)]="rebate">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Rebate</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10900001">View</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10300001">Manage</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <div class="grid-x">
+        <div class="cell medium-4 large-4">
+            <button (click)="goBack()" mat-raised-button color="secondary">
+                Back
+            </button>
+        </div>
+        <div class="cell medium-4 large-4" *ngIf="templateId !== 'new'">
+            <button
+                color="secondary"
+                (click)="openDialog()"
+                mat-raised-button
+                [disabled]="isAccountClosed"
+            >
+                Save as New Template
+            </button>
+        </div>
+        <div *ngIf="templateId === 'new'" class="cell medium-4 large-4">
+            <button
+                [disabled]="templateNameValid || isAccountClosed"
+                [color]="isAccountClosed ? 'disabled' : 'primary'"
+                (click)="saveTemplate()"
+                mat-raised-button
+            >
+                Save Template <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <div *ngIf="templateId !== 'new'" class="cell medium-4 large-4">
+            <button
+                [disabled]="templateNameValid || isAccountClosed"
+                [color]="isAccountClosed ? 'disabled' : 'primary'"
+                (click)="updateTemp()"
+                mat-raised-button
+            >
+                Update Template
+            </button>
+        </div>
+    </div>
+</ng-template>

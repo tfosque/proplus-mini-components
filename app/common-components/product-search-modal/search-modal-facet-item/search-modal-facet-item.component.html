@@ -1,0 +1,40 @@
+<div class="grid-containe full" *ngIf="((showAll | async) ? facet[1] : facet[2]) as data">
+  <div class="grid-x grid-margin-x" style="width: 18.25vw">
+    <div class="cell label" [ngClass]="{'categories-border': label === 'Categories'}" style="height: 42px;">
+      {{ facet[0] }}
+    </div>
+    <!-- List of Facets -->
+    <div class="cell" [ngClass]="{'categories-section': label === 'Categories'}">
+      <section style="padding: 4px 0 4px 8px; font-size: .925rem">
+        <div *ngFor="let item of ((showAll | async) ? facet[1] : facet[2])"
+          (click)="handleClickFacet(item, !checkboxOther.checked, label)">
+          <div class="grid-x">
+            <mat-checkbox #checkboxOther [checked]="item.selected" class="cell medium-11;"
+              [ngClass]="{'category-label': label === 'Categories'}">
+              {{item.facetName}} <span *ngIf="item.recordCount > 0">({{item.recordCount}})</span>
+            </mat-checkbox>
+            <div class="cell medium-1" style="margin-top: 4px;">
+              <mat-spinner *ngIf="(isLoadingSearch) &&  checkboxOther.checked" diameter="18"></mat-spinner>
+            </div>
+          </div>
+        </div>
+        <!-- Show All -->
+        <div style="padding: 8px 10px 4px 0; text-align: left; color: #025f9e;" *ngIf="hideShowButtons | async">
+
+          <!-- ALL -->
+          <div *ngIf="data.length <= 6 && facet[2].length > 6" (click)="toggleShowAll()"
+            style="width: 100%; display: block; cursor: pointer">
+            <mat-icon style="vertical-align: middle;">keyboard_arrow_right</mat-icon>
+            <span>Show All</span>
+          </div>
+
+          <!-- LESS -->
+          <div *ngIf="data.length > 6" (click)="toggleShowAll()" style="width: 100%; display: block; cursor: pointer">
+            <mat-icon style="vertical-align: middle;">keyboard_arrow_down</mat-icon>
+            <span>Show Less</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

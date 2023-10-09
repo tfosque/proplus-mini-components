@@ -1,0 +1,163 @@
+<div *ngIf="data.type === 'update'; else createTitle">
+    <h2 mat-dialog-title>Update Address Book {{ data.lastName }}</h2>
+</div>
+<ng-template #createTitle>
+    <h2 mat-dialog-title>Create Address Book</h2>
+</ng-template>
+<mat-dialog-content>
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>Nick Name</mat-label>
+                <input matInput [(ngModel)]="requestObject.nickname" />
+            </mat-form-field>
+        </div>
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>First Name</mat-label>
+                <input matInput [(ngModel)]="requestObject.firstName" />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>Last Name</mat-label>
+                <input
+                    matInput
+                    maxlength="25"
+                    [formControl]="lastNameFormControl"
+                    [errorStateMatcher]="matcher"
+                    [(ngModel)]="requestObject.lastName"
+                    required
+                />
+                <mat-error *ngIf="lastNameFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>Address 1</mat-label>
+                <input
+                    matInput
+                    maxlength="30"
+                    [formControl]="addressFormControl"
+                    [errorStateMatcher]="matcher"
+                    [(ngModel)]="requestObject.address1"
+                    required
+                />
+                <mat-error *ngIf="addressFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>Address 2</mat-label>
+                <input matInput [(ngModel)]="requestObject.address2" />
+            </mat-form-field>
+        </div>
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>City</mat-label>
+                <input
+                    matInput
+                    maxlength="30"
+                    [formControl]="cityFormControl"
+                    [errorStateMatcher]="matcher"
+                    [(ngModel)]="requestObject.city"
+                    name="city"
+                    required
+                />
+                <mat-error *ngIf="cityFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>State</mat-label>
+                <mat-select
+                    [formControl]="stateFormControl"
+                    [errorStateMatcher]="matcher"
+                    [(ngModel)]="requestObject.state"
+                    required
+                    name="state"
+                >
+                    <mat-option
+                        *ngFor="let state of states"
+                        [value]="state.key"
+                    >
+                        {{ state.key }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="stateFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>Zip/Postal Code</mat-label>
+                <input
+                    matInput
+                    maxlength="10"
+                    (keyup)="addDashZip()"
+                    [formControl]="zipFormControl"
+                    [errorStateMatcher]="matcher"
+                    [(ngModel)]="requestObject.zip"
+                    required
+                />
+                <mat-error *ngIf="zipFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>Country</mat-label>
+                <mat-select [(ngModel)]="requestObject.country">
+                    <mat-option [value]="'USA'"> United States </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="formInput" floatLabel="auto">
+                <mat-label>Phone Number</mat-label>
+                <input
+                    matInput
+                    (keyup)="addDash()"
+                    [formControl]="phoneFormControl"
+                    [errorStateMatcher]="matcher"
+                    maxlength="12"
+                    placeholder="Phone Number"
+                    [(ngModel)]="requestObject.phone"
+                    required
+                />
+                <mat-error *ngIf="phoneFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        mat-button
+        color="primary"
+        [mat-dialog-close]="requestObject"
+        cdkFocusInitial
+        [disabled]="canSave"
+    >
+        {{ saveText }}
+    </button>
+</mat-dialog-actions>

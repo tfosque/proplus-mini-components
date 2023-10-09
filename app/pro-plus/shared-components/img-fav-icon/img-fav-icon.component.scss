@@ -1,0 +1,79 @@
+div#favorite-container-small {
+  position: relative;
+  display: inline-block;
+
+  img {
+    border: solid thin #c5c3c352;
+    width: 100px;
+  }
+
+  div.background {
+    background-color: #fff;
+    position: absolute;
+    right: 5px;
+    bottom: 11px;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+
+    mat-icon {
+      cursor: pointer;
+      color: #025f9e;
+      position: absolute;
+      z-index: 50;
+      bottom: -1px;
+      right: 0px;
+    }
+  }
+
+  mat-icon.active {
+    // color: #025f9e;
+    color: #fff;
+  }
+}
+
+div#favorite-container-large {
+  position: relative;
+  display: inline-block;
+
+  img {
+    border: solid thin #c5c3c352;
+    width: 200px;
+  }
+
+  div.background {
+    background-color: #fff;
+    position: absolute;
+    right: 10px;
+    bottom: 16px;
+    width: 44px;
+    height: 42px;
+    border-radius: 3px;
+
+    mat-icon {
+      cursor: pointer;
+      color: #025f9e;
+      position: absolute;
+      z-index: 50;
+      bottom: 7px;
+      right: 10px;
+      scale: 1.5;
+    }
+  }
+
+  mat-icon.active {
+    // color: #025f9e;
+    color: #fff;
+  }
+}
+
+/* .icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  // Adjust the following properties to control the size and appearance of the icon 
+  width: 30px;
+  height: 30px;
+  // background: url("your-icon.png") no-repeat center;
+  background-size: cover;
+} */

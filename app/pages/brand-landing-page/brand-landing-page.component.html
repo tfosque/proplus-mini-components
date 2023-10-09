@@ -1,0 +1,19 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <app-breadcrumb [configuration]="breadcrumbConfig"></app-breadcrumb>
+    <div class="brand-landing-page generic-content-page">
+        <div class="grid-container">
+            <ng-container brComponent="hero"></ng-container>
+        </div>
+        <ng-container brComponent="seo-component"></ng-container>
+        <app-navigable-content-container
+            [containerType]="containerType"
+            [navItems]="navItems"
+            [brandLogo]="brandLogo"
+        ></app-navigable-content-container>
+    </div>
+</ng-container>
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

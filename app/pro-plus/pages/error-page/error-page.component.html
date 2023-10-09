@@ -1,0 +1,4 @@
+<div class="grid-container grid-x big-margin full-width">
+    <h1 *ngIf="showError" class="cell">Error</h1>
+    <p class="cell text-center" *ngIf="message$ | async as message">{{ message }}</p>
+</div>

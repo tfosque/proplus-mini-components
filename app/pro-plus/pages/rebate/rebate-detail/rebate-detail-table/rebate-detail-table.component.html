@@ -1,0 +1,204 @@
+<div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="expand-table">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-12 medium-7 large-7">
+            <div [hidden]="isEmpty && !isFiltering" class="tables large-left-margin">
+                <form (submit)="doSearch()">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-12 medium-4 large-4">
+                            <mat-form-field appearance="standard" class="full-width-search">
+                                <mat-select class="full-width-search" [(value)]="selectedSearchValue"
+                                    (selectionChange)="searchTypeChange()">
+                                    <mat-option *ngFor="let t of searchTypes" [value]="t.value">{{
+                                        t.name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="cell small-12 medium-4 large-4" *ngIf="selectedSearch.type == 'search'">
+                            <mat-form-field appearance="standard">
+                                <input type="search" matInput [(ngModel)]="searchText" (change)="filterChange()" 
+                                    [ngModelOptions]="{ standalone: true }" placeholder="Search" />
+                            </mat-form-field>
+                        </div>
+                        <div class="cell small-12 medium-4 large-4 date-picker" *ngIf="selectedSearch.type == 'date'">
+                            <mat-form-field appearance="standard">
+                                <input matInput [(ngModel)]="invoiceDate"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    [matDatepicker]="invoiceDatePicker" placeholder="Invoice Date"
+                                    (ngModelChange)="filterChange()" />
+                                <mat-datepicker-toggle matSuffix
+                                    [for]="invoiceDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #invoiceDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="cell small-12 medium-4 large-4 filter-line">
+                            <button mat-raised-button class="show-for-medium small-button" color="secondary"
+                                type="submit" (click)="doSearch()">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <p class="quoteSearchHistoryTips" *ngIf="isFiltering">
+                    <span *ngIf="!filterChanging">{{ totalCount }}</span> 
+                    record(s) matching 
+                    {{ getFilterField() }}={{ getFilterValue() }}
+                    <a (click)="clearFilter()">
+                        <mat-icon style="vertical-align: middle">clear</mat-icon>Clear
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div class="cell small-12 medium-5 large-5">
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-6 large-6 filter-line align-right">
+                    <button mat-raised-button class="show-for-medium" color="secondary" (click)="flierClick()">
+                        Promotion Flier
+                    </button>
+                </div>
+                <div class="cell small-12 medium-6 large-6 filter-line">
+                    <button mat-raised-button class="show-for-medium" color="primary"
+                        (click)="exportRebateDetails()">
+                        Download invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <table mat-table [dataSource]="dataSource" class="full-width">
+        <ng-container matColumnDef="orderNumber">
+            <th mat-header-cell class="thRow" *matHeaderCellDef>
+                <div class="show-for-medium header-row">Invoice Number</div>
+                <div class="show-for-small-only">Item Description</div>
+            </th>
+            <td mat-cell *matCellDef="let element" class="tdCell">
+                <div class="show-for-medium">
+                    {{ element.orderNumber }}
+                </div>
+                <div class="show-for-small-only">
+                    {{ element.itemDescription }}
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="invoiceDate">
+            <th mat-header-cell class="thRow" *matHeaderCellDef>
+                <div class="show-for-medium header-row">Invoice Date</div>
+                <div class="show-for-small-only">
+                    <div>Invoice Date/</div>
+                    <div>Order Number</div>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <div class="show-for-medium">
+                    {{ element.invoiceDate }}
+                </div>
+                <div class="show-for-small-only">
+                    <div>{{ element.invoiceDate }}/</div>
+                    <div>{{ element.orderNumber }}</div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+            <th mat-header-cell class="thRow" *matHeaderCellDef>
+                <div class="show-for-medium header-row">Category</div>
+                <div class="show-for-small-only">
+                    <div>Quantity Shipped/</div>
+                    <div>Projected Promotion</div>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let element" class="tdCell">
+                <div class="show-for-medium">
+                    {{ element.category }}
+                </div>
+                <div class="show-for-small-only">
+                    <div>{{ element.quantityShipped }}/</div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemDescription">
+            <th
+                mat-header-cell
+                class="thRow show-for-medium"
+                *matHeaderCellDef
+            >
+                Item Description
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                class="tdCell show-for-medium"
+            >
+                {{ element.itemDescription }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="uom">
+            <th
+                mat-header-cell
+                class="thRow show-for-medium"
+                *matHeaderCellDef
+            >
+                Unit of Measure
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                class="tdCell show-for-medium"
+            >
+                {{ element.itemStockUnitOfMeasure }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="quantityShipped">
+            <th
+                mat-header-cell
+                class="thRow show-for-medium"
+                *matHeaderCellDef
+            >
+                Quantity Shipped
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                class="tdCell show-for-medium"
+            >
+                {{ element.quantityShipped }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="salesAmount">
+            <th
+                mat-header-cell
+                class="thRow show-for-medium"
+                *matHeaderCellDef
+            >
+                Sales Amount
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                class="tdCell show-for-medium"
+            >
+                {{ element.salesAmount }}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            (click)="highlight(row)"
+        ></tr>
+    </table>
+    <mat-paginator
+        #rebatePaginator
+        [pageSizeOptions]="[20]"
+        showFirstLastButtons
+        [length]="totalCount"
+        [pageSize]="20"
+    >
+    </mat-paginator>
+</div>

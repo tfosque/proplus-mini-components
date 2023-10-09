@@ -1,0 +1,122 @@
+<div class="grid-container">
+    <nav class="breadcrumb grid-x grid-margin-x">
+        <ul class="breadcrumb__nav cell">
+            <li>
+                <a (click)="navigateHome()">{{ 'Home' | translations: 'home' }}</a>
+            </li>
+            <ng-container *ngFor="let crumb of extraBreadcrumb">
+                <li>
+                    <a
+                        [routerLink]="'/search'"
+                        [queryParams]="{
+                            cateFilter: crumb.facetId | encodeUriComponent
+                        }"
+                        >{{ crumb.title }}</a
+                    >
+                </li>
+            </ng-container>
+            <ng-container
+                *ngFor="
+                    let crumb of breadcrumbObject | keyvalue;
+                    last as isLast
+                "
+            >
+                <!--
+					TODO: Temp fix for extra breadcrumbs printing.  Look for better solution if
+					time permits.
+				-->
+                <li
+                    *ngIf="
+                        crumb.key !== 'products' &&
+                            crumb.key !== 'brand-landing' &&
+                            crumb.key !== 'root' &&
+                            crumb.key !== 'search' &&
+                            (!isLast || isProductPage);
+                        else searchPage
+                    "
+                >
+                    <a [routerLink]="'/' + crumb.key">{{ crumb.value }}</a>
+                </li>
+                <ng-template #searchPage>
+                    <ng-container
+                        *ngIf="
+                            crumb.key === 'search' && searchTerm;
+                            else currentPage
+                        "
+                    >
+                        <li>
+                            <a [routerLink]="'/' + crumb.key">{{
+                                crumb.value
+                            }}</a>
+                        </li>
+                        <li
+                            *ngIf="
+                                cateFacets && cateFacets.length;
+                                else searchTermNoCate
+                            "
+                        >
+                            <a
+                                [routerLink]="
+                                    '/' + crumb.key + '/' + searchTerm
+                                "
+                                >{{ searchTerm | safeHtml }}</a
+                            >
+                        </li>
+                        <ng-template #searchTermNoCate>
+                            <li>
+                                {{ searchTerm | safeHtml }}
+                            </li>
+                        </ng-template>
+                    </ng-container>
+                </ng-template>
+                <ng-template #currentPage>
+                    <li
+                        *ngIf="
+                            crumb.key !== 'products' &&
+                                crumb.key !== 'brand-landing' &&
+                                crumb.key !== 'root' &&
+                                (!cateFacets || !cateFacets.length);
+                            else hasCateFacets
+                        "
+                    >
+                        {{ crumb.value }}
+                    </li>
+                </ng-template>
+                <ng-template #hasCateFacets>
+                    <li
+                        *ngIf="
+                            isProductBrowsePage &&
+                            cateFacets &&
+                            cateFacets.length &&
+                            isLast
+                        "
+                    >
+                        <a [routerLink]="'/' + crumb.key">{{ crumb.value }}</a>
+                    </li>
+                </ng-template>
+            </ng-container>
+            <ng-container
+                *ngIf="isProductBrowsePage && cateFacets && cateFacets.length"
+            >
+                <ng-container *ngFor="let facet of cateFacets; last as isLast">
+                    <li *ngIf="!isLast; else currentPage">
+                        <a
+                            [routerLink]="['./']"
+                            [queryParams]="{ cateFilter: facet.key }"
+                            >{{ facet.value }}</a
+                        >
+                    </li>
+                    <ng-template #currentPage>
+                        <li>
+                            {{ facet.value }}
+                        </li>
+                    </ng-template>
+                </ng-container>
+            </ng-container>
+            <li
+                *ngIf="isProductPage && productName"
+                [innerHTML]="trimString(productName, 50)"
+            ></li>
+        </ul>
+    </nav>
+</div>

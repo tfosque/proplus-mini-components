@@ -1,0 +1,41 @@
+/* .cell {} */
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner[_ngcontent-brxm-angular-spa-c470] circle[_ngcontent-brxm-angular-spa-c470] {
+  stroke: #025f9e;
+  // stroke: #fb0b0b;
+}
+
+.sel-thumb {
+  background-color: orange;
+  padding-bottom: 4px;
+  // border-bottom-left-radius: 4px;
+  // border-bottom-right-radius: 4px;
+  border-radius: 4px;
+  box-shadow: 1px 2px 5px;
+}
+
+#Options.hide {
+  display: none
+}
+
+div#img-card {
+  div.mat-card:hover {
+    border: solid thin #c7c5c5;
+    border-bottom: solid 2px orange;
+    cursor: pointer;
+  }
+
+  p,
+  img {
+    border: none;
+  }
+
+}
+
+::ng-deep button .modal-button span {
+  font-weight: bold;
+}
+
+div div div span.col-name {
+  font-weight: bold;
+}

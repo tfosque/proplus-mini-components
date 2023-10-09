@@ -1,0 +1,30 @@
+<div
+    class="content-card-section"
+    *ngFor="let contentCardSection of contentCardSections"
+>
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <div class="grid-x grid-margin-x">
+        <ng-container
+            *ngIf="
+                contentCardSection.contentCardList &&
+                    contentCardSection.contentCardList.length;
+                else noResults
+            "
+        >
+            <app-content-card
+                *ngFor="let contentCard of contentCardSection.contentCardList"
+                class="cell medium-6 large-4"
+                [result]="contentCard"
+            ></app-content-card>
+        </ng-container>
+        <ng-template #noResults>
+            <!-- TODO (Luis Sardon): to review with Tim, there is no isLoading property -->
+            <!-- <div *ngIf="!isLoading" class="cell"> -->
+            <div class="cell">
+                <p class="content-card-section__no-results">
+                    Sorry, there is no content to display.
+                </p>
+            </div>
+        </ng-template>
+    </div>
+</div>

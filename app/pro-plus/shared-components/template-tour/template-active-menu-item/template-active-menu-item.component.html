@@ -1,0 +1,98 @@
+<div id="active-menu">
+  <div class="grid-x" *ngIf="(currStep | async) === 0">
+    <div class="cell small-3">
+      <div class="step0 step0new button-bold">
+        NEW TEMPLATE
+      </div>
+    </div>
+  </div>
+  <div class="grid-x template-row step1 step1edit" *ngIf="(currStep | async) === 1">
+    <div class="cell small-5">
+      <div class="grid-x standard-row">
+        <div class="cell small-1"></div>
+        <div class="cell small-11 grid-text-blue white-background full-height">
+          ABC Template
+        </div>
+      </div>
+    </div>
+    <div class="cell small-7">
+      <div class="grid-x standard-row">
+        <div class="cell small-3 white-background full-height">
+          06-26-2022
+        </div>
+        <div class="cell small-5 white-background full-height">
+          XXXXXX (ACCOUNT NAME)
+        </div>
+        <div class="cell small-3 white-background full-height">
+          Name Last Name
+        </div>
+        <div class="cell small-1"></div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(currStep | async) === 2">
+    <div class="grid-x cta-row step2 step2duplicate">
+      <div class="cell small-3">
+        <div class="white-background cta-copy centered">copy to account</div>
+      </div>
+      <div class="cell small-4">
+        <div class="white-background cta-duplicate centered">duplicate templates(s)</div>
+      </div>
+      <div class="cell small-2">
+        <div class="white-background cta-delete centered">delete</div>
+      </div>
+      <div class="cell small-3"></div>
+    </div>
+    <div class="grid-x template-row step2template step2template-duplicate">
+      <div class="cell small-5">
+        <div class="grid-x standard-row">
+          <div class="cell small-1">
+            <input type="checkbox" class="checked-checkbox" checked>
+          </div>
+          <div class="cell small-11"></div>
+        </div>
+      </div>
+      <div class="cell small-7">
+        <div class="grid-x standard-row">
+          <div class="cell small-3"></div>
+          <div class="cell small-5"></div>
+          <div class="cell small-3"></div>
+          <div class="cell small-1 white-background full-height">
+            <mat-icon class="delete-icon">delete</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid-x step3 step3filter filter-row" *ngIf="(currStep | async) === 3">
+    <div class="cell small-3">
+      <div class="grid-x">
+        <div class="cell small-11 white-background">
+          <div class="gray-background grid-text-blue filter-key">Template Name</div>
+          <div class="white-background filter-key">Account</div>
+          <div class="white-background filter-key">Last Modified</div>
+          <div class="white-background filter-key">Created By</div>
+        </div>
+        <div class="cell small-1"></div>
+      </div>
+    </div>
+    <div class="cell small-9 white-background" style="height: 48px;">
+      <div class="grid-x full-height">
+        <div class="cell small-10" style="padding-left: 10px;">
+          <input matInput placeholder="Search By" disabled />
+        </div>
+        <div class="cell small-2">
+          <div class="search-btn">search</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="indicator" [ngClass]="{
+        default: (currStep | async) === 0,
+        step1: (currStep | async) === 1,
+        step2: (currStep | async) === 2,
+        step3: (currStep | async) === 3
+    }">
+    <app-step-indicator></app-step-indicator>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="medium-5 large-5">
+    <mat-form-field class="formInput" floatLabel="auto">
+        <mat-label>Jobs</mat-label>
+        <mat-select [(ngModel)]="job" name="job" [required]="false">
+            <mat-option [value]="''"></mat-option>
+            <ng-container *ngIf="jobInfo | async as ji">
+                <mat-option
+                    (click)="selectJob(job)"
+                    *ngFor="let job of ji?.jobs"
+                    [value]="job"
+                >
+                    {{ job.jobName }} {{ job.jobNumber }}
+                </mat-option>
+            </ng-container>
+        </mat-select>
+    </mat-form-field>
+</div>

@@ -1,0 +1,193 @@
+<!-- <h1>Select SKU</h1> -->
+
+<!-- <div *ngIf="loading" class="loading-container">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div> -->
+<ng-template #loading>
+    <div class="loading-container">
+        <mat-progress-spinner style="margin: auto" mode="indeterminate"></mat-progress-spinner>
+    </div>
+</ng-template>
+
+<ng-container *ngIf="true">
+    <div *ngIf="product$ | async as p; else loading">
+        <div *ngIf="p" class="grid-x">
+            <div class="cell">
+                <h3 [innerHTML]="p.product?.name"></h3>
+            </div>
+        </div>
+
+        <div class="grid-x grid-margin-x">
+            <!-- Image -->
+            <div class="cell medium-6">
+                <img [src]="p?.selectedImage?.smallSrc()" appImagePreload [default]="
+                        p?.product.productOnErrorImage
+                            | errorImage
+                                : '/assets/images/image-not-available.svg'
+                    " class="prod" />
+            </div>
+
+            <div class="cell medium-6">
+                <div *ngIf="
+                        selectedPriceInfo | async as priceList;
+                        else unavailablePricing
+                    ">
+                    <div>
+                        <span *ngFor="let s of priceList.priceInfo; let i = index">
+                            <!-- TODO: s.price !== 0 can be one condition -->
+                            <span class="product-lead__price" *ngIf="s.price !== 0">{{ s.price | currency }}</span>
+                            <span class="product-lead__unit" *ngIf="s.price !== 0">
+                                <span>/{{ s.uom }}</span>
+                                <span *ngIf="i < priceList.priceInfo.length - 1">
+                                    OR
+                                </span>
+                            </span>
+                            <span class="emptyPrice" *ngIf="s.price === 0">
+                                Price will be calculated at invoicing.
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <ng-template #unavailablePricing>
+                    <p class="cell">
+                        <span class="product-lead__price">Pricing is unavailable</span>
+                    </p>
+                </ng-template>
+                <div *ngFor="let sku of p.product.skuList" style="padding: 3px; display: inline-block">
+                    <a href="#" (click)="selectSku(sku.itemNumber)">
+                        <img [src]="sku?.itemImage?.thumbSrc()" appImagePreload [default]="
+                                p?.product.productOnErrorImage
+                                    | errorImage
+                                        : '/assets/images/image-not-available.svg'
+                            " alt="Unknown" width="50" height="50" />
+                    </a>
+                </div>
+
+                <table class="table">
+                    <tr *ngIf="selectedProduct?.brand">
+                        <th>Brand</th>
+                        <td>{{ selectedProduct?.brand }}</td>
+                    </tr>
+                    <tr *ngIf="p.selectedSku">
+                        <th>SKU</th>
+                        <td>{{ p.selectedSku }}</td>
+                    </tr>
+                    <tr *ngFor="let f of p.selectedFacets">
+                        <th>{{ f.facetKey }}</th>
+                        <td>{{ f.options.join(',') }}</td>
+                    </tr>
+                </table>
+                <div style="text-align: right">
+                    <button mat-raised-button class="button" color="secondary" (click)="toggleOptions()">
+                        {{ showCaption }}
+                    </button>
+                </div>
+
+                <!-- <div>Brand: {{selectedProduct?.brand}}</div>
+        <div *ngIf="selectedSku">SKU: {{selectedSku?.itemNumber}}</div>
+        <div *ngIf="getColor(selectedSku)">Color: {{getColor(selectedSku)}}</div>
+        <div *ngIf="currentUom">currentUom: {{currentUom}}</div> -->
+
+                <!-- <app-dump-grid [input]="selectedProduct"></app-dump-grid> -->
+            </div>
+        </div>
+
+        <div>
+            <h3>Options</h3>
+        </div>
+        <div *ngIf="showOptions">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th *ngFor="let key of p.allFacets.facetKeys">
+                            {{ key }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of p.allFacets.allVarations">
+                        <th [class.selected]="row.selected">
+                            <a href="#" (click)="selectSku(row.sku)">
+                                {{ row.sku }}
+                            </a>
+                        </th>
+                        <td *ngFor="let f of row.facets" [class.selected]="row.selected">
+                            <span>{{ f.options.join(', ') }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-x grid-margin-x"></div>
+
+        <!-- Attribute Form -->
+        <div class="cell medium-12">
+            <!-- TODO (Tim): to review since this never renders -->
+            <app-dump-grid *ngIf="false" [input]="p"></app-dump-grid>
+
+            <div [innerHTML]="p.product?.longDesc"></div>
+
+            <!-- <app-dump-grid [input]="selectedProduct"></app-dump-grid>
+
+      <app-dump-grid [input]="selectedSku"></app-dump-grid> -->
+
+            <!-- longDesc, brand, categories, shortDesc, productImage -->
+            <!-- manufactureNumber, baseProductName, internalProductName, productName -->
+            <!-- skuList, itemNumber -->
+
+            <!-- <pre style="white-space: pre-wrap;">{{selectedProduct | json}}</pre> -->
+
+            <!-- Pricing -->
+            <!-- <p class="label full-width">
+          <b *ngIf="selectedProduct.currentSKU.unitPrice">
+            ${{selectedProduct.currentSKU.unitPrice}}/{{selectedProduct.currentSKU.currentUOM}}
+          </b>
+          <i *ngIf="!selectedProduct.currentSKU.unitPrice">
+            Pricing will be calculated at invoicing.
+          </i>
+        </p>
+
+        <mat-divider></mat-divider>
+        <div style="text-align:right;">
+          <a (click)="clearData()">Clear</a>
+        </div> -->
+
+            <!-- <div class="grid-x grid-margin-x" *ngIf="selectedProduct.variations"> -->
+
+            <!-- Variations -->
+            <!-- <div class="cell large-6" *ngFor="let variation of selectedProduct.variations | keyvalue">
+            <mat-form-field *ngIf="numKeys(variation.value) > 1">
+              <mat-label class="label">{{variation.key}}:</mat-label><br>
+              <mat-select class="attributeDropDown full-width"
+                [ngModel]="selectedProduct.currentSKU.variations?.color[0]">
+                <mat-option *ngFor="let attributeValue of variation.value | keyvalue" [value]="attributeValue.value[0]">
+                  <a (click)="selProduct(attributeValue.value[0])">{{attributeValue.key}}</a>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="numKeys(variation.value) == 1">{{firstKey(variation.value)}}</div>
+          </div>
+        </div> -->
+
+            <!-- <hr> -->
+
+            <!-- Quantity and Units -->
+            <!-- <div class="grid-x grid-margin-x">
+          <div class="cell large-6">
+            <mat-form-field>
+              <mat-label>Quantity:</mat-label>
+              <input matInput [(ngModel)]="data.quantity" class="full-width">
+            </mat-form-field>
+          </div>
+          <div class="cell small-6">
+            <mat-label>Purchasing Unit:</mat-label><br>
+            {{selectedProduct.currentSKU.currentUOM}}
+          </div>
+        </div> -->
+
+            <!-- </div> -->
+        </div>
+    </div>
+</ng-container>

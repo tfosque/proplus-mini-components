@@ -1,0 +1,90 @@
+<!-- Suggestive Selling Responsive UI -->
+<div class="grid-container">
+    <div class="grid-x grid-margin-x grid-margin-y grid-padding-x">
+        <ng-container *ngIf="suggestedProducts | async as products">
+            <!-- Spinner -->
+            <div
+                *ngIf="products.length < 1"
+                class="cell"
+                style="margin: auto; text-align: center"
+            >
+                <mat-spinner
+                    diameter="44"
+                    color="primary"
+                    style="display: inline-block"
+                ></mat-spinner>
+            </div>
+
+            <!-- Header -->
+            <div class="cell" style="margin-bottom: 15px">
+                <h3 style="text-align: center; margin-bottom: 1ex">
+                    <div>Customers Also Bought</div>
+                    <div>TRI-BUILT&reg;</div>
+                </h3>
+            </div>
+
+            <!-- Item -->
+            <ng-container *ngIf="products.length > 0">
+                <div
+                    *ngFor="let product of products"
+                    class="cell small-12 medium-6 large-4"
+                    style="
+                        border: thin solid #e8e8e8;
+                        text-align: center;
+                        padding-bottom: 15px;
+                        padding-top: 15px;
+                    "
+                >
+                    <div>
+                        <img
+                            appImagePreload
+                            width="112"
+                            [src]="
+                                'https://beaconproplus.com' +
+                                product.defaultItem.itemImage
+                            "
+                            alt="item-photo"
+                            [default]="
+                                product.defaultItem.itemOnErrorImage
+                                    | errorImage
+                            "
+                        />
+                    </div>
+                    <div
+                        *ngIf="
+                            product.defaultItem.price !== 0;
+                            else caclInvoicing
+                        "
+                        class="primary"
+                        style="padding: 6px"
+                    >
+                        <span>{{ product.defaultItem.price | currency }}</span>
+                    </div>
+                    <ng-template #caclInvoicing>
+                        <div style="color: rgb(155, 154, 152)">
+                            price will be calculated at invoicing
+                        </div>
+                    </ng-template>
+
+                    <div
+                        style="
+                            padding: 4px 4px;
+                            height: 84px;
+                            font-size: 0.85rem;
+                        "
+                        innerHTML="{{ product.productName }}"
+                    ></div>
+                    <button
+                        mat-raised-button
+                        color="secondary"
+                        (click)="addProductToList(product)"
+                        style="font-size: 0.87rem"
+                        [disabled]="isAccountClosed"
+                    >
+                        {{ btnText }}
+                    </button>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

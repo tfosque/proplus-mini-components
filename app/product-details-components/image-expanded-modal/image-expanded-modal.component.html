@@ -1,0 +1,9 @@
+<div class="image-expanded-modal">
+    <a (click)="closeModal()" class="image-expanded-modal__close-button"
+        >Close the modal</a
+    >
+    <app-carousel
+        [images]="data.images"
+        [initialSlideIndex]="data.initialSlideIndex"
+    ></app-carousel>
+</div>

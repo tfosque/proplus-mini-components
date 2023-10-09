@@ -1,0 +1,29 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+:host {
+    width: 100%;
+}
+
+.application-card-section {
+    @include contentButtonContainer();
+    background-color: $color-background-dark;
+    margin: (10px 0);
+
+    &__title {
+        color: #fff;
+        font-size: rem-calc(23px);
+        line-height: rem-calc(27px);
+        margin-bottom: rem-calc(30px);
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        margin: (25px 0 32px);
+
+        &__title {
+            font-size: rem-calc(28px);
+            line-height: rem-calc(32px);
+            margin-bottom: rem-calc(35px);
+        }
+    }
+}

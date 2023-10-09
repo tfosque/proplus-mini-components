@@ -1,0 +1,25 @@
+@import '../../../../sass/variables';
+@import '../../../../sass/mixins';
+
+.form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 3em;
+}
+
+.full-width {
+    width: 100%;
+}
+.checkboxes {
+    margin-right: 15px;
+}
+.checkbox-container {
+    margin-bottom: 25px;
+}
+.cell {
+    margin-bottom: 25px;
+}
+.divider {
+    margin: 5px 5px 40px 5px;
+}

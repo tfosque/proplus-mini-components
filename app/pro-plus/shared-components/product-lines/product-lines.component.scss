@@ -1,0 +1,106 @@
+.full-width {
+    width: 100% !important;
+}
+.quantity-input {
+    width: 45px;
+    text-align: center;
+}
+.show-more {
+    width: 50px;
+    border: none;
+}
+
+input.nickname {
+    border: 1px solid lightgray;
+}
+
+::ng-deep .editInput {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    width: 4em;
+    padding: 5px;
+}
+
+.reorder {
+    font-weight: bolder;
+    color: gray;
+}
+
+table.product-list {
+    margin: 2ex 0ex;
+    border-collapse: collapse;
+    thead {
+        background-color: lightgray;
+        th {
+            padding: 1ex;
+            border-width: 0;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+    }
+    tbody {
+        td {
+            padding: 1ex;
+            border-bottom: 1px solid lightgray;
+        }
+    }
+}
+
+div.show-for-small-only {
+    font-size: 0.7rem;
+
+    ::ng-deep input.quantity-input {
+        width: 4em;
+        border: solid thin #e8e8e8;
+        padding: 2px 2px;
+    }
+
+    ::ng-deep .mat-form-field {
+        .mat-form-field-wrapper .mat-select,
+        .mat-form-field-wrapper .mat-input-element {
+            font-size: 0.7rem;
+        }
+    }
+}
+
+.disable {
+    color: rgba(0, 0, 0, 0.38);
+    // color: rgba(0, 0, 0, 0.87);
+}
+
+table.show-for-medium {
+    ::ng-deep .mat-form-field {
+        .mat-form-field-infix {
+            // width: 8.75rem;
+            width: 9.625rem;
+        }
+    }
+
+    .grid-margin-x > .medium-4 {
+        // width: calc(33.33333333% - 0.1rem);
+        width: calc(37.453%);
+    }
+}
+
+.img-prod {
+    width: 80px;
+}
+
+.small-view-text {
+    font-size: 0.7rem;
+}
+.item-number {
+    padding: 0.5rem 0 1.5rem 0;
+}
+.details-column {
+    width: 28rem;
+}
+.variations-box {
+    line-height: normal;
+}
+.pb-half {
+    padding-bottom: 0.5rem;
+}
+.line-height {
+    line-height: normal;
+}

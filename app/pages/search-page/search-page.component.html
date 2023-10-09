@@ -1,0 +1,106 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <app-breadcrumb
+        [configuration]="breadcrumbConfig"
+        [isProductBrowsePage]="true"
+        [searchTerm]="searchTerm"
+    ></app-breadcrumb>
+    <div class="search-page">
+        <ng-template #noResults>
+            <div class="grid-container">
+                <h1 class="search-page__title">
+                    {{ headingText }} &ldquo;{{ searchTerm | safeHtml }}&rdquo;
+                </h1>
+                <ng-container [brComponent]="'seo-component'"></ng-container>
+                <ng-container [brComponent]="'main'"></ng-container>
+            </div>
+        </ng-template>
+        <ng-container *ngIf="page">
+            <ng-container *ngIf="(resultsCount$ | async) != null">
+                <div
+                    class="grid-container search-page__results-container"
+                    *ngIf="
+                        !isPreview && (resultsCount$ | async);
+                        else noResults
+                    "
+                >
+                    <div class="grid-x grid-margin-x">
+                        <div
+                            class="cell large-12"
+                            *ngIf="searchTerm; else noSearchTerm"
+                        >
+                            <h1>
+                                <span
+                                    >{{ resultsCount$ | async }}
+                                    {{
+                                        'results for'
+                                            | translations: 'results-for'
+                                    }} </span
+                                >&ldquo;{{ searchTerm | safeHtml }}&rdquo;<span
+                                    *ngIf="activeCateFilter"
+                                >
+                                    {{ 'in' | translations: 'in' }}
+                                    {{ activeCateFilter.value }}</span
+                                >
+                            </h1>
+                        </div>
+                        <ng-template #noSearchTerm>
+                            <div class="cell large-12">
+                                <h1>
+                                    <span
+                                        >{{ resultsCount$ | async }}
+                                        {{ 'results' | translations: 'results'
+                                        }}<ng-container
+                                            *ngIf="activeCateFilter"
+                                        >
+                                            {{ 'in' | translations: 'in' }}
+                                            {{
+                                                activeCateFilter.value
+                                            }}</ng-container
+                                        ></span
+                                    >
+                                </h1>
+                            </div>
+                        </ng-template>
+                        <div class="cell large-3">
+                            <section
+                                class="search-page__facets-section show-for-large"
+                            >
+                                <h2 class="search-page__facets-title">
+                                    {{
+                                        'Filter By' | translations: 'filter-by'
+                                    }}
+                                </h2>
+                                <app-facet-container></app-facet-container>
+                            </section>
+                            <div
+                                class="search-page__modal-trigger-wrapper hide-for-large"
+                            >
+                                <a
+                                    class="search-page__trigger"
+                                    (click)="openFilterModal()"
+                                >
+                                    {{
+                                        'Filter Products'
+                                            | translations: 'filter-products'
+                                    }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="cell large-9">
+                            <app-selected-facets-container></app-selected-facets-container>
+                            <app-product-list
+                                [isSearch]="true"
+                            ></app-product-list>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

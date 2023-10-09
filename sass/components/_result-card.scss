@@ -1,0 +1,23 @@
+.result-card {
+    &__characteristics {
+        font-size: rem-calc(15px);
+
+        p,
+        ul,
+        ol {
+            font-size: rem-calc(15px);
+        }
+
+        ul {
+            padding-left: rem-calc(15px);
+            margin: 0px 0px rem-calc(10px) rem-calc(4px);
+        }
+
+        li {
+            font-size: rem-calc(8px);
+            span {
+                font-size: rem-calc(15px);
+            }
+        }
+    }
+}

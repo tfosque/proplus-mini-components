@@ -1,0 +1,12 @@
+.modal {
+    &__peek {
+        height: 100%;
+        margin-left: rem-calc(35px);
+        width: 100%;
+
+        > * {
+            background-color: #fff;
+            width: 100%;
+        }
+    }
+}

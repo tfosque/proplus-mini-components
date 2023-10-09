@@ -1,0 +1,48 @@
+@import '../../../sass/vendor/foundation-settings';
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.brand-browse {
+    display: none;
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .brand-browse {
+        display: block;
+        h3 {
+            font-size: rem-calc(16px);
+            font-weight: $font-weight-heavy;
+            text-transform: uppercase;
+            margin-top: 0px;
+            margin-bottom: rem-calc(10px);
+        }
+        ul {
+            align-items: center;
+            border-top: 1px solid $color-borders;
+            border-bottom: 1px solid $color-borders;
+            display: flex;
+            height: rem-calc(105px);
+            list-style-type: none;
+            margin-top: rem-calc(10px);
+            margin-bottom: rem-calc(40px);
+            padding: rem-calc(15px) 0px;
+            li {
+                align-items: center;
+                cursor: pointer;
+                display: inline-flex;
+                height: 100%;
+                margin-right: 40px;
+
+                img {
+                    display: block;
+                    max-height: 100%;
+
+                    &:hover {
+                        -webkit-transform: scale(0.9);
+                        transform: scale(0.9);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,154 @@
+<ng-container
+    *ngIf="{
+        isLargeScreen: isLargeScreen$ | async,
+        results: resultsList$ | async,
+        isLoading: loading$ | async,
+        activeLabel: activeLabel$ | async
+    } as data"
+>
+    <div *ngIf="data?.isLoading" class="loading-container">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <ul
+        *ngIf="data?.results && !!data?.results.length; else noResults"
+        class="finder-results"
+        [ngClass]="{
+            'is-loading': data?.isLoading && !expanded && !data?.isLargeScreen
+        }"
+    >
+        <ng-container
+            *ngFor="let result of data?.results; index as i; first as isFirst"
+        >
+            <li
+                *ngIf="
+                    data?.isLargeScreen ||
+                    !expanded ||
+                    (!data?.activeLabel && isFirst) ||
+                    data?.activeLabel === labels[i]
+                "
+                [ngClass]="{ 'is-active': data?.activeLabel === labels[i] }"
+                (click)="setActiveLabel(labels[i])"
+                id="result-block-{{ labels[i] }}"
+            >
+                <div class="finder-results__container">
+                    <div class="finder-results__container--left">
+                        <span class="finder-icon">{{ labels[i] }}</span>
+                        <h3>{{ result.title }}</h3>
+                        <p>
+                            <span class="finder-results__address-line-1">{{
+                                result.addressLine1
+                            }}</span>
+                            <span class="finder-results__address-line-2">{{
+                                result.addressLine2
+                            }}</span>
+                            <span>{{ result.storeName }}</span>
+                            <span *ngIf="result.url">
+                                <a [href]="result.url | protocol"
+                                    >Store Details</a
+                                >
+                            </span>
+                        </p>
+                        <table>
+                            <tr *ngIf="result.getOpenTime()" class="mobile">
+                                <td colspan="2">
+                                    {{ 'Opens' | translations: 'opens' }}:
+                                    {{ result.getOpenTime() }}
+                                </td>
+                            </tr>
+                            <tr *ngIf="result.getCloseTime()" class="mobile">
+                                <td colspan="2">
+                                    {{ 'Closes' | translations: 'closes' }}:
+                                    {{ result.getCloseTime() }}
+                                </td>
+                            </tr>
+                            <tr *ngIf="result.monFriStoreHours">
+                                <td>
+                                    {{ 'MON-FRI' | translations: 'mon-fri' }}:
+                                </td>
+                                <td>{{ result.monFriStoreHours }}</td>
+                            </tr>
+                            <tr *ngIf="result.satSunStoreHours">
+                                <td>
+                                    {{ 'SAT-SUN' | translations: 'sat-sun' }}:
+                                </td>
+                                <td>{{ result.satSunStoreHours }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="finder-results__container--right">
+                        <div class="desktop">
+                            <span
+                                ><strong
+                                    >{{ result.distance }} mi.</strong
+                                ></span
+                            >
+                            <span x-ms-format-detection="none">{{
+                                result.phoneNumber
+                            }}</span>
+                            <a
+                                href="https://www.google.com/maps/dir/?api=1&destination={{
+                                    encodeUri(result.addressLine1)
+                                }}{{ encodeUri(result.addressLine2) }}"
+                                target="_blank"
+                                >{{
+                                    'Get Directions'
+                                        | translations: 'get-directions'
+                                }}</a
+                            >
+                        </div>
+                        <div class="mobile">
+                            <a href="tel:{{ result.phoneNumber }}">
+                                <div class="icon-phone"></div>
+                                <div>{{ 'Call' | translations: 'call' }}</div>
+                            </a>
+                            <a
+                                href="https://www.google.com/maps/dir/?api=1&destination={{
+                                    encodeUri(result.addressLine1)
+                                }}{{ encodeUri(result.addressLine2) }}"
+                                target="_blank"
+                            >
+                                <div class="icon-directions"></div>
+                                <div>
+                                    {{
+                                        'Directions'
+                                            | translations: 'directions'
+                                    }}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- <span *ngIf="result." -->
+                    <span
+                        *ngIf="
+                            result.productsSold && result.productsSold.length
+                        "
+                    >
+                        <strong
+                            >{{
+                                'Products Sold' | translations: 'products-sold'
+                            }}:</strong
+                        >
+                        <ng-container
+                            *ngFor="
+                                let product of result.productsSold;
+                                last as isLast
+                            "
+                        >
+                            {{ product
+                            }}<ng-container *ngIf="!isLast">, </ng-container>
+                        </ng-container>
+                    </span>
+                </div>
+            </li>
+        </ng-container>
+    </ul>
+
+    <ng-template #noResults>
+        <p *ngIf="!data?.isLoading">
+            {{
+                'Sorry, there were no results for the given location.'
+                    | translations: 'find-a-store-no-results'
+            }}
+        </p>
+    </ng-template>
+</ng-container>

@@ -1,0 +1,116 @@
+<h2 mat-dialog-title [innerHTML]="data.productDetail.productName"></h2>
+<mat-dialog-content>
+    <div *ngIf="data.productDetail" class="grid-x">
+        <div class="cell">
+            <div>Item Number: {{ data.productDetail.itemNumber }}</div>
+            <div>Product Number:</div>
+            <div>
+                Manufacturer Number: {{ data.productDetail.manufactureNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-x grid-margin-x">
+        <!-- Image -->
+        <div class="cell medium-6">
+            <img
+                [src]="data?.productDetail?.currentSKU?.itemImage.src"
+                class="prod"
+            />
+        </div>
+
+        <!-- Attribute Form -->
+        <div class="cell medium-6">
+            <!-- Pricing -->
+            <!-- <p class="label full-width">
+        <b *ngIf="data.productDetail.currentSKU.unitPrice">
+          ${{data.productDetail.currentSKU.unitPrice}}/{{data.productDetail.currentSKU.currentUOM}}
+        </b>
+        <i *ngIf="!data.productDetail.currentSKU.unitPrice">
+          Pricing will be calculated at invoicing.
+        </i>
+      </p> -->
+
+            <mat-divider></mat-divider>
+            <div style="text-align: right">
+                <a (click)="clearData()">Clear</a>
+            </div>
+
+            <div
+                class="grid-x grid-margin-x"
+                *ngIf="data.productDetail.variations"
+            >
+                <!-- Variations -->
+                <div
+                    class="cell large-6"
+                    *ngFor="
+                        let variation of data.productDetail.variations
+                            | keyvalue
+                    "
+                >
+                    <mat-form-field *ngIf="numKeys(variation.value) > 1">
+                        <mat-label class="label">{{ variation.key }}:</mat-label
+                        ><br />
+                        <mat-select
+                            class="attributeDropDown full-width"
+                            [ngModel]="
+                                data?.productDetail?.currentSKU?.variations
+                                    ?.color[0]
+                            "
+                        >
+                            <mat-option
+                                *ngFor="
+                                    let attributeValue of variation.value
+                                        | keyvalue
+                                "
+                                [value]="attributeValue.value[0]"
+                            >
+                                <a
+                                    (click)="
+                                        selProduct(attributeValue.value[0])
+                                    "
+                                    >{{ attributeValue.key }}</a
+                                >
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="numKeys(variation.value) == 1">
+                        {{ firstKey(variation.value) }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- <hr> -->
+
+            <!-- Quantity and Units -->
+            <div class="grid-x grid-margin-x">
+                <div class="cell large-6">
+                    <mat-form-field>
+                        <mat-label>Quantity:</mat-label>
+                        <input
+                            matInput
+                            [(ngModel)]="data.quantity"
+                            class="full-width"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="cell small-6">
+                    <mat-label>Purchasing Unit:</mat-label><br />
+                    {{ data?.productDetail?.currentSKU?.currentUOM }}
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        mat-raised-button
+        [mat-dialog-close]="true"
+        color="primary"
+        cdkFocusInitial
+        (click)="saveData()"
+    >
+        Add To Template
+    </button>
+</mat-dialog-actions>

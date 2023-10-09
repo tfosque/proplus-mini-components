@@ -1,0 +1,362 @@
+<div class="cell small-12 medium-12 large-12 top-bottom-margin">
+    <div class="grid-x">
+        <div class="cell large-2"></div>
+        <div
+            *ngIf="hasUnfinishedSmartOrders && isReminderOpen"
+            class="cell small-12 medium-12 large-8"
+        >
+            <div
+                class="grid-x grid-margin-x large-margin small-padding grey-background"
+            >
+                <div class="cell small-11 medium-11 large-11">
+                    <div class="sub-title">Welcome back!</div>
+                </div>
+
+                <div class="cell small-1 medium-1 large-1 text-right">
+                    <a (click)="closeReminder()"><mat-icon>close</mat-icon></a>
+                </div>
+                <div
+                    class="cell small-12 medium-12 large-12 sub-text-large margin-section"
+                >
+                    <p>
+                        It looks like you left the page before completing your
+                        last smart order. Would you like to continue?
+                    </p>
+                </div>
+                <div class="cell small-12 medium-12 large-12 text-large">
+                    Report: {{ unfinishedSmartOrder.reportId }} -
+                    {{ unfinishedSmartOrder.address }},
+                    {{ unfinishedSmartOrder.city }}
+                </div>
+                <div
+                    class="cell small-12 medium-12 large-12 report-table margin-cta"
+                >
+                    <button
+                        mat-button
+                        color="primary"
+                        (click)="
+                            continueSmartOrder(
+                                unfinishedSmartOrder.evOrderId,
+                                unfinishedSmartOrder.template
+                            )
+                        "
+                    >
+                        Continue to Smart Order
+                    </button>
+                    <span class="left-padding sub-text-black"
+                        ><a class="centered" (click)="closeReminder()"
+                            >I don't need this</a
+                        ></span
+                    >
+                </div>
+            </div>
+        </div>
+        <div class="cell large-2"></div>
+        <div class="cell large-2"></div>
+        <div class="cell small-12 medium-10 large-8 search-filter">
+            <form (submit)="doSearch($event)">
+                <div
+                    class="grid-x grid-margin-x large-margin small-padding search-container"
+                >
+                    <div class="cell small-12 medium-2 large-5 filter-select">
+                        <mat-form-field>
+                            <mat-select
+                                [(value)]="selectedSearchOption"
+                                (selectionChange)="searchTypeChange()"
+                            >
+                                <mat-option
+                                    *ngFor="let t of searchTypes"
+                                    [value]="t.name"
+                                    >{{ t.name }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <ng-container [ngSwitch]="selectedSearch?.type">
+                        <div
+                            class="cell small-12 medium-5 large-5 search-field"
+                            *ngSwitchCase="'search'"
+                        >
+                            <mat-form-field>
+                                <input
+                                    type="search"
+                                    matInput
+                                    [(ngModel)]="searchValue"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    class="filter"
+                                    (keyup)="filterChange()"
+                                    placeholder="Search"
+                                />
+                            </mat-form-field>
+                        </div>
+                        <div
+                            class="cell small-12 medium-5 large-5 select-field"
+                            *ngSwitchCase="'options'"
+                        >
+                            <mat-form-field>
+                                <mat-select
+                                    [(value)]="searchValue"
+                                    (selectionChange)="filterChange()"
+                                    placeholder="Select an option"
+                                >
+                                    <mat-option
+                                        *ngFor="
+                                            let o of selectedSearch?.options
+                                        "
+                                        [value]="o.value || o.name"
+                                        >{{ o.name }}</mat-option
+                                    >
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+                    <div class="cell small-12 medium-2 large-2">
+                        <button
+                            class="search-button"
+                            mat-raised-button
+                            color="secondary"
+                            type="submit"
+                        >
+                            Search
+                            <mat-icon class="search-icon">search</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="cell large-2"></div>
+    </div>
+</div>
+<div *ngIf="isLoading" class="cell text-centered auto-margin">
+    <mat-spinner
+        diameter="44"
+        color="primary"
+        class="display-inline-block"
+    ></mat-spinner>
+</div>
+<div class="cell small-12 medium-12 large-12">
+    <div class="show-for-medium">
+        <table
+            mat-table
+            [dataSource]="eagleViewSource"
+            matSort
+            class="full-width report-table"
+        >
+            <ng-container matColumnDef="reportId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Report #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.Id }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
+                <td mat-cell *matCellDef="let element">
+                    <div>{{ element.Street1 }}</div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="dateCreated">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Date Created
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>{{ formatDate(element.DatePlaced) }}</div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                    <div>{{ element.ReportStatus.Status }}</div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="productType">
+                <th mat-header-cell *matHeaderCellDef>Product Type</th>
+                <td mat-cell *matCellDef="let element">
+                    <div>{{ element.ReportProducts.ProductPrimary }}</div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="viewReport">
+                <th mat-header-cell *matHeaderCellDef>View Report</th>
+                <td mat-cell *matCellDef="let element">
+                    <a
+                        *ngIf="
+                            element.ReportStatus.Status.toLowerCase() ===
+                            'completed'
+                        "
+                        [href]="element.ReportDownloadLink"
+                        target="_blank"
+                    >
+                        <mat-icon color="emphasis">picture_as_pdf</mat-icon>
+                    </a>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="upgradeReport">
+                <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    style="vertical-align: middle"
+                >
+                    <span style="vertical-align: middle"> Upgrade Report </span>
+                    <span style="vertical-align: middle">
+                        <button
+                            class="icon"
+                            matTooltipPosition="left"
+                            matTooltip="Only premium reports can be converted using Smart Order"
+                            matTooltipClass="custom-tooltip"
+                        >
+                            <mat-icon>info</mat-icon>
+                        </button>
+                    </span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button
+                        mat-button
+                        color="primary"
+                        *ngIf="element.EligibleForUpgrade"
+                        (click)="upgradeEVReport(element.Id)"
+                    >
+                        Upgrade Report
+                        <img src="assets/images/upgrade.png" />
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="smartOrder">
+                <th mat-header-cell *matHeaderCellDef>Create Smart Order</th>
+                <td mat-cell *matCellDef="let element">
+                    <button
+                        mat-button
+                        color="primary"
+                        *ngIf="
+                            element.ReportStatus.StatusId === 5 &&
+                            element.ReportProducts.ProductPrimaryId === 31
+                        "
+                        (click)="createSmartOrder(element.Id)"
+                    >
+                        Begin Smart Order +
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+            [pageSizeOptions]="[5, 10, 20, 50]"
+            [length]="reportCount"
+            [pageSize]="10"
+            showFirstLastButtons
+        >
+        </mat-paginator>
+    </div>
+    <div id="mobile-view" class="show-for-small-only">
+        <table
+            mat-table
+            [dataSource]="eagleViewSource"
+            matSort
+            class="full-width report-table"
+        >
+            <ng-container matColumnDef="displayName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                <td
+                    mat-cell
+                    *matCellDef="let element"
+                    style="padding-left: 5px"
+                >
+                    <div>
+                        <span class="label">Report #:</span>
+                        {{ element.Id }}
+                    </div>
+                    <ng-container>
+                        <div>
+                            <span class="label">Address:</span>
+                            <span>{{ element.Street1 }}</span>
+                        </div>
+                    </ng-container>
+                    <ng-container>
+                        <div>
+                            <span class="label">Date Created:</span>
+                            <span>{{ formatDate(element.DatePlaced) }}</span>
+                        </div>
+                    </ng-container>
+                    <ng-container>
+                        <div>
+                            <span class="label">Status:</span>
+                            <span>{{ element.ReportStatus.Status }}</span>
+                        </div>
+                    </ng-container>
+                    <ng-container>
+                        <div>
+                            <span class="label">Product Type:</span>
+                            <span>{{
+                                element.ReportProducts.ProductPrimary
+                            }}</span>
+                        </div>
+                    </ng-container>
+                    <ng-container>
+                        <div>
+                            <button
+                                mat-button
+                                color="primary"
+                                *ngIf="element.EligibleForUpgrade"
+                                (click)="upgradeEVReport(element.Id)"
+                            >
+                                Upgrade Report
+                                <img src="assets/images/upgrade.png" />
+                            </button>
+                        </div>
+                    </ng-container>
+                    <ng-container>
+                        <div
+                            [ngClass]="{
+                                'top-margin':
+                                    element.ReportStatus.StatusId === 5
+                            }"
+                        >
+                            <button
+                                mat-button
+                                color="emphasis"
+                                *ngIf="element.ReportStatus.StatusId === 5"
+                                (click)="createSmartOrder(element.Id)"
+                            >
+                                Create Smart Order +
+                            </button>
+                        </div>
+                    </ng-container>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="viewReport">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span style="visibility: hidden">View Report</span>
+                </th>
+                <td
+                    mat-cell
+                    *matCellDef="let element"
+                    style="text-align: right"
+                >
+                    <a
+                        *ngIf="
+                            element.ReportStatus.Status.toLowerCase() ===
+                            'completed'
+                        "
+                        [href]="element.ReportDownloadLink"
+                        target="_blank"
+                    >
+                        <mat-icon color="emphasis">picture_as_pdf</mat-icon>
+                    </a>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsMobile"></tr>
+            <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumnsMobile"
+            ></tr>
+        </table>
+        <mat-paginator
+            [pageSizeOptions]="[5, 10, 20, 50]"
+            [length]="reportCount"
+            [pageSize]="10"
+            showFirstLastButtons
+        >
+        </mat-paginator>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+
+<div class="list-component generic-rail-component">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h3>{{ heading }}</h3>
+    <ul>
+        <li *ngFor="let listItem of listArray; let i = index">
+            {{ listItem }}
+        </li>
+    </ul>
+</div>

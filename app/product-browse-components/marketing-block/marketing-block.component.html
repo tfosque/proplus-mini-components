@@ -1,0 +1,22 @@
+<section class="marketing-block" *ngIf="content">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <img *ngIf="visibleAd?.image" src="{{ visibleAd?.image?.src }}" alt="{{ visibleAd?.image?.altText }}" />
+    <div class="marketing-block__wrapper">
+        <h2>{{ visibleAd?.title }}</h2>
+        <p>{{ visibleAd?.textContent }}</p>
+        <a
+            *ngIf="!visibleAd?.isExternal && visibleAd?.btnUrl &&visibleAd?.btnText; else external"
+            [routerLink]="visibleAd?.btnUrl"
+            class="button primary small"
+            >{{ visibleAd?.btnText }}</a
+        >
+        <ng-template #external>
+            <a
+                *ngIf="visibleAd?.btnUrl && visibleAd?.btnText"
+                href="{{ visibleAd?.btnUrl | protocol }}"
+                class="button primary small"
+                >{{ visibleAd?.btnText }}</a
+            >
+        </ng-template>
+    </div>
+</section>

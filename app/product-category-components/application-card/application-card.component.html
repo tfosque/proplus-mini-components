@@ -1,0 +1,23 @@
+<div class="application-card">
+    <a class="application-card__link" [routerLink]="url">
+        <div class="application-card__content-container">
+            <div *ngIf="image" class="application-card__image-wrap">
+                <img src="{{ image.src }}" alt="{{ image.altText }}" />
+            </div>
+            <div class="application-card__text-container">
+                <div class="application-card__text-wrap">
+                    <span class="application-card__text">
+                        <!--
+              It's important that the icon remain on the same line as the text.
+              Rendering will break otherwise
+            -->
+                        {{ title
+                        }}<span
+                            class="application-card__arrow-icon icon-arrow-right"
+                        ></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

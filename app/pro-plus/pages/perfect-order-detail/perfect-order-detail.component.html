@@ -1,0 +1,361 @@
+<div *ngIf="loading; else loaded" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #loaded>
+    <div class="grid-x">
+        <!-- Page Header -->
+        <div class="cell">
+            <h1>Perfect Order Templates</h1>
+            <h3>
+                Step 2:
+                <p>SELECT YOUR COLOR AND QUALIFIED ACCESSORIES</p>
+            </h3>
+            <mat-divider></mat-divider>
+        </div>
+
+        <!-- Table Header Medium and Small Nested Grid-->
+        <div class="cell">
+            <div class="grid-x">
+                <div class="cell small-3 medium-1 tbl-header show-for-small">
+                    Product
+                </div>
+                <div class="cell small-9 medium-8 tbl-header show-for-small">
+                    Detail
+                </div>
+                <div class="cell medium-2 tbl-header show-for-medium">
+                    Price
+                </div>
+                <div
+                    class="cell medium-1 tbl-header show-for-medium"
+                    style="text-align: center"
+                >
+                    Qty
+                </div>
+            </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <!-- REPLACED TABLE WITH DIVS -->
+    <div
+        *ngFor="let categories of groupedProductList"
+        class="grid-x grid-margin-x"
+    >
+        <!-- subcategory title -->
+        <div class="cell small-12">
+            <h4>{{ categories.displayName }}</h4>
+        </div>
+        <!-- subcategory items -->
+        <ng-container *ngFor="let c of categories.items">
+            <div class="cell">
+                <section class="grid-x grid-padding-x template-items">
+                    <div
+                        class="cell small-3 medium-1"
+                        style="margin-bottom: 5px"
+                    >
+                        <img 
+                            appImagePreload 
+                            [src]="c.imageUrl?.thumbnail | productImage" 
+                            [default] = "c.imageOnErrorUrl | errorImage"
+                        />
+                    </div>
+
+                    <div class="cell small-9 medium-8">
+                        <div style="margin-bottom: 5px">
+                            <a
+                                [innerHTML]="c.itemOrProductDescription"
+                                [routerLink]="[
+                                    '/productDetail/',
+                                    c.productOrItemNumber,
+                                    c.selectedSKU
+                                ]"
+                            >
+                            </a>
+                            <div class="show-for-medium">
+                                Item number: #{{ c.selectedSKU }}
+                            </div>
+                        </div>
+
+                        <!-- Show Facets here inside this div for medium + -->
+                        <div class="show-for-medium">
+                            <div
+                                *ngIf="
+                                    c.variations &&
+                                        c.facetSelectors.length &&
+                                        c.moreFacetOptions;
+                                    else singleFacet
+                                "
+                            >
+                                <a
+                                    class="table-cell-font pointer"
+                                    href="javascript:void(0);"
+                                    (click)="flipShowMore(c.lineItemId)"
+                                >
+                                    <b>Select More Options</b>
+                                    <span *ngIf="findShowMore(c.lineItemId)"
+                                        >&#9652;</span
+                                    >
+                                    <span *ngIf="!findShowMore(c.lineItemId)"
+                                        >&#9662;</span
+                                    >
+                                </a>
+                                <div
+                                    class="row bordered"
+                                    [hidden]="!findShowMore(c.lineItemId)"
+                                >
+                                    <div class="grid-container">
+                                        <div class="grid-x grid-margin-x">
+                                            <div
+                                                class="attribute small-12 medium-4"
+                                                *ngFor="
+                                                    let facet of c.facetSelectors
+                                                "
+                                            >
+                                                <mat-label
+                                                    ><b
+                                                        >{{ facet.name }}:</b
+                                                    ></mat-label
+                                                ><br />
+                                                <div
+                                                    *ngIf="
+                                                        (
+                                                            c.activeVariations[
+                                                                facet.name
+                                                            ] || []
+                                                        ).length > 1;
+                                                        else oneFacetOption
+                                                    "
+                                                >
+                                                    <mat-form-field>
+                                                        <mat-select
+                                                            class="attributeDropDown"
+                                                            [(value)]="
+                                                                facet.value
+                                                            "
+                                                        >
+                                                            <mat-option
+                                                                [ngClass]="{
+                                                                    disable: !option.enabled
+                                                                }"
+                                                                *ngFor="
+                                                                    let option of c
+                                                                        .activeVariations[
+                                                                        facet
+                                                                            .name
+                                                                    ]
+                                                                "
+                                                                [value]="
+                                                                    option.value
+                                                                "
+                                                            >
+                                                                {{
+                                                                    option.value
+                                                                }}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <ng-template #oneFacetOption>
+                                                    <div>{{ facet.value }}</div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="cell small-3 show-for-small-only"
+                        style="text-align: center"
+                    >
+                        #{{ c.selectedSKU }}
+                    </div>
+                    <!-- Facets -->
+                    <div class="cell small-9 show-for-small-only">
+                        <div
+                            *ngIf="
+                                c.variations &&
+                                    c.facetSelectors.length &&
+                                    c.moreFacetOptions;
+                                else singleFacet
+                            "
+                        >
+                            <a
+                                class="table-cell-font pointer"
+                                href="javascript:void(0);"
+                                (click)="flipShowMore(c.lineItemId)"
+                            >
+                                <b>Select More Options</b>
+                                <span *ngIf="findShowMore(c.lineItemId)"
+                                    >&#9652;</span
+                                >
+                                <span *ngIf="!findShowMore(c.lineItemId)"
+                                    >&#9662;</span
+                                >
+                            </a>
+                            <div
+                                class="row bordered"
+                                [hidden]="!findShowMore(c.lineItemId)"
+                            >
+                                <div class="grid-container">
+                                    <div class="grid-x grid-margin-x">
+                                        <div
+                                            class="attribute small-12 medium-4"
+                                            *ngFor="
+                                                let facet of c.facetSelectors
+                                            "
+                                        >
+                                            <mat-label
+                                                ><b
+                                                    >{{ facet.name }}:</b
+                                                ></mat-label
+                                            ><br />
+                                            <div
+                                                *ngIf="
+                                                    (
+                                                        c.activeVariations[
+                                                            facet.name
+                                                        ] || []
+                                                    ).length > 1;
+                                                    else oneFacetOption
+                                                "
+                                            >
+                                                <mat-form-field>
+                                                    <mat-select
+                                                        class="attributeDropDown"
+                                                        [(value)]="facet.value"
+                                                    >
+                                                        <mat-option
+                                                            [ngClass]="{
+                                                                disable: !option.enabled
+                                                            }"
+                                                            *ngFor="
+                                                                let option of c
+                                                                    .activeVariations[
+                                                                    facet.name
+                                                                ]
+                                                            "
+                                                            [value]="
+                                                                option.value
+                                                            "
+                                                        >
+                                                            {{ option.value }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <ng-template #oneFacetOption>
+                                                <div>{{ facet.value }}</div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #singleFacet>
+                        <div
+                            *ngIf="
+                                c.variations &&
+                                c.facetSelectors.length &&
+                                !c.moreFacetOptions
+                            "
+                        >
+                            <div class="row bordered">
+                                <div class="grid-container">
+                                    <div class="grid-x grid-margin-x">
+                                        <div
+                                            class="attribute small-12 medium-4"
+                                            *ngFor="
+                                                let facet of c.facetSelectors
+                                            "
+                                        >
+                                            <mat-label
+                                                ><b
+                                                    >{{ facet.name }}:</b
+                                                ></mat-label
+                                            ><br />
+                                            <div>{{ facet.value }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <!-- Small Quantity/ Price (Nested Grid) -->
+                    <div class="cell show-for-small-only">
+                        <div class="grid-x grid-margin-x">
+                            <mat-form-field
+                                class="cell small-3"
+                                style="text-align: center"
+                            >
+                                <input
+                                    matInput
+                                    [(ngModel)]="c.quantity"
+                                    min="0"
+                                    max="9999"
+                                    type="number"
+                                />
+                            </mat-form-field>
+
+                            <div
+                                class="cell small-9"
+                            >
+                                {{ c.unitPrice | price: c.unitOfMeasure }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price for Medium -->
+                    <div
+                        class="cell medium-2 show-for-medium"
+                    >
+                        {{ c.unitPrice | price: c.unitOfMeasure }}
+                    </div>
+
+                    <!-- Quantity Medium -->
+                    <mat-form-field
+                        class="cell medium-1 show-for-medium"
+                        style="text-align: center"
+                    >
+                        <input
+                            matInput
+                            [(ngModel)]="c.quantity"
+                            min="0"
+                            max="9999"
+                            type="number"
+                        />
+                    </mat-form-field>
+                </section>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="grid-x grid-margin-x action-btns">
+        <div class="cell small-12 medium-6">
+            <button
+                [color]="isAccountClosed ? 'disabled' : 'primary'"
+                (click)="addItemsToCart()"
+                mat-raised-button
+                [disabled]="isAccountClosed"
+            >
+                Add To Cart
+            </button>
+        </div>
+        <div class="cell small-12 medium-6">
+            <button
+                mat-raised-button
+                color="secondary"
+                (click)="addItemsToTemplate()"
+                [disabled]="isAccountClosed"
+            >
+                Add To Template
+            </button>
+        </div>
+    </div>
+
+    <!-- <app-dump-grid *ngIf="false" [input]="groupedProductList" maxDepth="5"></app-dump-grid> -->
+</ng-template>

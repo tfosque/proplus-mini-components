@@ -1,0 +1,6 @@
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    &.modal__backdrop {
+        background-color: rgba(36, 36, 36, 0.38);
+        opacity: 1;
+    }
+}

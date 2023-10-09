@@ -1,0 +1,80 @@
+<div class="navigable-content-container">
+    <ng-container
+        *ngIf="
+            containerType === NavigableContainerTypes.productContainer &&
+            product
+        "
+    >
+        <app-in-page-navigation
+            [navItems]="navItems"
+            [product]="product"
+            (activeNavItem)="setActiveNavItem($event)"
+        ></app-in-page-navigation>
+        <div class="navigable-content-container__content-sections">
+            <ng-container *ngFor="let navItem of navItems">
+                <ng-container [ngSwitch]="navItem.contentSectionType">
+                    <app-content-section
+                        *ngSwitchCase="ContentSectionTypes.productDescription"
+                        [title]="
+                            'Product Description'
+                                | translations: 'product-description'
+                        "
+                        [componentType]="ContentSectionTypes.productDescription"
+                        [data]="product.longDesc"
+                        [id]="navItem.navId"
+                    ></app-content-section>
+                    <app-content-section
+                        *ngSwitchCase="ContentSectionTypes.productSpecs"
+                        [title]="
+                            'Specifications' | translations: 'specifications'
+                        "
+                        [componentType]="ContentSectionTypes.productSpecs"
+                        [id]="navItem.navId"
+                        [data]="{
+                            productItemNum: product.itemNumber,
+                            productNum: product.productId,
+                            productManuNum: product.manufactureNumber,
+                            productSpecifications: product.specification
+                        }"
+                    >
+                    </app-content-section>
+                    <app-content-section
+                        *ngSwitchCase="ContentSectionTypes.productDocuments"
+                        [title]="'Documents' | translations: 'documents'"
+                        [componentType]="ContentSectionTypes.productDocuments"
+                        [id]="navItem.navId"
+                        [data]="product.resource"
+                    ></app-content-section>
+                    <app-content-section
+                        *ngSwitchCase="ContentSectionTypes.relatedProducts"
+                        [title]="
+                            'Related Products'
+                                | translations: 'related-products'
+                        "
+                        [componentType]="ContentSectionTypes.relatedProducts"
+                        [id]="navItem.navId"
+                        [data]="product.relatedProducts"
+                    >
+                    </app-content-section>
+                </ng-container>
+            </ng-container>
+        </div>
+    </ng-container>
+    <!-- TODO (Luis Sardon): to review with Tim -->
+    <ng-container
+        *ngIf="containerType === NavigableContainerTypes.dynamicContainer"
+    >
+        <ng-container
+            *ngIf="isPreview"
+            brComponent="in-page-nav-container"
+        ></ng-container>
+        <app-in-page-navigation
+            [navItems]="navItems"
+            [brandLogo]="brandLogo"
+            (activeNavItem)="setActiveNavItem($event)"
+        ></app-in-page-navigation>
+        <div class="navigable-content-container__content-sections">
+            <ng-container brComponent="content-sections"></ng-container>
+        </div>
+    </ng-container>
+</div>

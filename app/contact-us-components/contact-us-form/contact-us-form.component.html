@@ -1,0 +1,284 @@
+<div class="contact-us-form">
+    <div class="grid-x grid-margin-x">
+        <form
+            (ngSubmit)="onSubmit()"
+            id="contactUsForm"
+            [formGroup]="contactUsForm"
+            class="grid-x grid-margin-x"
+        >
+            <!-- NOTE: if no right rail this is large-12 -->
+            <span class="cell small-12 contact-us-form__note">
+                {{ requiredText }}
+            </span>
+            <mat-form-field
+                id="first-child"
+                class="cell small-12 medium-6 contact-us-form__form-field"
+            >
+                <mat-label>{{ firstNameLabel }}</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="firstName"
+                    name="firstName"
+                    required
+                    [ngClass]="
+                        contactUsForm.controls['firstName'].errors &&
+                        isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                />
+                <mat-error
+                    *ngIf="
+                        contactUsForm.controls['firstName'].hasError(
+                            'required'
+                        ) && isSubmitted
+                    "
+                >
+                    {{ firstNameRequiredErrorMessage }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field
+                class="cell small-12 medium-6 contact-us-form__form-field"
+            >
+                <mat-label>{{ lastNameLabel }}</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="lastName"
+                    name="lastName"
+                    required
+                    [ngClass]="
+                        contactUsForm.controls['lastName'].hasError(
+                            'required'
+                        ) && isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                />
+                <mat-error
+                    *ngIf="
+                        contactUsForm.controls['lastName'].hasError(
+                            'required'
+                        ) && isSubmitted
+                    "
+                >
+                    {{ lastNameRequiredErrorMessage }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="cell small-12 contact-us-form__form-field">
+                <mat-label>{{ companyLabel }}</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="company"
+                    name="company"
+                    [ngClass]="
+                        contactUsForm.controls['company'].hasError(
+                            'required'
+                        ) && isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                />
+            </mat-form-field>
+            <mat-form-field class="cell small-12 contact-us-form__form-field">
+                <mat-label>{{ roleLabel }}</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="role"
+                    name="role"
+                    [ngClass]="
+                        contactUsForm.controls['role'].hasError('required') &&
+                        isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                />
+            </mat-form-field>
+            <mat-form-field class="cell small-12 contact-us-form__form-field">
+                <mat-label>{{ zipCodeLabel }}</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="zip"
+                    name="zip"
+                    [ngClass]="
+                        contactUsForm.controls['zip'].hasError('required') &&
+                        isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                />
+            </mat-form-field>
+            <mat-form-field class="cell small-12 contact-us-form__form-field">
+                <mat-label>{{ phoneLabel }}</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="phone"
+                    name="phone"
+                    required
+                    [ngClass]="
+                        contactUsForm.controls['phone'].hasError('required') &&
+                        isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                />
+                <mat-error
+                    *ngIf="
+                        contactUsForm.controls['phone'].hasError('required') &&
+                        isSubmitted
+                    "
+                >
+                    {{ phoneRequiredErrorMessage }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="cell small-12 contact-us-form__form-field">
+                <mat-label>{{ emailLabel }}</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="emailAddress"
+                    name="emailAddress"
+                    required
+                    [ngClass]="
+                        contactUsForm.controls['emailAddress'].errors &&
+                        isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                />
+                <mat-error
+                    *ngIf="
+                        contactUsForm.controls['emailAddress'].hasError(
+                            'required'
+                        ) && isSubmitted
+                    "
+                >
+                    {{ emailRequiredErrorMessage }}
+                </mat-error>
+                <mat-error
+                    *ngIf="
+                        contactUsForm.controls['emailAddress'].hasError(
+                            'emailAddress'
+                        ) &&
+                        !contactUsForm.controls['emailAddress'].hasError(
+                            'required'
+                        ) &&
+                        isSubmitted
+                    "
+                >
+                    {{ emailInvalidErrorMessage }}
+                </mat-error>
+            </mat-form-field>
+            <mat-list class="contact-us-form__form-field cell small-12">
+                <span mat-subheader class="faux-label">{{
+                    preferredContactLabel
+                }}</span>
+                <mat-radio-group
+                    class="cell small-12"
+                    formControlName="preferredContactMethod"
+                    name="preferredContactMethod"
+                >
+                    <ng-container *ngFor="let radioItem of contactMethods">
+                        <mat-radio-button
+                            [value]="radioItem.toLocaleLowerCase()"
+                        >
+                            <span>
+                                {{ radioItem }}
+                            </span>
+                        </mat-radio-button>
+                    </ng-container>
+                </mat-radio-group>
+            </mat-list>
+            <mat-form-field class="cell small-12 contact-us-form__form-field">
+                <mat-label>{{ subjectLabel }}</mat-label>
+                <mat-select
+                    placeholder="Select a Subject"
+                    required
+                    formControlName="businessEmailAddress"
+                    name="businessEmailAddress"
+                    class="contact-us-form__select cell small-6"
+                >
+                    <mat-option
+                        *ngFor="let option of subjectOptions"
+                        value="{{ option.value }}"
+                        >{{ option.key }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="cell small-12 contact-us-form__form-field">
+                <mat-label>{{ questionLabel }}</mat-label>
+                <textarea
+                    matInput
+                    formControlName="questions"
+                    name="questions"
+                    [ngClass]="
+                        contactUsForm.controls['questions'].hasError(
+                            'required'
+                        ) && isSubmitted
+                            ? 'error'
+                            : ''
+                    "
+                    rows="9"
+                ></textarea>
+            </mat-form-field>
+            <div class="contact-us-form__btn-wrap cell">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    type="submit"
+                    [ngClass]="{ loading: isSubmitting }"
+                >
+                    <ng-container *ngIf="!isSubmitting; else submitting">
+                        {{ submitText }}
+                    </ng-container>
+                    <ng-template #submitting>
+                        <span class="show-for-sr">{{
+                            'Loading' | translations: 'loading'
+                        }}</span>
+                        <mat-progress-spinner
+                            mode="indeterminate"
+                            [diameter]="26"
+                        ></mat-progress-spinner>
+                    </ng-template>
+                </button>
+                <button
+                    mat-button
+                    color="primary"
+                    type="reset"
+                    class="underline"
+                    (click)="resetForm()"
+                >
+                    {{ clearFormText }}
+                </button>
+            </div>
+            <p
+                *ngIf="isSubmitted && success"
+                class="contact-us-form__success-message cell"
+            >
+                {{ 'Request Submitted' | translations: 'request-submitted' }}
+            </p>
+        </form>
+    </div>
+</div>
+
+<form
+    #hiddenContactUsForm
+    action="https://go.becn.com/l/269902/2021-08-30/p87wp"
+    method="post"
+>
+    <input type="hidden" name="firstName" value="" />
+    <input type="hidden" name="lastName" value="" />
+    <input type="hidden" name="company" value="" />
+    <input type="hidden" name="role" value="" />
+    <input type="hidden" name="zip" value="" />
+    <input type="hidden" name="phone" value="" />
+    <input type="hidden" name="emailAddress" value="" />
+    <input type="hidden" name="preferredContactMethod" value="" />
+    <input type="hidden" name="questions" value="" />
+    <input type="hidden" name="subject" value="" />
+</form>

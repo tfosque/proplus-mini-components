@@ -1,0 +1,36 @@
+<mat-card>
+  <div>
+    <mat-panel-description>
+      <div class="grid-x grid-margin-x">
+        <div class="cell medium-shrink"><mat-icon>reorder</mat-icon></div>
+        <div class="cell medium-2">
+          <img [src]="createImageUrl()" [alt]="element.itemNumber">
+        </div>
+        <div class="cell medium-5">{{element.itemOrProductDescription}}</div>
+        <div class="cell medium-2">{{element.unitPrice | currency}} / {{element.unitOfMeasure}}</div>
+        <div class="cell medium-shrink"><input type="number" [value]="element.quantity" style="width: 100px"></div>
+        <div class="cell medium-shrink"><mat-icon>delete</mat-icon></div>
+        <!--  -->
+        <div class="cell medium-3" *ngFor="let v of allVariationTypes; let i = index">
+          <mat-form-field appearance="standard">
+            <mat-label>{{v}}</mat-label>
+            <mat-select [(value)]="selected" *ngFor="let var of variations[v]">
+              <!--  <mat-option>None</mat-option> -->
+              <mat-option value="option1"></mat-option>
+              <mat-option value="option2">Option 2</mat-option>
+              <mat-option value="option3">Option 3</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-panel-description>
+  </div>
+  <!--   <div class="grid-x grid-margin-x">   
+  </div> -->
+</mat-card>
+
+<!-- mat-datepicker #picker></mat-datepicker> -->
+<!--   <mat-action-row>
+    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+    <button mat-button color="primary" (click)="nextStep()">End</button>
+  </mat-action-row> -->

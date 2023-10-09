@@ -1,0 +1,12 @@
+<input
+    #qty
+    [class]="className"
+    type="number"
+    [value]="currentValue"
+    (input)="onInput($event)"
+    (keypress)="keyPress($event, qty.value)"
+    (keyup)="keyPress($event, qty.value)"
+    [size]="size"
+    (blur)="update($event, qty.value)"
+    [disabled]="!editMode"
+/>

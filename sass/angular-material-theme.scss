@@ -1,0 +1,25 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// define 3 theme color
+// mat-palette accepts $palette-name, main, lighter and darker variants
+$beacon-theme-primary: mat-palette($mat-indigo, 700, 300, 900);
+$beacon-theme-accent: mat-palette($mat-light-blue);
+$beacon-theme-warn: mat-palette($mat-deep-orange, A200);
+
+// create theme (use mat-dark-theme for themes with dark backgrounds)
+$beacon-theme: mat-light-theme(
+    $beacon-theme-primary,
+    $beacon-theme-accent,
+    $beacon-theme-warn
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($beacon-theme);

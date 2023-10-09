@@ -1,0 +1,9 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.callout {
+    @include contentButtonContainer();
+    img {
+        width: 100%;
+    }
+}

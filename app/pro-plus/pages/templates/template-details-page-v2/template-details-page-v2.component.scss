@@ -1,0 +1,254 @@
+table {
+  width: 100%;
+}
+
+#loading-table {
+  .mat-column-select {
+    width: 4%
+  }
+
+  .mat-column-product {
+    width: 7%;
+    padding: 8px 0;
+  }
+
+  .mat-column-details {
+    width: 34%
+  }
+
+  .mat-column-price {
+    width: 6%
+  }
+
+  .mat-column-del {
+    width: 4%
+  }
+}
+
+
+h4 {
+  color: #025f9e;
+  text-transform: capitalize;
+  font-size: .95rem;
+}
+
+.mat-raised-button.mat-primary {
+  background: #025f9e;
+}
+
+.mat-raised-button {
+  text-transform: uppercase;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+li.list-group-item {
+  cursor: pointer;
+}
+
+/* DRAG and drop */
+::ng-deep .cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-family: Roboto;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  height: 48px;
+  background-color: white;
+  display: table;
+}
+
+/* ::ng-deep .cdk-drag-preview td {
+  flex-grow: 2;
+  font-size: 14px;
+  padding: 4px;
+  vertical-align: middle;
+} */
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+::ng-deep {
+  .cdk-drag-placeholder {
+    background-color: #a1a1a1;
+    border: dashed 10px #f60303;
+  }
+}
+
+/* ::ng-deep .drop-placeholder {
+  background: #7a6d6d;
+  border: dotted 4px #f8f6f6;  
+  min-height: 200px;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+} */
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #025f9e;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+td[mat-footer-cell] {
+  font-weight: bold;
+}
+
+.footer-container {
+  height: 270px;
+  overflow: auto;
+}
+
+/* tr:mousedown {
+  cursor: grabbing;
+} */
+
+::ng-deep {
+  /* .mat-column-qty {
+  width: 5%
+} */
+  /* .mat-row {
+    background: pink;
+  } */
+
+  .mat-column-price {
+    width: 4px;
+  }
+
+  .mat-select {
+    // background: red;
+    height: 48px;
+  }
+
+  .mat-form-field {
+    height: 48px;
+    padding: 0;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    height: 48px;
+  }
+
+}
+
+.table-headers {
+  div div.cell {
+    font-weight: bold;
+  }
+}
+
+// TODO 
+div.cell span.skeleton-loader-background {
+  height: 12px;
+  margin: 4px 0;
+  display: block;
+  background: #d0cfcf;
+  display: block;
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 80%),
+    lightgray;
+  background-repeat: repeat-y;
+  background-size: 50px 200px;
+  background-position: 0 0;
+  animation: shine 1s infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 100% 0,
+      /* move highlight to right */
+      0 0;
+  }
+}
+
+.width-w9 {
+  width: 90%
+}
+
+.width-w8 {
+  width: 80%
+}
+
+.width-w7 {
+  width: 70%
+}
+
+.width-w6 {
+  width: 60%
+}
+
+.width-w5 {
+  width: 50%
+}
+
+.width-w4 {
+  width: 40%
+}
+
+.width-w2 {
+  width: 20%
+}
+
+// Variation input fields
+::ng-deep div.proplus-page .mat-form-field-appearance-legacy .mat-form-field-infix {
+  width: 155px;
+}
+
+::ng-deep div.proplus-page .mat-form-field-appearance-legacy .mat-form-field-infix #tempName {
+  padding: 10px;
+}
+
+.header-container .mat-form-field+.mat-form-field {
+  margin-left: 8px;
+}
+
+::ng-deep #header-info div {
+  .mat-form-field {
+    padding: 0 0 15px 15px;
+    height: 48px;
+    width: 100%;
+  }
+
+  .mat-form-field.select-job {
+    padding: 0px;
+    margin-top: -21px;
+  }
+}
+
+div.cell.floating-buttons.ng-star-inserted>div.cell>div,
+div:nth-child(2),
+div:nth-child(3),
+div:nth-child(4),
+div:nth-child(5) {
+  padding-top: 2px;
+}
+
+.divider {
+  margin: 10px 5px 0px 5px;
+}
+
+div#show-hide-buttons {
+  justify-content: center;
+
+  button[mat-raised-button] {
+    font-size: .775rem !important;
+    margin: 10px 8px;
+  }
+}
+
+::ng-deep .drag {
+  cursor: grabbing !important;
+}
+
+::ng-deep .dragDefault {
+  cursor: grab !important;
+}

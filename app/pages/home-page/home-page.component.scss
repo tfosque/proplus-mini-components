@@ -1,0 +1,31 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+@mixin proxima-bold($size) {
+    @include proxima-nova-bold();
+    font-size: rem-calc($size);
+}
+
+.something-for-everyone {
+    background-color: #025f9e;
+    margin-top: 50px;
+    padding-bottom: 30px;
+    text-align: center;
+
+    &__title {
+        @include proxima-bold(28px);
+        color: #ffffff;
+        text-align: center;
+        padding-top: rem-calc(50px);
+    }
+
+    &__text {
+        color: #ffffff;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    &__image {
+        padding: rem-calc(0px);
+    }
+}

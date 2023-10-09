@@ -1,0 +1,1715 @@
+<div class="loading-container" *ngIf="showProgress">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div>
+    <div class="show-for-medium">
+        <div class="grid-x grid-margin-x">
+            <div class="cell auto">
+                <h1 style="margin-bottom: 0px">{{ title }}</h1>
+            </div>
+
+            <div class="cell shrink" style="text-align: right" *ngIf="!isOpen">
+                <button
+                    mat-raised-button
+                    color="secondary"
+                    [matMenuTriggerFor]="downLoadMenu"
+                >
+                    Download As
+                </button>
+                <mat-menu #downLoadMenu="matMenu">
+                    <!-- <button mat-menu-item (click)="console.log('doc')">doc</button> -->
+                    <button mat-menu-item [matMenuTriggerFor]="excel">
+                        Excel
+                    </button>
+                    <button mat-menu-item [matMenuTriggerFor]="pdf">PDF</button>
+                    <!-- <button mat-menu-item (click)="console.log('txt')">txt</button> -->
+                </mat-menu>
+                <mat-menu #excel="matMenu">
+                    <button
+                        mat-menu-item
+                        (click)="openQuoteId(true, 'excel')"
+                        *ngIf="!isInProgress && !isAccountClosed"
+                    >
+                        With Price
+                    </button>
+                    <button mat-menu-item (click)="openQuoteId(false, 'excel')">
+                        Without Price
+                    </button>
+                </mat-menu>
+                <mat-menu #pdf="matMenu">
+                    <button
+                        mat-menu-item
+                        (click)="openQuoteId(true, 'pdf')"
+                        *ngIf="!isAccountClosed && !isInProgress"
+                    >
+                        With Price
+                    </button>
+                    <button mat-menu-item (click)="openQuoteId(false, 'pdf')">
+                        Without Price
+                    </button>
+                </mat-menu>
+                <span>&nbsp;</span>
+                <button
+                    *ngIf="
+                        quote.status === 'CUSTOMER_REVIEW' ||
+                        quote.status === 'ACCEPTED' ||
+                        quote.status === 'REJECT' ||
+                        quote.status === 'ORDERED'
+                    "
+                    mat-button
+                    color="primary"
+                    (click)="viewSubmittedReq()"
+                >
+                    View Submitted Request
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="show-for-small-only">
+        <div class="cell">
+            <h1 style="margin-bottom: 0px">{{ title }}</h1>
+        </div>
+
+        <div class="button-bar" *ngIf="!isOpen">
+            <button
+                mat-raised-button
+                color="secondary"
+                [matMenuTriggerFor]="downLoadMenu"
+            >
+                Download As
+            </button>
+            <mat-menu #downLoadMenu="matMenu">
+                <!-- <button mat-menu-item (click)="console.log('doc')">doc</button> -->
+                <button mat-menu-item [matMenuTriggerFor]="excelMobile">
+                    Excel
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="pdfMobile">
+                    PDF
+                </button>
+                <!-- <button mat-menu-item (click)="console.log('txt')">txt</button> -->
+            </mat-menu>
+            <mat-menu #excelMobile="matMenu">
+                <button
+                    mat-menu-item
+                    (click)="openQuoteId(true, 'excel')"
+                    *ngIf="!isInProgress"
+                >
+                    With Price
+                </button>
+                <button mat-menu-item (click)="openQuoteId(false, 'excel')">
+                    Without Price
+                </button>
+            </mat-menu>
+            <mat-menu #pdfMobile="matMenu">
+                <button
+                    mat-menu-item
+                    (click)="openQuoteId(true, 'pdf')"
+                    *ngIf="!isInProgress"
+                >
+                    With Price
+                </button>
+                <button mat-menu-item (click)="openQuoteId(false, 'pdf')">
+                    Without Price
+                </button>
+            </mat-menu>
+            <span>&nbsp;</span>
+            <button
+                *ngIf="
+                    quote.status === 'CUSTOMER_REVIEW' ||
+                    quote.status === 'ACCEPTED' ||
+                    quote.status === 'REJECT' ||
+                    quote.status === 'ORDERED'
+                "
+                mat-button
+                color="primary"
+                (click)="viewSubmittedReq()"
+            >
+                View Submitted Request
+            </button>
+        </div>
+    </div>
+
+    <div class="cell medium-3" *ngIf="quoteExpires" style="color: #025f9e">
+        This quote will expire on {{ quoteExpires }}.
+    </div>
+
+    <mat-divider class="divider"></mat-divider>
+    <!-- Quote name -->
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    matInput
+                    placeholder="Quote Name"
+                    maxlength="25"
+                    [(ngModel)]="quote.quoteName"
+                    [formControl]="quoteFormControl"
+                    [errorStateMatcher]="matcher"
+                    [readonly]="!isOpen"
+                    required
+                />
+                <mat-error *ngIf="quoteFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="cell medium-1 large-1"></div>
+        <!-- work type -->
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <mat-select
+                    [disabled]="!isOpen"
+                    placeholder="Work Type"
+                    [(ngModel)]="quote.workType"
+                    [formControl]="workFormControl"
+                    [errorStateMatcher]="matcher"
+                    required
+                >
+                    <mat-option [value]="'N'"> New Construction </mat-option>
+                    <mat-option [value]="'R'"> Remodel </mat-option>
+                </mat-select>
+                <mat-error *ngIf="workFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- created -->
+    <div *ngIf="quote.status !== ''" class="grid-x">
+        <div class="cell medium-5 large-5 override-mat-form-field-infix">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    placeholder="Created"
+                    matInput
+                    value=""
+                    [(ngModel)]="quote.created"
+                    [readonly]="true"
+                />
+                by
+                {{ quote.createdBy }}
+            </mat-form-field>
+        </div>
+        <div class="cell medium-1 large-1"></div>
+        <!-- last modified -->
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    [readonly]="!isOpen"
+                    placeholder="Last Modified"
+                    matInput
+                    value=""
+                    [(ngModel)]="quote.lastModified"
+                    [readonly]="true"
+                />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- address 1 -->
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    placeholder="Address 1"
+                    maxlength="40"
+                    matInput
+                    value=""
+                    [(ngModel)]="quote.address1"
+                    [readonly]="!isOpen"
+                />
+            </mat-form-field>
+        </div>
+        <div class="cell medium-1 large-1"></div>
+        <!-- address 2 -->
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    placeholder="Address 2"
+                    maxlength="40"
+                    matInput
+                    value=""
+                    [readonly]="!isOpen"
+                    [(ngModel)]="quote.address2"
+                />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- city -->
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    matInput
+                    placeholder="City"
+                    maxlength="20"
+                    [formControl]="cityFormControl"
+                    [errorStateMatcher]="matcher"
+                    [(ngModel)]="quote.city"
+                    name="city"
+                    [readonly]="!isOpen"
+                    required
+                />
+                <mat-error *ngIf="cityFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="cell medium-1 large-1"></div>
+        <!-- State -->
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <mat-select
+                    [disabled]="!isOpen"
+                    placeholder="State"
+                    [(ngModel)]="quote.state"
+                    [formControl]="stateFormControl"
+                    [errorStateMatcher]="matcher"
+                    required
+                >
+                    <mat-option
+                        *ngFor="let state of states"
+                        [value]="state.value"
+                    >
+                        {{ state.value }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="stateFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- phone -->
+    <div class="grid-x">
+        <div class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    [readonly]="!isOpen"
+                    matInput
+                    placeholder="Phone Number"
+                    (keyup)="quote.phone = formatPhone(quote.phone)"
+                    [formControl]="phoneFormControl"
+                    [errorStateMatcher]="matcher"
+                    minlength="10"
+                    maxlength="12"
+                    placeholder="Phone Number"
+                    [(ngModel)]="quote.phone"
+                    required
+                />
+                <!-- <input matInput (keyup)='addDash()' minlength="10" maxlength="12" [formControl]="phone"
+          [errorStateMatcher]="matcher" required> -->
+                <mat-error *ngIf="phoneFormControl.hasError('required')">
+                    This field is required
+                </mat-error>
+                <mat-error *ngIf="phoneFormControl.hasError('pattern')">
+                    Only numerical values allowed
+                </mat-error>
+                <mat-error *ngIf="phoneFormControl.hasError('minlength')">
+                    Must be 10 digits
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="cell medium-1 large-1"></div>
+        <!-- job -->
+        <div *ngIf="jobs?.jobs?.length" class="cell medium-5 large-5">
+            <ng-container *ngIf="!quote.jobAccount">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <input
+                        matInput
+                        placeholder="Job"
+                        maxlength="25"
+                        [(ngModel)]="quote.jobAccount"
+                        [formControl]="jobFormControl"
+                        [errorStateMatcher]="matcher"
+                        [readonly]="!isOpen"
+                        required
+                    />
+                    <mat-error *ngIf="quoteFormControl.hasError('required')">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="quote.jobAccount">
+                <mat-form-field
+                    class="full-width"
+                    floatLabel="auto"
+                    placeholder="Job"
+                >
+                    <mat-select
+                        [disabled]="!isOpen"
+                        placeholder="Job"
+                        [(ngModel)]="quote.jobAccount.jobNumber"
+                        [formControl]="jobFormControl"
+                        [errorStateMatcher]="matcher"
+                        required
+                    >
+                        <mat-option
+                            *ngFor="let job of jobs?.jobs"
+                            [value]="job.jobNumber"
+                        >
+                            {{ job.jobName }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="jobFormControl.hasError('required')">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+            </ng-container>
+        </div>
+        <div *ngIf="!jobs?.jobs?.length" class="cell medium-5 large-5">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    [readonly]="!isOpen"
+                    matInput
+                    placeholder="Job Name"
+                    maxlength="15"
+                    [(ngModel)]="quote.jobAccount.jobName"
+                />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Add Product Button -->
+    <div class="show-for-medium">
+        <div class="grid-x">
+            <div class="cell small-6" *ngIf="quote.status === '' || isOpen">
+                <app-product-selector
+                    [accountId]="accountId"
+                    (productAdded)="addProduct($event)"
+                >
+                </app-product-selector>
+            </div>
+            <div class="cell small-6" *ngIf="quote.status === '' || isOpen">
+                <button
+                    [color]="isAccountClosed ? 'disabled' : 'emphasis'"
+                    mat-raised-button
+                    (click)="openDialog()"
+                    [disabled]="isAccountClosed"
+                >
+                    Add Custom Item
+                </button>
+            </div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="show-for-small-only">
+        <div class="button-bar">
+            <div *ngIf="quote.status === '' || isOpen">
+                <app-product-selector
+                    [accountId]="accountId"
+                    (productAdded)="addProduct($event)"
+                >
+                </app-product-selector>
+            </div>
+            <div *ngIf="quote.status === '' || isOpen">
+                <button
+                    color="emphasis"
+                    mat-raised-button
+                    (click)="openDialog()"
+                    [disabled]="isAccountClosed"
+                >
+                    Add Custom Item
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div
+        *ngIf="
+            (!isOpen && quote.status === 'INPROGRESS') ||
+            quote.status === 'REVISED'
+        "
+    >
+        <p>
+            Your quote is currently being processed by Branch Manager. Please
+            contact
+            {{ getAccountNumber }} for assistance.
+            <br />
+            <small style="color: #025f9e"
+                >This quote will expire on {{ quoteExpires }}</small
+            >
+        </p>
+    </div>
+
+    <!-- PRODUCT TABLE -->
+
+    <div class="show-for-medium">
+        <table mat-table [dataSource]="dataSource" class="full-width">
+            <!-- PRODUCT -->
+            <ng-container matColumnDef="product">
+                <!-- HEADER -->
+                <th mat-header-cell *matHeaderCellDef>Product</th>
+
+                <!-- CONTENT -->
+                <td class="img" mat-cell *matCellDef="let element">
+                    <img
+                        appImagePreload
+                        class="img-prod"
+                        src="https://beaconproplus.com/{{ element.imageURL }}"
+                        alt=""
+                        default="{{
+                            element.imageOnErrorUrl
+                                | errorImage
+                                    : '/assets/images/image-not-available.svg'
+                        }}"
+                    />
+                </td>
+            </ng-container>
+
+            <!-- DETAIL -->
+            <ng-container matColumnDef="detail">
+                <!-- HEADER -->
+                <div class="detail">
+                    <th mat-header-cell *matHeaderCellDef>Detail</th>
+                </div>
+
+                <!-- CONTENT -->
+                <td class="detail" mat-cell *matCellDef="let element">
+                    <div class="detail">
+                        <a
+                            *ngIf="element.productId; else noLink"
+                            [routerLink]="getProdUrl(element)"
+                            target="_blank"
+                            >{{ element.displayName | safeHtml }}</a
+                        >
+                    </div>
+                    <ng-template #noLink>
+                        {{ element.displayName | safeHtml }}
+                    </ng-template>
+                    <div class="detail">
+                        <span class="spanOrder">Item #: </span>
+                        {{ element.itemNumber }}
+                        <span class="spanOrder">Product Number:</span
+                        >{{ element.productNumber }}
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- QUANTITY -->
+            <ng-container matColumnDef="qty">
+                <!-- HEADER -->
+                <th mat-header-cell *matHeaderCellDef>Qty</th>
+
+                <!-- CONTENT -->
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngIf="!isEditing; else edit">
+                        <span>{{ element.quantity }}</span>
+                    </ng-container>
+
+                    <ng-template #edit>
+                        <app-numeric-input
+                            [className]="'editInput'"
+                            [min]="0"
+                            [max]="99999"
+                            [(currentValue)]="element.quantity"
+                        >
+                            <!-- (onChange)="updateQuantity(element)"
+                            (menuClosed)="updateQuantity(element)" -->
+                        </app-numeric-input>
+                    </ng-template>
+                </td>
+            </ng-container>
+
+            <!-- UNIT -->
+            <ng-container matColumnDef="unit">
+                <!-- HEADER FOR DRAFT & IN PROGRESS -->
+                <th mat-header-cell *matHeaderCellDef>
+                    <span>Unit</span>
+                    <span
+                        *ngIf="
+                            quote.status === 'ACCEPTED' ||
+                            quote.status === 'REJECT' ||
+                            quote.status === 'SUBMITTED'
+                        "
+                    >
+                        Price</span
+                    >
+                </th>
+
+                <!-- CONTENT FOR DRAFT & IN PROGRESS -->
+                <td class="uom" mat-cell *matCellDef="let element">
+                    <div
+                        *ngIf="
+                            quote.status === 'OPEN' ||
+                            quote.status === 'INPROGRESS' ||
+                            quote.status === ''
+                        "
+                    >
+                        {{ element.unitOfMeasure }}
+                    </div>
+                    <div
+                        *ngIf="
+                            quote.status === 'ACCEPTED' ||
+                            quote.status === 'REJECT' ||
+                            quote.status === 'REVISED' ||
+                            quote.status === 'CUSTOMER_REVIEW' ||
+                            quote.status === 'SUBMITTED'
+                        "
+                    >
+                        <div
+                            *ngIf="
+                                element.unitPrice !== 0 ||
+                                    element.atgItemNetPrice > 0;
+                                else noPrice
+                            "
+                        >
+                            {{
+                                element.atgItemNetPrice || element.unitPrice
+                                    | currency
+                            }}
+                        </div>
+                        <ng-template #noPrice>
+                            Price calculated at invoicing
+                        </ng-template>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-template #noPrice>
+                <span>Price calculated at invoicing</span>
+            </ng-template>
+
+            <!-- ACTION OR SUBTOTAL -->
+            <ng-container matColumnDef="action">
+                <!-- HEADER REVIEWED -->
+                <div *ngIf="finalStatesQuote">
+                    <th mat-header-cell *matHeaderCellDef>SubTotal</th>
+                </div>
+
+                <!-- HEADER DRAFT & PROGRESS -->
+                <div
+                    *ngIf="
+                        quote.status === '' ||
+                        quote.status === 'OPEN' ||
+                        quote.status === 'INPROGRESS'
+                    "
+                >
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                </div>
+
+                <!-- CONTENT -->
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="finalStatesQuote">
+                        <div
+                            *ngIf="
+                                element.unitPrice !== 0 ||
+                                    element.atgItemNetPrice > 0;
+                                else noPrice
+                            "
+                        >
+                            {{
+                                (element.quantity *
+                                    (element.atgItemNetPrice ||
+                                        element.unitPrice) | currency) ||
+                                    'Price calculated at invoicing'
+                            }}
+                        </div>
+                        <ng-template #noPrice>
+                            Price calculated at invoicing
+                        </ng-template>
+                    </div>
+                    <div *ngIf="quote.status === 'OPEN' || quote.status === ''">
+                        <div>
+                            <a (click)="editElement()">
+                                <mat-icon class="icon">edit</mat-icon>
+                            </a>
+                        </div>
+                        <div>
+                            <a
+                                href="javascript:void(0);"
+                                (click)="deleteProduct(element)"
+                            >
+                                <mat-icon class="icon">delete</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </div>
+
+    <!-- Mobile view -->
+    <div class="show-for-small-only table-top-border">
+        <ng-container *ngFor="let element of dataSource.data">
+            <div class="grid-x grid-margin-x table-row">
+                <!-- PRODUCT -->
+
+                <!-- NO HEADER -->
+
+                <!-- CONTENT -->
+                <div class="cell small-2 td-margin">
+                    <img
+                        appImagePreload
+                        class="img-prod"
+                        src="https://beaconproplus.com/{{ element.imageURL }}"
+                        alt=""
+                        default="{{
+                            element.imageOnErrorUrl
+                                | errorImage
+                                    : '/assets/images/image-not-available.svg'
+                        }}"
+                    />
+                </div>
+
+                <!-- DETAIL -->
+
+                <!-- NO HEADER -->
+
+                <!-- CONTENT -->
+                <div class="small-10 mat-cell td-margin">
+                    <div>
+                        <a
+                            target="_blank"
+                            *ngIf="element.productId; else noLink"
+                            [routerLink]="getProdUrl(element)"
+                            >{{ element.displayName | safeHtml }}</a
+                        >
+                    </div>
+                    <ng-template #noLink>
+                        {{ element.displayName | safeHtml }}
+                    </ng-template>
+                    <div>
+                        <span class="spanOrder">Item #: </span>
+                        {{ element.itemNumber }}
+                    </div>
+                    <div>
+                        <span class="spanOrder">Product Number:</span
+                        >{{ element.productNumber }}
+                    </div>
+
+                    <!-- UNIT -->
+                    <div
+                        *ngIf="
+                            quote.status === 'OPEN' ||
+                            quote.status === 'INPROGRESS' ||
+                            quote.status === ''
+                        "
+                    >
+                        <span class="spanOrder">Unit </span
+                        >{{ element.unitOfMeasure }}
+                    </div>
+                    <div
+                        *ngIf="
+                            quote.status === 'ACCEPTED' ||
+                            quote.status === 'REJECT' ||
+                            quote.status === 'REVISED' ||
+                            quote.status === 'CUSTOMER_REVIEW' ||
+                            quote.status === 'SUBMITTED'
+                        "
+                    >
+                        <div
+                            *ngIf="
+                                element.unitPrice !== 0 ||
+                                    element.itemTotalPrice > 0;
+                                else noPrice
+                            "
+                        >
+                            <span class="spanOrder">Unit Price</span
+                            >{{
+                                element.unitPrice || element.itemTotalPrice
+                                    | currency
+                            }}
+                            /
+                            {{ element.unitOfMeasure }}
+                        </div>
+                        <ng-template #noPrice>
+                            Price calculated at invoicing
+                        </ng-template>
+                    </div>
+
+                    <!-- QUANTITY -->
+                    <div class="grid-x">
+                        <div class="small-8">
+                            <ng-container *ngIf="!isEditing; else edit">
+                                <div>
+                                    <span class="spanOrder">Qty </span
+                                    ><span>{{ element.quantity }}</span>
+                                </div>
+                            </ng-container>
+
+                            <ng-template #edit>
+                                <div>
+                                    <span class="spanOrder">Qty </span>
+                                    <app-numeric-input
+                                        [className]="'editInput'"
+                                        [min]="1"
+                                        [max]="99999"
+                                        [(currentValue)]="element.quantity"
+                                    >
+                                    </app-numeric-input>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div
+                            class="small-4"
+                            *ngIf="
+                                quote.status === 'OPEN' || quote.status === ''
+                            "
+                        >
+                            <div style="text-align: right">
+                                <a (click)="editElement()">
+                                    <mat-icon class="icon">edit</mat-icon>
+                                </a>
+                                &nbsp;&nbsp;
+                                <a
+                                    href="javascript:void(0);"
+                                    (click)="deleteProduct(element)"
+                                >
+                                    <mat-icon class="icon">delete</mat-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTION OR SUBTOTAL -->
+                    <div *ngIf="finalStatesQuote">
+                        <div
+                            *ngIf="
+                                element.unitPrice !== 0 ||
+                                    element.itemTotalPrice > 0;
+                                else noPrice
+                            "
+                        >
+                            <span class="spanOrder">SubTotal </span>
+                            {{
+                                (element.quantity * element.unitPrice
+                                    | currency) ||
+                                    'Price calculated at invoicing'
+                            }}
+                        </div>
+                        <ng-template #noPrice>
+                            Price calculated at invoicing
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="list-title" *ngIf="quote.addtionalQuoteItems.length !== 0">
+        <div>
+            <span class="spanOrder">Additional Items:</span>
+        </div>
+
+        <table class="add-table" mat-table [dataSource]="dataSourceAddItmes">
+            <ng-container matColumnDef="detail">
+                <!-- HEADER -->
+                <div class="detail-add">
+                    <th mat-header-cell *matHeaderCellDef>Detail</th>
+                </div>
+                <td class="detail-add" mat-cell *matCellDef="let element">
+                    <div class="request-detail">
+                        <a
+                            target="_blank"
+                            *ngIf="element.productId; else noLink"
+                            [routerLink]="getProdUrl(element)"
+                            >{{ element.displayName | safeHtml }}</a
+                        >
+                    </div>
+                    <ng-template #noLink>
+                        {{ element.displayName | safeHtml }}
+                    </ng-template>
+                </td>
+            </ng-container>
+
+            <!-- QUANTITY -->
+            <ng-container matColumnDef="qty">
+                <!-- HEADER -->
+                <th mat-header-cell *matHeaderCellDef class="detail-qty">
+                    Qty
+                </th>
+
+                <!-- CONTENT -->
+                <td mat-cell *matCellDef="let element" class="detail-qty">
+                    <ng-container *ngIf="!isEditing; else edit">
+                        <div>{{ element.quantity }}</div>
+                    </ng-container>
+
+                    <ng-template #edit>
+                        <div>
+                            <app-numeric-input
+                                [className]="'editInput'"
+                                [min]="1"
+                                [max]="99999"
+                                [(currentValue)]="element.quantity"
+                            >
+                            </app-numeric-input>
+                        </div>
+                    </ng-template>
+                </td>
+            </ng-container>
+
+            <!-- UNIT -->
+            <div *ngIf="quote.status === 'OPEN' || quote.status === ''">
+                <ng-container matColumnDef="unit">
+                    <div>
+                        <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    </div>
+
+                    <td class="uom" mat-cell *matCellDef="let element">
+                        <div>
+                            <a (click)="editElement()">
+                                <mat-icon class="icon">edit</mat-icon>
+                            </a>
+                        </div>
+                        <div>
+                            <a
+                                href="javascript:void(0);"
+                                (click)="deleteProduct(element)"
+                            >
+                                <mat-icon class="icon">delete</mat-icon>
+                            </a>
+                        </div>
+                    </td>
+                </ng-container>
+            </div>
+            <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumnsAdditionalItems"
+            ></tr>
+            <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumnsAdditionalItems"
+            ></tr>
+        </table>
+    </div>
+
+    <div>
+        <mat-form-field
+            floatLabel="auto"
+            class="full-width"
+            style="margin-top: 4%"
+        >
+            <textarea
+                [readonly]="!isOpen"
+                matInput
+                placeholder="Quote Notes"
+                [(ngModel)]="quote.quoteNote"
+            ></textarea>
+        </mat-form-field>
+    </div>
+
+    <div class="grid-x">
+        <div class="small-1"></div>
+
+        <div
+            class="small-11"
+            *ngIf="
+                quote.status === 'ACCEPTED' ||
+                quote.status === 'REJECT' ||
+                quote.status === 'CUSTOMER_REVIEW' ||
+                quote.status === 'SUBMITTED' ||
+                quote.status === 'ORDERED'
+            "
+        >
+            <div class="show-for-medium">
+                <div class="total" *ngIf="validSummary; else invoicing">
+                    <table
+                        mat-table
+                        [dataSource]="orderTotalDataSource"
+                        class="full-width"
+                    >
+                        <ng-container matColumnDef="orderSummary">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <h3>SUMMARY</h3>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="summary-text">Other Charges:</div>
+                                <div class="summary-text">Tax:</div>
+                                <div class="summary-text">Sub Total:</div>
+                                <div class="summary-text-total">Total:</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="empty">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="summary-value">
+                                    {{
+                                        element.otherCharges === 0
+                                            ? 'Pending'
+                                            : (element.otherCharges | currency)
+                                    }}
+                                </div>
+                                <div class="summary-value">
+                                    {{ element.tax | currency }}
+                                </div>
+                                <div
+                                    class="summary-value"
+                                    style="font-weight: bold"
+                                >
+                                    {{ element.subTotal | currency }}
+                                </div>
+                                <div style="font-weight: 800">
+                                    {{ element.total | currency }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns2"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns2"
+                        ></tr>
+                    </table>
+                </div>
+                <div *ngIf="quote.status === 'REJECT'">
+                    <h1>REJECTED</h1>
+                </div>
+                <ng-template class="total" #invoicing>
+                    <div class="grid-x">
+                        <div class="small-7"></div>
+                        <div class="small-5">
+                            <h3>Summary</h3>
+                            <p>Price will be calculated at invoicing</p>
+                            <mat-divider class="divider"></mat-divider>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="show-for-small-only">
+                <div class="total" *ngIf="validSummary; else invoicing">
+                    <table
+                        mat-table
+                        [dataSource]="orderTotalDataSource"
+                        class="full-width summary-mobile"
+                    >
+                        <ng-container matColumnDef="orderSummary">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <h3>SUMMARY</h3>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="summary-text">Other Charges:</div>
+                                <div class="summary-text">Tax:</div>
+                                <div class="summary-text">Sub Total:</div>
+                                <div class="summary-text-total">Total:</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="empty">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="summary-value">
+                                    {{
+                                        element.otherCharges === 0
+                                            ? 'Pending'
+                                            : (element.otherCharges | currency)
+                                    }}
+                                </div>
+                                <div class="summary-value">
+                                    {{ element.tax | currency }}
+                                </div>
+                                <div
+                                    class="summary-value"
+                                    style="font-weight: bold"
+                                >
+                                    {{ element.subTotal | currency }}
+                                </div>
+                                <div
+                                    class="summary-value-total"
+                                    style="font-weight: 800"
+                                >
+                                    {{ element.total | currency }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns2"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns2"
+                        ></tr>
+                    </table>
+                </div>
+                <div *ngIf="quote.status === 'REJECT'">
+                    <h1>REJECTED</h1>
+                </div>
+                <ng-template class="total" #invoicing>
+                    <div class="grid-x">
+                        <div class="small-7"></div>
+                        <div class="small-5">
+                            <h3>Summary</h3>
+                            <p>Price will be calculated at invoicing</p>
+                            <mat-divider class="divider"></mat-divider>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <div class="show-for-medium">
+        <div *ngIf="quote.status === 'OPEN' || newQuote" class="grid-x">
+            <div class="cell small-4">
+                <div *ngIf="quote.status === 'OPEN'">
+                    <button
+                        [color]="isAccountClosed ? 'disabled' : 'emphasis'"
+                        (click)="deleteQuote()"
+                        mat-raised-button
+                        [disabled]="isAccountClosed"
+                    >
+                        Delete Quote
+                    </button>
+                </div>
+                <div *ngIf="newQuote">
+                    <button
+                        color="secondary"
+                        (click)="goBack()"
+                        mat-raised-button
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            <div class="cell small-4">
+                <button
+                    [disabled]="formNotFull || isAccountClosed || isQtyZero"
+                    [color]="
+                        isAccountClosed
+                            ? 'disabled'
+                            : formNotFull
+                            ? 'secondary'
+                            : 'primary'
+                    "
+                    (click)="updateQuote()"
+                    mat-raised-button
+                >
+                    Save Quote
+                </button>
+            </div>
+            <div class="cell small-4" *ngIf="permissionToUpload">
+                <button
+                    [disabled]="formNotFull || isAccountClosed || isQtyZero"
+                    [color]="formNotFull ? 'secondary' : 'emphasis'"
+                    (click)="requestQuote()"
+                    mat-raised-button
+                >
+                    Save & Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="show-for-small-only">
+        <div *ngIf="quote.status === 'OPEN' || newQuote" class="button-bar">
+            <div *ngIf="quote.status === 'OPEN'">
+                <button
+                    [color]="isAccountClosed ? 'disabled' : 'emphasis'"
+                    (click)="deleteQuote()"
+                    mat-raised-button
+                    [disabled]="isAccountClosed"
+                >
+                    Delete Quote
+                </button>
+            </div>
+            <button
+                [disabled]="formNotFull || isQtyZero"
+                color="primary"
+                (click)="updateQuote()"
+                mat-raised-button
+            >
+                Save Quote
+            </button>
+            <div *ngIf="permissionToUpload">
+                <button
+                    [disabled]="formNotFull || isAccountClosed || isQtyZero"
+                    [color]="isAccountClosed ? 'disabled' : 'emphasis'"
+                    (click)="requestQuote()"
+                    mat-raised-button
+                >
+                    Save & Request Quote
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="show-for-medium">
+        <div
+            class="grid-x"
+            *ngIf="quote.status === 'ACCEPTED' || quote.status === 'ORDERED'"
+        >
+            <div class="cell small-4">
+                <button
+                    mat-button
+                    [color]="isAccountClosed ? 'disabled' : 'primary'"
+                    (click)="copyQuote()"
+                    [disabled]="isAccountClosed"
+                >
+                    Copy Quote
+                </button>
+            </div>
+        </div>
+        <div *ngIf="permissionToSubmit">
+            <div
+                class="grid-x"
+                *ngIf="
+                    quote.status === 'CUSTOMER_REVIEW' ||
+                    quote.status === 'SUBMITTED'
+                "
+            >
+                <div class="cell small-4">
+                    <button
+                        mat-raised-button
+                        color="secondary"
+                        (click)="rejectQuote()"
+                        [disabled]="isAccountClosed"
+                    >
+                        Reject
+                    </button>
+                </div>
+                <div class="cell small-4">
+                    <button
+                        mat-raised-button
+                        [color]="isAccountClosed ? 'disabled' : 'emphasis'"
+                        (click)="reviseQuote()"
+                        [disabled]="isAccountClosed"
+                    >
+                        Revise
+                    </button>
+                </div>
+                <div class="cell small-4">
+                    <button
+                        mat-raised-button
+                        [color]="
+                            isAccountClosed || validateExpirationDate
+                                ? 'disabled'
+                                : 'primary'
+                        "
+                        (click)="proceedToCheckout()"
+                        [disabled]="isAccountClosed || validateExpirationDate"
+                    >
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="show-for-small-only">
+        <div
+            class="button-bar"
+            *ngIf="quote.status === 'ACCEPTED' || quote.status === 'ORDERED'"
+        >
+            <div>
+                <button
+                    mat-button
+                    [color]="isAccountClosed ? 'disabled' : 'primary'"
+                    (click)="copyQuote()"
+                    [disabled]="isAccountClosed"
+                >
+                    Copy Quote
+                </button>
+            </div>
+        </div>
+        <div *ngIf="permissionToSubmit">
+            <div
+                class="button-bar"
+                *ngIf="
+                    quote.status === 'CUSTOMER_REVIEW' ||
+                    quote.status === 'SUBMITTED'
+                "
+            >
+                <div>
+                    <button
+                        mat-raised-button
+                        color="secondary"
+                        (click)="rejectQuote()"
+                        [disabled]="isAccountClosed"
+                    >
+                        Reject
+                    </button>
+                </div>
+                <div>
+                    <button
+                        mat-raised-button
+                        [color]="isAccountClosed ? 'disabled' : 'emphasis'"
+                        (click)="reviseQuote()"
+                        [disabled]="isAccountClosed"
+                    >
+                        Revise
+                    </button>
+                </div>
+                <div *ngIf="permissionToSubmit">
+                    <button
+                        mat-raised-button
+                        [color]="
+                            isAccountClosed || validateExpirationDate
+                                ? 'disabled'
+                                : 'primary'
+                        "
+                        (click)="proceedToCheckout()"
+                        [disabled]="isAccountClosed || validateExpirationDate"
+                    >
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #copyQuoteModal>
+        <div mat-dialog-title class="submitted-quote-header">Copy Quote</div>
+
+        <mat-dialog-content class="mat-dialog-content" id="mat-dialog-content">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    matInput
+                    placeholder="Quote Name"
+                    maxlength="25"
+                    [(ngModel)]="copyQuoteName"
+                    required
+                />
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <!-- Dialog Buttons -->
+        <mat-dialog-actions align="end">
+            <button mat-stroked-button mat-dialog-close>Close</button>
+            <button
+                mat-button
+                color="primary"
+                [mat-dialog-close]="true"
+                cdkFocusInitial
+                [disabled]="getQuoteName"
+                mat-dialog-close
+            >
+                Create
+            </button>
+        </mat-dialog-actions>
+    </ng-template>
+
+    <!-- View Submitted Request Dialog -->
+    <ng-template #viewSubmitReq>
+        <div mat-dialog-title class="submitted-quote-header">
+            <button
+                useExistingCss="true"
+                printTitle="Quote Detail"
+                printSectionId="mat-dialog-content"
+                ngxPrint
+                mat-stroked-button
+            >
+                Print
+            </button>
+            <h2>Quote Detail</h2>
+        </div>
+
+        <mat-dialog-content class="mat-dialog-content" id="mat-dialog-content">
+            <div
+                style="display: block; margin-bottom: 10px"
+                *ngIf="this.quote && this.quote.quoteItems"
+            >
+                <div id="quote-headers" class="grid-x">
+                    <div class="cell small-3"><b>Quote Name: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.displayName }}
+                    </div>
+                    <div class="cell small-3"><b>Phone Number: </b></div>
+                    <div class="cell small-9">
+                        {{ formatPhone(quoteDetailAtg?.quote?.phoneNumber) }}
+                    </div>
+                    <div class="cell small-3"><b>Created: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.creationDate }}
+                    </div>
+                    <div
+                        class="cell small-3"
+                        *ngIf="quoteDetailAtg?.quote?.createdUserName"
+                    ></div>
+                    <div
+                        class="cell small-9"
+                        *ngIf="quoteDetailAtg?.quote?.createdUserName"
+                    >
+                        {{ quoteDetailAtg?.quote?.createdUserName }}
+                    </div>
+                    <div class="cell small-3"><b>Last Modified: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.lastModifiedDate }}
+                    </div>
+                    <div
+                        class="cell small-3"
+                        *ngIf="
+                            quoteDetailAtg?.quote?.lastModifiedUser ||
+                            quoteDetailAtg?.quote?.lastModifiedUserEmail
+                        "
+                    ></div>
+                    <div
+                        class="cell small-9"
+                        *ngIf="
+                            quoteDetailAtg?.quote?.lastModifiedUser ||
+                            quoteDetailAtg?.quote?.lastModifiedUserEmail
+                        "
+                    >
+                        {{
+                            quoteDetailAtg?.quote?.lastModifiedUser
+                                ? quoteDetailAtg?.quote?.lastModifiedUser
+                                : quoteDetailAtg?.quote?.lastModifiedUserEmail
+                        }}
+                    </div>
+                    <div class="cell small-3"><b>Work Type: </b></div>
+                    <div class="cell small-9">
+                        {{ translateWorkType(quoteDetailAtg?.quote?.workType) }}
+                    </div>
+                    <div class="cell small-3"><b>Job Name: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.jobName }}
+                    </div>
+                    <div class="cell small-3"><b>Address 1: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.address1 }}
+                    </div>
+                    <div class="cell small-3"><b>Address 2: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.address2 }}
+                    </div>
+                    <div class="cell small-3"><b>City: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.city }}
+                    </div>
+                    <div class="cell small-3"><b>State: </b></div>
+                    <div class="cell small-9">
+                        {{ quoteDetailAtg?.quote?.state }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="dialog-divider"></div>
+
+            <!--  Dialog list of quoteItems -->
+            <div class="show-for-medium">
+                <table
+                    id="dialog-table"
+                    mat-table
+                    [dataSource]="dataSourceDialog"
+                    class="full-width"
+                >
+                    <!-- PRODUCT -->
+                    <ng-container matColumnDef="product">
+                        <!-- HEADER -->
+                        <th mat-header-cell *matHeaderCellDef>Product</th>
+
+                        <!-- CONTENT -->
+                        <td class="img" mat-cell *matCellDef="let element">
+                            <img
+                                class="img-prod"
+                                src="https://beaconproplus.com/{{
+                                    element.imageURL
+                                }}"
+                                appImagePreload
+                                default="{{
+                                    element.imageOnErrorUrl
+                                        | errorImage
+                                            : '/assets/images/image-not-available.svg'
+                                }}"
+                                alt=""
+                            />
+                        </td>
+                    </ng-container>
+
+                    <!-- DETAIL -->
+                    <ng-container matColumnDef="detail">
+                        <!-- HEADER -->
+                        <div class="detail">
+                            <th mat-header-cell *matHeaderCellDef>Detail</th>
+                        </div>
+
+                        <!-- CONTENT -->
+                        <td class="detail" mat-cell *matCellDef="let element">
+                            <div class="request-detail">
+                                <a
+                                    target="_blank"
+                                    *ngIf="element.productId; else noLink"
+                                    [routerLink]="getProdUrl(element)"
+                                    >{{ element.displayName | safeHtml }}</a
+                                >
+                            </div>
+                            <ng-template #noLink>
+                                {{ element.displayName | safeHtml }}
+                            </ng-template>
+                            <div class="request-detail">
+                                <span class="spanOrder">Item #: </span>
+                                {{ element.itemNumber }}
+                            </div>
+                            <div class="request-detail">
+                                <span class="spanOrder">Product Number:</span
+                                >{{ element.productNumber }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- QUANTITY -->
+                    <ng-container matColumnDef="qty">
+                        <!-- HEADER -->
+                        <th mat-header-cell *matHeaderCellDef>Qty</th>
+
+                        <!-- CONTENT -->
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.quantity }}
+                        </td>
+                    </ng-container>
+
+                    <!-- UNIT -->
+                    <ng-container matColumnDef="unit">
+                        <div>
+                            <th mat-header-cell *matHeaderCellDef>Unit</th>
+                        </div>
+
+                        <div>
+                            <td class="uom" mat-cell *matCellDef="let element">
+                                {{ element.unitOfMeasure }}
+                            </td>
+                        </div>
+                    </ng-container>
+
+                    <!-- DialogRows -->
+                    <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumnsRequest"
+                    ></tr>
+                    <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumnsRequest"
+                    ></tr>
+                </table>
+            </div>
+            <div class="show-for-small-only" width="100%">
+                <table
+                    id="dialog-table"
+                    mat-table
+                    [dataSource]="dataSourceDialog"
+                >
+                    <!-- PRODUCT -->
+                    <ng-container matColumnDef="product">
+                        <!-- HEADER -->
+                        <th mat-header-cell *matHeaderCellDef>Product</th>
+
+                        <!-- CONTENT -->
+                        <td class="img" mat-cell *matCellDef="let element">
+                            <img
+                                class="img-prod"
+                                src="https://beaconproplus.com/{{
+                                    element.imageURL
+                                }}"
+                                appImagePreload
+                                default="{{
+                                    element.imageOnErrorUrl
+                                        | errorImage
+                                            : '/assets/images/image-not-available.svg'
+                                }}"
+                                alt=""
+                            />
+                        </td>
+                    </ng-container>
+
+                    <!-- DETAIL -->
+                    <ng-container matColumnDef="detail">
+                        <!-- HEADER -->
+                        <div class="detail">
+                            <th mat-header-cell *matHeaderCellDef>Detail</th>
+                        </div>
+
+                        <!-- CONTENT -->
+                        <td class="detail" mat-cell *matCellDef="let element">
+                            <div class="request-detail">
+                                <a
+                                    target="_blank"
+                                    *ngIf="element.productId; else noLink"
+                                    [routerLink]="getProdUrl(element)"
+                                    >{{ element.displayName | safeHtml }}</a
+                                >
+                            </div>
+                            <ng-template #noLink>
+                                {{ element.displayName | safeHtml }}
+                            </ng-template>
+                            <div class="request-detail">
+                                <span class="spanOrder">Item #: </span>
+                                {{ element.itemNumber }}
+                            </div>
+                            <div class="request-detail">
+                                <span class="spanOrder">Product Number:</span
+                                >{{ element.productNumber }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- QUANTITY -->
+                    <ng-container matColumnDef="qty">
+                        <!-- HEADER -->
+                        <th mat-header-cell *matHeaderCellDef>Qty</th>
+
+                        <!-- CONTENT -->
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.quantity }}
+                        </td>
+                    </ng-container>
+
+                    <!-- UNIT -->
+                    <ng-container matColumnDef="unit">
+                        <div>
+                            <th mat-header-cell *matHeaderCellDef>Unit</th>
+                        </div>
+
+                        <div>
+                            <td class="uom" mat-cell *matCellDef="let element">
+                                {{ element.unitOfMeasure }}
+                            </td>
+                        </div>
+                    </ng-container>
+
+                    <!-- DialogRows -->
+                    <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumnsRequest"
+                    ></tr>
+                    <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumnsRequest"
+                    ></tr>
+                </table>
+            </div>
+
+            <!-- Dialog Addition Items  -->
+            <div
+                class="list-title"
+                *ngIf="quote.addtionalQuoteItems.length !== 0"
+            >
+                <div>
+                    <span class="spanOrder">Additional Items:</span>
+                </div>
+                <table
+                    class="add-table"
+                    mat-table
+                    [dataSource]="dataSourceAddItmes"
+                >
+                    <ng-container matColumnDef="detail">
+                        <!-- HEADER -->
+                        <div class="detail-add">
+                            <th mat-header-cell *matHeaderCellDef>Detail</th>
+                        </div>
+                        <td
+                            class="detail-add"
+                            mat-cell
+                            *matCellDef="let element"
+                        >
+                            <div class="request-detail">
+                                <a
+                                    target="_blank"
+                                    *ngIf="element.productId; else noLink"
+                                    [routerLink]="getProdUrl(element)"
+                                    >{{ element.displayName | safeHtml }}</a
+                                >
+                            </div>
+                            <ng-template #noLink>
+                                {{ element.displayName | safeHtml }}
+                            </ng-template>
+                        </td>
+                    </ng-container>
+
+                    <!-- QUANTITY -->
+                    <ng-container matColumnDef="qty">
+                        <!-- HEADER -->
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            class="detail-qty"
+                        >
+                            Qty
+                        </th>
+
+                        <!-- CONTENT -->
+                        <td
+                            mat-cell
+                            *matCellDef="let element"
+                            class="detail-qty"
+                        >
+                            <div>{{ element.quantity }}</div>
+                        </td>
+                    </ng-container>
+
+                    <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumnsAdditionalItemsDialog"
+                    ></tr>
+                    <tr
+                        mat-row
+                        *matRowDef="
+                            let row;
+                            columns: displayedColumnsAdditionalItemsDialog
+                        "
+                    ></tr>
+                </table>
+            </div>
+        </mat-dialog-content>
+
+        <!-- Dialog Buttons -->
+        <mat-dialog-actions align="end">
+            <button mat-stroked-button mat-dialog-close>Close</button>
+        </mat-dialog-actions>
+    </ng-template>
+
+    <ng-template #RejectQuote>
+        <div mat-dialog-title class="submitted-quote-header">Reject Quote</div>
+        <mat-dialog-content class="mat-dialog-content" id="mat-dialog-content">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <mat-select
+                    placeholder="Reason:"
+                    [(ngModel)]="rejectionValue"
+                    required
+                >
+                    <mat-option
+                        *ngFor="let requ of rejectionReasons"
+                        [value]="requ.key"
+                    >
+                        {{ requ.value }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <p>
+                Are you sure you want to Reject this Quote? Once rejected, a
+                quote cannot be reopened or revised.
+            </p>
+        </mat-dialog-content>
+
+        <!-- Dialog Buttons -->
+        <mat-dialog-actions align="end">
+            <button mat-stroked-button mat-dialog-close>Close</button>
+            <button
+                mat-button
+                color="primary"
+                cdkFocusInitial
+                [mat-dialog-close]="true"
+                [disabled]="getRejection"
+                mat-dialog-close
+            >
+                Submit
+            </button>
+        </mat-dialog-actions>
+    </ng-template>
+
+    <ng-template #reviseQuoteModal>
+        <div mat-dialog-title class="submitted-quote-header">Revise Quote</div>
+        <mat-dialog-content class="mat-dialog-content" id="mat-dialog-content">
+            <mat-form-field floatLabel="auto" class="full-width">
+                <textarea
+                    matInput
+                    placeholder="Quote Notes"
+                    [(ngModel)]="reviseNote"
+                ></textarea>
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <!-- Dialog Buttons -->
+        <mat-dialog-actions align="end">
+            <button mat-stroked-button mat-dialog-close>Close</button>
+            <button
+                mat-button
+                color="primary"
+                cdkFocusInitial
+                [mat-dialog-close]="true"
+                [disabled]="getRevise"
+                mat-dialog-close
+            >
+                Submit
+            </button>
+        </mat-dialog-actions>
+    </ng-template>
+</div>

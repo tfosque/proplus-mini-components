@@ -1,0 +1,78 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.breadcrumb {
+    &__nav {
+        list-style-type: none;
+        padding: 0px;
+
+        li {
+            color: $color-text-emphasis;
+            display: inline-block;
+            font-size: rem-calc(14px);
+            margin-right: rem-calc(10px);
+            display: none;
+
+            &:after {
+                content: '\e924';
+                font-family: 'icomoon';
+                font-size: rem-calc(8px);
+                display: inline-block;
+                position: relative;
+                padding-left: rem-calc(10px);
+            }
+
+            a {
+                color: $color-text-emphasis;
+                text-decoration: underline;
+            }
+
+            &:nth-last-child(2) {
+                display: inline-block;
+
+                &:after {
+                    display: none;
+                }
+
+                &:before {
+                    content: '\e925';
+                    font-family: 'icomoon';
+                    font-size: rem-calc(8px);
+                    display: inline-block;
+                    position: relative;
+                    padding-right: rem-calc(10px);
+                }
+
+                a {
+                    color: $color-text-primary;
+                }
+            }
+
+            &:last-child {
+                &:after {
+                    content: none;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .breadcrumb {
+        margin-bottom: rem-calc(12px);
+        &__nav {
+            li {
+                display: inline-block;
+                &:nth-last-child(2) {
+                    &:before {
+                        display: none;
+                    }
+
+                    &:after {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+}

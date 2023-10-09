@@ -1,0 +1,27 @@
+@import '../../../../sass/variables';
+@import '../../../../sass/mixins';
+
+template-items-container {
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+section.template-items {
+    padding-top: 15px;
+    padding-bottom: 5px;
+    border-bottom: solid thin #e6e6e6;
+}
+
+img {
+    width: 123px;
+}
+
+div.action-btns div button {
+    width: 100%;
+    margin: 10px 0px;
+}
+
+div.tbl-header {
+    color: #a3a2a2;
+    padding: 10px 0px;
+}

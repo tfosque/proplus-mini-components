@@ -1,0 +1,25 @@
+<mat-form-field class="mat-field" floatLabel="auto">
+    <!-- placeholder="Pick one" -->
+    <input
+        [placeholder]="captionVar"
+        type="text"
+        aria-label="Number"
+        matInput
+        [formControl]="myControl"
+        [matAutocomplete]="auto"
+    />
+    <mat-icon matSuffix class="arrow-icon">arrow_drop_down</mat-icon>
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option
+            *ngFor="let option of filteredOptions | async"
+            [value]="option.key"
+            [ngStyle]="{
+                color: !option.enabled
+                    ? 'rgba(0, 0, 0, 0.38)'
+                    : 'color: rgba(0, 0, 0, 0.87)'
+            }"
+        >
+            {{ option.value }}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

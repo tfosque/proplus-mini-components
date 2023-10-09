@@ -1,0 +1,86 @@
+<div class="grid-x grid-margin-x margin-header">
+    <div class="small-12 medium-12 large-12" style="text-align: center;">
+        <span class="sub-text">Select a Template</span>
+    </div>
+    <div class="small-12 medium-12 large-12">
+        <table mat-table [dataSource]="dataSource" class="full-width">
+            <!-- Radio button Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    Select
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-radio-button *ngIf="row.templateId === currentTemplateId" (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" [disabled]="true">
+                    </mat-radio-button>
+                    <mat-radio-button *ngIf="row.templateId !== currentTemplateId" (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                    </mat-radio-button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="templateName">
+                <th mat-header-cell *matHeaderCellDef>
+                    Template Name
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.templateId === currentTemplateId">{{ element.templateName }}</span>
+                    <a *ngIf="element.templateId !== currentTemplateId" (click)="openTemplateDialog(element.templateId)">{{ element.templateName }}</a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="lastModifiedDate">
+                <th mat-header-cell *matHeaderCellDef>
+                    Last Modified
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.lastModifiedDate }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="accountName">
+                <th mat-header-cell *matHeaderCellDef>Account</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.accountLegacyId }} ({{ element.accountName }})
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdByUser.lastName">
+                <th mat-header-cell *matHeaderCellDef>
+                    Created By
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.createdByUser.firstName }}
+                    {{ element.createdByUser.lastName }}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns"
+                [ngClass]="{'light-blue': even}"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [length]="templateCount" [pageSize]="10">
+        </mat-paginator>
+    </div>
+    <mat-dialog-actions class="small-12 medium-12 large-12 align-center margin-top actions">
+        <div class="padding-right">
+            <button color="emphasis" class="linked-button-text" mat-raised-button
+                [mat-dialog-close]="selection.selected[0].templateId" *ngIf="selection.hasValue()">
+                <div class="grid-x">
+                    <div style="margin-right: 20px;">create smart order</div>
+                    <div>+</div>
+                </div>
+            </button>
+            <button color="emphasis" class="linked-button-text" mat-raised-button (click)="createSmartOrder()"
+                *ngIf="!selection.hasValue()">
+                <div class="grid-x">
+                    <div style="margin-right: 20px;">create smart order</div>
+                    <div>+</div>
+                </div>
+            </button>
+        </div>
+        <div>
+            <button mat-stroked-button mat-dialog-close>Cancel</button>
+        </div>
+    </mat-dialog-actions>
+</div>

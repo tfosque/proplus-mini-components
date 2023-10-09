@@ -1,0 +1,35 @@
+@import '../../../../sass/variables';
+@import '../../../../sass/mixins';
+
+table.full-width {
+    width: 100%;
+}
+.divider {
+    margin: 5px 5px 40px 5px;
+}
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+.search {
+    width: 850px;
+}
+.icon {
+    margin-top: 25px;
+}
+.table-space {
+    padding: 10px;
+}
+td {
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+}

@@ -1,0 +1,192 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.result-card {
+    &__product-container {
+        margin-bottom: rem-calc(10px);
+    }
+
+    &__result {
+        border: 0px solid $color-borders-light;
+
+        height: 100%;
+        padding: rem-calc(10px) rem-calc(10px) rem-calc(10px);
+
+        h3 {
+            color: $color-text-emphasis;
+            display: block;
+            @include attr-for-widths(font-size, 12px, 19px);
+            @include attr-for-widths(line-height, 14px, 23px);
+            font-weight: $font-weight-semi-bold;
+            margin: -10px 0 rem-calc(0px) rem-calc(6px);
+
+            &:hover {
+                color: $color-text-emphasis;
+            }
+        }
+
+        a {
+            color: $color-text-emphasis;
+        }
+
+        &:hover {
+            box-shadow: 1px 1px 5px 0 rgba(20, 20, 20, 0.12);
+        }
+    }
+
+    &__image-wrap {
+        border: 1px solid $color-borders;
+        height: 0;
+        padding-bottom: calc(100% - 2px);
+        position: relative;
+        width: 100%;
+
+        img {
+            bottom: 0;
+            height: 100%;
+            left: 0;
+            @include object-fit(cover, center);
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 100%;
+        }
+    }
+
+    &__characteristics {
+        margin-left: rem-calc(6px);
+    }
+
+    &__brand {
+        @include attr-for-widths(font-size, 10px, 14.5px);
+        @include attr-for-widths(line-height, 11px, 16px);
+        background-color: $color-text-emphasis;
+        color: white;
+        display: inline-block;
+        // font-size: rem-calc(14.5px);
+        font-weight: $font-weight-heavy;
+        // line-height: rem-calc(16px);
+        padding: rem-calc(2px 5px);
+        position: relative;
+        top: -13px;
+        left: 7px;
+        margin: rem-calc(0 0px 6px 0);
+    }
+
+    &__color-picker {
+        padding-left: 0px;
+        display: flex;
+        flex-wrap: wrap;
+        margin: rem-calc(-15px 0 20px 5px);
+
+        li {
+            display: inline-block;
+            flex: 0 0 20%;
+            box-sizing: border-box;
+            @include attr-for-widths(margin-right, 0px, 10px);
+            // margin-right: 10px;
+            min-width: 25px;
+            max-width: calc(20% - 35px);
+
+            a {
+                display: inline-block;
+                border: 3px solid white;
+                @include attr-for-widths(border-width, 2px, 3px);
+            }
+
+            img {
+                border: 1px solid $color-borders;
+                width: 100%;
+            }
+
+            &:hover {
+                border: none;
+            }
+
+            &.plus-more {
+                align-items: center;
+                border: none;
+                display: flex;
+                flex-grow: 2;
+                font-size: rem-calc(15px);
+                font-weight: $font-weight-semi-bold;
+                max-width: none;
+                padding-left: rem-calc(4px);
+            }
+
+            &.is-active {
+                a {
+                    box-shadow: $box-shadow;
+                    outline: 1px solid $color-borders;
+                }
+
+                img {
+                    border: none;
+                }
+            }
+
+            &:nth-of-type(1n + 5) {
+                display: none;
+
+                &.mobile {
+                    display: flex;
+                }
+
+                &.desktop {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+div.bold>span {
+    font-weight: bold;
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    :host {
+        margin-bottom: rem-calc(22px);
+    }
+
+    .result-card {
+        &__color-picker {
+            li {
+                flex: 0 0 20%;
+                box-sizing: border-box;
+                margin-right: 3px;
+                max-width: calc(20% - 25px);
+
+                a {
+                    border: 2px solid white;
+                }
+
+                &:hover {
+                    a {
+                        border: none;
+                    }
+                }
+
+                &.plus-more {
+                    font-size: rem-calc(14px);
+                }
+
+                &:nth-of-type(1n + 5) {
+                    display: block;
+                }
+
+                &:nth-of-type(1n + 7) {
+                    display: none;
+
+                    &.mobile {
+                        display: none;
+                    }
+
+                    &.desktop {
+                        display: flex;
+                    }
+                }
+            }
+        }
+    }
+}

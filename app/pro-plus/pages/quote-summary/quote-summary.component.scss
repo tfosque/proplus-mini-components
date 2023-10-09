@@ -1,0 +1,76 @@
+.divider {
+    margin: 5px 5px 40px 5px;
+}
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+.flexContainerButton {
+    display: flex;
+    justify-content: space-between;
+}
+// ::ng-deep .mat-horizontal-stepper-header{
+//   pointer-events: none !important;
+// }
+::ng-deep .mat-step-header .mat-step-icon {
+    background-color: #303f9f;
+}
+
+.tab {
+    background-color: #025f9e;
+    color: white;
+}
+
+::ng-deep .mat-tab-label-active {
+    background-color: #025f9e;
+    color: white;
+}
+
+.add-button {
+    width: 100%;
+    margin-top: 1ex;
+}
+
+.quote-summary-group {
+    .mat-row {
+        height: auto;
+    }
+
+    .mat-cell,
+    .mat-header-cell {
+        padding: 0.5ex 0.5ex 0.5ex 0;
+    }
+
+    .action-buttons {
+        margin: 1ex 0ex;
+    }
+
+    ::ng-deep .mat-tab-label {
+        border-color: #dddddd;
+        border-style: solid;
+        border-width: 1px 1px 0px 0px;
+        line-height: 1.2em;
+        padding: 1ex 2ex;
+        opacity: 1;
+    }
+
+    ::ng-deep .mat-tab-label:first-child {
+        border-width: 1px 1px 0px 1px;
+    }
+}
+
+.with-sub-title {
+    .account {
+        font-size: small;
+    }
+}

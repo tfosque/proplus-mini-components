@@ -1,0 +1,31 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <app-breadcrumb [configuration]="breadcrumbConfig"></app-breadcrumb>
+    <div class="contact-us-page grid-container generic-content-page">
+        <div class="grid-x grid-margin-x">
+            <div class="cell large-12">
+                <h1>{{ pageTitle }}</h1>
+                <ng-container brComponent="seo-component"></ng-container>
+            </div>
+
+            <div class="cell large-9">
+                <ng-container brComponent="main"></ng-container>
+                <ng-container
+                    *ngIf="isPreview"
+                    brComponent="contact-us-config"
+                ></ng-container>
+                <app-contact-us-form
+                    *ngIf="contactUsConfigValues"
+                    [contactUsConfigValues]="contactUsConfigValues"
+                ></app-contact-us-form>
+            </div>
+            <div class="cell large-3 right-rail">
+                <ng-container brComponent="sidebar"></ng-container>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

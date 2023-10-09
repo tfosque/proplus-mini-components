@@ -1,0 +1,358 @@
+<div class="loading-container" *ngIf="loading; else user">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #user>
+    <h1>User {{ userInfo.firstName }} {{ userInfo.lastName }}</h1>
+    <mat-divider class="divider"></mat-divider>
+
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>First Name*</span></div>
+        <div class="cell medium-3 large-3" *ngIf="!edit">
+            {{ userInfo.firstName }}
+        </div>
+        <div class="cell medium-3 large-3" *ngIf="edit">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <input
+                    matInput
+                    [(ngModel)]="userInfo.firstName"
+                    [formControl]="firstName"
+                    [errorStateMatcher]="matcher"
+                    required
+                />
+                <mat-error *ngIf="firstName.hasError('required')"
+                    >This field is required</mat-error
+                >
+            </mat-form-field>
+        </div>
+        <div class="cell medium-3 large-3" *ngIf="!edit">
+            <button
+                style="float: right"
+                (click)="setEdit()"
+                mat-raised-button
+                color="secondary"
+                [disabled]="isAccountClosed"
+            >
+                Edit
+            </button>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Last Name*</span></div>
+        <div class="cell medium-3 large-3" *ngIf="!edit">
+            {{ userInfo.lastName }}
+        </div>
+        <div class="cell medium-3 large-3" *ngIf="edit">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <input
+                    matInput
+                    [(ngModel)]="userInfo.lastName"
+                    [formControl]="lastName"
+                    [errorStateMatcher]="matcher"
+                    required
+                />
+                <mat-error *ngIf="lastName.hasError('required')"
+                    >This field is required</mat-error
+                >
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Title*</span></div>
+        <div class="cell medium-3 large-3" *ngIf="!edit">
+            {{ userInfo.title }}
+        </div>
+        <div class="cell medium-3 large-3" *ngIf="edit">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <input
+                    matInput
+                    [(ngModel)]="userInfo.title"
+                    [formControl]="title"
+                    [errorStateMatcher]="matcher"
+                    required
+                />
+                <mat-error *ngIf="title.hasError('required')"
+                    >This field is required</mat-error
+                >
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Email*</span></div>
+        <div class="cell medium-3 large-3" *ngIf="!edit">
+            {{ userInfo.email }}
+        </div>
+        <div class="cell medium-3 large-3" *ngIf="edit">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <input
+                    matInput
+                    [(ngModel)]="userInfo.email"
+                    [errorStateMatcher]="matcher"
+                    [formControl]="email"
+                    required
+                />
+                <mat-error *ngIf="email.hasError('required')"
+                    >This field is required</mat-error
+                >
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Phone*</span></div>
+        <div class="cell medium-3 large-3" *ngIf="!edit">
+            {{ userInfo.phone }}
+        </div>
+        <div class="cell medium-3 large-3" *ngIf="edit">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <input
+                    matInput
+                    (keyup)="addDash()"
+                    minlength="10"
+                    maxlength="12"
+                    [formControl]="phone"
+                    [errorStateMatcher]="matcher"
+                    [(ngModel)]="userInfo.phone"
+                    required
+                />
+                <mat-error *ngIf="phone.hasError('required')"
+                    >This field is required</mat-error
+                >
+                <mat-error *ngIf="phone.hasError('pattern')">
+                    Only numerical values allowed
+                </mat-error>
+                <mat-error *ngIf="phone.hasError('minlength')">
+                    Phone must be 10 digits long
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Role*</span></div>
+        <div class="cell medium-3 large-3">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <mat-select
+                    [(ngModel)]="userInfo.role.id"
+                    [disabled]="!edit"
+                    [formControl]="role"
+                    [errorStateMatcher]="matcher"
+                    required
+                >
+                    <mat-option *ngFor="let role of roles" [value]="role.id">
+                        {{ role.displayName }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="">This field is required</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Master Admin</span></div>
+        <div class="cell medium-3 large-3">{{ masterAdmin }}</div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Accounts</span></div>
+        <div class="cell medium-3 large-3">
+            <div class="grid-y" *ngFor="let account of globalAccounts">
+                <div class="cell small-6 medium-8 large-2">
+                    <mat-checkbox
+                        [(ngModel)]="account.checked"
+                        [disabled]="!edit"
+                        >{{ account.displayName }}
+                    </mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Status*</span></div>
+        <div class="cell medium-3 large-3">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <mat-select
+                    [(ngModel)]="userInfo.status"
+                    [disabled]="!edit"
+                    [formControl]="status"
+                    [errorStateMatcher]="matcher"
+                    required
+                >
+                    <mat-option value="Enabled">Active</mat-option>
+                    <mat-option value="Disabled">InActive</mat-option>
+                </mat-select>
+                <mat-error *ngIf="status.hasError('required')"
+                    >This field is required</mat-error
+                >
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="grid-x">
+        <div class="cell medium-3 large-3 title"><span>Permissions*</span></div>
+
+        <div class="cell medium-3 large-3">
+            <mat-form-field class="example-full-width" required>
+                <mat-select
+                    [formControl]="perm"
+                    [errorStateMatcher]="matcher"
+                    (selectionChange)="
+                        getPermValue(userInfo.permissionTemplate.templateId)
+                    "
+                    [(ngModel)]="userInfo.permissionTemplate.templateId"
+                    [disabled]="!edit"
+                >
+                    <mat-option value="def">--Select Template--</mat-option>
+                    <div *ngIf="permList">
+                        <mat-option *ngIf="userId !== 'new'" value="default"
+                            >Default Role Template</mat-option
+                        >
+                    </div>
+                    <mat-option value="customized"
+                        >Customized Permissions</mat-option
+                    >
+                    <div *ngIf="permList">
+                        <mat-option
+                            *ngFor="
+                                let perm of permList.result.permssionTemplate
+                            "
+                            [value]="perm.templateId"
+                        >
+                            {{ perm.name }}
+                        </mat-option>
+                    </div>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- <div class="cell medium-3 large-3" *ngIf="isCustomized">
+            <mat-form-field floatLabel="auto" class="example-full-width">
+                <input matInput placeholder="Permission Name" [(ngModel)]="templateName" [formControl]="tempName"
+                    [errorStateMatcher]="matcher" />
+                <mat-error *ngIf="tempName.hasError('required')">This field is required</mat-error>
+            </mat-form-field>
+        </div> -->
+    </div>
+
+    <mat-radio-group
+        [disabled]="placeOrd === 'false' || placeOrd === 'p10700003' || disPerm"
+        [(ngModel)]="approveOrd"
+    >
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Approve Orders</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10700002">Yes</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [disabled]="disPerm" [(ngModel)]="price">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Price</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100001">Yes</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group
+        [disabled]="approveOrd === 'p10700002' || disPerm"
+        [(ngModel)]="placeOrd"
+    >
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Place Order</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100005"
+                    >Place Order, Yes</mat-radio-button
+                >
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10700003"
+                    >Yes, with Approval</mat-radio-button
+                >
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [(ngModel)]="orderHist" [disabled]="disPerm">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Order History</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100002"
+                    >Yes, w/out Pricing</mat-radio-button
+                >
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100004"
+                    >Yes With Pricing</mat-radio-button
+                >
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [(ngModel)]="quotes" [disabled]="disPerm">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Quotes</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100009">View</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="100006">Manage</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+    <mat-divider class="divider"></mat-divider>
+    <mat-radio-group [(ngModel)]="rebate" [disabled]="disPerm">
+        <div class="grid-x">
+            <div class="cell bold medium-3 large-3">Rebate</div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="false">No</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10900001">View</mat-radio-button>
+            </div>
+            <div class="cell medium-3 large-3">
+                <mat-radio-button value="p10300001">Manage</mat-radio-button>
+            </div>
+        </div>
+    </mat-radio-group>
+
+    <mat-divider class="divider"></mat-divider>
+    <div class="grid-x" *ngIf="edit">
+        <div class="cell medium-3 large-3">
+            <button (click)="goBack()" mat-raised-button color="secondary">
+                cancel
+            </button>
+        </div>
+        <div class="cell medium-3 large-3">
+            <button
+                (click)="triggerDialogue()"
+                mat-raised-button
+                [color]="invalidForm ? 'disabled' : 'primary'"
+                [disabled]="invalidForm"
+            >
+                save as template
+            </button>
+        </div>
+        <div class="cell medium-3 large-3">
+            <button
+                (click)="saveTemplate()"
+                mat-raised-button
+                [color]="invalidForm ? 'disabled' : 'emphasis'"
+                [disabled]="invalidForm"
+            >
+                save changes
+            </button>
+        </div>
+    </div>
+</ng-template>

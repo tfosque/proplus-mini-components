@@ -1,0 +1,55 @@
+.btn-expand {
+    margin-left: 0;
+    margin-right: 0;
+    display: block;
+    width: 100%;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+.mb-5 {
+    margin-bottom: 5px;
+}
+.m-5 {
+    margin: 5px;
+}
+.ml-5 {
+    margin-left: 5px;
+}
+
+.mr-5 {
+    margin-right: 5px;
+}
+
+.mlr-5 {
+    margin: 0px 5px;
+}
+/*  */
+.mt-15 {
+    margin-top: 15px;
+}
+.mb-15 {
+    margin-bottom: 15px;
+}
+.m-15 {
+    margin: 15px;
+}
+.ml-15 {
+    margin-left: 15px;
+}
+
+.mr-15 {
+    margin-right: 15px;
+}
+
+.mlr-15 {
+    margin: 0px 15px;
+}
+.custom-dialog {
+    mat-dialog-container {
+        padding: 1.5em 2.25em !important;
+        width: 1088px;
+        min-height: 680px;
+    }
+}

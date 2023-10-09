@@ -1,0 +1,29 @@
+<section class="brand-banner-block">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <div class="brand-banner-block__wrapper">
+        <h2>{{ brandBannerHeading }}</h2>
+        <p>{{ brandBannerContent }}</p>
+        <a
+            *ngIf="
+                !isExternal && brandBannerCTA && brandBannerCTAUrl;
+                else external
+            "
+            [routerLink]="brandBannerCTAUrl"
+            class="button primary"
+            >{{ brandBannerCTA }}</a
+        >
+        <ng-template #external>
+            <a
+                *ngIf="brandBannerCTA && brandBannerCTAUrl"
+                [href]="brandBannerCTAUrl | protocol"
+                class="button primary"
+                >{{ brandBannerCTA }}</a
+            >
+        </ng-template>
+    </div>
+    <img
+        *ngIf="brandBannerImage"
+        src="{{ brandBannerImage.src }}"
+        alt="{{ brandBannerImage.altText }}"
+    />
+</section>

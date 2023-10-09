@@ -1,0 +1,135 @@
+<div
+    class="home-hero-carousel"
+    *ngIf="slides && slides.length"
+    [ngClass]="{ 'home-hero-carousel--no-foreground': noForeground }"
+>
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <ngu-carousel #carousel [inputs]="carouselTileConfig" [dataSource]="slides">
+        <div
+            *nguCarouselDef="let item; let i = index; let ani = animate"
+            class="carouselTile item"
+        >
+            <div class="tile">
+                <section
+                    class="home-hero-carousel__content"
+                    [ngClass]="{
+                        'home-hero-carousel__content--no-foreground':
+                            !item.foregroundImage
+                    }"
+                >
+                    <div
+                        class="home-hero-carousel__images-container"
+                        [ngClass]="{ 'no-foreground': !item.foregroundImage }"
+                    >
+                        <a
+                            *ngIf="!item.link.isExternal; else external"
+                            [routerLink]="item.link.url"
+                        >
+                            <img
+                                *ngIf="item.backgroundImage"
+                                class="home-hero-carousel__background-image"
+                                [src]="item.backgroundImage.src"
+                                [alt]="item.backgroundImage.altText"
+                            />
+                        </a>
+                        <!-- if external link-->
+                        <ng-template #external>
+                            <a
+                                [href]="item.link.url | protocol"
+                                target="_blank"
+                            >
+                                <img
+                                    *ngIf="item.backgroundImage"
+                                    class="home-hero-carousel__background-image"
+                                    [src]="item.backgroundImage.src"
+                                    [alt]="item.backgroundImage.altText"
+                                />
+                            </a>
+                        </ng-template>
+                        <img
+                            *ngIf="item.foregroundImage"
+                            class="home-hero-carousel__foreground-image"
+                            [src]="item.foregroundImage.src"
+                            [alt]="item.foregroundImage.altText"
+                        />
+                    </div>
+                    <div
+                        class="home-hero-carousel__content-container grid-container"
+                    >
+                        <div class="grid-x home-hero-carousel__text-container">
+                            <div class="cell medium-home-6">
+                                <!-- <h2 class="home-hero-carousel__title">
+                                    {{ item.title }}
+                                </h2> -->
+                                <!-- <div class="home-hero-carousel__description">
+                                    <p>
+                                        {{ item.description }}
+                                    </p>
+                                </div> -->
+                                <div
+                                    *ngIf="
+                                        item.link &&
+                                        item.link.url &&
+                                        item.link.text
+                                    "
+                                    class="home-hero-carousel__button-container"
+                                >
+                                    <a
+                                        *ngIf="
+                                            !item.link.isExternal;
+                                            else external
+                                        "
+                                        class="button emphasis"
+                                        [routerLink]="item.link.url"
+                                    >
+                                        {{ item.link.text }}
+                                    </a>
+                                    <ng-template #external>
+                                        <a
+                                            class="button emphasis"
+                                            [href]="item.link.url | protocol"
+                                        >
+                                            {{ item.link.text }}
+                                        </a>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <button
+            [attr.aria-label]="'Previous' | translations: 'previous'"
+            *ngIf="!carousel.isFirst && slides && slides.length > 1"
+            NguCarouselPrev
+            class="leftRs home-hero-carousel__arrow home-hero-carousel__arrow--prev"
+        >
+            <span class="icon-chevron-left"></span>
+        </button>
+        <button
+            [attr.aria-label]="'Next' | translations: 'next'"
+            *ngIf="!carousel.isLast && slides && slides.length > 1"
+            NguCarouselNext
+            class="rightRs home-hero-carousel__arrow home-hero-carousel__arrow--next"
+        >
+            <span class="icon-chevron-right"></span>
+        </button>
+
+        <ul
+            *ngIf="slides && slides.length > 1"
+            class="home-hero-carousel__indicators"
+            NguCarouselPoint
+        >
+            <li
+                *ngFor="let slide of slides; let i = index"
+                class="home-hero-carousel__point"
+                [ngClass]="{ 'is-active': i === carousel.activePoint }"
+                (click)="carousel.moveTo(i)"
+            ></li>
+        </ul>
+    </ngu-carousel>
+</div>
+
+<!-- <app-dump-grid [input]="slides"></app-dump-grid>  -->

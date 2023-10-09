@@ -1,0 +1,62 @@
+<div class="content">
+  <!-- ACTIVE Category Icons -->
+  <div class="grid-x">
+      <!-- STEP 1 -->
+      <ng-container *ngIf="(currStep | async) === 0">
+          <div class="cell small-11">
+              <h3>Create a new template</h3>
+          </div>
+          <!-- CANCEL Button -->
+          <div *ngIf="false; else cancel"></div>
+          <p class="cell small-12 paragraph">
+              You can create a new template here. You'll save time by 
+              having quick access to the items you often purchase.
+          </p>
+      </ng-container>
+
+      <!-- STEP 2 -->
+      <ng-container *ngIf="(currStep | async) === 1">
+          <div class="cell small-11">
+              <h3>View an existing template</h3>
+          </div>
+          <!-- CANCEL Button -->
+          <div *ngIf="false; else cancel"></div>
+          <p class="cell small-12 paragraph">
+              You can view any template to easily edit it to match 
+              the needs of your next job.
+          </p>
+      </ng-container>
+      <!-- STEP 3 -->
+      <ng-container *ngIf="(currStep | async) === 2">
+          <div class="cell small-11">
+              <h3>Duplicate, copy and delete templates</h3>
+          </div>
+          <!-- CANCEL Button -->
+          <div *ngIf="false; else cancel"></div>
+          <p class="cell small-12 paragraph">
+              Select a template to perform quick actions, such as
+              duplicating or deleting a template.
+          </p>
+      </ng-container>
+      <!-- STEP 4 -->
+      <ng-container *ngIf="(currStep | async) === 3">
+          <div class="cell small-11">
+              <h3>Search for a template</h3>
+          </div>
+          <!-- CANCEL Button -->
+          <div *ngIf="false; else cancel"></div>
+          <p class="cell small-12 paragraph">
+              Quickly find the template you're looking for by using the filters.
+          </p>
+      </ng-container>
+  </div>
+</div>
+<!-- TODO make dynamic -->
+<ng-template #cancel>
+  <!-- CANCEL Button -->
+  <div class="cell small-1" style="text-align: right">
+      <div class="cancel-btn" (click)="closeOnboarding()">
+          <mat-icon class="mat-18">cancel</mat-icon>
+      </div>
+  </div>
+</ng-template>

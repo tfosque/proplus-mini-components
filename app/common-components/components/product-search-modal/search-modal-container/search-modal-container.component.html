@@ -1,0 +1,87 @@
+<ng-template #Loader>
+  <mat-spinner diameter="90" color="warn"></mat-spinner>
+</ng-template>
+
+
+<div class="grid-x grid-margin-x">
+  <div class="cell medium-3">
+    <h1>Find a Product</h1>
+  </div>
+  <div class="cell medium-9"></div>
+</div>
+
+
+<div class="grid-x grid-margin-x grid-padding-x">
+
+  <!-- SIDEBAR and RESULTS -->
+  <div class="cell outer-container">
+    <div class="grid-x grid-margin-x" *ngIf="true; else Loader">
+
+      <div class="cell medium-3">
+        <!-- FACETS SIDEBAR -->
+        <div *ngIf="false; else FacetsSidebar">
+
+        </div>
+      </div>
+
+      <div class="cell medium-9">
+        <!-- PRODUCT RESULTS AREA  -->
+
+        <div *ngIf="false; else SearchResults">
+
+        </div>
+
+        <div *ngIf="showProductDetails">
+          <!-- PRODUCT DETAILS -->
+          Product Details
+        </div>
+
+      </div>
+
+      <div class="cell medium-12">
+        <!-- PAGINATION Widget -->
+        <div *ngIf="showPagination">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #SearchResults>
+  <div style="overflow: hidden" style="height: 68vh">
+    <div *ngIf="false; else SearchResultCard"></div>
+  </div>
+</ng-template>
+
+<ng-template #SearchResultCard>
+  <div class="grid-x grid-margin-x grid-padding-y">
+    <div *ngFor="let item of searchResults" class="cell medium-3">
+      <img [src]="createImage(item)" [alt]="">
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #ProductDetails>
+  <img src="" alt="">
+</ng-template>
+
+<ng-template #ProductDetailsGallery></ng-template>
+<ng-template #ProductDetailsSkus *ngFor="let item of []"></ng-template>
+
+<ng-template #FacetsSidebar>
+  <div>
+    <ul style="list-style: none;">
+      <li>item</li>
+    </ul>
+  </div>
+</ng-template>
+<ng-template #FacetsSidebarItem></ng-template>
+
+<ng-template #SearchPagination>
+  <mat-dialog-actions align="end" style="padding-bottom: 10px">
+    <mat-paginator #paginator [showFirstLastButtons]="true" (page)="nextPage($event)" [length]="100" [pageIndex]="1"
+      [pageSize]="20" [pageSizeOptions]="[20]" aria-label="Select page" [disabled]="disablePagination">
+    </mat-paginator>
+  </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,116 @@
+<div class="grid-x grid-margin-x">
+    <div class="small-0 medium-1 large-1"></div>
+    <div class="cell small-12 medium-10 large-10">
+        <div class="grid-x grid-margin-x left-margin">
+            <div class="cell small-12 medium-12 large-12 header">
+                <div class="header-title">Hi {{firstName}},</div>
+                <div>All available manufacturer promotions are below.</div>
+            </div>
+            <div class="loading-container" *ngIf="isloading; else loaded">
+                <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+            </div>
+            <ng-template #loaded>
+                <div class="cell small-12 medium-8 large-8 rebate-promo-items">
+                    <div *ngIf="dataSourceMyRebates.length > 0" class="title-margin">
+                        <div class="sub-title">
+                            My Rebates
+                        </div>
+                        <div>
+                            <div class="grid-x grid-margin-x">
+                                <mat-card class="promo-card small-12 medium-6 large-6" style="margin: 12px;"
+                                    *ngFor="let myRebate of dataSourceMyRebates">
+                                    <mat-card-content>
+                                        <div class="rebate-img">
+                                            <a [href]="getRebateDetailLink(myRebate.brandName, myRebate.rebateId)">
+                                                <img src="{{ myRebate.image }}" class="img-responsive hidden-xs"
+                                                    style="height: 100px;" />
+                                            </a>
+                                        </div>
+                                        <div class="rebate-name sub-title fixed-height narrow-line-height">{{
+                                            myRebate.rebateName }}</div>
+                                        <div class="card-text">
+                                            Last Submitted: {{ tryParseDate(myRebate.lastSubmittedDate) }}
+                                        </div>
+                                        <div class="small-margin-bottom">
+                                            <button mat-raised-button color="primary"
+                                                (click)="viewRebateDetails(myRebate.brandName, myRebate.rebateId)">
+                                                {{ myRebate.action }}
+                                            </button>
+                                        </div>
+                                        <div *ngIf="myRebate.ableUpdate">
+                                            <button mat-raised-button color="secondary"
+                                                (click)="openDialog(myRebate.submittedRebateInfoId)">
+                                                update form
+                                            </button>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="dataSourceAvailableRebates.length > 0" class="unregistered large-margin-bottom">
+                        <div class="sub-title small-margin-bottom">
+                            Available Rebates
+                        </div>
+                        <div style="margin-right: 100px;">
+                            <div>
+                                <div class="grid-x grid-margin-x">
+                                    <mat-card class="promo-card-no-border small-12 medium-6 large-6"
+                                        *ngFor="let availableRebate of dataSourceAvailableRebates">
+                                        <mat-card-content>
+                                            <div class="rebate-img">
+                                                <a href="/proplus/rebate/form/{{availableRebate.rebateId}}">
+                                                    <img src="{{ availableRebate.image }}"
+                                                        class="img-responsive hidden-xs image-height" />
+                                                </a>
+                                            </div>
+                                            <div class="rebate-name sub-title fixed-height-large narrow-line-height">{{
+                                                availableRebate.rebateName }}</div>
+                                            <div class="small-margin-bottom">
+                                                <button mat-raised-button color="primary"
+                                                    (click)="viewRebateForm(availableRebate.rebateId)">
+                                                    {{ availableRebate.action }}
+                                                </button>
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <div class="cell small-12 medium-4 large-4">
+                <div class="grid-x grid-margin-x centered small-margin-bottom">
+                    <div class="cell small-1 medium-1 large-1"></div>
+                    <div class="cell small-5 medium-5 large-5 small-margin-left sub-title">Quick Tips</div>
+                    <div class="cell small-5 medium-5 large-5"><img src="assets/images/fill.svg"></div>
+                    <div class="cell small-1 medium-1 large-1"></div>
+                </div>
+                <div class="grid-x grid-margin-x small-margin-bottom">
+                    <div class="cell small-1 medium-1 large-1 text-bold-bigger">1.</div>
+                    <div class="cell small-10 medium-10 large-10 small-margin-left">
+                        Select the manufacturer promotion that you would like to participate.
+                    </div>
+                    <div class="cell small-1 medium-1 large-1"></div>
+                </div>
+                <div class="grid-x grid-margin-x small-margin-bottom">
+                    <div class="cell small-1 medium-1 large-1 text-bold-bigger">2.</div>
+                    <div class="cell small-10 medium-10 large-10 small-margin-left">
+                        Enroll in the promotion by completing the online registration form.
+                    </div>
+                    <div class="cell small-1 medium-1 large-1"></div>
+                </div>
+                <div class="grid-x grid-margin-x small-margin-bottom">
+                    <div class="cell small-1 medium-1 large-1 text-bold-bigger">3.</div>
+                    <div class="cell small-10 medium-10 large-10 small-margin-left">
+                        Sit back, relax and let Beacon do the rest! We’ll submit your invoices and it will update
+                        your manufacturer account.
+                    </div>
+                    <div class="cell small-1 medium-1 large-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="small-0 medium-1 large-1"></div>
+</div>

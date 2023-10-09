@@ -1,0 +1,111 @@
+@use 'sass:math';
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.where-to-buy-page {
+    margin-bottom: rem-calc(32px);
+
+    &--expanded {
+        background-color: #fff;
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: 10;
+
+        .where-to-buy-page {
+            &__nav-container {
+                align-items: center;
+                background-color: $color-background-dark;
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                padding: 6px #{map-get($gutters, small) / 2};
+            }
+
+            &__back-button {
+                align-items: center;
+                color: #fff;
+                display: inline-flex;
+                font-size: rem-calc(13.5px);
+                font-weight: $font-weight-semi-bold;
+
+                .icon-chevron-left {
+                    font-size: rem-calc(11px);
+                    margin-right: rem-calc(6px);
+                }
+            }
+
+            &__close-button {
+                color: #fff;
+                font-size: rem-calc(12px);
+                margin-top: 3px;
+            }
+
+            &__finder-container {
+                display: flex;
+                flex-flow: column nowrap;
+                height: 100%;
+                overflow: auto;
+
+                &.is-loading {
+                    height: 100vh;
+                }
+            }
+
+            &__finder-results {
+                position: relative;
+            }
+
+            &__expanded-map-container {
+                overflow: auto;
+            }
+
+            &__expanded-map {
+                min-height: rem-calc(200px);
+            }
+        }
+    }
+
+    &__results-container {
+        display: flex;
+        flex: 1 1 auto;
+        flex-flow: column nowrap;
+        overflow: hidden;
+        position: relative;
+    }
+
+    h1 {
+        font-size: rem-calc(30px);
+        line-height: rem-calc(34px);
+        margin-bottom: 15px;
+        margin-top: 0;
+    }
+
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        h1 {
+            font-size: rem-calc(40px);
+            line-height: rem-calc(44px);
+            margin-bottom: 25px;
+            margin-top: 0px;
+        }
+
+        &__results-container {
+            height: 100%;
+        }
+
+        &__finder-container {
+            display: flex;
+            flex-flow: column nowrap;
+            height: 761px;
+            overflow: hidden;
+        }
+
+        &__finder-results {
+            flex: 1 1 auto;
+            height: 100%;
+            overflow: hidden;
+        }
+    }
+}

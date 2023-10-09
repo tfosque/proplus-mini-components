@@ -1,0 +1,246 @@
+@import '../variables';
+@import '../mixins';
+
+@mixin proxima-bold($size) {
+    @include proxima-nova-bold();
+    font-size: rem-calc($size);
+}
+
+@mixin white-font {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        color: white;
+    }
+}
+
+.home-page-call-to-action {
+    div.homepage-image-panel {
+        margin-bottom: rem-calc(5px);
+        background-color: $color-primary;
+        min-width: rem-calc(180px);
+
+        &__text-area {
+            h2 {
+                @include condensed-font();
+                text-align: center;
+                color: white;
+            }
+            p {
+                text-align: center;
+                color: white;
+            }
+        }
+        &__button {
+            text-align: center;
+            background-color: $color-emphasis;
+
+            a {
+                color: white;
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+        }
+
+        @media (min-width: map-get($grid-breakpoints, small)) {
+            &__text-area {
+                padding: rem-calc(50px) rem-calc(20px);
+            }
+            &__button {
+                margin: 0px auto;
+                padding: rem-calc(5px) rem-calc(10px);
+                min-width: rem-calc(100px);
+                max-width: rem-calc(200px);
+
+                a {
+                    font-size: rem-calc(14px);
+                }
+            }
+        }
+
+        @media (min-width: map-get($grid-breakpoints, medium)) {
+            &__text-area {
+                padding: rem-calc(50px) rem-calc(30px);
+            }
+
+            &__button {
+                padding: rem-calc(5px) rem-calc(10px);
+
+                a {
+                    font-size: rem-calc(16px);
+                }
+            }
+        }
+
+        @media (min-width: map-get($grid-breakpoints, large)) {
+            &__button {
+                max-width: rem-calc(200px);
+            }
+        }
+    }
+}
+
+.something-for-everyone {
+    background-color: #025f9e;
+    @include white-font;
+    margin-top: 50px;
+    padding-bottom: 30px;
+    text-align: center;
+
+    &__title {
+        @include proxima-bold(28px);
+        color: #ffffff;
+        text-align: center;
+        padding-top: rem-calc(50px);
+    }
+
+    &__text {
+        color: #ffffff;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    &__image {
+        padding: rem-calc(0px);
+    }
+}
+
+.homepage-whats-new {
+    background-color: #323640;
+    @include white-font;
+
+    text-align: center;
+
+    .cell {
+        padding-bottom: rem-calc(30px) rem-calc(50px);
+    }
+
+    &__title {
+        @include proxima-bold(24px);
+
+        color: #ffffff;
+        padding-bottom: rem-calc(10px);
+        margin-top: rem-calc(20px);
+        text-transform: uppercase;
+    }
+
+    div.view-features-button-frame {
+        padding-bottom: 30px;
+
+        a.button.view-features-button {
+            @include proxima-bold(18px);
+
+            color: #95bcd3;
+            border: 3px solid $color-emphasis;
+            background-color: transparent;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: rem-calc(10px) rem-calc(45px);
+            font-size: rem-calc(16px);
+        }
+    }
+}
+
+div.homepage-component {
+    div.build-your-career {
+        @include attr-for-widths(
+            'margin-top',
+            0px,
+            rem-calc(20px),
+            rem-calc(60px)
+        );
+
+        &__title {
+            color: #025f9e;
+        }
+
+        &__text-panel {
+            @include attr-for-widths('padding-left', 0px, 0px, rem-calc(40px));
+        }
+
+        &__callout {
+            background-color: $color-secondary;
+            @include attr-for-widths(
+                'padding',
+                0px,
+                rem-calc(20px),
+                rem-calc(40px)
+            );
+        }
+    }
+}
+
+div.homepage-component {
+    div.home-owner-assistance {
+        border: 0px solid grey;
+        border-width: 2px 0px;
+        margin-top: rem-calc(30px);
+        margin-bottom: rem-calc(30px);
+    }
+}
+
+@media (min-width: map-get($breakpoints, small)) {
+    .practical {
+        padding-bottom: 20px;
+        height: 390px;
+    }
+}
+@media (min-width: map-get($breakpoints, medium)) {
+    .practical {
+        max-width: 100%;
+        height: 370px;
+    }
+}
+
+@media only screen and (max-width: 1023px) {
+    .practical {
+        max-width: 100%;
+        height: auto;
+    }
+    div.build-your-career {
+        &__text-panel {
+            padding-left: rem-calc(0px);
+        }
+    }
+}
+@media only screen and (max-width: 799px) {
+    .practical {
+        max-width: 100%;
+        height: 390px;
+    }
+}
+@media only screen and (min-width: 380px) and (max-width: 639px) {
+    .practical {
+        margin-top: 30px;
+        max-width: 100%;
+        height: auto;
+    }
+    .something-for-everyone {
+        margin-top: 40px;
+    }
+}
+@media only screen and (max-width: 379px) {
+    .practical {
+        margin-top: 30px;
+        max-width: 100%;
+        height: 320px;
+    }
+    .something-for-everyone {
+        margin-top: 40px;
+    }
+}
+
+.center-full {
+    h1,
+    h2,
+    h3,
+    h4,
+    p {
+        text-align: center;
+        width: 100%;
+    }
+}

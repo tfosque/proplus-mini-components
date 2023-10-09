@@ -1,0 +1,84 @@
+.header {
+    font-weight: 700;
+    color: #285D99;
+    text-transform: uppercase;
+    font-family: "titling-gothic-fb-compressed-bold", "arial", sans-serif;
+    font-size: 28px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.sub-text {
+    font-size: 16px;
+}
+
+.bottom-margin {
+    margin-bottom: 20px;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.updateForm { 
+    ::ng-deep .mat-form-field-infix {
+        width: 343px !important;
+        // border: 1px solid #285D99;
+    }
+    
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+        color: #285D99 !important;
+    }
+
+    ::ng-deep .mat-form-field {
+        display: block !important;
+    }
+
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: 0.125em 0 0.5em 0;
+    }
+
+    ::ng-deep .mat-form-field-wrapper {
+        padding-bottom: 0.75em;
+    }
+
+    ::ng-deep .mat-button-wrapper {
+        font-weight: 800;
+    }
+    
+    ::ng-deep .mat-raised-button.mat-primary {
+        background-color: #285D99;
+    }
+    
+    ::ng-deep .mat-form-field-subscript-wrapper {
+        margin-top: 1em;
+    }
+}
+
+.inputStyle {
+    padding: 0 5px 0 0;
+}
+
+.large-btn {
+    width: 100%;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.btn-padding {
+    padding: 0 10px;
+}
+
+.card-margin {
+    margin: 12px;
+}
+
+.btn-top-margin {
+    margin-top: 16px;
+}
+
+::ng-deep .mat-dialog-container {
+    padding: 30px 55px;
+}

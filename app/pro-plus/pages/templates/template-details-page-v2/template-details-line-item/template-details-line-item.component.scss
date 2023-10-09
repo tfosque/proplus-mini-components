@@ -1,0 +1,28 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+input#itemQty {
+  font-weight: bold;
+  border: solid thin #cac9c9;
+  text-align: center;
+  height: 26px;
+  width: 50px;
+  color: #025f9e;
+}
+
+#Qty mat-form-field mat-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #025f9e;
+  cursor: pointer;
+}
+
+::ng-deep .custom-tooltip {
+  font-size: .75rem;
+  color: #fff;
+  left: -60px;
+  position: relative;
+  // margin-left: -20px;
+}

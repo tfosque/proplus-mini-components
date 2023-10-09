@@ -1,0 +1,33 @@
+@import '../../node_modules/foundation-sites/scss/foundation.scss';
+@import './vendor/foundation-settings';
+@import './variables';
+@import './mixins';
+@import './global';
+@import './angular-material-theme.scss';
+
+a {
+    cursor: pointer;
+}
+
+@include foundation-global-styles;
+@include foundation-xy-grid-classes;
+@include foundation-visibility-classes;
+@include foundation-flex-classes;
+@include foundation-callout;
+
+@import './components/cdk-overlay';
+@import './components/modal';
+@import './components/custom-checkbox';
+@import './components/custom-radio';
+@import './components/navigable-content-container';
+@import './components/materials-form-overrides';
+@import './components/materials-buttons-overrides';
+@import './components/result-card';
+@import './components/generic-content';
+@import './components/generic-rail-component';
+@import './components/icons';
+
+//  ProPlus
+@import './components/pro-plus/components';
+@import './components/rich-text-variants';
+@import './components/custom-rich-text';

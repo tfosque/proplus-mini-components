@@ -1,0 +1,15 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+:host {
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.facet-container {
+    padding: rem-calc(12px);
+
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        padding: 0;
+    }
+}

@@ -1,0 +1,230 @@
+table {
+  width: 100%
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.mat-card-image {
+  margin: 0 !important
+}
+
+.mat-card-header .mat-card-subtitle:not(:first-child) {
+  margin-top: -13;
+}
+
+.mat-card-header .mat-card-title {
+  font-size: 15px;
+}
+
+mat-card-content {
+  p {
+    font-size: .75rem;
+    line-height: 1.290;
+    padding-top: 10px;
+  }
+}
+
+::ng-deep {
+  .grid-x .container {
+    border: solid thin #d4d4d4;
+    margin: 0;
+    padding: 0px;
+    width: 100%;
+  }
+
+  .mat-card-header-text {
+    margin: 0;
+  }
+
+  .mat-dialog-content {
+    overflow: hidden !important;
+    max-height: 60vh !important;
+  }
+
+  mat-dialog-content .mat-dialog-content .proplus {
+    overflow: hidden !important;
+    // max-height: 82vh !important;
+  }
+
+  .mat-dialog-container {
+    overflow-x: hidden !important;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-prefix {
+    padding: 0 0 18px 0;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: -0.02em;
+  }
+
+  .mat-flat-button.mat-warn,
+  .mat-raised-button.mat-warn,
+  .mat-fab.mat-warn,
+  .mat-mini-fab.mat-warn {
+    background: orange;
+
+    span {
+      color: #fff
+    }
+
+    .justify {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .mat-raised-button.mat-primary {
+    background: #025f9e;
+  }
+}
+
+::ng-deep #Options td.mat-cell.highlight {
+  background-color: #025f9e !important;
+  color: #fff !important;
+  border-bottom: solid thick #c4c4c4;
+}
+
+.content-wrapper {
+  min-height: calc(100vh - 2em);
+  /* Subtract the height of the footer */
+  padding-bottom: 2em;
+  /* Provide space for the footer */
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2em;
+  background-color: #f5f5f5;
+  /* Add any additional styles for the footer */
+}
+
+div#img-card {
+  div.mat-card:hover {
+    border: solid thin #c7c5c5;
+    border-bottom: solid 2px orange;
+    cursor: pointer;
+  }
+
+  p,
+  img {
+    border: none;
+  }
+
+}
+
+#Options.hide {
+  display: none
+}
+
+.section-labels {
+  color: #88888c;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+h4.section-labels {
+  margin-bottom: 4px;
+  margin-top: 0;
+  padding-left: 0;
+}
+
+::ng-deep div#facet-results {
+  div.cell.label {
+    background: #fff;
+    padding: 10px 0 10px 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: solid thin #c7c5c5;
+    border-right: none;
+    border-left: none;
+    font-size: 1.1rem !important;
+  }
+}
+
+input#searchFacet:focus {
+  outline: none;
+}
+
+.sel-thumb {
+  background-color: orange;
+  padding-bottom: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 1px 2px 5px;
+}
+
+.sel-facet {
+  background: #f3faffb8;
+  border-top: dashed thin #dadada;
+  border-bottom: dashed thin #dadada;
+  margin: 4px 0px;
+}
+
+form.search-facet {
+  font-size: .75rem;
+  height: 29px;
+  border: solid thin #d8d8d8;
+  margin: 10px 15px 0 15px;
+  outline: none;
+  border-radius: 4px;
+}
+
+/* Product Search outline */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #d9dee1 !important;
+  // opacity: 1!important;
+}
+
+::ng-deep .custom-tooltip {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: .75rem;
+  font-weight: bold;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #c3c3c3;
+  opacity: .6;
+  padding-left: 5px;
+  /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #c3c3c3;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #c3c3c3;
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+  // background-color: orange !important; // infinite scrolling bg-colour
+  background-color: #fff !important; // infinite scrolling bg-colour
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #025f9e;
+}
+
+mat-hint div.search-results-message {
+  * {
+    color: #025f9e;
+    font-weight: bold;
+  }
+
+}
+
+::ng-deep .modal-button span {
+  font-weight: bold;
+}

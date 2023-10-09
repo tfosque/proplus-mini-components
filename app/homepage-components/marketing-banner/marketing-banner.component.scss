@@ -1,0 +1,183 @@
+@use 'sass:math';
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.marketing-banner {
+    @include contentButtonContainer();
+    
+    margin: rem-calc(6px 0 0);
+
+    .marketing-banner__text-area-wrap {
+        color: $color-white;
+
+        .marketing-banner__text-area {
+            padding: rem-calc(22px);
+
+            .marketing-banner__text-area-title {
+                font-size: rem-calc(28px);
+                line-height: rem-calc(32px);
+                font-weight: $font-weight-bold;
+                color: $color-white;
+                margin: rem-calc(0 0 8px 0);
+            }
+
+            .marketing-banner__text-area-description {
+                color: rgba($color-white, 0.9);
+                font-size: rem-calc(17px);
+                line-height: rem-calc(22px);
+                margin: rem-calc(0 0 20px);
+            }
+
+            .marketing-banner__text-area-cta {
+                border-color: $color-white;
+                padding-left: rem-calc(25px) !important;
+                padding-right: rem-calc(25px) !important;
+                margin: rem-calc(0 0 10px);
+                text-decoration: none;
+                &:hover {
+                    background-color: rgba($color-white, 0.15);
+                }
+            }
+        }
+    }
+
+    &.margeting-banner--color-option1 {
+        .marketing-banner__text-area {
+            background: $color-primary;
+        }
+    }
+
+    &.margeting-banner--color-option2 {
+        .marketing-banner__text-area {
+            background: $color-text-primary;
+        }
+    }
+
+    &.margeting-banner--color-option3 {
+        .marketing-banner__text-area {
+            background: $color-text-emphasis;
+        }
+    }
+
+    @media (min-width: map-get($breakpoints, homepageMedium)) {
+        background-color: $color-text-emphasis;
+        position: relative;
+        overflow: hidden;
+        min-height: rem-calc(540px);
+        display: flex;
+        height: 100%;
+        @include ie-flex-min-height();
+
+        .marketing-banner__background-image {
+            @include object-fit(cover, center);
+            width: 100%;
+            max-width: none;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: absolute;
+            height: 100%;
+            opacity: 0.4;
+        }
+
+        .marketing-banner__content {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+
+            .marketing-banner__text-area-wrap {
+                position: absolute;
+                min-width: 40%;
+                max-width: 40%;
+                z-index: 4;
+                height: 100%;
+
+                .marketing-banner__text-area {
+                    padding: rem-calc(25px 30px);
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    .marketing-banner__text-area-title {
+                        font-size: rem-calc(36px);
+                        line-height: rem-calc(40px);
+                    }
+                    .marketing-banner__text-area-description {
+                        font-size: rem-calc(20px);
+                        line-height: rem-calc(25px);
+                        margin: rem-calc(0 0 25px);
+                    }
+                }
+            }
+
+            .marketing-banner__main-image-wrap {
+                box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.19);
+                position: absolute;
+                height: 84%;
+                z-index: 3;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 100%;
+                overflow: hidden;
+
+                img {
+                    bottom: 0;
+                    @include object-fit(cover, center);
+                    height: 100%;
+                    left: 0;
+                    max-height: none;
+                    max-width: none;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    width: 100%;
+                }
+            }
+        }
+
+        &.marketing-banner--left-align {
+            .marketing-banner__main-image-wrap {
+                right: 31%; // this was just a good number
+            }
+
+            .marketing-banner__text-area-wrap {
+                right: #{map-get($gutters, medium) / 2}; // we need to add the gutter padding
+            }
+        }
+
+        &.marketing-banner--right-align {
+            .marketing-banner__main-image-wrap {
+                left: 31%; // this was just a good number
+            }
+
+            .marketing-banner__text-area-wrap {
+                left: #{map-get($gutters, medium) / 2}; // we need to add the gutter padding
+            }
+        }
+    }
+    @media (min-width: map-get($breakpoints, large)) {
+        .marketing-banner__content {
+            .marketing-banner__text-area-wrap {
+                .marketing-banner__text-area {
+                    padding: rem-calc(30px 40px);
+
+                    .marketing-banner__text-area-title {
+                        font-size: rem-calc(46px);
+                        line-height: rem-calc(50px);
+                    }
+
+                    .marketing-banner__text-area-description {
+                        font-size: rem-calc(22px);
+                        line-height: rem-calc(27px);
+                        margin: rem-calc(0 0 25px);
+                    }
+                }
+            }
+        }
+    }
+}

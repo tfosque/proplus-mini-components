@@ -1,0 +1,36 @@
+<div mat-dialog-title>
+    <div class="header-text align-center color-blue">Template Preview</div>
+</div>
+<mat-dialog-content>
+    <div class="grid-x margin-bottom">
+        <div class="cell small-12 medium-12 large-12">
+            <div class="sub-text">
+                {{ data.templateName }}
+            </div>
+        </div>
+    </div>
+    <div class="grid-x padding" *ngFor="let item of data.templateItems">
+        <div class="cell small-2 medium-2 large-2">
+            <img appImagePreload class="img-prod" src="{{
+            item.productImageUrl | productImage
+            }}" alt="" />
+        </div>
+        <div class="cell small-8 medium-8 large-8 padding-right">
+            <div>{{ item.itemOrProductDescription | safeHtml }}</div>
+            <div>Item #: {{ item.itemNumber }}</div>
+        </div>
+        <div class="cell small-2 medium-2 large-2">
+            {{ item.unitPrice | price: item.unitOfMeasure }}
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions class="align-center margin-top actions">
+    <div class="padding-right">
+        <button color="emphasis" class="linked-button-text" mat-raised-button [mat-dialog-close]="true">
+            Create smart order with this template
+        </button>
+    </div>
+    <div>
+        <button mat-stroked-button mat-dialog-close>Cancel</button>
+    </div>
+</mat-dialog-actions>

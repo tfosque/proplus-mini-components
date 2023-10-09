@@ -1,0 +1,280 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.footer {
+    @include contentButtonContainer();
+    padding-top: 20px;
+    background-color: $color-primary;
+    color: $color-secondary;
+    &__updates--wrapper {
+        width: 100%;
+    }
+
+    &__form-connect-wrapper {
+        display: none;
+    }
+
+    &.grid-container {
+        background-color: $color-primary;
+    }
+    .grid-container {
+        padding: 0 10px;
+    }
+
+    &__updates {
+        border-bottom: 1px solid #00407d;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+
+    &__trailer-wrapper {
+        font-size: rem-calc(14px);
+        border: none;
+        @include attr-for-widths(margin-bottom, 10px, 10px, 0px);
+        @include attr-for-widths(padding-bottom, 20px, 20px, 0px);
+    }
+
+    &__content-column {
+        border-bottom: 1px solid #00407d;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+
+    &__connect-wrapper {
+        border-bottom: 1px solid #00407d;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+
+    .logo {
+        width: 90px;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        color: $color-secondary;
+        font-size: rem-calc(16px);
+        font-weight: $font-weight-bold;
+        line-height: rem-calc(18px);
+        text-transform: uppercase;
+        margin: 0 0 20px;
+    }
+    p {
+        font-size: rem-calc(15px);
+        line-height: rem-calc(19px);
+        margin: -15px 0 15px;
+        color: $color-white;
+    }
+    &__success-message {
+        p {
+            margin-top: rem-calc(8px);
+        }
+    }
+    a {
+        color: $color-white;
+        font-size: rem-calc(15px);
+        line-height: rem-calc(19px);
+        text-decoration: none;
+        &:hover,
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        li {
+            margin-bottom: 20px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+    form {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        label {
+            width: 100%;
+        }
+        input {
+            border-radius: 0;
+            font-size: rem-calc(15px);
+            height: rem-calc(39px);
+            outline: none;
+            width: 100%;
+        }
+        button {
+            color: $color-white;
+            box-shadow: 1px 2px 2px 0 rgba(25, 32, 39, 0.44);
+            display: block;
+            position: absolute;
+            right: -20px;
+            background: $color-emphasis;
+            right: 1px;
+            top: 0px;
+            padding: 12.5px;
+            font-weight: $font-weight-heavy;
+            font-size: rem-calc(14px);
+            text-transform: uppercase;
+            &:hover,
+            &:focus {
+                background-color: $color-primary-hover;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &__trailer {
+        a {
+            font-size: rem-calc(14px);
+        }
+    }
+
+    &__social-icons {
+        li {
+            display: inline-block;
+            margin-right: 20px;
+            &:hover,
+            &:focus {
+                -webkit-transform: scale(0.9);
+                transform: scale(0.9);
+            }
+        }
+        img {
+            width: 30px;
+        }
+    }
+
+    &__expandable {
+        cursor: pointer;
+    }
+
+    p.footer__copyright {
+        @include attr-for-widths(border-top-width, 1px, 1px, 0px);
+        @include attr-for-widths(
+            padding,
+            rem-calc(20px),
+            rem-calc(20px),
+            rem-calc(15px)
+        );
+        @include attr-for-widths(margin-bottom, 0px, 0px, rem-calc(10px));
+        border-top: 1px solid #00407d;
+        margin: 0px;
+
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, large)) {
+    .footer {
+        padding-top: 40px;
+        form {
+            margin-bottom: 40px;
+        }
+        h2 {
+            margin-bottom: rem-calc(10px);
+            padding-right: rem-calc(15px);
+        }
+        ul {
+            li {
+                margin-bottom: 6px;
+            }
+        }
+        a {
+            word-wrap: break-word;
+        }
+        p {
+            margin: 0 0 15px;
+        }
+
+        &__success-message {
+            p {
+                margin: rem-calc(8px 0 0);
+            }
+        }
+
+        &__top-wrapper {
+            border-bottom: 5px solid $color-emphasis;
+            display: flex;
+            flex-flow: row nowrap;
+            margin-bottom: rem-calc(10px);
+            width: 100%;
+        }
+
+        &__updates--wrapper {
+            max-width: rem-calc(300px);
+            width: 100%;
+        }
+
+        &__updates {
+            flex: 1 1 auto;
+            border: none;
+            order: 4;
+            padding-bottom: rem-calc(30px);
+            padding-right: rem-calc(20px);
+            width: 40%;
+        }
+
+        &__trailer-wrapper {
+            border: none;
+
+            ul {
+                display: inline;
+                li {
+                    display: inline-block;
+                    margin-right: 20px;
+                    padding-right: 20px;
+                    border-right: 1px solid;
+                    border-color: rgba($color-white, 0.6);
+                    line-height: rem-calc(14px);
+                    height: 16px;
+                    &:last-child {
+                        border: none;
+                    }
+                }
+            }
+        }
+
+        &__content-columns {
+            display: inline-flex;
+            flex: 1 1 auto;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            width: 60%;
+
+            &.wide {
+                width: 100%;
+            }
+        }
+
+        &__content-column {
+            border: none;
+            flex-shrink: 1;
+            max-width: rem-calc(240px);
+            padding-bottom: rem-calc(30px);
+            padding-right: rem-calc(20px);
+            width: 100%;
+        }
+
+        &__connect-wrapper {
+            display: none;
+        }
+
+        &__form-connect-wrapper {
+            display: block;
+        }
+
+        .grid-container {
+            .logo {
+                margin-right: 40px;
+                margin-bottom: 0px;
+                padding: 2px 0;
+            }
+        }
+    }
+}

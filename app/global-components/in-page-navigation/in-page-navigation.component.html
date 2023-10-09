@@ -1,0 +1,95 @@
+<div
+    class="in-page-navigation"
+    [ngClass]="{ 'is-sticky': isSticky }"
+    #navStatic
+>
+    <nav>
+        <div class="grid-container">
+            <div class="grid-x grid-margin-x">
+                <ul class="cell">
+                    <ng-container *ngFor="let navItem of navItems">
+                        <li>
+                            <a (click)="scrollToElement(navItem.navId)">
+                                {{ navItem.navTitle }}
+                            </a>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div
+    class="in-page-navigation in-page-navigation--sticky"
+    [ngClass]="{
+        'is-stuck': isSticky,
+        'in-page-navigation--brand-nav': !product && brandLogo
+    }"
+    #navSticky
+>
+    <div *ngIf="product" class="grid-container">
+        <div class="in-page-navigation__product-data product-data grid-x">
+            <div class="product-data__content-wrap">
+                <div class="product-data__image-wrap">
+                    <img
+                        appImagePreload
+                        [default]="product.productOnErrorImage | errorImage: '../../assets/images/image-not-available.svg'"
+                        src="{{ product.productImage.src }}"
+                        alt="{{ product.productImage.altText }}"
+                    />
+                </div>
+                <div>
+                    <h2 class="product-data__title-wrap">
+                        <span class="product-data__brand">{{
+                            product.brand
+                        }}</span>
+                        <span
+                            class="product-data__title"
+                            [innerHTML]="product.name"
+                        ></span>
+                    </h2>
+                    <div class="product-data__item-number">
+                        {{ 'Item #' | translations: 'item-#' }}
+                        {{ product.itemNumber }}
+                    </div>
+                </div>
+            </div>
+            <div class="product-data__button-wrap" *ngIf="!isLoggedIn">
+                <a [routerLink]="'/proplus/login'" class="button primary"
+                    >Login</a
+                >
+            </div>
+        </div>
+    </div>
+    <nav>
+        <div class="grid-container">
+            <div class="grid-x grid-margin-x">
+                <div class="cell in-page-navigation__content-wrap">
+                    <ul>
+                        <ng-container *ngFor="let navItem of navItems">
+                            <li
+                                [ngClass]="{
+                                    'is-active':
+                                        navItem.navId === activeElementId
+                                }"
+                            >
+                                <a (click)="scrollToElement(navItem.navId)">
+                                    {{ navItem.navTitle }}
+                                </a>
+                            </li>
+                        </ng-container>
+                    </ul>
+                    <div
+                        *ngIf="!product && brandLogo"
+                        class="in-page-navigation__brand-logo-container"
+                    >
+                        <img
+                            src="{{ brandLogo.src }}"
+                            alt="{{ brandLogo.altText }}"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

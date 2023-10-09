@@ -1,0 +1,30 @@
+<div class="three-column-bulleted-list">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h2>{{ heading }}</h2>
+    <div class="three-column-bulleted-list__wrapper">
+        <div>
+            <h3>{{ listHeading1 }}</h3>
+            <ul>
+                <li *ngFor="let listItem of listArray1; let i = index">
+                    <span>{{ listItem }}</span>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3>{{ listHeading2 }}</h3>
+            <ul>
+                <li *ngFor="let listItem of listArray2; let i = index">
+                    <span>{{ listItem }}</span>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3>{{ listHeading3 }}</h3>
+            <ul>
+                <li *ngFor="let listItem of listArray3; let i = index">
+                    <span>{{ listItem }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

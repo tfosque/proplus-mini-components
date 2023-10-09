@@ -1,0 +1,128 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.top-hat {
+    background-color: $color-background-dark;
+
+    &__content-container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__left-container,
+    &__right-container {
+        height: 100%;
+    }
+
+    &__left-container {
+        padding: rem-calc(5px 0 0);
+    }
+
+    &__tabs {
+        display: block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
+    &__tab {
+        align-items: center;
+        color: #fff;
+        display: inline-flex;
+        font-size: rem-calc(13px);
+        line-height: rem-calc(21px);
+        padding-bottom: rem-calc(4px);
+
+        &.active {
+            background-color: $color-primary;
+            border-top-left-radius: 1px;
+            border-top-right-radius: 1px;
+            border-right: none;
+            bottom: -1px;
+            margin-right: rem-calc(15px);
+            padding-left: rem-calc(12px);
+            padding-right: rem-calc(12px);
+            padding-top: rem-calc(2px);
+            position: relative;
+
+            &:after {
+                content: none;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        &:last-child {
+            &:after {
+                content: none;
+            }
+        }
+
+        &:after {
+            border-right: 1px solid rgba(255, 255, 255, 0.6);
+            content: '';
+            height: rem-calc(12px);
+            margin: rem-calc(0 15px);
+            width: 1px;
+        }
+
+        a {
+            color: #fff;
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        &__content-container {
+            display: flex;
+        }
+
+        &__left-container {
+            padding: rem-calc(7px 0 0);
+        }
+
+        &__links {
+            align-items: center;
+            display: flex;
+            height: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        &__link {
+            margin-right: rem-calc(27px);
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            a {
+                color: #fff;
+                font-size: rem-calc(13.5px);
+                font-weight: $font-weight-semi-bold;
+                line-height: rem-calc(22px);
+            }
+
+            &--phone {
+                align-items: center;
+                display: inline-flex;
+
+                .icon-phone {
+                    font-size: rem-calc(12px);
+                    margin-right: rem-calc(6px);
+                }
+
+                a {
+                    color: rgba(255, 255, 255, 0.9);
+                    font-size: rem-calc(15px);
+                    font-weight: $font-weight-normal;
+                    line-height: rem-calc(25px);
+                }
+            }
+        }
+    }
+}

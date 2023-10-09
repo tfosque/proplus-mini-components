@@ -1,0 +1,157 @@
+<footer class="footer grid-container full">
+    <ng-container [brManageContentButton]="footerDocument"></ng-container>
+    <div class="grid-container grid-x">
+        <div class="footer__top-wrapper small-12">
+            <div class="footer__updates">
+                <section class="footer__updates--wrapper">
+                    <h2>{{ signupHeading }}</h2>
+                    <p>{{ signupText }}</p>
+                    <form (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
+                        <label>
+                            <span class="show-for-sr">{{
+                                signupPlaceholder
+                            }}</span>
+                            <input
+                                [(ngModel)]="emailAddress"
+                                formControlName="emailAddress"
+                                required
+                                type="text"
+                                placeholder="{{ signupPlaceholder }}"
+                            />
+                        </label>
+                        <button [disabled]="!signUpForm.valid" type="submit">
+                            {{ signupButtonText }}
+                        </button>
+                        <div
+                            *ngIf="formSuccess"
+                            class="footer__success-message"
+                        >
+                            <p>
+                                {{
+                                    'Request Submitted'
+                                        | translations: 'request-submitted'
+                                }}
+                            </p>
+                        </div>
+                    </form>
+                    <div class="footer__form-connect-wrapper">
+                        <h2>{{ connectHeading }}</h2>
+                        <ul class="footer__social-icons">
+                            <li
+                                *ngFor="
+                                    let listitem of connectArray;
+                                    let i = index
+                                "
+                            >
+                                <a
+                                    href="{{ listitem.link | protocol }}"
+                                    target="{{
+                                        listitem.newTab ? '_blank' : '_self'
+                                    }}"
+                                    rel="noopener"
+                                >
+                                    <img
+                                        *ngIf="listitem.image"
+                                        src="{{ listitem.image }}"
+                                        alt="{{ listitem.altText }}"
+                                    />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+            <div
+                class="footer__content-columns"
+                [ngClass]="{
+                    wide: contentColumns && contentColumns.length > 3
+                }"
+            >
+                <section
+                    *ngFor="let column of contentColumns"
+                    class="small-12 footer__content-column"
+                >
+                    <h2
+                        (click)="toggleExpanded(column.heading)"
+                        class="footer__expandable"
+                    >
+                        {{ column.heading }}
+                        <span class="hide-for-large">
+                            &nbsp;
+                            <span
+                                *ngIf="!isExpanded(column.heading)"
+                                class="icon-chevron-down"
+                            ></span>
+                            <span
+                                *ngIf="isExpanded(column.heading)"
+                                class="icon-chevron-up"
+                            ></span>
+                        </span>
+                    </h2>
+                    <ul
+                        [ngClass]="{
+                            'show-for-large': !isExpanded(column.heading)
+                        }"
+                    >
+                        <li
+                            *ngFor="
+                                let listitem of column.footerLinks;
+                                let i = index
+                            "
+                        >
+                            <a
+                                *ngIf="listitem.isExternal; else internalLink"
+                                href="{{ listitem.url | protocol }}"
+                                >{{ listitem.title }}</a
+                            >
+                            <ng-template #internalLink>
+                                <a routerLink="{{ listitem.url }}">{{
+                                    listitem.title
+                                }}</a>
+                            </ng-template>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            <section class="footer__connect-wrapper">
+                <h2>{{ connectHeading }}</h2>
+                <ul class="footer__social-icons">
+                    <li *ngFor="let listitem of connectArray; let i = index">
+                        <a
+                            href="{{ listitem.link | protocol }}"
+                            target="{{ listitem.newTab ? '_blank' : '_self' }}"
+                            rel="noopener"
+                        >
+                            <img
+                                *ngIf="listitem.image"
+                                src="{{ listitem.image }}"
+                                alt="{{ listitem.altText }}"
+                            />
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+        <div class="small-12 footer__trailer-wrapper">
+            <img class="logo" src="{{ logoImage }}" alt="Beacon Logo" />
+            <ul class="footer__trailer">
+                <li *ngFor="let listitem of footerLinksArray; let i = index">
+                    <a
+                        *ngIf="listitem.isExternal; else internalLink"
+                        href="{{ listitem.url | protocol }}"
+                        >{{ listitem.title }}</a
+                    >
+                    <ng-template #internalLink>
+                        <a routerLink="{{ listitem.url }}">{{
+                            listitem.title
+                        }}</a>
+                    </ng-template>
+                </li>
+            </ul>
+        </div>
+        <p class="footer__copyright">
+            Copyright &copy; {{ year }} - Beacon Roofing Supply, Inc. - All
+            Rights Reserved.
+        </p>
+    </div>
+</footer>

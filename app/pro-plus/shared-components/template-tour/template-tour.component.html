@@ -1,0 +1,173 @@
+<div class="targeted-screens">
+    <h1 class="with-sub-title">Templates</h1>
+    <p class="sub-title">
+        Create a template and save yourself the time find the materials you already
+        love.
+    </p>
+
+    <div class="show-for-medium">
+        <button mat-raised-button color="primary" style="margin: 0px 10px">
+            New Template
+        </button>
+
+        <form class="form">
+            <div class="grid-x grid-margin-x">
+                <div class="cell medium-shrink">
+                    <mat-form-field appearance="standard" class="full-width">
+                        <mat-select class="full-width" value="Template Name">
+                            <mat-option value="Template Name">Template Name</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="cell medium-auto">
+                    <mat-form-field appearance="standard" class="full-width">
+                        <input matInput placeholder="Search By" />
+                    </mat-form-field>
+                </div>
+                <div class="cell medium-shrink" style="border-top: 0.84375em solid transparent">
+                    <button mat-raised-button color="primary">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <button mat-raised-button class="action-buttons">
+            Copy To Account
+        </button>
+
+        <button mat-raised-button class="action-buttons" color="secondary">
+            Duplicate Template(s)
+        </button>
+
+        <button mat-raised-button class="action-buttons" color="secondary">
+            Delete
+        </button>
+    </div>
+
+    <div class="onBoarding">
+        <div class="grid-x header-row">
+            <div class="cell small-5">
+                <div class="grid-x" style="height: 100%;">
+                    <div class="cell small-1">
+                        <input type="checkbox" class="non-highlighted-checkbox" disabled>
+                    </div>
+                    <div class="cell small-11">
+                        Template Name
+                    </div>
+                </div>
+            </div>
+            <div class="cell small-7">
+                <div class="grid-x" style="height: 100%;">
+                    <div class="cell small-3">
+                        Last Modified
+                    </div>
+                    <div class="cell small-5">
+                        Account Name
+                    </div>
+                    <div class="cell small-3">
+                        Created By
+                    </div>
+                    <div class="cell small-1">
+                        Actions
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-x standard-row" *ngFor="let template of templates">
+            <div class="cell small-5">
+                <div class="grid-x" style="height: 100%;">
+                    <div class="cell small-1">
+                        <input type="checkbox" class="non-highlighted-checkbox" disabled>
+                    </div>
+                    <div class="cell small-11 grid-text-blue">
+                        {{template.templateName}}
+                    </div>
+                </div>
+            </div>
+            <div class="cell small-7">
+                <div class="grid-x" style="height: 100%;">
+                    <div class="cell small-3">
+                        {{template.lastModified}}
+                    </div>
+                    <div class="cell small-5">
+                        {{template.account}}
+                    </div>
+                    <div class="cell small-3">
+                        {{template.createdBy}}
+                    </div>
+                    <div class="cell small-1">
+                        <mat-icon style="font-size: 1.275rem" class="delete-icon">delete</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-x paginator-row">
+            <div class="cell small-6"></div>
+            <div class="cell small-6">
+                <div class="grid-x">
+                    <div class="cell small-3 text-right small-padding-top">Items per page:</div>
+                    <div class="cell small-2 small-padding-top">
+                        <mat-select [value]="10" class="onBoarding-select" disabled>
+                            <mat-option *ngFor="let t of [10, 20]" [value]="t">{{ t }}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="cell small-3 small-padding-top">1 - 10 of 471</div>
+                    <div class="cell small-1">
+                        <mat-icon>first_page</mat-icon>
+                    </div>
+                    <div class="cell small-1">
+                        <mat-icon>navigate_before</mat-icon>
+                    </div>
+                    <div class="cell small-1">
+                        <mat-icon>navigate_next</mat-icon>
+                    </div>
+                    <div class="cell small-1">
+                        <mat-icon>last_page</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="backdrop" id="divBackdrop">&nbsp;</div>
+    <app-template-active-menu-item></app-template-active-menu-item>
+    <!-- <div
+      id="indicator"
+      [ngClass]="{
+          default: (currStep | async) === 0,
+          step1: (currStep | async) === 1,
+          step2: (currStep | async) === 2,
+          step3: (currStep | async) === 3
+      }"
+  >
+      <app-step-indicator></app-step-indicator>
+  </div> -->
+    <div id="onboarding-container" [ngClass]="{
+        default: (currStep | async) === 0,
+        step1: (currStep | async) === 1,
+        step2: (currStep | async) === 2,
+        step3: (currStep | async) === 3
+      }">
+        <div id="stepper-container">
+            <div id="stepper">
+                <app-template-step-title-desc class="row"></app-template-step-title-desc>
+                <app-template-step-icons class="row"></app-template-step-icons>
+                <app-template-label-icons class="row"></app-template-label-icons>
+                <div id="buttons" class="btn-group row">
+                    <button *ngIf="!(isDone | async) || (currStep | async) !== 3" type="button" (click)="complete()" mat-button color="secondary"
+                        class="skip-btn">
+                        Skip
+                    </button>
+                    <button type="button" *ngIf="!(isDone | async) || (currStep | async) !== 3" mat-button color="primary" (click)="nextStep()">
+                        Next >
+                    </button>
+                    <button type="button" (click)="complete()" *ngIf="(isDone | async) && (currStep | async) === 3" mat-button color="primary">
+                        Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

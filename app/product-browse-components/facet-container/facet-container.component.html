@@ -1,0 +1,47 @@
+<div class="facet-container">
+    <div class="facet-group__title-wrap" *ngIf="userService.isLoggedIn">
+        <div
+            class="facet-group__title"
+            style="padding: 0.25rem 0.75rem 0.25rem 0.75rem"
+        >
+            <ul
+                class="facet-group__facet-list"
+                style="list-style: none; padding: 0"
+            >
+                <li class="facet-group__facet-item" style="padding-bottom: 5px">
+                    <!-- TODO (Connie): to review with ticket BC-2341
+                    Missing frequentlyPurchased, replaced with recentlyPurchased -->
+                    <mat-checkbox
+                        class="custom-checkbox"
+                        [(ngModel)]="recentlyPurchased"
+                    >
+                        <span>Frequently Purchased</span>
+                    </mat-checkbox>
+                </li>
+                <!-- TODO (Tim): to review since this never renders -->
+                <!-- <li class="facet-group__facet-item" *ngIf="false">
+                    <mat-checkbox
+                        class="custom-checkbox"
+                        [(ngModel)]="showForAll"
+                    >
+                        <span>Show From All Branches</span>
+                    </mat-checkbox>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    <ng-container *ngFor="let facetGroup of facetGroups$ | async; index as i">
+        <app-facet-group
+            *ngIf="facetGroup && hasFacets(facetGroup)"
+            [pageTitle]="pageTitle"
+            [facetGroup]="facetGroup"
+            [selectedFacets]="selectedFacets$ | async"
+            [isExpanded]="isFacetGroupExpandedArray[facetGroup.title]"
+            [showAll]="isFacetGroupShowAllArray[facetGroup.title]"
+            [currentUrlPath]="currentUrlPath"
+            (isExpandedToggled)="updateIsExpanded($event, facetGroup)"
+            (showAllToggled)="updateShowAll($event, facetGroup)"
+        >
+        </app-facet-group>
+    </ng-container>
+</div>

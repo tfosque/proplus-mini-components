@@ -1,0 +1,340 @@
+<header class="main-nav" id="main-nav">
+    <ng-container [brManageMenuButton]="menuDocument"></ng-container>
+    <app-top-hat
+        [otherSiteLinks]="otherSiteLinks"
+        [utilityLinks]="utilityLinks"
+        [currentSiteName]="currentSiteName"
+        [contactPhone]="contactNumber"
+    ></app-top-hat>
+    <div class="main-nav__top-container">
+        <div class="grid-container main-nav__top-wrap">
+            <div class="main-nav__left-wrap">
+                <a class="main-nav__logo" [routerLink]="['/']">
+                    <img src="{{ logoSrc }}" alt="{{ logoAltText }}" />
+                </a>
+                <form
+                    class="show-for-medium main-nav__desktop-search-form"
+                    name="search-form"
+                >
+                    <label class="main-nav__search-input">
+                        <span class="show-for-sr">{{ searchText }}</span>
+                        <input
+                            type="text"
+                            placeholder="{{ searchText }}"
+                            [(ngModel)]="searchTerm"
+                            name="searchTerm"
+                            ngModel
+                            required
+                        />
+                    </label>
+                    <button
+                        [attr.aria-label]="searchText"
+                        type="submit"
+                        class="main-nav__search-submit"
+                        (click)="submitSearch()"
+                    >
+                        <span class="icon-search" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+            <div class="main-nav__right-wrap">
+                <!-- FINDASTORE BTN -->
+                <a
+                    *ngIf="!findAStoreIsExternal; else externalFindAStoreLink"
+                    class="button tertiary show-for-medium main-nav__find-a-store de-highlight"
+                    [routerLink]="findAStoreLink"
+                    >{{ findAStoreText }}</a
+                >
+                <ng-template #externalFindAStoreLink>
+                    <a
+                        *ngIf="findAStoreLink"
+                        class="button tertiary show-for-medium main-nav__find-a-store"
+                        [href]="findAStoreLink | protocol"
+                        >{{ findAStoreText }}</a
+                    >
+                </ng-template>
+                <!-- Mobile icons-->
+                <ul class="main-nav__mobile-icons hide-for-medium">
+                    <li class="main-nav__icon-item">
+                        <a
+                            [attr.aria-label]="contactUs"
+                            href="tel:{{ contactNumber }}"
+                        >
+                            <span class="icon-phone" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li class="main-nav__icon-item">
+                        <a
+                            *ngIf="
+                                !findAStoreIsExternal;
+                                else mobileExternalFindAStoreLink
+                            "
+                            [attr.aria-label]="findAStoreText"
+                            routerLink="{{ findAStoreLink }}"
+                        >
+                            <span class="icon-location"></span>
+                        </a>
+                        <ng-template #mobileExternalFindAStoreLink>
+                            <a
+                                *ngIf="findAStoreLink"
+                                [attr.aria-label]="findAStoreText"
+                                href="{{ findAStoreLink | protocol }}"
+                            >
+                                <span
+                                    class="icon-location"
+                                    aria-hidden="true"
+                                ></span>
+                            </a>
+                        </ng-template>
+                    </li>
+                    <li class="main-nav__icon-item">
+                        <a
+                            [attr.aria-label]="searchText"
+                            name="{{ searchText }}"
+                            [ngClass]="{ 'search-active': mobileSearchActive }"
+                            (click)="toggleMobileSearch()"
+                        >
+                            <span
+                                [ngClass]="{
+                                    'icon-search': !mobileSearchActive,
+                                    'icon-close': mobileSearchActive
+                                }"
+                            ></span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Mobile icons-->
+                <div class="login-button">
+                    <a
+                        *ngIf="
+                            !findAStoreIsExternal;
+                            else externalFindAStoreLink
+                        "
+                        class="button tertiary show-for-medium main-nav__find-a-store"
+                        (click)="logIn()"
+                        >Login</a
+                    >
+                </div>
+            </div>
+        </div>
+        <form
+            *ngIf="mobileSearchActive"
+            class="hide-for-medium main-nav__mobile-search-form"
+            name="search-form-mobile"
+        >
+            <label class="main-nav__search-input">
+                <span class="show-for-sr">{{ searchText }}</span>
+                <input
+                    type="text"
+                    placeholder="{{ searchText }}"
+                    [(ngModel)]="searchTerm"
+                    name="searchTerm"
+                    ngModel
+                    required
+                />
+            </label>
+            <button
+                class="main-nav__search-submit"
+                type="submit"
+                (click)="submitSearch()"
+            >
+                <span class="icon-search"></span>
+            </button>
+        </form>
+    </div>
+    <nav class="main-nav__nav" #navContainer>
+        <div class="grid-container main-nav__nav-container" #navItemContainer>
+            <ul class="main-nav__nav-items">
+                <li class="main-nav__nav-item show-for-small-only">
+                    <a
+                        href="#"
+                        class="main-nav__hambugermenu"
+                        (click)="toggleMenuActive($event)"
+                    >
+                        <span class="material-icons">menu</span>
+                    </a>
+                </li>
+                <li
+                    class="main-nav__nav-item"
+                    *ngFor="let navItem of navItems; index as i"
+                    [ngClass]="{ 'is-active': i === activeIndex }"
+                    #navItemRef
+                >
+                    <a
+                        *ngIf="!navItem.isExternal; else externalLink"
+                        class="main-nav__primary-link"
+                        [routerLink]="
+                            isMediumScreen || !isBrowser ? navItem.url : []
+                        "
+                        id="main-nav-mega-menu-label-{{ i }}"
+                        (click)="
+                            isMediumScreen
+                                ? closeAllMenus()
+                                : setActiveMegaMenuAndNavItem(
+                                      i,
+                                      navItemRef,
+                                      false,
+                                      true
+                                  )
+                        "
+                    >
+                        {{ navItem.title }}
+                    </a>
+                    <ng-template #externalLink>
+                        <a
+                            class="main-nav__primary-link"
+                            [href]="
+                                isMediumScreen || !isBrowser
+                                    ? (navItem.url | protocol)
+                                    : ''
+                            "
+                            id="main-nav-mega-menu-label-{{ i }}"
+                            (click)="
+                                isMediumScreen
+                                    ? closeAllMenus()
+                                    : setActiveMegaMenuAndNavItem(
+                                          i,
+                                          navItemRef,
+                                          false,
+                                          true
+                                      )
+                            "
+                        >
+                            {{ navItem.title }}
+                        </a>
+                    </ng-template>
+                </li>
+            </ul>
+            <div
+                [ngClass]="{ visible: isOverflowing }"
+                class="main-nav__more-link"
+            >
+                <!-- <a class="button primary" (click)="toggleMenuActive($event)">
+                    {{ 'More' | translations: 'more' }}
+                    <span class="icon-chevron-down"></span> </a
+                >&nbsp; -->
+                <a
+                    class="button emphasis show-for-small-only"
+                    (click)="logIn()"
+                >
+                    Login
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-nav__menu" [ngClass]="{ 'menu-active': menuActive }">
+        <div class="main-nav__menu-close-bar" *ngIf="menuActive">
+            <span class="main-nav__menu-text">
+                {{ 'Menu' | translations: 'menu' }}
+            </span>
+            <a (click)="toggleMenuActive($event)">
+                <span class="icon-close"></span>
+            </a>
+        </div>
+        <div
+            class="main-nav__all-categories"
+            *ngIf="activeIndex === -1 && menuActive"
+        >
+            <ul class="main-nav__category-list">
+                <li
+                    class="main-nav__category-item"
+                    *ngFor="let navItem of navItems; index as i"
+                >
+                    <a (click)="setActiveMegaMenu(i)">
+                        {{ navItem.title }}
+                        <span class="icon-chevron-right"></span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="main-nav__utility-list">
+                <li
+                    class="main-nav__utility-link"
+                    *ngIf="(spanishRef | async)?.showSpanishBtn"
+                >
+                    <a (click)="goToSpanish()"> Español </a>
+                </li>
+                <li
+                    class="main-nav__utility-link"
+                    *ngIf="(spanishRef | async)?.showEnglishBtn"
+                >
+                    <a (click)="goToEnglish()"> English </a>
+                </li>
+                <li
+                    class="main-nav__utility-link"
+                    *ngFor="let link of utilityLinks"
+                >
+                    <a
+                        *ngIf="!link.isExternal; else externalLink"
+                        (click)="closeAllMenus()"
+                        [routerLink]="link.url"
+                    >
+                        {{ link.title }}
+                    </a>
+                    <ng-template #externalLink>
+                        <a
+                            (click)="closeAllMenus()"
+                            [href]="link.url | protocol"
+                        >
+                            {{ link.title }}
+                        </a>
+                    </ng-template>
+                </li>
+                <li class="main-nav__utility-link">
+                    <a
+                        *ngIf="
+                            !findAStoreIsExternal;
+                            else moreExternalFindAStoreLink
+                        "
+                        [routerLink]="findAStoreLink"
+                        (click)="closeAllMenus()"
+                        class="button primary main-nav__find-a-store-mobile"
+                    >
+                        {{ findAStoreText }}
+                    </a>
+                    <ng-template #moreExternalFindAStoreLink>
+                        <a
+                            *ngIf="findAStoreLink"
+                            [href]="findAStoreLink | protocol"
+                            (click)="closeAllMenus()"
+                            class="button primary main-nav__find-a-store-mobile"
+                        >
+                            {{ findAStoreText }}
+                        </a>
+                    </ng-template>
+                </li>
+            </ul>
+        </div>
+        <div
+            class="main-nav__menu-back-bar"
+            *ngIf="activeIndex > -1 && menuActive"
+        >
+            <a (click)="setActiveMegaMenu(-1)">
+                <span class="icon-chevron-left"></span>
+                <span class="main-nav__back-text">
+                    {{ 'All Categories' | translations: 'all-categories' }}
+                </span>
+            </a>
+        </div>
+        <ng-container *ngFor="let navItem of navItems; index as i">
+            <app-main-nav-mega-menu
+                class="main-nav__mega-menu"
+                [ngClass]="{ 'is-active': i === activeIndex }"
+                (mouseenter)="setActiveMegaMenuAndNavItem(i, null, true)"
+                (mouseleave)="setActiveMegaMenuAndNavItem(-1)"
+                attr.aria-labelledby="main-nav-mega-menu-label-{{ i }}"
+                [ngStyle]="{
+                    'left.px':
+                        isLargeScreen && !menuActive ? megaMenuHoriPosition : 0
+                }"
+                [isActive]="i === activeIndex"
+                [menuActive]="menuActive"
+                [title]="navItem.title"
+                [titleUrl]="navItem.url"
+                [titleIsExternal]="navItem.isExternal"
+                [menuSections]="navItem.megaMenu.megaMenuSections"
+                [marketingBlock]="navItem.megaMenu.marketingBlock"
+                (navigated)="closeAllMenus()"
+            ></app-main-nav-mega-menu>
+        </ng-container>
+    </div>
+</header>

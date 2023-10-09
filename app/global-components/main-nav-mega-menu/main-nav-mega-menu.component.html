@@ -1,0 +1,150 @@
+<section
+    class="main-nav-mega-menu"
+    [ngClass]="{ 'menu-active': menuActive, 'is-visible': isVisible }"
+    #megaMenu
+    [ngStyle]="{ 'left.px': overflowing ? -offsetLeft : false }"
+>
+    <div class="grid-container">
+        <h1 class="main-nav-mega-menu__title">
+            <a
+                *ngIf="!titleIsExternal; else externalLink"
+                routerLink="{{ titleUrl }}"
+                (click)="navigationClicked()"
+            >
+                {{ 'All' | translations: 'all' }} {{ title
+                }}<span class="icon-arrow-right"></span>
+            </a>
+            <ng-template #externalLink>
+                <a
+                    href="{{ titleUrl | protocol }}"
+                    (click)="navigationClicked()"
+                >
+                    {{ 'All' | translations: 'all' }} {{ title
+                    }}<span class="icon-arrow-right"></span>
+                </a>
+            </ng-template>
+        </h1>
+        <div class="main-nav-mega-menu__content-container">
+            <ng-container *ngFor="let menuSection of menuSections">
+                <div
+                    class="main-nav-mega-menu__link-section"
+                    *ngIf="!menuSection.isMarketingBlock"
+                >
+                    <h2
+                        class="main-nav-mega-menu__section-title"
+                        *ngIf="menuSection.title"
+                    >
+                        {{ menuSection.title }}
+                    </h2>
+                    <ul class="main-nav-mega-menu__links">
+                        <li
+                            class="main-nav-mega-menu__link"
+                            *ngFor="let link of menuSection.links"
+                        >
+                            <a
+                                *ngIf="!link.isExternal; else externalLink"
+                                [routerLink]="link.url"
+                                [queryParams]="link.parameters"
+                                (click)="navigationClicked()"
+                            >
+                                {{ link.title }}
+                            </a>
+                            <ng-template #externalLink>
+                                <a
+                                    [href]="link.url | protocol"
+                                    (click)="navigationClicked()"
+                                >
+                                    {{ link.title }}
+                                </a>
+                            </ng-template>
+                        </li>
+                    </ul>
+                </div>
+            </ng-container>
+            <div
+                *ngIf="marketingBlock"
+                class="main-nav-mega-menu__marketing-block"
+            >
+                <a
+                    (click)="navigationClicked()"
+                    *ngIf="
+                        !marketingBlock.isExternal &&
+                            marketingBlock.btnUrl &&
+                            marketingBlock.btnText;
+                        else external
+                    "
+                    title="{ marketingBlock.btnText }"
+                    [routerLink]="marketingBlock.btnUrl"
+                >
+                    <section class="marketing-block">
+                        <div
+                            *ngIf="marketingBlockImage"
+                            class="marketing-block__image-wrap"
+                        >
+                            <img
+                                src="{{ marketingBlockImage.src }}"
+                                alt="{{ marketingBlockImage.altText }}"
+                            />
+                        </div>
+                        <div class="marketing-block__wrapper">
+                            <h2 class="marketing-block__title">
+                                {{ marketingBlock.title }}
+                            </h2>
+                            <p>{{ marketingBlock.textContent }}</p>
+                        </div>
+                    </section>
+                </a>
+                <ng-template #external>
+                    <a
+                        (click)="navigationClicked()"
+                        *ngIf="
+                            marketingBlock.isExternal &&
+                                marketingBlock.btnUrl &&
+                                marketingBlock.btnText;
+                            else noLink
+                        "
+                        title="{ marketingBlock.btnText }"
+                        [href]="marketingBlock.btnUrl | protocol"
+                    >
+                        <section class="marketing-block">
+                            <div
+                                *ngIf="marketingBlockImage"
+                                class="marketing-block__image-wrap"
+                            >
+                                <img
+                                    src="{{ marketingBlockImage.src }}"
+                                    alt="{{ marketingBlockImage.altText }}"
+                                />
+                            </div>
+                            <div class="marketing-block__wrapper">
+                                <h2 class="marketing-block__title">
+                                    {{ marketingBlock.title }}
+                                </h2>
+                                <p>{{ marketingBlock.textContent }}</p>
+                            </div>
+                        </section>
+                    </a>
+                </ng-template>
+                <ng-template #noLink>
+                    <section class="marketing-block">
+                        <div
+                            *ngIf="marketingBlockImage"
+                            class="marketing-block__image-wrap"
+                        >
+                            <img
+                                src="{{ marketingBlockImage.src }}"
+                                alt="{{ marketingBlockImage.altText }}"
+                            />
+                        </div>
+                        <div class="marketing-block__wrapper">
+                            <h2 class="marketing-block__title">
+                                {{ marketingBlock.title }}
+                            </h2>
+                            <p>{{ marketingBlock.textContent }}</p>
+                        </div>
+                    </section>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</section>

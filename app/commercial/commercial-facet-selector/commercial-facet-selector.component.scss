@@ -1,0 +1,33 @@
+.facet-title {
+    display: flex;
+    padding: 8px;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    border: 1px solid #000;
+    color: #000;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+
+    /* Subheading */
+}
+.facet-content {
+    display: flex;
+    padding: 0px 8px;
+    align-items: center;
+    gap: 4px;
+    align-self: stretch;
+    color: var(--beacon-black, #242424);
+    font-feature-settings: 'clig' off, 'liga' off;
+
+    /* Paragraph 2 */
+    font-family: Proxima Nova;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.15px;
+}
+.facet-container {
+    margin: 0px 20px;
+}

@@ -1,0 +1,348 @@
+.header-text {
+    font-family: Arial;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.margin-header {
+    margin: 20px 0 10px 0;
+}
+
+.stepper {
+    ::ng-deep .mat-step-icon-content {
+        display: none !important;
+    }
+
+    ::ng-deep .mat-horizontal-stepper-header {
+        pointer-events: none !important;
+    }
+
+    ::ng-deep .mat-step-header .mat-step-icon {
+        background-color: #faa41a;
+        height: 50px;
+        width: 50px;
+        font-size: 30px;
+        border: solid #025f9e 3px;
+        top: -13px !important;
+    }
+
+    ::ng-deep .mat-stepper-horizontal-line {
+        border: solid #025f9e 1px;
+    }
+
+    ::ng-deep .mat-step-text-label {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    ::ng-deep
+        .mat-stepper-label-position-bottom
+        .mat-horizontal-stepper-header:not(:last-child)::after {
+        border: solid #025f9e 1px;
+        right: -3px;
+    }
+
+    ::ng-deep
+        .mat-stepper-label-position-bottom
+        .mat-horizontal-stepper-header:not(:first-child)::before {
+        border: solid #025f9e 1px;
+    }
+
+    ::ng-deep .mat-horizontal-content-container {
+        padding: 0;
+    }
+
+    ::ng-deep
+        .mat-stepper-label-position-bottom
+        .mat-horizontal-stepper-header
+        .mat-step-label {
+        padding-top: 0;
+    }
+}
+
+.sub-text {
+    //styleName: H2 Header;
+    font-family: 'titling-gothic-fb-compressed-bold';
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 34px;
+    letter-spacing: 0.15000000596046448px;
+    text-align: left;
+}
+.sub-text-container {
+    margin-top: 60px;
+    margin-bottom: 16px;
+}
+
+.top-margin {
+    margin-top: 10px;
+}
+
+.top-margin-link {
+    margin-top: 8px;
+}
+
+.small-text {
+    font-size: 14px;
+    line-height: 1.2;
+    margin-top: 8px;
+}
+
+.right-padding {
+    padding-right: 80px;
+}
+
+.right-padding-small {
+    padding-right: 75px;
+}
+
+.job-account {
+    ::ng-deep .mat-form-field-flex {
+        border: 1px solid #dddee0;
+        padding-left: 0.75em;
+        text-transform: uppercase;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        line-height: 1.5;
+        text-align: center !important;
+    }
+
+    ::ng-deep .mat-form-field-underline {
+        .filter {
+            display: none;
+        }
+    }
+
+    ::ng-deep.mat-form-field-appearance-legacy .mat-form-field-infix {
+        margin-top: -10px;
+    }
+
+    ::ng-deep
+        .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+        .mat-form-field-label {
+        display: none;
+    }
+}
+
+.small-input {
+    font-weight: 700;
+
+    ::ng-deep .mat-form-field-wrapper {
+        width: 50px !important;
+    }
+
+    ::ng-deep .mat-form-field-wrapper .mat-input-element {
+        font-weight: 700;
+        border: 1px solid #025f9e;
+        border-radius: 3px;
+        padding: 2px 0;
+        text-align: center;
+    }
+
+    ::ng-deep .mat-form-field-underline {
+        display: none;
+    }
+}
+
+.img-prod {
+    width: 80px;
+}
+
+table.material-list {
+    margin: 1ex 0ex 2ex 0ex;
+    border-collapse: collapse;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.selections {
+    ::ng-deep [mat-header-row] {
+        background-color: lightgray;
+    }
+
+    ::ng-deep tr.mat-header-row {
+        height: 40px;
+    }
+
+    ::ng-deep th.mat-header-cell {
+        border-width: 0;
+        text-transform: uppercase;
+        color: black;
+        font-size: 20px;
+        font-weight: 700;
+        padding-right: 10px;
+    }
+
+    ::ng-deep td.mat-cell {
+        border-bottom: 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}
+
+.empty-message {
+    text-align: center;
+    font-size: 16px;
+}
+
+.margin-right {
+    margin-right: 10px;
+}
+
+.linked-sub-text {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
+
+.action-add {
+    ::ng-deep .mat-raised-button {
+        line-height: 32px;
+    }
+}
+
+.small-column-input {
+    ::ng-deep .mat-input-element {
+        font-size: 14px;
+        font-weight: 400;
+        border: 1px solid #dddee0;
+        width: 85px;
+    }
+}
+
+.very-small-column-input {
+    ::ng-deep .mat-input-element {
+        font-size: 14px;
+        font-weight: 400;
+        border: 1px solid #dddee0;
+        width: 50px;
+    }
+
+    ::ng-deep .mat-form-field-infix {
+        width: 50px;
+    }
+
+    ::ng-deep .mat-form-field-underline {
+        display: none;
+    }
+
+    ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+        padding-bottom: 0;
+    }
+}
+
+.facet {
+    ::ng-deep .mat-form-field {
+        .mat-form-field-infix {
+            width: 10.5rem;
+        }
+    }
+
+    .grid-margin-x > .medium-4 {
+        width: calc(33.33333333% - 0.1rem);
+    }
+}
+
+.summary-small-text {
+    font-size: 14px;
+}
+
+.bottom-margin {
+    margin-bottom: 20px;
+}
+
+.align-right {
+    float: right;
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.upper-case {
+    text-transform: uppercase;
+    padding-bottom: 5px;
+}
+
+.cta {
+    // width: 280px;
+    border-radius: 4px;
+    gap: 8px;
+    border: 2px solid #285d99;
+    color: #285d99;
+    ::ng-deep .material-icons {
+        font-size: 20px;
+    }
+}
+.tooltip-icon {
+    font-size: 16px;
+    margin-top: 3px;
+}
+
+.icon-padding {
+    padding: 8px 0 0 20px;
+}
+
+.disable {
+    color: rgba(0, 0, 0, 0.38);
+    // color: rgba(0, 0, 0, 0.87);
+}
+
+.alert {
+    color: red;
+}
+
+.margin-left-cta {
+    margin-left: 20px;
+}
+
+.margin-right-cta {
+    margin-right: 20px;
+}
+
+.margin-left-small {
+    margin-left: 10px;
+}
+
+.mat-column-product {
+    flex: 0 0 10% !important;
+    width: 10% !important;
+}
+
+.mat-column-details {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+}
+
+.mat-column-waste_factor {
+    flex: 0 0 10% !important;
+    width: 10% !important;
+}
+
+.mat-column-unit_price {
+    flex: 0 0 10% !important;
+    width: 10% !important;
+}
+
+.mat-column-qty {
+    flex: 0 0 12% !important;
+    width: 12% !important;
+}
+
+.mat-column-actions {
+    flex: 0 0 8% !important;
+    width: 8% !important;
+}
+
+.sub-title {
+    font-family: 'titling-gothic-fb-compressed-bold', 'arial', sans-serif;
+    color: #025f9e;
+    font-size: 1.5em;
+    text-transform: uppercase;
+}

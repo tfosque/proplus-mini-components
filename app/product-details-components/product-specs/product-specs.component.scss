@@ -1,0 +1,52 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.product-specs {
+    max-width: rem-calc(895px);
+
+    dl {
+        display: table;
+        width: 100%;
+    }
+
+    div {
+        display: table-row;
+
+        &:last-child {
+            dt,
+            dd {
+                border-bottom: none;
+            }
+        }
+    }
+
+    dt {
+        color: $color-text-emphasis;
+        font-weight: $font-weight-semi-bold;
+        line-height: rem-calc(19px);
+    }
+
+    dt,
+    dd {
+        border-bottom: 1px solid $color-borders;
+        display: table-cell;
+        font-size: rem-calc(16px);
+        padding: rem-calc(12px) 0;
+        max-width: 50%;
+    }
+
+    dd {
+        padding-left: rem-calc(16px);
+        line-height: rem-calc(22px);
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        & > div {
+            display: none;
+        }
+
+        dt {
+            width: 50%;
+        }
+    }
+}

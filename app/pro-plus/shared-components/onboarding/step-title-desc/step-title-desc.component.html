@@ -1,0 +1,77 @@
+<div class="content">
+    <!-- ACTIVE Category Icons -->
+    <div class="grid-x">
+        <!-- STEP 1 -->
+        <ng-container *ngIf="(currStep | async) === 0">
+            <div class="cell small-1 active-icon">
+                <mat-icon class="mat-18">input</mat-icon>
+            </div>
+            <div class="cell small-10">
+                <h3>Welcome to PRO+!</h3>
+            </div>
+            <!-- CANCEL Button -->
+            <div *ngIf="false; else cancel"></div>
+            <p class="cell small-12 paragraph">
+                <b>Lets get you started:</b>
+                We'll make you an expert in ordering materials on PRO+ in just a
+                few minutes.
+            </p>
+        </ng-container>
+
+        <!-- STEP 2 -->
+        <ng-container *ngIf="(currStep | async) === 1">
+            <div class="cell auto active-icon">
+                <mat-icon class="mat-18">search</mat-icon>
+            </div>
+            <div class="cell small-10">
+                <h3>Search for Materials</h3>
+            </div>
+            <!-- CANCEL Button -->
+            <div *ngIf="false; else cancel"></div>
+            <p class="cell small-12 paragraph">
+                You can search for materials from your local branch using the
+                search bar. Once you find the items you need, you can add them
+                to your cart or to your templates.
+            </p>
+        </ng-container>
+        <!-- STEP 3 -->
+        <ng-container *ngIf="(currStep | async) === 2">
+            <div class="cell auto active-icon">
+                <mat-icon class="mat-18">list</mat-icon>
+            </div>
+            <div class="cell small-10">
+                <h3>Order History</h3>
+            </div>
+            <!-- CANCEL Button -->
+            <div *ngIf="false; else cancel"></div>
+            <p class="cell small-12 paragraph">
+                You can see items you ordered in the past and easily add them to
+                your cart. You can also check the status of your deliveries.
+            </p>
+        </ng-container>
+        <!-- STEP 4 -->
+        <ng-container *ngIf="(currStep | async) === 3">
+            <div class="cell auto active-icon">
+                <mat-icon class="mat-18">check_circle_outline</mat-icon>
+            </div>
+            <div class="cell small-10">
+                <h3>Access your Templates</h3>
+            </div>
+            <!-- CANCEL Button -->
+            <div *ngIf="false; else cancel"></div>
+            <p class="cell small-12 paragraph">
+                Find the items you often purchase in ready to order template.
+                You'll save time and energy for your next order.
+            </p>
+        </ng-container>
+    </div>
+</div>
+<!-- TODO make dynamic -->
+<ng-template #cancel>
+    <!-- CANCEL Button -->
+    <div class="cell small-1" style="text-align: right">
+        <div class="cancel-btn" (click)="closeOnboarding()">
+            <mat-icon class="mat-18">cancel</mat-icon>
+        </div>
+    </div>
+</ng-template>

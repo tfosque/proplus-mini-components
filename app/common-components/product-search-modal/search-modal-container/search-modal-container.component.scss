@@ -1,0 +1,9 @@
+h1 {
+  font-family: titling-gothic-fb-compressed-bold, arial, sans-serif;
+  color: #025f9e;
+  text-transform: uppercase;
+}
+
+::ng-deep .mat-dialog-container {
+  overflow: hidden !important;
+}

@@ -1,0 +1,259 @@
+
+
+<!-- This can be used to expose the approver info in one place for the full template. -->
+<!--<ng-container *ngIf="{-->
+<!--  isApprover: isApprover$ | async,-->
+<!--  isSubmitForApprover: isSubmitForApprover$ | async-->
+<!--  } as user">-->
+<!--</ng-container>-->
+
+
+
+<div class="loading-container" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<h1 *ngIf="loading && !getterIsSubmitForApprover">
+    <mat-icon>shopping_cart</mat-icon> YOUR ORDER IS BEING PROCESSED.
+</h1>
+<h1 *ngIf="!loading && !getterIsSubmitForApprover">
+    <mat-icon>shopping_cart</mat-icon> YOUR ORDER IS PLACED.
+</h1>
+
+<h1 *ngIf="getterIsSubmitForApprover">
+    <mat-icon>shopping_cart</mat-icon> YOUR ORDER HAS BEEN SUBMITTED FOR
+    APPROVAL.
+</h1>
+<ng-container *ngIf="viewModel$ | async as c">
+    <!-- <app-dump-grid [input]="c"></app-dump-grid> -->
+    <ng-container *ngIf="c.orderResponse as orderResponse">
+        <p style="font-weight: bold">
+            Tax, shipping and handling will be calculated at final order
+            processing.
+        </p>
+        <mat-divider style="margin-bottom: 20px"></mat-divider>
+        <div class="grid-x">
+            <!-- getting rid of the processing for submitters -->
+            <div *ngIf="!getterIsSubmitForApprover" class="small-12 medium-8">
+                <div class="div-spacing">
+                    <span>Thank You for your order!</span>
+                </div>
+                <div
+                    *ngIf="c.submitOrderResult.orderNumber"
+                    class="div-spacing"
+                >
+                    <span
+                        >Click
+                        <a
+                            [routerLink]="[
+                                '/proplus/accounts',
+                                accountId,
+                                'orders',
+                                c.submitOrderResult.orderNumber
+                            ]"
+                        >
+                            here</a
+                        >
+                        to view your order
+                        <a
+                            [routerLink]="[
+                                '/proplus/accounts',
+                                accountId,
+                                'orders',
+                                c.submitOrderResult.orderNumber
+                            ]"
+                            >{{ c.submitOrderResult.orderNumber }}</a
+                        >
+                    </span>
+                </div>
+                <div
+                    class="div-spacing"
+                    *ngIf="!c.submitOrderResult.orderNumber"
+                >
+                    <span>{{ c.submitOrderResult.orderConfirmationTips }}</span>
+                </div>
+            </div>
+            <div class="small-12 medium-8" *ngIf="getterIsSubmitForApprover">
+                <div class="div-spacing">
+                    <span
+                        >Thank You for your order! Your order is being processed
+                        and waiting for approval!</span
+                    >
+                </div>
+            </div>
+            <div class="small-12 medium-4">
+                <!-- Order summary -->
+                <h3 style="font-weight: bold; margin-top: 0px">
+                    Order Summary
+                </h3>
+                <mat-divider style="margin: 10px 0px"></mat-divider>
+                <p>
+                    <span style="font-weight: bolder">Total: </span
+                    >{{ c.getOrderTotal }}
+                </p>
+            </div>
+        </div>
+        <mat-divider style="margin-bottom: 20px"></mat-divider>
+        <div class="grid-x">
+            <div
+                class="small-12 medium-8"
+                class="div-spacing"
+                style="margin-right: 20px"
+            >
+                <div>
+                    <div *ngIf="getterIsSubmitForApprover">
+                        <div class="div-spacing">
+                            <span style="font-weight: bold"
+                                >Approver Email:</span
+                            >
+                            {{ approverInfo.email }}
+                        </div>
+                        <div class="div-spacing">
+                            <span style="font-weight: bold"
+                                >Approver Name:</span
+                            >
+                            {{ approverInfo.firstName }},
+                            {{ approverInfo.lastName }}
+                        </div>
+                    </div>
+
+                    <div class="div-spacing">
+                        <span style="font-weight: bold">Delivery Option:</span>
+                        {{ c.orderOption }}
+                    </div>
+                    <div class="div-spacing">
+                        <span style="font-weight: bold">Delivery Method:</span>
+                        {{ c.orderMethod }}
+                    </div>
+                </div>
+                <mat-divider style="margin-bottom: 20px"></mat-divider>
+                <div *ngIf="!c.orderOnHold">
+                    <div class="div-spacing">
+                        <span style="font-weight: bold">Delivery Date:</span>
+                        {{ orderResponse.deliveryDate }}
+                    </div>
+                    <div class="div-spacing">
+                        <span style="font-weight: bold">Delivery Time:</span>
+                        {{ orderResponse.deliveryTime | formatTime }}
+                    </div>
+                </div>
+                <div *ngIf="lineItems$">
+                    <app-product-lines
+                        [displayedColumns]="[
+                            'product',
+                            'details',
+                            'unit_price',
+                            'qty',
+                            'subtotal'
+                        ]"
+                        [observedItems]="lineItems$"
+                        [displayErrorImage]="false"
+                    >
+                    </app-product-lines>
+                    <div class="div-spacing">
+                        <span style="font-weight: bold">Order Notes:</span
+                        >{{ orderResponse.instructions }}
+                    </div>
+                    <mat-divider style="margin-bottom: 20px"></mat-divider>
+                </div>
+                <div class="grid-x">
+                    <div class="small-12 medium-6">
+                        <mat-menu #appMenu="matMenu">
+                            <button
+                                (click)="openDialogNewTemplate()"
+                                mat-menu-item
+                            >
+                                Create New Template
+                            </button>
+                            <mat-divider></mat-divider>
+                            <button
+                                mat-menu-item
+                                (click)="addItemsToTemplate(template)"
+                                *ngFor="let template of templateList"
+                            >
+                                {{ template.templateName }}
+                            </button>
+                        </mat-menu>
+
+                        <button
+                            class="cell small-12 medium-4 large-4 md-5"
+                            mat-raised-button
+                            color="secondary"
+                            [matMenuTriggerFor]="appMenu"
+                        >
+                            Add Items to Template
+                        </button>
+                    </div>
+                    <div class="small-12 medium-6">
+                        <button
+                            class="cell small-12 medium-4 large-4 md-5"
+                            mat-raised-button
+                            color="primary"
+                            (click)="navigateHome()"
+                        >
+                            Continue Shopping
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="small-5 medium-3 border-style">
+                <div style="margin-left: 20px">
+                    <div class="div-spacing" *ngIf="orderResponse.poName">
+                        <span style="font-weight: bold">PO #:</span>
+                        {{ orderResponse.poName }}
+                    </div>
+                    <div class="div-spacing">
+                        <span style="font-weight: bold">Job Account:</span>
+                        {{ orderResponse.jobName }}
+                    </div>
+                    <div
+                        class="div-spacing"
+                        *ngIf="
+                            orderResponse.additionalRecipients &&
+                            orderResponse.additionalRecipients.length &&
+                            orderResponse.additionalRecipients as ae
+                        "
+                    >
+                        <span style="font-weight: bold"
+                            >Email Confirmation Recipients:</span
+                        >
+                        <div *ngFor="let aeItem of ae">
+                            {{ aeItem }}
+                        </div>
+                    </div>
+                    <div
+                        class="div-spacing"
+                        *ngIf="orderResponse.shippingAddress as sa"
+                    >
+                        <span style="font-weight: bold">Shipping Address:</span>
+                        <div>
+                            {{ sa.approverFirstName }}{{ sa.approverLastName }}
+                        </div>
+                        <div>{{ sa.address1 }}</div>
+                        <div>{{ sa.address2 }}</div>
+                        <div>{{ sa.address3 }}</div>
+                        <div>
+                            {{ sa.city }}, {{ sa.state }}, {{ sa.postalCode }}
+                        </div>
+                        <div>{{ sa.country }}</div>
+                        <div
+                            *ngIf="
+                                (orderResponse.contactInfo &&
+                                    orderResponse.contactInfo.phoneNumber) ||
+                                sa.phoneNumber
+                            "
+                        >
+                            <span style="font-weight: bold">Phone Number:</span>
+                            {{
+                                (orderResponse.contactInfo &&
+                                    orderResponse.contactInfo.phoneNumber) ||
+                                    sa.phoneNumber
+                            }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+<!-- <app-dump-grid [input]="lineItems$"></app-dump-grid>
+<app-dump-grid [input]="cart.getState()"></app-dump-grid> -->

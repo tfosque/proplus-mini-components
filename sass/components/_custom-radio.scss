@@ -1,0 +1,35 @@
+.custom-radio {
+    cursor: pointer;
+
+    &__input {
+        display: none;
+
+        &:checked {
+            + .custom-radio {
+                &__label-text {
+                    font-weight: $font-weight-bold;
+
+                    &:after {
+                        content: '\e921';
+                        display: inline-block;
+                        font-family: 'icomoon' !important;
+                        font-size: rem-calc(10px);
+                        margin-left: rem-calc(4px);
+                    }
+                }
+            }
+        }
+    }
+
+    &__label-text {
+        color: $color-primary;
+        font-size: rem-calc(15px);
+        line-height: rem-calc(19px);
+    }
+
+    &__count {
+        color: $color-text-primary;
+        font-size: rem-calc(14px);
+        line-height: rem-calc(19px);
+    }
+}

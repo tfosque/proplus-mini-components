@@ -1,0 +1,22 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.image-list {
+    @include contentButtonContainer();
+    ul {
+        list-style-type: none;
+        padding-left: 0px;
+        margin-bottom: 0px;
+        li {
+            padding-left: 0;
+            margin: 25px 0 30px;
+            text-align: center;
+            &:last-child {
+                margin-bottom: 10px;
+            }
+        }
+    }
+    img {
+        margin-bottom: 0px;
+    }
+}

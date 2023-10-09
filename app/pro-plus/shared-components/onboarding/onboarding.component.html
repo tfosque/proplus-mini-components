@@ -1,0 +1,60 @@
+<!-- <p>onboarding works!</p> -->
+<div class="backdrop">&nbsp;</div>
+<app-active-menu-item></app-active-menu-item>
+<div
+    id="indicator"
+    [ngClass]="{
+        default: (currStep | async) === 0,
+        step1: (currStep | async) === 1,
+        step2: (currStep | async) === 2,
+        step3: (currStep | async) === 3
+    }"
+>
+    <app-step-indicator></app-step-indicator>
+</div>
+<div
+    id="onboarding-container"
+    [ngClass]="{
+        default: (currStep | async) === 0,
+        step1: (currStep | async) === 1,
+        step2: (currStep | async) === 2,
+        step3: (currStep | async) === 3
+    }"
+>
+    <app-custom-stepper id="stepper">
+        <app-step-title-desc class="row"></app-step-title-desc>
+        <app-step-icons class="row"></app-step-icons>
+        <app-label-icons class="row"></app-label-icons>
+
+        <div id="buttons" class="btn-group row">
+            <button
+                *ngIf="!(isDone | async)"
+                type="button"
+                (click)="complete()"
+                mat-button
+                color="secondary"
+                class="skip-btn"
+            >
+                Skip
+            </button>
+            <button
+                type="button"
+                *ngIf="!(isDone | async)"
+                mat-button
+                color="primary"
+                (click)="nextStep()"
+            >
+                Next >
+            </button>
+            <button
+                type="button"
+                (click)="complete()"
+                *ngIf="isDone | async"
+                mat-button
+                color="primary"
+            >
+                Done
+            </button>
+        </div>
+    </app-custom-stepper>
+</div>

@@ -1,0 +1,15 @@
+<!--  <app-img-fav-icon [element]="element" size="large" (click)="showSingleDetail(element)" style="cursor: pointer"
+    [data]="data" [fromPage]="data.fromPage" [fromModal]="fromModal"></app-img-fav-icon> -->
+
+<!-- onerror="this.src='../resources/images/none.jpg'" -->
+<!-- https://beaconproplus.com/images/default_not_found.jpg -->
+
+<div (click)="selectProduct()" class="pointer" style="height: auto;">
+  <img appImagePreload [default]="
+  element.product?.productOnErrorImage | errorImage : '/assets/images/image-not-available.svg'" [src]="createImage()"
+    [alt]="element.itemNumber || element.currentSKU?.itemNumber" (click)="selectProduct()" class="pointer">
+
+  <p style="text-align: left; font-size: .91rem; padding: 4px 4px 14px 4px; 
+  line-height: 1.25;" [innerHtml]="element.internalProductName | safeHtml">
+  </p>
+</div>

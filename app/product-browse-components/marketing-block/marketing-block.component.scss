@@ -1,0 +1,80 @@
+@import '../../../sass/vendor/foundation-settings';
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.marketing-block {
+    @include contentButtonContainer();
+    background-color: $color-background-dark;
+    border: 6px solid $color-primary;
+    margin-top: rem-calc(12px);
+    &__wrapper {
+        color: $color-secondary;
+        padding: rem-calc(16px);
+    }
+    h2 {
+        color: $color-secondary;
+        font-family: $font-family;
+        font-weight: $font-weight-bold;
+        font-size: rem-calc(18px);
+        line-height: rem-calc(22px);
+        margin-bottom: rem-calc(5px);
+    }
+    p {
+        color: $color-white;
+        font-size: rem-calc(14px);
+        line-height: rem-calc(18px);
+        margin-top: 0px;
+        opacity: 0.8;
+    }
+    img {
+        height: auto;
+        width: 100%;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .marketing-block {
+        border: 5px solid $color-primary;
+        background-color: transparent;
+        display: flex;
+        margin-bottom: rem-calc(50px);
+        position: relative;
+        overflow: hidden;
+        @include ie-flex-min-height();
+        &__wrapper {
+            background-color: $color-background-dark;
+            max-width: rem-calc(450px);
+            padding: rem-calc(28px 25px);
+            top: 0;
+            z-index: 2;
+            @include angle(after, false, 20deg);
+            &:after {
+                background-color: $color-background-dark;
+                bottom: -1px;
+                box-shadow: 2px 0 4px -1px rgba(0, 0, 0, 0.4);
+                height: calc(120%);
+                width: 120%;
+                top: -1px;
+            }
+        }
+        h2 {
+            font-size: rem-calc(24px);
+            line-height: rem-calc(28px);
+        }
+        p {
+            font-size: rem-calc(16px);
+            line-height: rem-calc(20px);
+            margin-bottom: rem-calc(22px);
+        }
+
+        img {
+            bottom: 0;
+            @include object-fit(cover, center);
+            height: 100%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,130 @@
+<section
+    class="facet-group"
+    [ngClass]="{ 'is-expanded': isExpanded, 'show-all': showAll }"
+>
+    <div class="facet-group__title-wrap">
+        <a (click)="toggleIsExpanded()" class="facet-group__toggle">
+            <h3 class="facet-group__title">
+                {{ facetGroup.title }}
+            </h3>
+            <span
+                class="facet-group__expanded-indicator hide-for-medium icon-chevron-up"
+            ></span>
+        </a>
+        <ul
+            class="facet-group__selected-facets-list hide-for-medium"
+            *ngIf="
+                groupSelectedFacets && groupSelectedFacets.length && !isExpanded
+            "
+        >
+            <li
+                *ngFor="let facet of groupSelectedFacets"
+                class="facet-group__selected-facet-item"
+            >
+                <a
+                    (click)="removeFacet(facet)"
+                    class="facet-group__selected-facet"
+                >
+                    <span>{{ facet.value }}</span>
+                    <span class="facet-group__remove-facet icon-close"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="facet-group__facet-list-container">
+        <label
+            *ngIf="facetGroup.facets.length > SEARCH_DISPLAY_THRESHOLD"
+            class="facet-group__search"
+        >
+            <span class="facet-group__search-label cdk-visually-hidden">{{
+                'Search' | translations: 'search'
+            }}</span>
+            <input
+                class="facet-group__search-input"
+                placeholder="{{ 'Search' | translations: 'search' }}"
+                name="facet-group-{{ facetGroup.title }}-search"
+                [(ngModel)]="query"
+            />
+            <span
+                class="facet-group__search-icon icon-search"
+                aria-hidden="true"
+            ></span>
+        </label>
+        <ul class="facet-group__facet-list">
+            <ng-container
+                *ngFor="
+                    let facet of facetGroup.facets | search: 'value':query;
+                    index as i
+                "
+            >
+                <li
+                    class="facet-group__facet-item"
+                    *ngIf="
+                        facet.type !== 'cateFilter' &&
+                            !facet.permanent &&
+                            (i < INITIAL_DISPLAYED_FACETS || showAll);
+                        else cateFilter
+                    "
+                >
+                    <mat-checkbox
+                        class="custom-checkbox"
+                        [checked]="facet.selected"
+                        (change)="onFacetChange(facet)"
+                    >
+                        {{ facet.value }}
+                        <span class="custom-checkbox__count"
+                            >({{ facet.count }})</span
+                        >
+                        <span *ngIf="isPreview"
+                            ><br />facetKey: {{ facet.key }}</span
+                        >
+                    </mat-checkbox>
+                </li>
+                <ng-template #cateFilter>
+                    <li
+                        class="facet-group__facet-item"
+                        *ngIf="
+                            !facet.permanent &&
+                            !facet.isParentFacet &&
+                            !facet.selected &&
+                            (i < INITIAL_DISPLAYED_FACETS || showAll)
+                        "
+                    >
+                        <a
+                            [routerLink]="[
+                                currentUrlPath ? currentUrlPath : './'
+                            ]"
+                            [queryParams]="{ cateFilter: facet.key }"
+                        >
+                            {{ facet.value }}&nbsp;<span
+                                class="custom-radio__count"
+                                >({{ facet.count }})</span
+                            >
+                            <span *ngIf="isPreview"
+                                ><br />facetKey: {{ facet.key }}</span
+                            >
+                        </a>
+                    </li>
+                </ng-template>
+            </ng-container>
+        </ul>
+        <a
+            (click)="toggleShowAll()"
+            class="facet-group__show-all"
+            *ngIf="(facetGroup.facets | search: 'value':query).length > 6"
+        >
+            <span class="facet-group__arrow-icon icon-chevron-up"></span>
+            <span
+                *ngIf="!showAll; else showLess"
+                class="facet-group__show-all-text"
+            >
+                {{ 'See All' | translations: 'see-all' }}
+            </span>
+            <ng-template #showLess>
+                <span class="facet-group__show-all-text">
+                    {{ 'See Less' | translations: 'see-less' }}
+                </span>
+            </ng-template>
+        </a>
+    </div>
+</section>

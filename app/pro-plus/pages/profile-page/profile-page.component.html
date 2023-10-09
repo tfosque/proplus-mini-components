@@ -1,0 +1,196 @@
+<!-- <div class="callout success" *ngIf="success === true">
+  Your password has been updated successfully.
+</div> -->
+
+<h1 class="with-sub-title">Personal Profile Information</h1>
+<p class="sub-title">Update your contact information and email settings.</p>
+
+<mat-divider class="divider"></mat-divider>
+
+<div class="grid-x">
+    <div class="cell medium-5 large-5">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Email/ID"
+                matInput
+                [ngModel]="emailId"
+                readonly
+            />
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-5 large-5">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Title"
+                matInput
+                [(ngModel)]="title"
+                maxlength="40"
+            />
+        </mat-form-field>
+    </div>
+</div>
+<div class="grid-x">
+    <div class="cell medium-5 large-5">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="First Name"
+                matInput
+                [(ngModel)]="firstName"
+                [formControl]="firstNameControl"
+                [errorStateMatcher]="matcher"
+                maxlength="40"
+                required
+            />
+            <mat-error *ngIf="firstNameControl.hasError('required')">
+                This field is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-5 large-5">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Last Name"
+                matInput
+                [(ngModel)]="lastName"
+                maxlength="40"
+            />
+        </mat-form-field>
+    </div>
+</div>
+<div class="grid-x">
+    <div class="cell medium-5 large-5">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Address 1"
+                matInput
+                [(ngModel)]="address1"
+                value=""
+                maxlength="50"
+            />
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-5 large-5">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Address 2"
+                matInput
+                [(ngModel)]="address2"
+                value=""
+                maxlength="50"
+            />
+        </mat-form-field>
+    </div>
+</div>
+<div class="grid-x">
+    <div class="cell medium-2 large-2">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="City"
+                matInput
+                [(ngModel)]="city"
+                maxlength="32"
+            />
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-2 large-2">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <mat-select placeholder="State" [(value)]="state">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let state of states" [value]="state.value">
+                    {{ state.key }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-2 large-2">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Zip Code"
+                matInput
+                maxlength="10"
+                (keyup)="addDashZipcode()"
+                [(ngModel)]="zipCode"
+            />
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-2 large-2">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <mat-select
+                placeholder="Country"
+                [(ngModel)]="country"
+                name="country"
+            >
+                <mat-option [value]="'USA'"> United States </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="grid-x"></div>
+<div class="grid-x">
+    <div class="cell medium-3 large-3">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Contact Phone Number"
+                matInput
+                (keyup)="addDash()"
+                maxlength="12"
+                [(ngModel)]="contactPhoneNumber"
+            />
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-3 large-3">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Office Phone Number"
+                matInput
+                (keyup)="addDashOffice()"
+                maxlength="12"
+                [(ngModel)]="officePhoneNumber"
+            />
+        </mat-form-field>
+    </div>
+    <div class="cell medium-1 large-1"></div>
+    <div class="cell medium-3 large-3">
+        <mat-form-field class="full-width" floatLabel="auto">
+            <input
+                placeholder="Mobile Phone Number"
+                matInput
+                (keyup)="addDashMobile()"
+                maxlength="12"
+                [(ngModel)]="mobilePhoneNumber"
+            />
+        </mat-form-field>
+    </div>
+</div>
+<div class="grid-x">
+    <div class="full-width">
+        <div class="checkbox-container">
+            <mat-label class="checkboxes">Email Opt-Out:</mat-label>
+            <mat-checkbox class="checkboxes" [(ngModel)]="subscribeOrder"
+                >Orders</mat-checkbox
+            >
+            <mat-checkbox class="checkboxes" [(ngModel)]="subscribeQuote"
+                >Quotes</mat-checkbox
+            >
+            <mat-checkbox [(ngModel)]="subscribeAccount"
+                >Account Emails</mat-checkbox
+            >
+        </div>
+    </div>
+</div>
+
+<button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    (click)="saveUserInfo()"
+>
+    Save
+</button>

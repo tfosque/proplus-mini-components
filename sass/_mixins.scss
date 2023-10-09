@@ -1,0 +1,544 @@
+@use 'sass:math';
+// Global mixins for use in components.  To import in a component's scss file, use '@import '../../../sass/mixins';'
+
+//////
+// Force Element To Self-Clear its Children
+// https://css-tricks.com/snippets/css/clear-fix/
+//////
+@mixin clearfix($side: null) {
+    @if ($side==null or $side==false) {
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    } @else {
+        clear: $side;
+    }
+}
+
+@mixin removeClearfix {
+    &:after {
+        display: none;
+    }
+}
+
+//////
+// Converts one or more pixel values into matching rem values.
+// https://github.com/zurb/foundation-sites/blob/v6.2.1/scss/util/_unit.scss
+// Dependencies: -zf-to-rem
+//////
+$font-size-base: 16px !default;
+
+@function rem-calc($values, $base: $font-size-base) {
+    $rem-values: ();
+    $count: length($values);
+
+    @if $count == 1 {
+        @return -zf-to-rem($values, $base);
+    }
+
+    @for $i from 1 through $count {
+        $rem-values: append($rem-values, -zf-to-rem(nth($values, $i), $base));
+    }
+
+    @return $rem-values;
+}
+
+//////
+// Converts a pixel value to matching rem value. *Any* value passed, regardless of unit, is assumed to be a pixel value.
+// https://github.com/zurb/foundation-sites/blob/v6.2.1/scss/util/_unit.scss
+// Dependencies: strip-unit
+//////
+@function -zf-to-rem($value, $base: $font-size-base) {
+    // Check if the value is a number
+    @if type-of($value) != 'number' {
+        @warn inspect($value) + ' was passed to rem-calc(), which is not a number.';
+        @return $value;
+    }
+
+    // Calculate rem if units for $value is not rem
+    @if unit($value) != 'rem' {
+        $value: strip-unit($value) / strip-unit($base) * 1rem;
+    }
+
+    // Turn 0rem into 0
+    @if $value == 0rem {
+        $value: 0;
+    }
+
+    @return $value;
+}
+
+//////
+// Shoves the element offscreen (but is still technically visible and focusable)
+//////
+@mixin visibleOffscreen {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+///////
+// Mixin to maintain object fit image aspect ratios
+///////
+@mixin aspectRatio($shape: null) {
+    // by default, image is 16:9 landscape
+    height: 0;
+    position: relative;
+
+    @if ($shape==null or $shape==false) {
+        padding-bottom: 56.25%; // 16:9 landscape
+    } @else if($shape== 'square') {
+        padding-bottom: 100%; // square image
+    }
+
+    img {
+        bottom: 0;
+        display: block;
+        height: 100%;
+        left: 0;
+        @include object-fit(cover, center);
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+// This mixin can be used to set the object-fit:
+// @param {String} $fit = fill | contain | cover | none | scale-down
+// @param {String} $position = the position of the element
+// https://github.com/bfred-it/object-fit-images/blob/master/preprocessors/mixin.scss
+////////
+@mixin object-fit($fit: fill, $position: null) {
+    object-fit: $fit;
+
+    @if $position {
+        object-position: $position;
+        font-family: 'object-fit: #{$fit}; object-position: #{$position}';
+    } @else {
+        font-family: 'object-fit: #{$fit}';
+    }
+}
+
+//////
+// Styling the placeholder (or element with placeholder class)
+// Placeholder Selectors: http://stackoverflow.com/revisions/2610741/11
+//////
+@mixin placeholder {
+    &::-webkit-input-placeholder {
+        @content;
+    }
+
+    &:-moz-placeholder {
+        @content;
+    }
+
+    &::-moz-placeholder {
+        @content;
+    }
+
+    &:-ms-input-placeholder {
+        @content;
+    }
+
+    &.placeholder {
+        @content;
+    }
+}
+
+////////
+// Remove the unit of a length
+// https://css-tricks.com/snippets/sass/strip-unit-function/
+// @param {Number} $number - Number to remove unit from
+// @return {Number} - Unitless number
+////////
+@function strip-unit($number) {
+    @if type-of($number) == 'number' and not unitless($number) {
+        @return $number / ($number * 0 + 1);
+    }
+
+    @return $number;
+}
+
+////////
+// Gets the distance between the edge of the viewport and the edge of the content on one side
+// Can be used in situations where the background is full bleed, but the content is aligned to the grid (when applied to padding)
+// Assumptions: $gutter is less than 50% of the viewport; $maxWidth is never larger than the viewport
+// @param {String} $breakpoint - The name of the breakpoint to pull the max-width and gutter information from
+// @return {String} - The distance (potentially utilizing a calc function)
+////////
+@function getContainerGridGutter($breakpoint: small) {
+    $containerGutter: 0;
+    $maxWidth: map-get($content-max, $breakpoint);
+    $gutter: map-get($grid-column-gutter, $breakpoint);
+
+    @if (unit($maxWidth) == '%' and unit($gutter) == '%') {
+        // e.g. maxWidth is 70%, gutter is 5%, the result would be 20%
+        // 			if the viewport was 1000px wide, that would be 200px
+        $containerGutter: ((100% - $maxWidth) / 2) + $gutter;
+    } @else if(unit($maxWidth) ==unit($gutter)) {
+        // e.g. maxWidth is 700px, gutter is 50px, the result would be calc(50% - 300px)
+        // 			if the viewport was 1000px wide, that would be 200px
+        $containerGutter: calc(50% - #{($maxWidth / 2) - $gutter});
+    } @else if(unit($maxWidth) == '%') {
+        @if ($maxWidth==100%) {
+            // e.g. maxWidth is 100%, gutter is 50px, the result would be 50px
+            //			if the viewport was 1000px wide, that would be 50px
+            $containerGutter: $gutter;
+        } @else {
+            // e.g. maxWidth is 70%, gutter is 50px, the result would be calc(15% + 50px)
+            //			if the viewport was 1000px wide, that would be 200px
+            $containerGutter: calc(
+                #{50% - ($maxWidth / 2)} - -#{$gutter}
+            ); // minus negative due to AEM minification
+        }
+    } @else if(unit($gutter) == '%') {
+        // e.g. maxWidth is 700px, gutter is 5%, the result would be calc(55% - 350px)
+        //			if the viewport was 1000px wide, that would be 200px
+        $containerGutter: calc(#{50% + $gutter} - #{$maxWidth / 2});
+    } @else {
+        // e.g. maxWidth is 700px, gutter is 5rem, the result would be calc(50% - 350px + 5rem)
+        //			if the viewport was 1000px wide and the base font size is 10px, that would be 200px
+        $containerGutter: calc(
+            50% - #{$maxWidth / 2} - -#{$gutter}
+        ); // minus negative due to AEM minification
+    }
+
+    @return $containerGutter;
+}
+
+////////
+// Applys the page content container styles (.column.row)
+// @param $breakpoint = the key in the $breakpoints map to apply the appropriate spacing
+// @param $hasBaseStyles = if the element is inheriting the base styles from somewhere else
+////////
+@mixin pageContainer($breakpoint: 'small', $hasBaseStyles: false) {
+    max-width: $global-width;
+    padding-left: #{map-get($grid-column-gutter, $breakpoint)};
+    padding-right: #{map-get($grid-column-gutter, $breakpoint)};
+
+    @if ($hasBaseStyles==false) {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/////////
+// Alternative content container for faux "full bleed" media align-items
+/////////
+@mixin fullBleedContainer {
+    max-width: $full-bleed-max;
+    margin: 0 auto;
+}
+
+////////
+// The styles for the spinner
+// Inspired by https://projects.lukehaas.me/css-loaders/
+// $dot-shadow-full: Animating box shadow so the actual size of the dot will be height/width + this spread
+////////
+@mixin spinner(
+    $outside-edge: 4,
+    $spinner-height: rem-calc(24),
+    $dot-size: 1em,
+    $dot-shadow-full: 0.2em,
+    $dot-shadow-mid: 0,
+    $animation-name: 'spinner'
+) {
+    $dot-shadow-empty: #{-$dot-size};
+    $dot-on-edge: ($outside-edge * 1em) - $dot-size;
+    $dot-in-corner: ($outside-edge * 1em) - ($dot-size * 2);
+    $increment: 100% / 8; // how to divide up the timing (8 positions that the dot will be in)
+    // Positions of the dots
+    $top: 0 #{-$dot-on-edge};
+    $top-right: #{$dot-in-corner} #{-$dot-in-corner};
+    $right: #{$dot-on-edge} 0;
+    $bottom-right: #{$dot-in-corner} #{$dot-in-corner};
+    $bottom: 0 #{$dot-on-edge};
+    $bottom-left: #{-$dot-in-corner} #{$dot-in-corner};
+    $left: #{-$dot-on-edge} 0;
+    $top-left: #{-$dot-in-corner} #{-$dot-in-corner}; // Active positions
+    $top-active: #{$top} 0 #{$dot-shadow-full},
+        #{$top-right} 0 #{$dot-shadow-mid}, #{$right} 0 #{$dot-shadow-empty},
+        #{$bottom-right} 0 #{$dot-shadow-empty},
+        #{$bottom} 0 #{$dot-shadow-empty},
+        #{$bottom-left} 0 #{$dot-shadow-empty}, #{$left} 0 #{$dot-shadow-empty},
+        #{$top-left} 0 #{$dot-shadow-mid};
+    $top-right-active: #{$top} 0 #{$dot-shadow-mid},
+        #{$top-right} 0 #{$dot-shadow-full}, #{$right} 0 #{$dot-shadow-mid},
+        #{$bottom-right} 0 #{$dot-shadow-empty},
+        #{$bottom} 0 #{$dot-shadow-empty},
+        #{$bottom-left} 0 #{$dot-shadow-empty}, #{$left} 0 #{$dot-shadow-empty},
+        #{$top-left} 0 #{$dot-shadow-empty};
+    $right-active: #{$top} 0 #{$dot-shadow-empty},
+        #{$top-right} 0 #{$dot-shadow-mid}, #{$right} 0 #{$dot-shadow-full},
+        #{$bottom-right} 0 #{$dot-shadow-mid}, #{$bottom} 0 #{$dot-shadow-empty},
+        #{$bottom-left} 0 #{$dot-shadow-empty}, #{$left} 0 #{$dot-shadow-empty},
+        #{$top-left} 0 #{$dot-shadow-empty};
+    $bottom-right-active: #{$top} 0 #{$dot-shadow-empty},
+        #{$top-right} 0 #{$dot-shadow-empty}, #{$right} 0 #{$dot-shadow-mid},
+        #{$bottom-right} 0 #{$dot-shadow-full}, #{$bottom} 0 #{$dot-shadow-mid},
+        #{$bottom-left} 0 #{$dot-shadow-empty}, #{$left} 0 #{$dot-shadow-empty},
+        #{$top-left} 0 #{$dot-shadow-empty};
+    $bottom-active: #{$top} 0 #{$dot-shadow-empty},
+        #{$top-right} 0 #{$dot-shadow-empty}, #{$right} 0 #{$dot-shadow-empty},
+        #{$bottom-right} 0 #{$dot-shadow-mid}, #{$bottom} 0 #{$dot-shadow-full},
+        #{$bottom-left} 0 #{$dot-shadow-mid}, #{$left} 0 #{$dot-shadow-empty},
+        #{$top-left} 0 #{$dot-shadow-empty};
+    $bottom-left-active: #{$top} 0 #{$dot-shadow-empty},
+        #{$top-right} 0 #{$dot-shadow-empty}, #{$right} 0 #{$dot-shadow-empty},
+        #{$bottom-right} 0 #{$dot-shadow-empty}, #{$bottom} 0 #{$dot-shadow-mid},
+        #{$bottom-left} 0 #{$dot-shadow-full}, #{$left} 0 #{$dot-shadow-mid},
+        #{$top-left} 0 #{$dot-shadow-empty};
+    $left-active: #{$top} 0 #{$dot-shadow-empty},
+        #{$top-right} 0 #{$dot-shadow-empty}, #{$right} 0 #{$dot-shadow-empty},
+        #{$bottom-right} 0 #{$dot-shadow-empty},
+        #{$bottom} 0 #{$dot-shadow-empty}, #{$bottom-left} 0 #{$dot-shadow-mid},
+        #{$left} 0 #{$dot-shadow-full}, #{$top-left} 0 #{$dot-shadow-mid};
+    $top-left-active: #{$top} 0 #{$dot-shadow-mid},
+        #{$top-right} 0 #{$dot-shadow-empty}, #{$right} 0 #{$dot-shadow-empty},
+        #{$bottom-right} 0 #{$dot-shadow-empty},
+        #{$bottom} 0 #{$dot-shadow-empty},
+        #{$bottom-left} 0 #{$dot-shadow-empty}, #{$left} 0 #{$dot-shadow-mid},
+        #{$top-left} 0 #{$dot-shadow-full};
+    content: '';
+    display: inline-block;
+    font-size: $spinner-height / (($outside-edge * 2) + 1); // Everything is in ems, relative to this font-size
+    margin: #{$outside-edge * $dot-size}; // give room for the animated dots (the content area determines size of the dot)
+    width: $dot-size;
+    height: $dot-size;
+    border-radius: 50%;
+    z-index: 3;
+    color: $color-primary-brand; // box-shadow will inherit this if a color is not provided
+    position: relative;
+    box-shadow: #{$top-active};
+    animation: #{$animation-name} 1.3s infinite linear;
+
+    @keyframes #{$animation-name} {
+        #{$increment * 1} {
+            box-shadow: #{$top-right-active};
+        }
+
+        #{$increment * 2} {
+            box-shadow: #{$right-active};
+        }
+
+        #{$increment * 3} {
+            box-shadow: #{$bottom-right-active};
+        }
+
+        #{$increment * 4} {
+            box-shadow: #{$bottom-active};
+        }
+
+        #{$increment * 5} {
+            box-shadow: #{$bottom-left-active};
+        }
+
+        #{$increment * 6} {
+            box-shadow: #{$left-active};
+        }
+
+        #{$increment * 7} {
+            box-shadow: #{$top-left-active};
+        }
+
+        #{$increment * 8} {
+            box-shadow: #{$top-active};
+        }
+    }
+}
+
+/////////
+// Angled psuedo element renderer
+/////////
+
+@mixin angle($pseudo, $flip: false, $angle: 1.5deg) {
+    // Possible values for $pseudo are: before, after, both
+    @if $pseudo == 'before' or $pseudo == 'after' or $pseudo == 'both' {
+        position: relative;
+        z-index: 1;
+        $selector: if($pseudo == 'both', '&:before,&:after', '&:#{$pseudo}');
+        #{$selector} {
+            background: inherit;
+            bottom: 0;
+            content: '';
+            display: block;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: -1;
+            -webkit-backface-visibility: hidden; // for Chrome Windows
+        }
+        @if $pseudo == 'before' {
+            #{$selector} {
+                left: 0;
+                @if $flip {
+                    -webkit-transform: skewX($angle);
+                    -o-transform: skewX($angle);
+                    -ms-transform: skewX($angle);
+                    -moz-transform: skewX($angle);
+                    transform: skewX($angle);
+                    transform-origin: 0 100%;
+                    -webkit-transform-origin: 0 100%;
+                    -ms-transform-origin: 0 100%;
+                    transform-origin: 0 100%;
+                } @else {
+                    -o-transform: skewX($angle * -1);
+                    -webkit-transform: skewX($angle * -1);
+                    -moz-transform: skewX($angle * -1);
+                    -ms-transform: skewX($angle * -1);
+                    transform: skewX($angle * -1);
+                    transform-origin: 0 0;
+                    -webkit-transform-origin: 0 0;
+                    -ms-transform-origin: 0 0;
+                    transform-origin: 0 0;
+                }
+            }
+        }
+        @if $pseudo == 'after' {
+            #{$selector} {
+                right: 0;
+                @if $flip {
+                    -webkit-transform: skewX($angle);
+                    -o-transform: skewX($angle);
+                    -ms-transform: skewX($angle);
+                    -moz-transform: skewX($angle);
+                    transform: skewX($angle);
+                    transform-origin: 100% 0;
+                    -webkit-transform-origin: 100% 0;
+                    -ms-transform-origin: 100% 0;
+                    transform-origin: 100% 0;
+                } @else {
+                    -o-transform: skewX($angle * -1);
+                    -webkit-transform: skewX($angle * -1);
+                    -moz-transform: skewX($angle * -1);
+                    -ms-transform: skewX($angle * -1);
+                    transform: skewX($angle * -1);
+                    transform-origin: 0 100%;
+                    -webkit-transform-origin: 0 100%;
+                    -ms-transform-origin: 0 100%;
+                    transform-origin: 0 100%;
+                }
+            }
+        }
+        @if $pseudo == 'both' {
+            &:before {
+                left: 0;
+                @if $flip {
+                    -webkit-transform: skewX($angle);
+                    -o-transform: skewX($angle);
+                    -ms-transform: skewX($angle);
+                    -moz-transform: skewX($angle);
+                    transform: skewX($angle);
+                    transform-origin: 0 100%;
+                    -webkit-transform-origin: 0 100%;
+                    -ms-transform-origin: 0 100%;
+                    transform-origin: 0 100%;
+                } @else {
+                    -o-transform: skewX($angle * -1);
+                    -webkit-transform: skewX($angle * -1);
+                    -moz-transform: skewX($angle * -1);
+                    -ms-transform: skewX($angle * -1);
+                    transform: skewX($angle * -1);
+                    transform-origin: 0 0;
+                    -webkit-transform-origin: 0 0;
+                    -ms-transform-origin: 0 0;
+                    transform-origin: 0 0;
+                }
+            }
+            &:after {
+                right: 0;
+                @if $flip {
+                    -webkit-transform: skewX($angle);
+                    -o-transform: skewX($angle);
+                    -ms-transform: skewX($angle);
+                    -moz-transform: skewX($angle);
+                    transform: skewX($angle);
+                    transform-origin: 100% 0;
+                    -webkit-transform-origin: 100% 0;
+                    -ms-transform-origin: 100% 0;
+                    transform-origin: 100% 0;
+                } @else {
+                    -o-transform: skewX($angle * -1);
+                    -webkit-transform: skewX($angle * -1);
+                    -moz-transform: skewX($angle * -1);
+                    -ms-transform: skewX($angle * -1);
+                    transform: skewX($angle * -1);
+                    transform-origin: 0 100%;
+                    -webkit-transform-origin: 0 100%;
+                    -ms-transform-origin: 0 100%;
+                    transform-origin: 0 100%;
+                }
+            }
+        }
+    }
+}
+
+/// Stolen from foundation
+/// Creates a CSS triangle, which can be used for dropdown arrows, dropdown pips, and more. Use this mixin inside a `&::before` or `&::after` selector, to attach the triangle to an existing element.
+///
+/// @param {Number} $triangle-size - Width of the triangle.
+/// @param {Color} $triangle-color - Color of the triangle.
+/// @param {Keyword} $triangle-direction - Direction the triangle points. Can be `up`, `right`, `down`, or `left`.
+@mixin css-triangle($triangle-size, $triangle-color, $triangle-direction) {
+    display: block;
+    width: 0;
+    height: 0;
+
+    border: inset $triangle-size;
+
+    content: '';
+
+    @if ($triangle-direction == down) {
+        border-bottom-width: 0;
+        border-top-style: solid;
+        border-color: $triangle-color transparent transparent;
+    }
+    @if ($triangle-direction == up) {
+        border-top-width: 0;
+        border-bottom-style: solid;
+        border-color: transparent transparent $triangle-color;
+    }
+    @if ($triangle-direction == right) {
+        border-right-width: 0;
+        border-left-style: solid;
+        border-color: transparent transparent transparent $triangle-color;
+    }
+    @if ($triangle-direction == left) {
+        border-left-width: 0;
+        border-right-style: solid;
+        border-color: transparent $triangle-color transparent transparent;
+    }
+}
+
+// Bugfix for min-height on ie in flex containers.
+@mixin ie-flex-min-height() {
+    &:before {
+        content: '';
+        min-height: inherit;
+        font-size: 0;
+        display: block;
+    }
+}
+
+$myMinGridWidths: 0, 640px, 1024px;
+
+//  Sets a property to one of three values based on one of the above min-widths.
+@mixin attr-for-widths($attr, $widths...) {
+    @each $width in $widths {
+        @media only screen and (min-width: nth($myMinGridWidths, index($widths, $width))) {
+            #{$attr}: $width;
+        }
+    }
+}
+
+// Sets the position of the container for the BR Content Edit button
+@mixin contentButtonContainer {
+    position: relative;
+}

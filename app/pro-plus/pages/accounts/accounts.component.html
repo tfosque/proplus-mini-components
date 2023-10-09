@@ -1,0 +1,107 @@
+<div class="loading-container" *ngIf="isLoading; else accounts">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #accounts>
+    <h1 class="with-sub-title">Accounts</h1>
+    <p class="sub-title">
+        Manage your accounts, order history, quotes and pay bills.
+    </p>
+    <mat-divider class="divider show-for-medium"></mat-divider>
+
+    <p>
+        <span style="font-weight: bold">Current Account: </span>
+        {{ currentAccount }}
+    </p>
+    <div class="grid-x">
+        <mat-form-field
+            appearance="standard"
+            class="small-11"
+            floatLabel="auto"
+        >
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event.target.value)" />
+        </mat-form-field>
+
+        <div class="small-1">
+            <mat-icon class="icon">search</mat-icon>
+        </div>
+    </div>
+    <!-- Mobile -->
+    <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="full-width show-for-small-only"
+    >
+        <ng-container matColumnDef="accountName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="cell">
+                Account
+            </th>
+            <td
+                class="table-space grid-x grid-margin-x"
+                mat-cell
+                *matCellDef="let element"
+            >
+                <div class="cell small-8">
+                    {{ element.accountName }}
+                </div>
+                <div class="cell small-4">
+                    <a
+                        (click)="switchAccount(element)"
+                        *ngIf="dataSource.data.length > 1"
+                        >Switch Account</a
+                    >
+                </div>
+                <div class="cell small-8">
+                    <div>{{ element.branch.branchName }}</div>
+                </div>
+                <div class="cell small-4">
+                    <div><a (click)="viewOrder(element)">Orders</a></div>
+                    <div><a (click)="viewQuote(element)">Quotes</a></div>
+                </div>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsMobile"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsMobile"></tr>
+    </table>
+
+    <!-- Medium and Desktop -->
+    <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="full-width show-for-medium"
+    >
+        <ng-container matColumnDef="accountName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Account</th>
+            <td class="table-space" mat-cell *matCellDef="let element">
+                <div>
+                    {{ element.accountName }}
+                </div>
+                <div *ngIf="dataSource.data.length > 1">
+                    <a (click)="switchAccount(element)">Switch Account</a>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="branch">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Branch</th>
+            <td class="table-space" mat-cell *matCellDef="let element">
+                {{ element.branch.branchName }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="accountLegacyId">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td class="table-space" mat-cell *matCellDef="let element">
+                <a (click)="viewOrder(element)">Orders</a>
+                <span> | </span>
+                <a (click)="viewQuote(element)">Quotes</a>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</ng-template>

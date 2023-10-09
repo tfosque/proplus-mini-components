@@ -1,0 +1,40 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.contact-us-form {
+    max-width: rem-calc(520px);
+
+    form {
+        margin: 0;
+    }
+
+    &__btn-wrap {
+        align-items: center;
+        display: flex;
+    }
+
+    &__note {
+        display: block;
+        color: $color-text-primary;
+        font-size: rem-calc(15px);
+        line-height: rem-calc(25px);
+        margin-bottom: rem-calc(26px);
+    }
+
+    &__form-field {
+        padding-bottom: rem-calc(10px);
+        margin-bottom: rem-calc(10px);
+    }
+
+    @media (min-width: map-get($breakpoints, medium)) {
+        &__select {
+            width: 60%;
+        }
+    }
+
+    @media (min-width: map-get($breakpoints, large)) {
+        &__select {
+            width: 45%;
+        }
+    }
+}

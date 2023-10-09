@@ -1,0 +1,25 @@
+<div class="search-null-message">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h2>{{ searchNullMessageSubHeader }}</h2>
+    <ul *ngIf="searchNullTipsArray" class="search-null-message__tip-list">
+        <li *ngFor="let tip of searchNullTipsArray; let i = index">
+            <span> {{ tip }}</span>
+        </li>
+    </ul>
+    <ul class="search-null-message__contact-list">
+        <li
+            *ngIf="searchNullHelpText"
+            [innerHTML]="searchNullHelpText | linkRewriter"
+        ></li>
+        <li *ngIf="searchNullEmailLink">
+            <a href="mailto:{{ searchNullEmailLink }}">{{
+                searchNullEmailLinkText
+            }}</a>
+        </li>
+        <li *ngIf="searchNullFinderLinkText">
+            <a routerLink="{{ searchNullFinderLink }}">{{
+                searchNullFinderLinkText
+            }}</a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,299 @@
+<!-- TASK 
+  [-] test- hide job if no jobs available
+  [-] change empty template message
+  [x] link details title to pdpUrl
+  [-] update img after user select (sku change - color: mfg:) [-] test sku update and disabled skus
+  - connect buttons 
+    [-] saveAll,
+    [-] Add Product, MODAL(new)
+    [-] clear qty, 
+    [-] copy quote, 
+    [---] add items to cart
+  - review if most used jobs api exist Marzia not sure if this is being use or even a thing // TODO 
+  - make table thinner via collapsable
+  [--] footer totals
+  [-] clean up drag and drop
+  - *** update after user select (sku change - color: mfg: diameter: size: etc...)
+  - move styles to scss sheet
+  [--] pagination implementation
+  - smaller components (if possible)
+  -- cleanup dead branches and dead components
+-->
+
+
+<div class="grid-x grid-margin-x">
+
+  <!-- FLOAT CTA's TODO stop browser at 1242px -->
+  <div class="cell floating-buttons" style="position: fixed; z-index: 100; min-width: 736px; max-width: 880px; background: #fff; top: 0;
+  box-shadow: 1px 1px 8px 1px #888888; padding: 10px 0px;" *ngIf="floatBtns | async">
+    <div id="show-hide-buttons" class="grid-x grid-margin-x grid-margin-y">
+      <button class="cell medium-shrink float" mat-raised-button (click)="save()"
+        [color]="(templateChanges | async) ? 'primary' : 'light'" [disabled]="!(templateChanges | async)">Save
+        All
+      </button>
+
+      <button class="cell medium-shrink float" mat-raised-button color="primary" (click)="openDialog()">ADD
+        PRODUCT
+      </button>
+
+      <button [disabled]="!(selectedItems | async)?.length" class="cell medium-shrink float" mat-raised-button
+        [color]="(selectedItems | async)?.length ? 'primary' : 'secondary'"
+        [matBadgeHidden]="!(selectedItems | async)?.length" matBadgePosition="after"
+        [matBadge]="(selectedItems | async)?.length" matBadgeOverlap="true" matBadgeColor="accent"
+        (click)="addItemsToCart()">
+        <span>ADD Items to
+          Cart</span>
+      </button>
+
+      <button class="cell medium-shrink float" mat-raised-button color="light" (click)="clearQty()">Clear Quantity
+      </button>
+
+      <button class="cell medium-shrink float" mat-raised-button color="light">Copy Quote
+      </button>
+
+      <button class="cell medium-shrink float" mat-raised-button [disabled]="selectedFavorites$ | async"
+        [matBadgeHidden]="(selectedFavorites$  | async ) === 0" matBadgePosition="after"
+        [matBadge]="(selectedFavorites$  | async)" matBadgeOverlap="true" matBadgeColor="accent"
+        [color]="(selectedFavorites$  | async) ? 'primary' : 'light'">
+        <span>Add Favorites</span>
+      </button>
+    </div>
+
+    <!-- FAKE TABLE HEADER -->
+    <div class="cell">
+      <mat-divider class="divider"></mat-divider>
+      <div class="grid-x grid-margin-x" style="padding: 10px 0 0 0; font-size: .75rem; color: #b6b5b5">
+        <div class="cell medium-1" style="text-align: center">
+          <mat-checkbox #selectCheckBoxAll matTooltipPosition="below"
+            [matTooltip]="selectCheckBoxAll.checked ? 'Deselect all' : 'Select all'" (change)="selectAll($event)"
+            [checked]="false">
+          </mat-checkbox>
+        </div>
+        <div class="fake-header cell medium-1">Product</div>
+        <div class="fake-header cell medium-7">Details</div>
+        <div class="fake-header cell medium-2" style="text-align: center; padding-left: 12px;">Price /Qty</div>
+        <div class="fake-header cell medium-auto" style="text-align: center; cursor: pointer"><mat-icon
+            style="color: red" (click)="deleteAll()">delete_forever</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cell medium-12">
+
+    <!-- TITLE Template -->
+    <h1>Template Details: DEMO</h1>
+    <div id="header-info" class="grid-x grid-margin-x grid-margin-y">
+      <div class="cell medium-6">
+        <form class="example-form">
+          <mat-form-field id="tempName">
+            <mat-label>Template name</mat-label>
+            <!-- <span matPrefix>+ &nbsp;</span> -->
+            <input type="tel" matInput placeholder="555-555-1234" [value]="(templateObj | async)?.templateName">
+            <mat-icon *ngIf="showAcctTemplateList | async"
+              (click)="[fetchAllTemplates(), showAcctTemplateList.next(!showAcctTemplateList.value)]" matSuffix
+              style="color: grey; font-size: 1.25rem; cursor: pointer">
+              unfold_less</mat-icon>
+            <mat-icon *ngIf="!(showAcctTemplateList | async)"
+              (click)="[fetchAllTemplates(), showAcctTemplateList.next(!showAcctTemplateList.value)]" matSuffix
+              style="color: grey; font-size: 1.25rem; cursor: pointer">
+              unfold_more</mat-icon>
+          </mat-form-field>
+          <mat-select #acctTemplate (selectionChange)="close()" *ngIf="showAcctTemplateList | async" value="default"
+            style="padding: 0 0 15px 15px">
+            <mat-option value="default" style="color: #cbcaca">Select a new template</mat-option>
+            <mat-option [value]="item.templateId" (click)="switchTemplate(item)"
+              *ngFor="let item of accountTemplates | async">{{item.templateName}}</mat-option>
+          </mat-select>
+        </form>
+      </div>
+      <div class=" cell medium-6">
+        <mat-form-field class="select-job" appearance="none">
+          <!-- <mat-label>Select me</mat-label> -->
+          <mat-select placeholder="Select Job">
+            <mat-option value="option" *ngFor="let item of templatePageJobs | async">{{item.jobName}}</mat-option>
+          </mat-select>
+          <!--  <mat-hint align="end">Here's the dropdown arrow ^</mat-hint> -->
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <ng-container *ngIf="!(isLoadingTemplateItems | async); else Skeleton">
+
+      <!-- CTAS -->
+      <div class="grid-x grid-margin-x grid-margin-y">
+        <button class="cell medium-4" mat-raised-button (click)="save()"
+          [color]="(templateChanges | async) ? 'primary' : 'light'" [disabled]="!(templateChanges | async)">Save All
+        </button>
+
+        <button class="cell medium-4" mat-raised-button color="primary" (click)="openDialog()">ADD
+          PRODUCT
+        </button>
+
+        <button [matBadgeHidden]="!(selectedItems | async)?.length" matBadgePosition="after"
+          [matBadge]="(selectedItems | async)?.length" matBadgeOverlap="true" matBadgeColor="accent"
+          [disabled]="!(selectedItems | async)?.length" mat-raised-button
+          [color]="(selectedItems | async)?.length ? 'primary' : 'secondary'" class="cell medium-4"
+          (click)="addItemsToCart()">
+          <span>ADD Items to Cart</span>
+        </button>
+
+        <button class="cell medium-4" mat-raised-button color="light" (click)="clearQty()">Clear Quantity
+        </button>
+
+        <button class="cell medium-4" mat-raised-button color="light">Copy Quote
+        </button>
+
+        <button class="cell medium-4" mat-raised-button [color]="(selectedFavorites$ | async) ? 'primary' : 'light'"
+          [disabled]="selectedFavorites$ | async" [matBadgeHidden]="(selectedFavorites$  | async ) === 0"
+          matBadgePosition="after" [matBadge]="selectedFavorites$ | async" matBadgeOverlap="true"
+          matBadgeColor="accent">
+          <span> Add To Favorites
+          </span>
+        </button>
+      </div>
+
+      <!-- TABLE -->
+      <div class="cell" style="margin-top: 30px;" class="mat-elevation-z8"
+        *ngIf="(templatePageLineItems$ | async)?.length">
+        <table #templatesTable cdkDropList [cdkDropListData]="templatePageLineItems$ | async"
+          (cdkDropListDropped)="onDropListItem($event)" mat-table [dataSource]="templatePageLineItems$  | async">
+
+          <!-- TEMPLATE ITEMS -->
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <!-- Select All -->
+              <mat-checkbox #selectCheckBoxAll matTooltipPosition="below"
+                [matTooltip]="selectCheckBoxAll.checked ? 'Deselect all' : 'Select all'" (change)="selectAll($event)"
+                [checked]="false">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element" style="padding-right: 30px;">
+
+              <!-- SELECT -->
+              <mat-checkbox #selectCheckBox (change)="addToSelectedItems($event, element, selectCheckBox.checked)"
+                [checked]="element.isChecked">
+              </mat-checkbox>
+            </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+          </ng-container>
+
+          <!-- IMAGE -->
+          <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef style="padding-left: 9px;"> Product </th>
+            <td mat-cell *matCellDef="let element" style="padding-right: 30px; text-align: center">
+              <!-- <app-variation-image></app-variation-image> -->
+              <app-template-details-line-item columnDef="product" [element]="element"></app-template-details-line-item>
+            </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+          </ng-container>
+
+          <!-- DETAILS -->
+          <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef> Details </th>
+            <td mat-cell *matCellDef="let element">
+              <app-template-details-line-item [lineItems]="templatePageLineItems$ | async" columnDef="details"
+                [element]="element"></app-template-details-line-item>
+            </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+          </ng-container>
+
+          <!-- PRICE and QTY -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center"> Price </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              <app-template-details-line-item columnDef="price" [element]="element"></app-template-details-line-item>
+            </td>
+            <td mat-footer-cell *matFooterCellDef style="text-align: center">
+              <span>Total: </span>
+              <span style="color: orange; font-weight: bold; font-size: 1rem"> {{getTemplateTotals() | currency}}</span>
+            </td>
+          </ng-container>
+
+          <!-- DELETE ITEM -->
+          <ng-container matColumnDef="del">
+            <th mat-header-cell *matHeaderCellDef> <mat-icon color="warn"
+                style="cursor: pointer;">delete_forever</mat-icon> </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="cell large-1"><mat-icon
+                  (click)="[deleteTemplateItem(element), removeFromSelectedItems(element)]"
+                  style="color: #025f9e; cursor: default; cursor: pointer">delete</mat-icon></div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns" style="padding: 4px 4px;"></tr>
+          <tr cdkDrag [cdkDragData]=row mat-row *matRowDef="let row; columns: displayedColumns;"
+            [ngClass]="{'drag': (drag | async), 'dragDefault': !(drag | async)}" (mousedown)="dragCursor()">
+          </tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+          <div *cdkDragPlaceholder></div>
+        </table>
+        <div>
+
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- LOADLINEITEMS #LoadingLineItem> -->
+    <ng-template #Skeleton>
+      <table id="loading-table" mat-table [dataSource]="skeletonLoadingData">
+
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>&nbsp; </th>
+          <td mat-cell *matCellDef="let emp">
+            <mat-checkbox disabled #myCheckBoxLoader [checked]="false"></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="product">
+          <th mat-header-cell *matHeaderCellDef> Product </th>
+          <td mat-cell *matCellDef="let emp">
+            <img width="76"
+              src="https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="
+              alt="">
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+          <th mat-header-cell *matHeaderCellDef> Details </th>
+          <td mat-cell *matCellDef="let emp">
+            <div class="grid-x" id="skeleton-loader">
+              <div class="cell">
+                <span class="skeleton-loader-background width-w8">&nbsp; </span>
+              </div>
+              <div class="cell"> <span class="skeleton-loader-background width-w6">&nbsp; </span></div>
+              <div class="cell"> <span class="skeleton-loader-background width-w4">&nbsp; </span></div>
+              <div class="cell"> <span class="skeleton-loader-background width-w2">&nbsp; </span></div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef> Price </th>
+          <td mat-cell *matCellDef="let emp">
+            <span class="skeleton-loader-background width-w4">&nbsp; </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="qty">
+          <th mat-header-cell *matHeaderCellDef> Qty </th>
+          <td mat-cell *matCellDef="let emp">
+            <span class="skeleton-loader-background width-w4">&nbsp; </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="del">
+          <th mat-header-cell *matHeaderCellDef> &nbsp;</th>
+          <td mat-cell *matCellDef="let emp"> <mat-icon style="color: #b4b1b194; cursor: pointer">delete</mat-icon>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" style="padding: 0px 0px;"></tr>
+        <tr cdkDrag mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+    </ng-template>
+  </div>
+</div>

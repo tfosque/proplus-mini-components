@@ -1,0 +1,31 @@
+<div class="grid-container full">
+  <div class="grid-x">
+    <div class="cell medium-12">
+      <h1>Variations Component Refactor:</h1>
+    </div>
+    <!-- LINEITEM -->
+    <!--  <div class="cell" *ngIf="element as e" style="margin: 10px 5px; border-bottom: solid thin #e5e5e5;">
+      <div class="grid-x">
+        <div class="cell medium-shrink" style="color: #025f9e; cursor: pointer">
+          <mat-icon>reorder</mat-icon> <!-- drag_indicator 
+        </div>
+        <div class="cell medium-2">
+          <img [src]="createImageUrl()" [alt]="e.itemNumber || e.productId">
+        </div>
+     
+        <div class="cell medium-5">
+          <div style="font-weight: bold; color: #025f9e">{{e.itemOrProductDescription}}</div>
+          <div>Item #: {{e.itemNumber}}</div>
+          <div>Nickname: <input type="text" value=""></div>
+        </div>
+      
+        <div class="cell medium-2" style="text-align: center">{{e.unitPrice | currency}} / {{e.unitOfMeasure}}</div>
+        <div class="cell medium-2">{{e.quantity}}</div>
+        <div class="cell medium-shrink">
+          <mat-icon style="color: #025f9e">delete</mat-icon>
+        </div> -->
+
+    <!-- VARIATION -->
+    <app-variation-item [multiVariationData]="element"></app-variation-item>
+  </div>
+</div>

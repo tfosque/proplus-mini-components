@@ -1,0 +1,62 @@
+.expand-table {
+    margin-top: 20px;
+}
+
+.small-button {
+    width: 175px;
+}
+
+.large-left-margin {
+    margin-left: 100px;
+}
+
+div.date-picker {
+    ::ng-deep .mat-form-field {
+        width: 185px;
+    }
+}
+
+.filter-line {
+    border-top: 0.84375em solid transparent;
+    ::ng-deep .mat-raised-button {
+        font-size: 14px !important;
+    }
+}
+
+.align-right {
+    text-align: right;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.header-row {
+    font-size: 14px;
+    font-weight: 600;
+    color: #33363F;
+    // text-wrap: nowrap;
+}
+
+.thRow {
+    padding: 2ex;
+    font-size: 14px;
+    font-weight: 600;
+    color: #33363F;
+    // text-wrap: nowrap;
+}
+.tdCell {
+    padding: 2ex;
+}
+
+.bottom-margin {
+    margin-bottom: 50px;
+}
+
+.small-text-button {
+    ::ng-deep .mat-raised-button {
+        font-size: 14px !important;
+        width: 180px;
+    }
+}
+

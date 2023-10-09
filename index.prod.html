@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" class="notranslate" translate="no">
+
+    <head>
+        <!-- DATALAYER -->
+        <script type="text/javascript">
+            window.dataLayer = window.dataLayer || [];
+        </script>
+        <script type="text/javascript"
+            src="//cdn.evgnet.com/beacon/beaconroofingsupplyinc/staging/scripts/evergage.min.js"></script>
+
+        <!-- Google Tag Manager -->
+        <script>
+            ( function ( w, d, s, l, i ) {
+                w[ l ] = w[ l ] || [];
+                w[ l ].push( {
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js',
+                } );
+                var f = d.getElementsByTagName( s )[ 0 ],
+                    j = d.createElement( s ),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore( j, f );
+            } )( window, document, 'script', 'dataLayer', 'GTM-KD8DKT6' );
+        </script>
+        <!-- End Google Tag Manager -->
+        <meta charset="utf-8" />
+        <meta name="google" value="notranslate">
+        <meta name="google" content="notranslate">
+        <title>Beacon</title>
+        <base href="/" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600;900&display=swap"
+            rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:300,400,600,700,800" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/png" href="assets/images/favicons/lighthouse-favicon_48x48-01.png" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <!-- <link rel="icon" type="image/svg+xml" href="assets/images/favicons/lighthouse-favicon-safari-pinned-tab.svg"> -->
+        <!-- <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico"> -->
+        <!-- APPDYNAMICS -->
+        <script charset="UTF-8" type="text/javascript">
+            window[ 'adrum-use-strict-domain-cookies' ] = true;
+            window[ 'adrum-start-time' ] = new Date().getTime();
+            ( function ( config ) {
+                config.appKey = 'AD-AAB-ABP-RTW';
+                config.adrumExtUrlHttp = 'http://cdn.appdynamics.com';
+                config.adrumExtUrlHttps = 'https://cdn.appdynamics.com';
+                config.beaconUrlHttp = 'http://pdx-col.eum-appdynamics.com';
+                config.beaconUrlHttps = 'https://pdx-col.eum-appdynamics.com';
+                config.useHTTPSAlways = true;
+                config.xd = { enable: true };
+                config.resTiming = {
+                    bufSize: 200,
+                    clearResTimingOnBeaconSend: true,
+                };
+                config.maxUrlLength = 512;
+                config.spa = { spa2: true };
+            } )( window[ 'adrum-config' ] || ( window[ 'adrum-config' ] = {} ) );
+        </script>
+        <!-- APPDYNAMICS -->
+        <script src="//cdn.appdynamics.com/adrum/adrum-22.2.0.3616.js"></script>
+        <!-- Meta Pixel Code -->
+        <!--FACEBOOK -->
+        <script>
+            !( function ( f, b, e, v, n, t, s ) {
+                if ( f.fbq ) return;
+                n = f.fbq = function () {
+                    n.callMethod ? n.callMethod.apply( n, arguments ) : n.queue.push( arguments );
+                };
+                if ( !f._fbq ) f._fbq = n;
+                n.push = n;
+                n.loaded = !0;
+                n.version = "2.0";
+                n.queue = [];
+                t = b.createElement( e );
+                t.async = !0;
+                t.src = v;
+                s = b.getElementsByTagName( e )[ 0 ];
+                s.parentNode.insertBefore( t, s );
+            } )(
+                window,
+                document,
+                "script",
+                "https://connect.facebook.net/en_US/fbevents.js"
+            );
+            fbq( "init", "1055039481842846" );
+            fbq( "track", "PageView" );
+        </script>
+        <noscript><img height="1" width="1" style="display: none"
+                src="https://www.facebook.com/tr?id=1055039481842846&ev=PageView&noscript=1" /></noscript>
+        <!-- End Meta Pixel Code -->
+
+        <!-- FACEBOOK and LinkedIn tracking pixels -->
+        <script>
+
+            !function ( f, b, e, v, n, t, s ) {
+                if ( f.fbq ) return; n = f.fbq = function () {
+                    n.callMethod ?
+
+                        n.callMethod.apply( n, arguments ) : n.queue.push( arguments )
+                };
+
+                if ( !f._fbq ) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+
+                n.queue = []; t = b.createElement( e ); t.async = !0;
+
+                t.src = v; s = b.getElementsByTagName( e )[ 0 ];
+
+                s.parentNode.insertBefore( t, s )
+            }( window, document, 'script',
+
+                'https://connect.facebook.net/en_US/fbevents.js' );
+
+            fbq( 'init', '1055039481842846' );
+
+            fbq( 'track', 'PageView' );
+
+        </script>
+
+        <noscript><img height="1" width="1" style="display:none"
+                src="https://www.facebook.com/tr?id=1055039481842846&ev=PageView&noscript=1" /></noscript>
+
+        <link rel="manifest" href="manifest.webmanifest" />
+        <meta name="theme-color" content="#1976d2" />
+    </head>
+
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD8DKT6" height="0" width="0"
+                style="display: none; visibility: hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <app-root></app-root>
+        <!-- This has been moved to app.component.html to fix a fatal error in ie11.
+            This site is converting visitors into subscribers and customers with OptinMonster - https://optinmonster.com
+            <script type="text/javascript" src="https://a.optmnstr.com/app/js/api.min.js" data-account="62532" data-user="55555" async></script>
+            / OptinMonster -->
+
+        <!-- PARDOT -->
+        <script type="text/javascript">
+            piAId = '270902';
+            piCId = '1350';
+            piHostname = 'pi.pardot.com';
+
+            ( function () {
+                function async_load () {
+                    var s = document.createElement( 'script' );
+                    s.type = 'text/javascript';
+                    s.src =
+                        ( 'https:' == document.location.protocol
+                            ? 'https://pi'
+                            : 'http://cdn' ) + '.pardot.com/pd.js';
+                    var c = document.getElementsByTagName( 'script' )[ 0 ];
+                    c.parentNode.insertBefore( s, c );
+                }
+                if ( window.attachEvent ) {
+                    window.attachEvent( 'onload', async_load );
+                } else {
+                    window.addEventListener( 'load', async_load, false );
+                }
+            } )();
+        </script>
+
+        <!-- JUSTUNO -->
+        <script data-cfasync="false">
+            window.ju_num = 'A5808AF6-888A-4400-856F-4EA4C2AB9D91';
+            window.asset_host = '//cdn.jst.ai/';
+            ( function ( i, s, o, g, r, a, m ) {
+                i[ r ] =
+                    i[ r ] ||
+                    function () {
+                        ( i[ r ].q = i[ r ].q || [] ).push( arguments );
+                    };
+                ( a = s.createElement( o ) ), ( m = s.getElementsByTagName( o )[ 0 ] );
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore( a, m );
+            } )( window, document, 'script', asset_host + 'vck.js', 'juapp' );
+        </script>
+
+        <!-- SurveyGizmo -->
+        <script type="text/javascript">
+            ( function ( d, e, j, h, f, c, b ) { d.SurveyGizmoBeacon = f; d[ f ] = d[ f ] || function () { ( d[ f ].q = d[ f ].q || [] ).push( arguments ) }; c = e.createElement( j ), b = e.getElementsByTagName( j )[ 0 ]; c.async = 1; c.src = h; b.parentNode.insertBefore( c, b ) } )( window, document, 'script', '//d2bnxibecyz4h5.cloudfront.net/runtimejs/intercept/intercept.js', 'sg_beacon' );
+            sg_beacon( 'init', 'MTM1MzM1LWM5MjQyZDFhNTg1NzJiOTJjZDIzM2U0ODg1Y2QxMjQ4OGU4MmZiNDBjM2VhYzkwZTAx' );
+        </script>
+
+        <!-- AUDIOEYE -->
+        <script type="text/javascript">
+            !( function () {
+                var t = function () {
+                    var t = document.createElement( 'script' );
+                    ( t.src = 'https://ws.audioeye.com/ae.js' ),
+                        ( t.type = 'text/javascript' ),
+                        t.setAttribute( 'async', '' ),
+                        document.getElementsByTagName( 'body' )[ 0 ].appendChild( t );
+                };
+                'complete' !== document.readyState
+                    ? window.addEventListener
+                        ? window.addEventListener( 'load', t )
+                        : window.attachEvent && window.attachEvent( 'onload', t )
+                    : t();
+            } )();
+        </script>
+
+        <!-- OLARK -->
+        <!-- begin olark code -->
+        <script type="text/javascript" async>
+            ( function ( o, l, a, r, k, y ) {
+                if ( o.olark ) return;
+                r = 'script';
+                y = l.createElement( r );
+                r = l.getElementsByTagName( r )[ 0 ];
+                y.async = 1;
+                y.src = '//' + a;
+                r.parentNode.insertBefore( y, r );
+                y = o.olark = function () {
+                    k.s.push( arguments );
+                    k.t.push( +new Date() );
+                };
+                y.extend = function ( i, j ) {
+                    y( 'extend', i, j );
+                };
+                y.identify = function ( i ) {
+                    y( 'identify', ( k.i = i ) );
+                };
+                y.configure = function ( i, j ) {
+                    y( 'configure', i, j );
+                    k.c[ i ] = j;
+                };
+                k = y._ = { s: [], t: [ +new Date() ], c: {}, l: a };
+            } )( window, document, 'static.olark.com/jsclient/loader.js' );
+            /* custom configuration goes here (www.olark.com/documentation) */
+            olark.identify( '1561-408-10-1751' );
+        </script>
+
+        <!-- end olark code -->
+        <!-- QUANTUMETRICS -->
+        <script type="text/javascript">
+            ( function () {
+                var qtm = document.createElement( 'script' ); qtm.type = 'text/javascript'; qtm.async = 1;
+                qtm.src = 'https://cdn.quantummetric.com/qscripts/quantum-beaconpro.js';
+                var d = document.getElementsByTagName( 'script' )[ 0 ];
+                !window.QuantumMetricAPI && d.parentNode.insertBefore( qtm, d );
+            } )();
+        </script>
+    </body>
+
+</html>

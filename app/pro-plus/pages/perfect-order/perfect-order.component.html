@@ -1,0 +1,43 @@
+<div *ngIf="isLoading; else page" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #page>
+    <h1>Perfect Order Templates</h1>
+    <!-- brand image to the right -->
+
+    <mat-divider></mat-divider>
+
+    <div *ngIf="brandInfo; else noData">
+        <h3>
+            Step 1:
+            <p>Choose your style</p>
+        </h3>
+        <div class="grid-x grid-margin-x">
+            <div *ngFor="let brand of brandInfo">
+                <div class="cell medium-3">
+                    <mat-card class="perfect-order-card">
+                        <mat-card-subtitle>
+                            <div [innerHTML]="brand.displayName"></div>
+                        </mat-card-subtitle>
+                        <mat-card-content class="content">
+                            <a [routerLink]="[templateBuild, brand.id]">
+                                <img
+                                    mat-card-image
+                                    src="{{ brand.imageUrl }}"
+                                    alt=""
+                                />
+                            </a>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #noData>
+    <div class="no-data-container">
+        <span class="no-data-text">Sorry, there is no data found.</span>
+    </div>
+</ng-template>

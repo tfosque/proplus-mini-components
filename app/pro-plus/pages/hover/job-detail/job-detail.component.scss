@@ -1,0 +1,276 @@
+#jq_container_hoverJobDetail.job-container {
+    max-width: 1000px;
+    margin: auto;
+    overflow: auto;
+    min-width: 320px;
+    padding: 20px 20px;
+}
+
+#jq_container_hoverJobDetail .container-left {
+    height: auto;
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    margin: 0 30px 0 0;
+}
+
+#jq_container_hoverJobDetail .big-image-box {
+    width: 100%;
+    text-align: center;
+}
+
+#jq_container_hoverJobDetail .qtyImg {
+    margin-top: 10px;
+}
+
+#jq_container_hoverJobDetail .left {
+    color: white;
+    font-weight: bold;
+    background-color: gray;
+    width: 25px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+#jq_container_hoverJobDetail .left {
+    position: absolute;
+    left: -25px;
+    bottom: 10%;
+    top: auto;
+}
+
+#jq_container_hoverJobDetail #imgBox {
+    overflow: hidden;
+    padding: 10px 0;
+}
+
+#jq_container_hoverJobDetail .imagesBox {
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 0;
+    // display: none;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#jq_container_hoverJobDetail .right,
+#jq_container_hoverJobDetail .left {
+    color: white;
+    font-weight: bold;
+    background-color: gray;
+    width: 25px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+#jq_container_hoverJobDetail .right {
+    position: absolute;
+    right: -25px;
+    bottom: 10%;
+    top: auto;
+}
+
+#jq_container_hoverJobDetail .container-right {
+    height: auto;
+    overflow: hidden;
+    margin: 0 0 0 30px;
+}
+
+#jq_container_hoverJobDetail .right-header {
+    overflow: hidden;
+}
+
+#jq_container_hoverJobDetail .header-left {
+    float: left;
+    height: 34px;
+    line-height: 32px;
+}
+
+#jq_container_hoverJobDetail .done {
+    border-radius: 15px;
+    font-weight: 400;
+    height: 26px;
+    line-height: 26px;
+    width: 53px;
+    padding: 0;
+    background-color: #3ec27f;
+    position: relative;
+    top: -2px;
+}
+
+#jq_container_hoverJobDetail .state {
+    display: inline-block;
+    padding: 0 13px;
+    height: 30px;
+    font-weight: 500;
+    line-height: 30px;
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    background: rgb(23, 80, 150);
+    text-transform: uppercase;
+}
+
+#jq_container_hoverJobDetail .job-title {
+    margin: 20px 0 20px 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgb(56, 65, 81);
+}
+
+#jq_container_hoverJobDetail .job-title {
+    clear: both;
+}
+
+.col-md-5 {
+    width: 41.66667%;
+}
+
+#jq_container_hoverJobDetail .address {
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 3px;
+}
+
+#jq_container_hoverJobDetail .job-buttons {
+    white-space: nowrap;
+    margin: 20px 0 20px;
+}
+
+#jq_container_hoverJobDetail .job-buttons button,
+#jq_container_hoverJobDetail .job-ordermaterials {
+    height: 32px;
+    line-height: 28px;
+    background: rgb(23, 80, 150);
+    text-align: center;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
+#jq_container_hoverJobDetail .job-threedimensions {
+    margin-right: 10px;
+}
+
+#jq_container_hoverJobDetail .job-threedimensions,
+#jq_container_hoverJobDetail .job-measurement {
+    width: 160px;
+    word-spacing: 5px;
+    cursor: pointer;
+}
+
+#jq_container_hoverJobDetail .job-ordermaterials {
+    width: 220px;
+    word-spacing: 5px;
+    cursor: pointer;
+}
+
+#jq_container_hoverJobDetail .job-measurement .file-icon {
+    display: inline-block;
+    width: 12px;
+    height: 14px;
+    background-image: url(https://beaconproplus.com/images/property-measurements-white.png);
+    background-size: 12px auto;
+    position: relative;
+    top: 2px;
+    right: 7px;
+}
+
+a.jq_3d_hoverjobdetail:hover {
+    cursor: pointer;
+}
+
+#jq_container_hoverJobDetail .order-materials {
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+}
+
+#jq_container_hoverJobDetail .order-materials .order-materials-title {
+    font-weight: bold;
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+#jq_container_hoverJobDetail .order-materials {
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+}
+
+#jq_container_hoverJobDetail .order-materials .order-materials-content {
+    padding-bottom: 10px;
+}
+
+#jq_container_hoverJobDetail .order-materials {
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+}
+
+#jq_container_hoverJobDetail .creator,
+#jq_container_hoverJobDetail .job-id,
+#jq_container_hoverJobDetail .job-type,
+#jq_container_hoverJobDetail .create {
+    margin: 5px 0;
+}
+
+#jq_container_hoverJobDetail .type {
+    color: grey;
+    font-weight: 600;
+}
+
+#jq_container_hoverJobDetail .value {
+    color: grey;
+    padding-left: 20px;
+}
+
+#jq_container_hoverJobDetail .imagesBox img {
+    min-height: 20px;
+    margin: 0 2px;
+    width: 24%;
+    height: auto;
+}
+
+.image {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    max-height: 240px;
+    min-height: 150px;
+    margin-top: 10px;
+    -webkit-transition: all 0.5s ease 0s;
+    transition: all 0.5s ease 0s;
+}
+
+.activeThumb {
+    border: 2px solid rgb(2, 84, 150);
+}
+
+.inactiveThumb {
+    border: 2px solid transparent;
+}
+
+.activeThumbRow {
+    display: flex;
+}
+
+.inactiveThumbRow {
+    display: none;
+}

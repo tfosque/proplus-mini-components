@@ -1,0 +1,93 @@
+.generic-rail-component,
+.generic-content-page .right-rail .rich-text {
+    padding: rem-calc(15px);
+    padding-top: 0px;
+
+    + .generic-rail-component {
+        border-top: none;
+        margin-top: 0px;
+    }
+
+    h3 {
+        border-bottom: 4px solid $color-emphasis;
+        color: $color-primary;
+        display: block;
+        font-family: 'Proxima Nova', arial, sans-serif;
+        font-weight: 900;
+        font-size: rem-calc(17px);
+        line-height: rem-calc(17px);
+        font-weight: $font-weight-heavy;
+        margin: -15px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding: 13px 0px 5px 0px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: rem-calc(16px);
+        line-height: rem-calc(20px);
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+
+    a {
+        color: #5f646a;
+        font-weight: bolder;
+        font-size: rem-calc(16px);
+        line-height: rem-calc(20px);
+    }
+
+    a:hover {
+        color: $color-emphasis;
+        text-decoration: none;
+    }
+
+    ul,
+    ol {
+        color: $color-text-primary;
+        margin: 0 0 25px;
+
+        li {
+            font-size: rem-calc(16px);
+            line-height: rem-calc(20px);
+            margin-bottom: 10px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    img {
+        margin-bottom: 10px;
+    }
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        h1 {
+            font-size: rem-calc(28px);
+        }
+        h3 {
+            font-size: rem-calc(17px);
+            line-height: rem-calc(19px);
+        }
+        p {
+            font-size: rem-calc(14.5px);
+            line-height: rem-calc(18px);
+        }
+        a {
+            font-size: rem-calc(14.5px);
+            line-height: rem-calc(18px);
+        }
+        ul,
+        ol {
+            li {
+                font-size: rem-calc(14.5px);
+                line-height: rem-calc(18px);
+            }
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        margin-left: 25px;
+    }
+}

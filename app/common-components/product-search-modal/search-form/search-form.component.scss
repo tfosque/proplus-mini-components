@@ -1,0 +1,9 @@
+::ng-deep #searchForm>mat-form-field>div>div.mat-form-field-flex {
+  background: #fff;
+  margin-top: 10px;
+  padding-left: 8px;
+}
+
+::ng-deep .mat-form-field-flex .mat-form-field-infix {
+  padding: 0;
+}

@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Create Custom Item</h2>
+<div>
+    <mat-form-field floatLabel="auto" class="input">
+        <input
+            class="input"
+            matInput
+            placeholder="Item Name"
+            [(ngModel)]="itemObject.displayName"
+            required
+        />
+    </mat-form-field>
+</div>
+<div>
+    <mat-form-field>
+        <input
+            type="number"
+            class="input"
+            matInput
+            placeholder="Quantity"
+            [(ngModel)]="itemObject.quantity"
+            required
+        />
+    </mat-form-field>
+</div>
+<div *ngIf="!itemNameEmpty; else disable">
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button
+            mat-button
+            color="primary"
+            [mat-dialog-close]="itemObject"
+            cdkFocusInitial
+        >
+            Add Item
+        </button>
+    </mat-dialog-actions>
+</div>
+<ng-template #disable>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button color="primary" cdkFocusInitial disabled>
+            Add Item
+        </button>
+    </mat-dialog-actions>
+</ng-template>

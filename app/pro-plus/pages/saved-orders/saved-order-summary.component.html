@@ -1,0 +1,161 @@
+<h1>Saved Orders</h1>
+
+<app-search-bar
+    #searchBar
+    [searchTypes]="searchTypes"
+    itemName="order"
+    [totalCount]="pageInfo?.totalCount"
+>
+</app-search-bar>
+
+<ng-container *ngIf="savedOrderSource.errorMessage$ | async as msg">
+    <div class="alert callout">{{ msg }}</div>
+</ng-container>
+
+<!-- Medium and Desk -->
+<div class="show-for-medium">
+    <table mat-table [dataSource]="savedOrderSource" matSort class="full-width">
+        <ng-container matColumnDef="displayName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Order Name
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <a (click)="selectOrder(element)"> {{ element.displayName }}</a>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="accountNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Account</th>
+            <td mat-cell *matCellDef="let o">
+                <div>{{ o.accountNumber }}</div>
+                <div>{{ o.accountName }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="lastModifiedDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Last Modified
+            </th>
+            <td mat-cell *matCellDef="let o">
+                <div>{{ o.lastModifiedDate }}</div>
+                <div>{{ o.lastModifiedUserEmail }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let o">
+                <div>{{ o.statusDisplayName }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="creationDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created Date
+            </th>
+            <td mat-cell *matCellDef="let o">
+                <div>{{ o.creationDate }}</div>
+                <div>{{ o.firstName }} {{ o.lastName }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="submittedDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Submitted Date
+            </th>
+            <td mat-cell *matCellDef="let o">
+                <div>{{ o.submittedDate }}</div>
+                <div>{{ o.submittedUserEmail }}</div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>action</th>
+            <td mat-cell *matCellDef="let o">
+                <a
+                    href="javascript:void(0);"
+                    (click)="deleteSavedOrder(o)"
+                    *ngIf="
+                        o.status !== 'READY_FOR_APPROVAL' && !isAccountClosed
+                    "
+                >
+                    <mat-icon color="emphasis">delete</mat-icon>
+                </a>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+        [pageSizeOptions]="[5, 10, 20, 100]"
+        [length]="orderCount"
+        [pageSize]="10"
+        showFirstLastButtons
+    >
+    </mat-paginator>
+</div>
+
+<!-- Mobile View -->
+<div id="mobile-view" class="show-for-small-only">
+    <table mat-table [dataSource]="savedOrderSource" matSort class="full-width">
+        <ng-container matColumnDef="displayName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+            <td mat-cell *matCellDef="let element" style="padding-left: 0px">
+                <div>
+                    <span class="label">Order Name:</span>
+                    <a (click)="selectOrder(element)">
+                        {{ element.displayName }}</a
+                    >
+                </div>
+                <ng-container>
+                    <div>
+                        <span class="label">Account</span>
+                        <span> {{ element.accountNumber }}</span
+                        >&nbsp;
+                        <span>{{ element.accountName }}</span>
+                    </div>
+                </ng-container>
+                <ng-container>
+                    <div>
+                        <span class="label">Last Modified:</span>
+                        <span> {{ element.lastModifiedDate }}</span>
+                    </div>
+                </ng-container>
+                <ng-container>
+                    <div>
+                        <span class="label">Status:</span>
+                        <span> {{ element.statusDisplayName }}</span>
+                    </div>
+                </ng-container>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span style="visibility: hidden">action</span>
+            </th>
+            <td mat-cell *matCellDef="let o" style="text-align: right">
+                <a
+                    href="javascript:void(0);"
+                    (click)="deleteSavedOrder(o)"
+                    *ngIf="
+                        o.status !== 'READY_FOR_APPROVAL' && !isAccountClosed
+                    "
+                >
+                    <mat-icon style="font-size: 1.25rem" color="emphasis"
+                        >delete</mat-icon
+                    >
+                </a>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsMobile"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsMobile"></tr>
+    </table>
+
+    <!-- <app-dump-grid *ngIf="false" [input]="savedOrderSource.orders$"></app-dump-grid> -->
+
+    <mat-paginator
+        [pageSizeOptions]="[5, 10, 20, 100]"
+        [length]="pageInfo?.totalCount"
+        [pageSize]="pageInfo?.pageSize"
+        showFirstLastButtons
+    >
+    </mat-paginator>
+
+    <ng-container *ngIf="savedOrderSource.orders$ | async as orders">
+        <!-- <app-dump-grid *ngIf="false" [input]="orders" [maxDepth]="4"></app-dump-grid> -->
+    </ng-container>
+</div>

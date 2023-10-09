@@ -1,0 +1,89 @@
+@import '../../../../../sass/variables';
+@import '../../../../../sass/mixins';
+
+mat-card.padded {
+    margin: 5px;
+}
+
+div.show-for-small-only > table.full-width {
+    th {
+        padding-left: 0px;
+    }
+    tr td,
+    tr td a {
+        font-size: 0.7rem;
+        margin: 0 8px;
+        padding-left: 0px;
+    }
+}
+
+div.show-for-medium > table.full-width {
+    width: 100%;
+
+    tr th {
+        padding-left: 0px;
+        padding-right: 8px;
+    }
+
+    tr td {
+        padding-left: 0px;
+    }
+}
+
+.divider {
+    margin-bottom: 20px;
+}
+
+.form {
+    margin: 10px;
+}
+
+.show-for-medium {
+    .action-buttons {
+        margin: 0px 10px;
+    }
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.show-for-small-only {
+    .mat-row {
+        height: auto;
+    }
+
+    .mat-cell,
+    .mat-header-cell {
+        padding: 0.5ex 0.5ex 0.5ex 0;
+    }
+
+    .action-buttons {
+        margin: 0.5ex 0ex;
+    }
+}
+
+.inactive {
+    color: #9a9898;
+}
+
+.mat-simple-snackbar > span{
+    white-space: pre-wrap;
+    padding-right: 10px;
+}
+
+::ng-deep .mat-simple-snackbar-action{
+    margin:0 !important;
+    margin-left: -10px !important;
+}

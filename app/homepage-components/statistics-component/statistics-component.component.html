@@ -1,0 +1,75 @@
+<div
+    *ngIf="content"
+    class="statistics-component grid-container grid-x hide-for-small-only"
+    [ngClass]="{
+        'statistics-component--one-column': !description,
+        'statistics-component--two-column': description
+    }"
+>
+    <ng-container [brManageContentButton]="document"> </ng-container>
+
+    <ng-container *ngIf="!description; else twoColumns">
+        <h2>{{ heading }}</h2>
+        <div class="statistics-component__container grid-x" *ngIf="statsArray">
+            <div
+                class="statistics-component__container--stats cell"
+                *ngFor="let stat of statsArray; let i = index"
+            >
+                <span class="statistics-component__data">{{
+                    stat.statData
+                }}</span>
+                <span class="statistics-component__label">{{
+                    stat.statLabel
+                }}</span>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-template #twoColumns>
+        <ng-container *ngIf="statsArray">
+            <!--Description-->
+            <div
+                class="statistics-component__container--text-content cell large-6"
+            >
+                <h2>{{ heading }}</h2>
+                <app-rich-text
+                    [htmlContent]="description"
+                    [noMargin]="true"
+                ></app-rich-text>
+                <a
+                    *ngIf="linkIsExternal && link; else internal"
+                    class="statistics-component__container--link"
+                    href="{{ link }}"
+                >
+                    {{ linkText }}<span class="icon-arrow-right"></span>
+                </a>
+                <ng-template #internal>
+                    <a
+                        routerLink="{{ link }}"
+                        class="statistics-component__container--link"
+                    >
+                        {{ linkText }}<span class="icon-arrow-right"></span>
+                    </a>
+                </ng-template>
+            </div>
+            <!-- Statistics Description -->
+            <div class="cell large-6">
+                <div
+                    class="statistics-component__container grid-x grid-margin-x"
+                >
+                    <div
+                        class="statistics-component__container--stats cell small-4"
+                        *ngFor="let stat of statsArray; let i = index"
+                    >
+                        <span class="statistics-component__data">{{
+                            stat.statData
+                        }}</span>
+                        <span class="statistics-component__label">{{
+                            stat.statLabel
+                        }}</span>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-template>
+</div>

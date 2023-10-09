@@ -1,0 +1,302 @@
+<div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="expand-table">
+    <!-- <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h3> {{title}} </h3>
+        </mat-panel-title>
+        <mat-panel-description>
+        </mat-panel-description>
+      </mat-expansion-panel-header> -->
+    <div [hidden]="isEmpty && !isFiltering" class="tables" style="width: 99%">
+        <form (submit)="doSearch()">
+            <div class="grid-x grid-margin-x">
+                <div class="cell medium-shrink">
+                    <mat-form-field
+                        appearance="standard"
+                        class="full-width-search"
+                    >
+                        <mat-select
+                            class="full-width-search"
+                            [(value)]="selectedSearchValue"
+                        >
+                            <mat-option
+                                *ngFor="let t of searchTypes"
+                                [value]="t.value"
+                                >{{ t.name }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div
+                    class="cell medium-auto"
+                    *ngIf="selectedSearch.type == 'search'"
+                >
+                    <mat-form-field
+                        appearance="standard"
+                        class="full-width-search"
+                    >
+                        <input
+                            type="search"
+                            matInput
+                            [(ngModel)]="searchText"
+                            [ngModelOptions]="{ standalone: true }"
+                            placeholder="Search"
+                        />
+                    </mat-form-field>
+                </div>
+                <div
+                    class="cell medium-auto"
+                    *ngIf="selectedSearch.type == 'options'"
+                >
+                    <mat-form-field
+                        appearance="standard"
+                        class="full-width-search"
+                    >
+                        <mat-select
+                            class="full-width-search"
+                            [(value)]="selectedOption"
+                        >
+                            <mat-option
+                                *ngFor="let o of selectedSearch.options"
+                                [value]="o.name"
+                                >{{ o.name }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div
+                    class="cell medium-auto"
+                    *ngIf="selectedSearch.type == 'date'"
+                >
+                    <mat-form-field
+                        appearance="standard"
+                        class="full-width-search"
+                    >
+                        <input
+                            matInput
+                            [(ngModel)]="createdDate"
+                            [ngModelOptions]="{ standalone: true }"
+                            [matDatepicker]="createdDatePicker"
+                            placeholder="Created Date"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="createdDatePicker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #createdDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div
+                    class="cell medium-shrink"
+                    style="border-top: 0.84375em solid transparent"
+                >
+                    <button
+                        mat-raised-button
+                        class="show-for-medium"
+                        color="primary"
+                        type="submit"
+                        (click)="doSearch()"
+                    >
+                        Search
+                    </button>
+                    <button
+                        mat-raised-button
+                        class="cell show-for-small-only"
+                        color="primary"
+                        type="submit"
+                        (click)="doSearch()"
+                    >
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+        <p class="quoteSearchHistoryTips" *ngIf="isFiltering">
+            search history: {{ getFilterField() }}={{ filterValue }}
+            <a (click)="clearFilter()">
+                <mat-icon style="vertical-align: middle">clear</mat-icon>Clear
+            </a>
+        </p>
+        <div>
+            <table
+                mat-table
+                [dataSource]="dataSource"
+                matSort
+                class="full-width"
+            >
+                <ng-container matColumnDef="quoteId">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        style="padding-left: 2px"
+                    >
+                        <div class="show-for-medium">Quote Id</div>
+                        <div class="show-for-small-only">Quote Id/Name</div>
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        style="padding-left: 2px"
+                    >
+                        <div class="show-for-medium">
+                            <a [routerLink]="[element.quoteId]">
+                                {{ element.quoteId }}</a
+                            >
+                        </div>
+                        <div class="show-for-small-only">
+                            <div>
+                                <a [routerLink]="[element.quoteId]">
+                                    {{ element.quoteId }}</a
+                                >
+                            </div>
+                            <div>{{ element.quoteName }}</div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="quoteName">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="show-for-medium"
+                    >
+                        Quote Name
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        class="show-for-medium"
+                    >
+                        {{ element.quoteName }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="creationDate">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="show-for-medium"
+                    >
+                        Date
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        class="show-for-medium"
+                    >
+                        {{ element.creationDate }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="quoteStatus">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Status
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.status }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="createdBy">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="show-for-medium"
+                    >
+                        Created By
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        class="show-for-medium"
+                    >
+                        {{ element.createdBy }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="createdByDate">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="show-for-small-only"
+                    >
+                        Creation By/Date
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="show-for-small-only">
+                            <div>{{ element.createdBy }}</div>
+                            <div>{{ element.creationDate }}</div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <div *ngIf="dataType === 'draftQuote'; else otherTh">
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header
+                            style="padding-right: 2px"
+                        ></th>
+                    </div>
+                    <ng-template #otherTh>
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header
+                            style="padding-right: 2px"
+                            hidden="true"
+                        ></th>
+                    </ng-template>
+                    <div *ngIf="dataType === 'draftQuote' && !isAccountClosed; else other">
+                        <td
+                            mat-cell
+                            *matCellDef="let element"
+                            style="padding-right: 2px"
+                        >
+                            <a
+                                href="javascript:void(0);"
+                                id="deleteQuote"
+                                (click)="openDialogOneItem(element)"
+                            >
+                                <mat-icon color="emphasis">delete</mat-icon>
+                            </a>
+                        </td>
+                    </div>
+                    <ng-template #other>
+                        <td
+                            mat-cell
+                            *matCellDef="let element"
+                            style="padding-right: 2px"
+                            hidden="true"
+                        ></td>
+                    </ng-template>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
+
+            <mat-paginator
+                [pageSizeOptions]="[5, 10, 20, 100]"
+                [length]="quoteCount"
+                [pageSize]="10"
+                showFirstLastButtons
+            >
+            </mat-paginator>
+        </div>
+    </div>
+
+    <p *ngIf="isEmpty && quoteTypeDesc && !isFiltering">
+        There are no {{ quoteTypeDesc }}
+    </p>
+
+    <p *ngIf="isEmpty && quoteTypeDesc && isFiltering">No data found</p>
+    <!-- </mat-expansion-panel>
+  </mat-accordion> -->
+</div>

@@ -1,0 +1,195 @@
+<mat-form>
+    <section class="grid-x grid-margin-x">
+        <div class="cell">
+            <h1>Commercial Ordering</h1>
+        </div>
+        <div class="cell">
+            <mat-vertical-stepper>
+                <!-- SHIPPING 1 -->
+                <mat-step label="Shipping" state="phone" icon="local_shipping">
+                    <div>
+                        <app-shipping [shippingData]="[]"></app-shipping>
+                    </div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back to Cart
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- JOBACCOUNT 2 -->
+                <mat-step label="Job Account" state="chat">
+                    <div><app-job-account></app-job-account></div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- MANUFACTURER 3 -->
+                <mat-step label="Manufacturer">
+                    <div><app-manufacturer></app-manufacturer></div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- JOBTYPE 4 do we need this?-->
+                <!-- <mat-step label="Job Type" state="chat">
+          <div><app-job-type></app-job-type></div>
+          <div class="grid-x grid-x-container" style="text-align: center;">
+            <div class="cell large-4"><button mat-raised-button color="primary">New Roof</button></div>
+            <div class="cell large-4"><button mat-stroked-button color="primary">ReRoof</button></div>
+            <div class="cell large-4"><button mat-stroked-button color="primary">Repair/ Maintenance</button></div>
+          </div>
+
+          <div style="margin: 20px 0px">
+            <button mat-raised-button matStepperPrevious>Back</button>
+            <button mat-raised-button matStepperNext>Next</button>
+          </div>
+        </mat-step> -->
+
+                <!-- UNDERLAYMENT 5  -->
+                <!-- <mat-step label="Underlayment/ Vapor Barrier" state="phone">
+          <div>
+            <app-underlayment-vapor-barrier></app-underlayment-vapor-barrier>
+          </div>
+          <div>
+            <button mat-raised-button matStepperPrevious>Back</button>
+            <button mat-raised-button matStepperNext>Next</button>
+          </div>
+        </mat-step> -->
+                <!-- SYSTEMTYPE 6-->
+                <!-- <mat-step label="System Type" state="phone">
+          <div>
+            <app-system-type></app-system-type>
+          </div>
+          <div>
+            <button mat-raised-button matStepperPrevious>Back</button>
+            <button mat-raised-button matStepperNext>Next</button>
+          </div>
+        </mat-step> -->
+                <!-- ISO 7 -->
+                <mat-step label="Iso" state="phone">
+                    <div>
+                        <app-iso></app-iso>
+                    </div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- COVERBOARD 8 -->
+                <mat-step label="Coverboard" state="chat">
+                    <div><app-coverboard></app-coverboard></div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- ISOFASTNERS 9 -->
+                <mat-step label="Iso Fasteners" state="chat">
+                    <div><app-iso-fastners></app-iso-fastners></div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- MEMBRANETYPE 10 -->
+                <mat-step label="Membrane Type" state="chat">
+                    <div><app-membrane-type></app-membrane-type></div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- MEMBRANEAPPLICATION 11 -->
+                <!-- <mat-step label="Membrane Application" state="chat">
+                    <div>
+                        <app-membrane-application></app-membrane-application>
+                    </div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step> -->
+
+                <!-- ACCESSORIES 12 -->
+                <mat-step label="Accessories" state="chat">
+                    <div><app-accessories></app-accessories></div>
+                    <div>
+                        <button mat-raised-button matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-raised-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <!-- SUMMARY 13 -->
+                <mat-step label="Order Summary" state="chat">
+                    <app-order-summary></app-order-summary>
+                    <div class="grid-x grid-padding-x">
+                        <div class="cell large-4">
+                            <button mat-raised-button matStepperPrevious>
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell large-4">
+                            <button
+                                class="btn-right btn-warn"
+                                mat-raised-button
+                                routerLink="/proplus/commercial-order"
+                                [disabled]="true"
+                                style="margin-right: 75px"
+                            >
+                                QUOTE ORDER
+                            </button>
+                        </div>
+                        <div class="cell large-4">
+                            <button
+                                class="btn-right btn-warn"
+                                mat-raised-button
+                                routerLink="/proplus/commercial-order"
+                                [disabled]="true"
+                            >
+                                PLACE ORDER
+                            </button>
+                        </div>
+                    </div>
+                    <div></div>
+                </mat-step>
+
+                <!-- Icon overrides. -->
+                <ng-template matStepperIcon="phone">
+                    <mat-icon>call_end</mat-icon>
+                </ng-template>
+                <ng-template matStepperIcon="chat">
+                    <mat-icon>forum</mat-icon>
+                </ng-template>
+            </mat-vertical-stepper>
+        </div>
+
+        <!-- ROUTES -->
+        <!-- <div class="col"> <router-outlet></router-outlet></div> -->
+    </section>
+</mat-form>

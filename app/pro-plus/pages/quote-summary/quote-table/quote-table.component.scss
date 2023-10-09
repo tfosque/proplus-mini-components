@@ -1,0 +1,68 @@
+@import '../../../../../sass/variables';
+@import '../../../../../sass/mixins';
+
+.full-width {
+    width: 100%;
+}
+.full-width td {
+    margin-left: 2%;
+}
+.full-width-search {
+    width: 100%;
+}
+
+.mat-expansion-panel-body {
+    margin: 3%;
+}
+
+.expand-table {
+    margin-bottom: 3%;
+}
+.expand-table mat-panel-title {
+    margin-bottom: 2%;
+}
+
+.mat-expansion-panel:not([class*='mat-elevation-z']) {
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),
+        0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.show-for-small-only {
+    .mat-row {
+        height: auto;
+    }
+
+    .mat-cell,
+    .mat-header-cell {
+        padding: 0.5ex 0.5ex 0.5ex 0;
+    }
+
+    .action-buttons {
+        margin: 0.5ex 0ex;
+    }
+
+    .mobile-content {
+        text-align: center;
+    }
+}
+
+td.mat-cell {
+    .show-for-small-only {
+        padding: 0.5ex 0.5ex 0.5ex 0;
+    }
+}

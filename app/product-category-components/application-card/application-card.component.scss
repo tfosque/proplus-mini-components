@@ -1,0 +1,122 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.application-card {
+    $arrow-width: rem-calc(11px);
+    $arrow-margin: rem-calc(5px);
+    $arrow-full-width: $arrow-width + $arrow-margin;
+
+    margin-bottom: rem-calc(20px);
+
+    &__arrow-icon {
+        display: inline-block;
+        font-size: $arrow-width;
+        left: $arrow-margin;
+        margin-right: -$arrow-width;
+        margin-left: 3px;
+        position: relative;
+        width: $arrow-width;
+    }
+
+    &__content-container {
+        align-items: stretch;
+        border: 3px solid $color-primary;
+        display: flex;
+        flex-flow: row nowrap;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+
+        @include ie-flex-min-height();
+
+        &:hover,
+        &:focus {
+            box-shadow: 1px 2px 8px 0 rgba(4, 4, 4, 0.5);
+            background-color: $color-primary-hover;
+        }
+    }
+
+    &__image-wrap {
+        bottom: 0;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 70%;
+
+        img {
+            bottom: 0;
+            height: 100%;
+            left: 0;
+            @include object-fit(cover, center);
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 100%;
+        }
+    }
+
+    &__text-container {
+        justify-content: center;
+        background-color: $color-primary;
+        color: #fff;
+        display: flex;
+        flex-flow: column nowrap;
+        padding: rem-calc(20px 10px 20px 14px);
+        @include angle(after, false, 20deg);
+        width: 30%;
+
+        &:after {
+            bottom: -1px;
+            box-shadow: 2px 0 4px -1px rgba(0, 0, 0, 0.4);
+            height: calc(100% + 2px);
+            top: -1px;
+        }
+        &:hover,
+        &:focus {
+            background-color: $color-primary-hover;
+        }
+    }
+
+    &__text {
+        display: inline-block;
+        font-size: rem-calc(17px);
+        font-weight: $font-weight-semi-bold;
+        line-height: rem-calc(21px);
+        padding-right: $arrow-full-width;
+        &:hover,
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        $arrow-width: rem-calc(14px);
+        $arrow-margin: rem-calc(5px);
+        $arrow-full-width: $arrow-width + $arrow-margin;
+
+        &__image-wrap {
+            width: 68%;
+        }
+        &__text-container {
+            padding: rem-calc(16px 0 16px 14px);
+            width: 32%;
+        }
+        &__text-wrap {
+            padding: rem-calc(30px 0 30px 20px);
+        }
+
+        &__text {
+            font-size: rem-calc(21px);
+            line-height: rem-calc(25px);
+            padding-right: $arrow-full-width;
+        }
+
+        &__arrow-icon {
+            font-size: $arrow-width;
+            left: $arrow-margin;
+            margin-right: -$arrow-width;
+            width: $arrow-width;
+        }
+    }
+}

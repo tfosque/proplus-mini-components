@@ -1,0 +1,39 @@
+<!-- VARIATION -->
+<mat-form-field appearance="outline" style="width: 170px; margin-right: 10px; margin-top: 3px; margin-bottom: 3px;"
+  *ngFor="let variationType of element.multiVariationData?.allVariationTypes; let i = index">
+  <mat-label class="input-label" style="color: #a6a6a6; padding-left: 10px">{{ variationType }}</mat-label>
+
+  <!-- SELECT  variation control component -->
+  <mat-select name="variation.value" #variation [value]="getDefaultSku(element, variationType)"
+    (selectionChange)="handleSkuChange(element,variationType, variation.value)"
+    style="font-size: .825rem !important; padding-left: 10px !important; text-transform: capitalize">
+
+    <!-- OPTION -->
+    <mat-option [ngStyle]="{ background: !isAvailSku(variationType, item) ? '#fff' : '#edeeef54'}"
+      style="text-transform: captilize"
+      *ngFor="let item of displayDropdownFacets(element.multiVariationData, variationType)" [value]="item">
+      {{ item }}
+    </mat-option>
+
+  </mat-select>
+</mat-form-field>
+
+<!--   <select #currSel id="currSel" (change)="handleSkuChange(element,variationType, $event.target.value)">
+        <option *ngFor="let item of  displayDropdownFacets(element.multiVariationData, variationType)"
+          [value]="currSel.value">
+          {{item}}
+        </option>
+      </select> -->
+<!--  <mat-form-field appearance="outline">
+        <mat-label class="input-label"
+          style="padding: 0px; color: #a6a6a6; font-size: 1.25rem">{{v}}</mat-label>
+        <mat-select #variations (selectionChange)="handleSkuChange(element,v, variations.value)"
+          style="padding: 0px 10px;" [value]="element.multiVariationData?.currentVariations[v]">
+          
+          <mat-option
+            [style.background-color]="checkAvailability(element, v, variations.value) ? '#8080800f' : 'red'"
+            *ngFor="let dropdownItem of displayDropdownFacets(element.multiVariationData, v)"
+            [value]="dropdownItem">
+            {{ dropdownItem  }}</mat-option>
+        </mat-select>
+      </mat-form-field> -->

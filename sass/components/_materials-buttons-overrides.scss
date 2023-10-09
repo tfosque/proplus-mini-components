@@ -1,0 +1,97 @@
+@mixin proplus-mat-button-defaults {
+    button,
+    a {
+        &.mat-button,
+        &.mat-flat-button,
+        &.mat-icon-button,
+        &.mat-stroked-button,
+        &.mat-raised-button {
+            border-radius: 0;
+            font-size: rem-calc(16px) !important;
+            font-weight: $font-weight-heavy;
+            text-transform: uppercase;
+
+            * {
+                font-weight: $font-weight-heavy;
+            }
+
+            &.mat-primary {
+                background-color: $color-primary;
+                color: $color-white;
+            }
+            &.mat-emphasis {
+                background-color: $color-emphasis;
+                color: $color-white;
+            }
+        }
+
+        &.mat-raised-button.mat-primary {
+            background-color: $color-primary;
+            color: $color-white;
+
+            &.loading {
+                background-color: $color-white;
+            }
+        }
+        &.mat-raised-button.mat-emphasis {
+            background-color: $color-emphasis;
+            color: $color-white;
+
+            &.loading {
+                background-color: $color-white;
+            }
+        }
+
+        &.underline {
+            text-decoration: underline;
+        }
+    }
+}
+
+@mixin shift7-mat-button-defaults {
+    button,
+    a {
+        &.mat-button,
+        &.mat-flat-button,
+        &.mat-icon-button,
+        &.mat-stroked-button,
+        &.mat-raised-button {
+            border-radius: 0;
+            padding: 1em 1em !important;
+            font-size: rem-calc(16px) !important;
+            font-weight: $font-weight-heavy;
+            line-height: 1.5em !important;
+            text-transform: uppercase;
+
+            * {
+                font-size: rem-calc(16px) !important;
+                font-weight: $font-weight-heavy;
+            }
+
+            &.mat-primary {
+                color: $color-primary;
+            }
+        }
+
+        &.mat-raised-button.mat-primary {
+            background-color: $color-emphasis;
+            color: $color-white;
+
+            &.loading {
+                background-color: $color-white;
+            }
+        }
+
+        &.underline {
+            text-decoration: underline;
+        }
+    }
+}
+
+div.proplus-page {
+    @include proplus-mat-button-defaults();
+}
+
+div.shift7-page {
+    @include shift7-mat-button-defaults();
+}

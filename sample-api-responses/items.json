@@ -1,0 +1,130 @@
+{
+  "product": {
+    "productImage": "/images/large/C-476716_default_small.jpg",
+    "longDesc": "<p>Heritage&reg; Premium shingles have a fiberglass mat construction with a random-cut sawtooth design. Two layers of mat are coated with asphalt, surfaced with mineral granules and then laminated together. Also includes a self-sealing strip of asphalt.</p>\n<p>Nothing expresses your style as a homeowner more vividly than Heritage&reg; Premium Laminated Asphalt Shingles. They simulate the rustic, dimensional look of wood shakes, without wood's high cost or safety concerns.</p>",
+    "manufactureNumber": "31000173",
+    "relatedProducts": [
+      {
+        "productImage": "/images/large/C-462539_default_small.jpg",
+        "categories": [
+          {
+            "categoryName": "Laminated/Architectural Shingles",
+            "categoryId": "CAT_RER_ASP_LAM"
+          },
+          {
+            "categoryName": "Asphalt Shingles",
+            "categoryId": "CAT_RER_ASP"
+          },
+          {
+            "categoryName": "Residential Roofing",
+            "categoryId": "CAT_RER"
+          }
+        ],
+        "itemNumber": null,
+        "name": "UltraHP&reg; (High Profile) Ridge Cap Shingles",
+        "brand": "IKO",
+        "productId": "C-462539"
+      },
+      {
+        "productImage": "/images/large/C-462539_default_small.jpg",
+        "categories": [
+          {
+            "categoryName": "Laminated/Architectural Shingles",
+            "categoryId": "CAT_RER_ASP_LAM"
+          },
+          {
+            "categoryName": "Asphalt Shingles",
+            "categoryId": "CAT_RER_ASP"
+          },
+          {
+            "categoryName": "Residential Roofing",
+            "categoryId": "CAT_RER"
+          }
+        ],
+        "itemNumber": null,
+        "name": "UltraHP&reg; (High Profile) Ridge Cap Shingles",
+        "brand": "IKO",
+        "productId": "C-462539"
+      }
+    ],
+    "categories": [
+      {
+        "categoryName": "Laminated/Architectural Shingles",
+        "categoryId": "CAT_RER_ASP_LAM"
+      },
+      {
+        "categoryName": "Asphalt Shingles",
+        "categoryId": "CAT_RER_ASP"
+      },
+      {
+        "categoryName": "Residential Roofing",
+        "categoryId": "CAT_RER"
+      }
+    ],
+    "shortDesc": null,
+    "itemNumber": "404191",
+    "name": "Heritage&reg; Premium Shingles",
+    "brand": "TAMKO",
+    "productId": "C-476716"
+  },
+  "message": null,
+  "specification": {
+    "Warranty Length": "50 Year Limited Warranty; 20 Year Full Start",
+    "Bundles Per Square": "4",
+    "Exposure": "5-5/8\"",
+    "Length": "39-3/8\"",
+    "Shingles Per Square": "64",
+    "ApplicableStandards": "UL 790/ASTM E108, Class A<br>\nASTM D7158, Class H and ASTM D3161, Class F<br>\nASTM D3462 and ICC-ES Acceptance Criteria AC438<br>\nUL ER2919-01 and UL ER2919-02<br>\nFlorida Building Code Approved FL18355<br>\nMiami Dade County Florida Approved NOA 15-1215.10",
+    "Width": "13-1/4\""
+  },
+  "resource": {
+    "Product Brochure": "https://www.tamko.com/docs/default-source/brochures-literature/TAMKO-heritage-premium-heritage-brochure-(dallas).pdf?sfvrsn=beb256a0_6",
+    "Product Data Sheet": "https://www.tamko.com/docs/default-source/data-sheets/TAMKO-heritage-premium-data-sheet-(frederick).pdf?sfvrsn=a70156a0_7",
+    "Florida Product Approval": "https://www.tamko.com/docs/default-source/certifications/TAMKO-asphalt-shingles---florida-building-code-(fl-18355).pdf?sfvrsn=71a956a0_2",
+    "Product Brochure 1": "https://www.tamko.com/docs/default-source/brochures-literature/TAMKO-heritage-series-stuffer-(dallas).pdf?sfvrsn=70b356a0_6",
+    "Application Instruction Sheet": "https://www.tamko.com/docs/default-source/application-instructions/TAMKO_Heritage_Premium_Application_Instructions_Dallas_Phillipsburg.pdf?sfvrsn=13b656a0_0",
+    "Application Instruction Sheet 1": "https://www.tamko.com/docs/default-source/application-instructions/TAMKO_Heritage_Premium_Application_Instructions_Supplement_Frederick.pdf?sfvrsn=c8b656a0_0",
+    "Miami-Dade NOA": "https://www.tamko.com/docs/default-source/certifications/TAMKO_Heritage_Dallas_Frederick_Tuscaloosa_Heritage_Premium_Dallas_Frederick_and_Heritage_Woodgate_Dallas_Frederick_Miami-Dade_County_NOA.pdf?sfvrsn=42ac56a0_0"
+  },
+  "currentSKU": {
+    "auxiliaryImages": ["/images/default_video.jpg"],
+    "currentUOM": "BDL",
+    "manufactureNumber": "31000173",
+    "unitPrice": 28.44,
+    "itemNumber": "404191",
+    "uomlist": null,
+    "itemImage": "/images/large/404191_default_hero.jpg",
+    "characteristics": {
+      "Color": "Autumn Brown",
+      "Thickness": "1",
+      "Size": "1 x 1",
+      "Packaging": "1 gallon"
+    }
+  },
+  "skuList": [
+    {
+      "auxiliaryImages": ["/images/default_video.jpg"],
+      "currentUOM": "BDL",
+      "itemNumber": "404191",
+      "itemImage": "/images/large/404191_default_hero.jpg",
+      "characteristics": {
+        "Color": "Autumn Brown",
+        "Thickness": "1",
+        "Size": "1 x 1",
+        "Packaging": "1 gallon"
+      }
+    },
+    {
+      "auxiliaryImages": ["/images/default_video.jpg"],
+      "currentUOM": "BDL",
+      "itemNumber": "404192",
+      "itemImage": "/images/large/404191_default_hero.jpg",
+      "characteristics": {
+        "Color": "Autumn Brown",
+        "Thickness": "2",
+        "Size": "1 x 1",
+        "Packaging": "1 gallon"
+      }
+    }
+  ]
+}

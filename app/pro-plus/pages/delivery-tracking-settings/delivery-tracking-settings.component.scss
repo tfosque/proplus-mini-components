@@ -1,0 +1,80 @@
+.title {
+    margin: 20px 0px;
+}
+.divider {
+    margin: 20px 0px;
+}
+
+table.padded-table {
+    th,
+    td {
+        padding: 20px;
+    }
+}
+
+table.small-padded-table {
+    th,
+    td {
+        padding: 5px;
+
+        p.status-text {
+            font-size: 0.9em;
+        }
+    }
+}
+
+.flexContainerButton {
+    display: flex;
+    justify-content: space-between;
+}
+.full-width {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.small-select {
+    width: 110px;
+}
+
+@media screen and (max-width: 39.9375em) {
+    .button-bar {
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 2px;
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+}
+
+::ng-deep .mat-checkbox-label {
+    font-weight: 700;
+}
+
+.small-bottom-margin {
+    margin-bottom: 4px;
+}
+
+.custom-tooltip {
+    font-size: large;
+}
+
+.small-mobile {
+    font-size: 0.8em;
+}

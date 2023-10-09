@@ -1,0 +1,45 @@
+<div class="related-products">
+    <div class="grid-x grid-margin-x related-products__product-container">
+        <ng-container *ngFor="let relProd of relatedProducts; index as i">
+            <section
+                *ngIf="i < INITIAL_PRODUCTS || showAll"
+                class="cell large-3 medium-6 related-products__product"
+            >
+                <a routerLink="/productDetail/{{ relProd.productId }}">
+                    <h3>{{ getCategoryName(relProd) }}</h3>
+
+                    <img
+                        *ngIf="
+                            getProductImage(
+                                relProd.productImage,
+                                relProd.productName
+                            ) as image
+                        "
+                        appImagePreload
+                        [default]="
+                            '../../assets/images/image-not-available.svg'
+                                | translations: 'image-not-available-image-path'
+                        "
+                        [src]="image.smallSrc()"
+                        [alt]="image.altText"
+                    />
+                    <p>{{ relProd.brand }}</p>
+                    <h4 [innerHTML]="relProd.internalProductName"></h4>
+                </a>
+            </section>
+        </ng-container>
+    </div>
+    <div
+        *ngIf="
+            relatedProducts &&
+            relatedProducts.length > INITIAL_PRODUCTS &&
+            !showAll
+        "
+        class="related-products__button-container"
+    >
+        <a (click)="toggleShowAll()" class="button primary">{{
+            'See All Related Products'
+                | translations: 'see-all-related-products'
+        }}</a>
+    </div>
+</div>

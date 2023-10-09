@@ -1,0 +1,136 @@
+.center {
+    margin: auto;
+}
+
+.with-margin {
+    padding: 10px 0;
+}
+
+.with-margin-radio {
+    padding: 10px 5px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-gray {
+    color: gray;
+}
+
+:host ::ng-deep .mat-radio-checked {
+    border: 1px solid #025f9e;
+    border-radius: 5px;
+}
+
+.min-margin {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 20px;
+}
+
+::ng-deep .mat-form-field {
+    .mat-form-field-infix {
+        width: 300px;
+    }
+}
+
+.bordered {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.bordered-top {
+    border-top: 1px solid lightgray;
+}
+
+.margin-left {
+    margin-left: 10px;
+}
+
+.margin-left-large {
+    margin-left: 20px;
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
+.margin-top-bottom {
+    margin: 20px 0;
+}
+
+.margin-top {
+    margin-top: 20px;
+}
+
+.margin-top-small {
+    margin-top: 10px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+:host ::ng-deep .mat-radio-label {
+    width: 100%;
+    align-items: normal;
+    white-space: normal;
+}
+
+:host ::ng-deep .mat-radio-label-content {
+    width: 100%;
+}
+
+:host ::ng-deep .mat-radio-container {
+    width: 40px;
+}
+
+.text-middle {
+    vertical-align: middle;
+}
+
+:host ::ng-deep .mat-vertical-stepper-header {
+    padding: 18px 12px;
+}
+
+:host ::ng-deep .mat-vertical-content-container {
+    margin-left: 24px;
+}
+
+.text-small {
+    font-size: 12px;
+}
+
+.logo {
+    width: 300px;
+}
+
+.sub-title {
+    font-size: 1rem;
+}
+
+.text-red {
+    color: #EA3223;
+}
+
+.btn-disabled {
+    border: 2px solid rgba(0,0,0,.12) !important;
+}

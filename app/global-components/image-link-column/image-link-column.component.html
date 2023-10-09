@@ -1,0 +1,25 @@
+<!-- <pre>{{ content | json }}</pre> -->
+<div class="cell image-link-column small-12 large-4 history">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <div class="grid-x grid-margin-x">
+        <div
+            class="cell small-12 medium-6 large-12"
+            *ngFor="let image of images"
+        >
+            <ng-container *ngIf="!image.isExternal">
+                <a
+                    [routerLink]="image.fullPageLink.path"
+                    [queryParams]="image.fullPageLink.parameters"
+                >
+                    <img [src]="image.imageUrl" class="img-responsive" />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="image.isExternal">
+                <a [href]="image.fullPageLink.href">
+                    <img [src]="image.imageUrl" class="img-responsive" />
+                </a>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<!-- <app-dump-grid [input]="images"></app-dump-grid> -->

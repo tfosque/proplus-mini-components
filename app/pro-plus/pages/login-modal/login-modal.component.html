@@ -1,0 +1,101 @@
+<div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm, $event)" novalidate>
+    <!-- Angular Material Responsive Modal -->
+    <div style="max-width: 440px; margin: auto; height: 66vh" class="grid-x">
+        <div class="cell">
+            <div style="text-align: right; cursor: pointer">
+                <mat-icon (click)="closeDialog()">close</mat-icon>
+            </div>
+            <h1 style="text-align: center">Welcome!</h1>
+            <div>
+                <mat-form-field class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input
+                        type="text"
+                        #email
+                        name="email"
+                        [(ngModel)]="form.email"
+                        matInput
+                        placeholder="sample@example.com"
+                        autocomplete="username"
+                    />
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input
+                        type="password"
+                        #password
+                        name="password"
+                        [(ngModel)]="form.password"
+                        matInput
+                        placeholder=""
+                        autocomplete="current-password"
+                    />
+                </mat-form-field>
+            </div>
+            
+            <div class="cell">
+                <div class="grid-x grid-padding-y">
+                    <p
+                        class="cell small-12 medium-6 no-margin"
+                        style="text-align: left"
+                    >
+                        <a
+                            routerLink="/proplus/forgot-password"
+                            (click)="closeDialog()"
+                            >Forgot Password?</a
+                        >
+                    </p>
+                    <p class="cell small-12 medium-6" style="text-align: right">
+                        <label>
+                            <input
+                                type="checkbox"
+                                [(ngModel)]="rememberMe"
+                                name="rememberMe"
+                                (ngModelChange)="persistenceChange()"
+                            />
+                            Keep me signed in
+                        </label>
+                    </p>
+
+                    <!-- TODO: Need to discuss if we should have a cancel button
+                        <div class="cell small-6" style="text-align: center;">
+                            <button type="button" style="text-align: center;" class="button primary" (click)="closeDialog()">Cancel</button>
+                        </div> -->
+                        <!-- TODO: Talk about disabling log in invalid attempts so the user doesnt
+                        spam the login button -->
+                    <div class="cell small-12" style="text-align: center">
+                        <button
+                            type="submit"
+                            style="
+                                text-align: center;
+                                width: 100%;
+                                cursor: pointer;
+                            "
+                            [disabled] = "disabledLogin"
+                            class="button primary"
+                        >
+                            Login
+                        </button>
+                    </div>
+                    <p class="cell" style="text-align: center">
+                        <a routerLink="/proplus/sign-up" (click)="closeDialog()"
+                            >Sign Up</a
+                        >
+                    </p>
+                </div>
+            </div>
+            <div class="grid-x">
+                <div class="cell-12">
+                    <mat-error *ngIf="invalidLoginError">
+                        {{ invalidLoginError }}
+                    </mat-error>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

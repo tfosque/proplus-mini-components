@@ -1,0 +1,17 @@
+<div class="image-dialog">
+  <div class="image-dialog-top-navigation">
+    <div>
+      <span>{{ this.data.currentImage +1}}/{{ this.data.array?.length +1}}</span>
+    </div>
+    <div>
+      <button (click)="goToLink(this.displayImage)"><mat-icon>arrow_downward</mat-icon></button>
+      <button mat-dialog-close><mat-icon>close</mat-icon></button>
+    </div>
+  </div>
+  <div class="image-dialog-middle">
+    <button (click)="leftArrowNavigation()"><mat-icon class="arrows">keyboard_arrow_left</mat-icon></button>
+    <img class="image" [src]="this.displayImage"/>
+    <button (click)="rightArrowNavigation()"><mat-icon class="arrows right-arrow">keyboard_arrow_right</mat-icon></button>
+  </div>
+  <span class="bottom-gradient"> </span>
+</div>

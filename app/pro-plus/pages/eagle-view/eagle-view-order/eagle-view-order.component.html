@@ -1,0 +1,1922 @@
+<div
+    class="text-center show-for-medium margin-top-small"
+    *ngIf="stepper.selectedIndex === 0"
+>
+    <img
+        src="assets/images/Eagleview_logo.jpg"
+        alt="Order EagleView Report"
+        class="logo"
+    />
+    <h3>Order EagleView Report</h3>
+</div>
+
+<mat-horizontal-stepper
+    [linear]="isLinear"
+    class="show-for-medium margin-top-small"
+    #stepper
+>
+    <mat-step [stepControl]="addressFormGroup" completed="false">
+        <form [formGroup]="addressFormGroup">
+            <ng-template matStepLabel>Address</ng-template>
+            <div class="header">
+                <h3>Where is your property located?</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <input
+                        type="text"
+                        placeholder="Street"
+                        aria-label="Street"
+                        matInput
+                        formControlName="streetControl"
+                        [(ngModel)]="addressData.street"
+                        [errorStateMatcher]="matcher"
+                        maxlength="50"
+                        required
+                    />
+                    <mat-error *ngIf="streetControl!.hasError('required')">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <input
+                        type="text"
+                        placeholder="City"
+                        aria-label="City"
+                        matInput
+                        formControlName="cityControl"
+                        [(ngModel)]="addressData.city"
+                        [errorStateMatcher]="matcher"
+                        maxlength="50"
+                        required
+                    />
+                    <mat-error *ngIf="cityControl!.hasError('required')">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <mat-select
+                        placeholder="State"
+                        formControlName="stateControl"
+                        [errorStateMatcher]="matcher"
+                        [(ngModel)]="addressData.state"
+                        required
+                        name="state"
+                    >
+                        <mat-option
+                            *ngFor="let state of states"
+                            [value]="state.key"
+                        >
+                            {{ state.key }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="stateControl!.hasError('required')">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <input
+                        type="text"
+                        placeholder="Zip/Postal Code"
+                        aria-label="Zip/Postal Code"
+                        matInput
+                        formControlName="zipControl"
+                        [(ngModel)]="addressData.zip"
+                        [errorStateMatcher]="matcher"
+                        required
+                    />
+                    <mat-error *ngIf="zipControl!.hasError('required')">
+                        This field is required
+                    </mat-error>
+                    <mat-error *ngIf="zipControl!.hasError('pattern')">
+                        Zipcode is invalid. Should be numeric characters and
+                        formatted in either XXXXX-XXXX or XXXXX.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center text-right">
+                    <button
+                        mat-button
+                        [color]="isAccountClosed ? 'disabled' : 'primary'"
+                        id="ev-address-next"
+                        matStepperNext
+                        [ngClass]="{ 'btn-disabled': isAccountClosed }"
+                        [disabled]="isAccountClosed"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="propertyTypeFormGroup">
+        <form [formGroup]="propertyTypeFormGroup" #ngFormPropertyType="ngForm">
+            <ng-template matStepLabel>Property Type</ng-template>
+            <div class="header">
+                <h3>What type of property is {{ addressData.street }}?</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedPropertyType"
+                    formControlName="propertyTypeControl"
+                    (change)="propertyTypeChange($event)"
+                    required
+                >
+                    <div *ngFor="let propType of propertyTypes">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="propType.name"
+                        >
+                            <div class="text-bold">{{ propType.name }}</div>
+                            <div class="text-gray">
+                                {{ propType.description }}
+                            </div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormPropertyType.submitted &&
+                        propertyTypeControl!.hasError('required')
+                    "
+                >
+                    This field is required
+                </mat-error>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-property-back"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-property-next"
+                                [ngClass]="
+                                    formatSelectedValue(selectedPropertyType)
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="reportTypeFormGroup">
+        <form [formGroup]="reportTypeFormGroup" #ngFormReportType="ngForm">
+            <ng-template matStepLabel>Report Type</ng-template>
+            <div class="header">
+                <h3>Select a report type</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedReportType"
+                    formControlName="reportTypeControl"
+                    (change)="reportTypeChange($event)"
+                    required
+                >
+                    <div *ngFor="let rptType of getReportTypes()">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="rptType.name"
+                        >
+                            <div class="grid-x grid-margin-x full-width">
+                                <div class="small-8 medium-10">
+                                    <div class="text-bold">
+                                        {{ rptType.name }}
+                                    </div>
+                                    <div class="text-gray">
+                                        <ul
+                                            *ngFor="
+                                                let feature of rptType.features
+                                            "
+                                            class="min-margin"
+                                        >
+                                            <li>{{ feature }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="small-4 medium-2 text-right">
+                                    {{
+                                        getReportPriceByTwoTypes(
+                                            selectedPropertyType,
+                                            rptType.name
+                                        )
+                                    }}
+                                </div>
+                            </div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormReportType.submitted &&
+                        reportTypeControl!.hasError('required')
+                    "
+                >
+                    Report Type field is required
+                </mat-error>
+            </div>
+            <div
+                class="grid-x grid-margin-x"
+                *ngIf="
+                    selectedReportType === 'Premium' &&
+                    selectedPropertyType === 'Residential'
+                "
+            >
+                <div
+                    class="cell small-12 medium-8 center with-margin text-bold"
+                >
+                    Add-on Report
+                </div>
+                <div class="cell small-12 medium-8 center with-margin">
+                    <mat-checkbox
+                        [(ngModel)]="selectedHasAddOnReport"
+                        formControlName="hasAddOnReportControl"
+                        (change)="addOnRptChange($event)"
+                    >
+                        Include add-on Report
+                    </mat-checkbox>
+                    <div
+                        class="margin-left-large"
+                        *ngIf="selectedHasAddOnReport"
+                    >
+                        <mat-radio-group
+                            [(ngModel)]="selectedAddOnReport"
+                            formControlName="addOnReportControl"
+                            required
+                        >
+                            <div *ngFor="let addOnRpt of addOnReports">
+                                <mat-radio-button
+                                    class="with-margin-radio full-width"
+                                    [value]="addOnRpt.name"
+                                >
+                                    <div
+                                        class="grid-x grid-margin-x full-width"
+                                    >
+                                        <div class="small-8 medium-10">
+                                            {{ addOnRpt.name }}
+                                        </div>
+                                        <div
+                                            class="small-4 medium-2 text-right"
+                                        >
+                                            ${{ addOnRpt.price }}
+                                        </div>
+                                    </div>
+                                </mat-radio-button>
+                            </div>
+                        </mat-radio-group>
+                        <div
+                            *ngIf="
+                                selectedReportType === 'Premium' &&
+                                selectedPropertyType === 'Residential' &&
+                                selectedHasAddOnReport
+                            "
+                        >
+                            <mat-error
+                                class="cell small-12 medium-8 center with-margin"
+                                *ngIf="
+                                    ngFormReportType.submitted &&
+                                    addOnReportControl!.hasError('required')
+                                "
+                            >
+                                Please select the add-on report(s) you want to
+                                include
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-report-back"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-report-next"
+                                [ngClass]="
+                                    formatSelectedValue(selectedReportType)
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step
+        [stepControl]="deliveryFormGroup"
+        *ngIf="selectedReportType === 'Premium'"
+    >
+        <form [formGroup]="deliveryFormGroup" #ngFormDelivery="ngForm">
+            <ng-template matStepLabel>Delivery Option</ng-template>
+            <div class="header">
+                <h3>Select your delivery option</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedDeliveryOption"
+                    formControlName="deliveryControl"
+                    required
+                >
+                    <div *ngFor="let option of deliveryMethod">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="option.name"
+                        >
+                            <div class="text-bold">{{ option.name }}</div>
+                            <div class="text-gray">
+                                {{ option.description }}
+                            </div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormDelivery.submitted &&
+                        deliveryControl!.hasError('required')
+                    "
+                >
+                    This field is required
+                </mat-error>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-delivery-option-back"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-delivery-option-next"
+                                [ngClass]="
+                                    formatSelectedValue(selectedDeliveryOption)
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="structuresFormGroup">
+        <form [formGroup]="structuresFormGroup" #ngFormStructures="ngForm">
+            <ng-template matStepLabel>Structures</ng-template>
+            <div class="header">
+                <h3>What structures do you want to measure?</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedStructures"
+                    formControlName="structuresControl"
+                    required
+                >
+                    <div *ngFor="let structure of getStructures()">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="structure.name"
+                        >
+                            <div class="text-bold">{{ structure.name }}</div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormStructures.submitted &&
+                        structuresControl!.hasError('required')
+                    "
+                >
+                    This field is required
+                </mat-error>
+            </div>
+            <div class="grid-x grid-margin-x margin-top">
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <textarea
+                        placeholder="Special Instructions"
+                        aria-label="Special Instructions"
+                        matInput
+                        formControlName="structuresInstructionControl"
+                        [(ngModel)]="structuresInstruction"
+                    ></textarea>
+                </mat-form-field>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-structures-back"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-structures-next"
+                                [ngClass]="
+                                    formatSelectedValue(selectedStructures)
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="additionalInfoFormGroup">
+        <form
+            [formGroup]="additionalInfoFormGroup"
+            #ngFormAdditionalInfo="ngForm"
+        >
+            <ng-template matStepLabel>Additional Information</ng-template>
+            <div class="header">
+                <h3>
+                    Any additional information you'd like to add?<br />(optional)
+                </h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>error</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Claim Information (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Add information for insurance purposes
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Claim Number"
+                                aria-label="Claim Number"
+                                matInput
+                                formControlName="claimNumberControl"
+                                [(ngModel)]="claimNumber"
+                                maxlength="100"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Claim Information"
+                                aria-label="Claim Information"
+                                matInput
+                                formControlName="claimInfoControl"
+                                [(ngModel)]="claimInfo"
+                                maxlength="100"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>alternate_email</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Email Recipients (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Share a copy of your report with your contacts
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div
+                        class="grid-x grid-margin-x"
+                        *ngIf="additionalInfoFormGroup.get('emailRecipients')"
+                    >
+                        <div class="small-2 medium-1"></div>
+                        <div
+                            formArrayName="emailRecipients"
+                            class="small-10 medium-11"
+                        >
+                            <div
+                                *ngFor="
+                                    let email of additionalInfoFormGroup.get(
+                                        'emailRecipients'
+                                    )?.controls;
+                                    let i = index
+                                "
+                                [formGroupName]="i"
+                                class="grid-x grid-margin-x"
+                            >
+                                <mat-form-field
+                                    class="small-6 medium-6 with-margin"
+                                    floatLabel="auto"
+                                >
+                                    <input
+                                        matInput
+                                        formControlName="emailAddress"
+                                        [errorStateMatcher]="matcher"
+                                        placeholder="Email"
+                                    />
+                                    <mat-error
+                                        *ngIf="
+                                            email
+                                                .get('emailAddress')!
+                                                .hasError('email')
+                                        "
+                                    >
+                                        Email address is invalid
+                                    </mat-error>
+                                </mat-form-field>
+                                <div class="small-6 medium-6">
+                                    <button
+                                        mat-icon-button
+                                        color="secondary"
+                                        aria-label="Add"
+                                        (click)="addEmailFormGroup()"
+                                        matTooltip="Add"
+                                    >
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                    </button>
+                                    <button
+                                        mat-icon-button
+                                        color="secondary"
+                                        aria-label="Remove/clear"
+                                        (click)="removeOrClearEmail(i)"
+                                        matTooltip="Remove"
+                                    >
+                                        <mat-icon>highlight_off</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>home_repair_service</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Project Name (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Assign a name to your project
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Project Name"
+                                aria-label="Project Name"
+                                matInput
+                                formControlName="projectNameControl"
+                                [(ngModel)]="projectName"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>reorder</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Building ID (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Add a custom label to identify different structures
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Building ID"
+                                aria-label="Building ID"
+                                matInput
+                                formControlName="buildingIDControl"
+                                [(ngModel)]="buildingID"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-additional-info-back"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-additional-info-next"
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="orderReviewFormGroup">
+        <form [formGroup]="orderReviewFormGroup" #ngFormOrderReview="ngForm">
+            <ng-template matStepLabel>Review Order</ng-template>
+            <div class="header">
+                <h3>Review your order and pay</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="small-12 medium-8 center bordered">
+                    <div class="cell full-width with-margin-radio">
+                        <div class="full-width text-bold">
+                            {{ addressData.street }}
+                        </div>
+                        <div class="full-width">
+                            {{ addressData.city }}, {{ addressData.state }}
+                            {{ addressData.zip }}
+                        </div>
+                    </div>
+                    <div class="cell full-width bordered-top with-margin">
+                        <div class="full-width text-gray margin-left">
+                            Property
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedPropertyType }}
+                        </div>
+                    </div>
+                    <div class="cell full-width bordered-top with-margin">
+                        <div class="full-width text-gray margin-left">
+                            Report
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedReportType }}
+                        </div>
+                        <div
+                            class="full-width margin-left"
+                            *ngIf="
+                                selectedReportType === 'Premium' &&
+                                selectedHasAddOnReport
+                            "
+                        >
+                            Add-on Report: {{ getAddOnReports() }}
+                        </div>
+                    </div>
+                    <div
+                        class="cell full-width bordered-top with-margin"
+                        *ngIf="selectedReportType === 'Premium'"
+                    >
+                        <div class="full-width text-gray margin-left">
+                            Delivery
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedDeliveryOption }}
+                        </div>
+                    </div>
+                    <div class="cell full-width bordered-top with-margin">
+                        <div class="full-width text-gray margin-left">
+                            Structures
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedStructures }}
+                        </div>
+                        <div
+                            class="full-width margin-left"
+                            *ngIf="structuresInstruction"
+                        >
+                            Special Instructions: {{ structuresInstruction }}
+                        </div>
+                    </div>
+                    <div
+                        class="cell full-width bordered-top with-margin"
+                        *ngIf="
+                            claimNumber ||
+                            claimInfo ||
+                            projectName ||
+                            buildingID ||
+                            emailItems
+                        "
+                    >
+                        <div class="full-width text-gray margin-left">
+                            Additional Information
+                        </div>
+                        <div class="margin-left" *ngIf="claimNumber">
+                            Claim Number: {{ claimNumber }}
+                        </div>
+                        <div class="margin-left" *ngIf="claimInfo">
+                            Claim Information: {{ claimInfo }}
+                        </div>
+                        <div class="margin-left">
+                            Email Recipients: {{ emailItems }}
+                        </div>
+                        <div class="margin-left" *ngIf="projectName">
+                            Project Name: {{ projectName }}
+                        </div>
+                        <div class="margin-left" *ngIf="buildingID">
+                            Building ID: {{ buildingID }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div
+                    class="cell small-12 medium-8 margin-top-small center text-small"
+                >
+                    Beacon will send your report request to EagleView. The final
+                    cost of the report will be charged to your Beacon account.
+                </div>
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x margin-top-bottom">
+                        <div
+                            class="cell small-6 medium-6 center text-left text-gray"
+                        >
+                            Total
+                        </div>
+                        <div
+                            class="cell small-6 medium-6 center text-right text-gray"
+                        >
+                            USD {{ reportPrice }}
+                        </div>
+                    </div>
+                </div>
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-4 medium-3 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-review-order-back"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-8 medium-9 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-order-now"
+                                (click)="orderReport()"
+                                [disabled]="orderSubmitted || isAccountClosed"
+                            >
+                                Order Report Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>
+
+<div
+    class="text-center show-for-small-only margin-top-small"
+    *ngIf="stepperMobile.selectedIndex === 0"
+>
+    <img
+        src="assets/images/Eagleview_logo.jpg"
+        alt="Order EagleView Report"
+        class="logo"
+    />
+    <h3>Order EagleView Report</h3>
+</div>
+
+<mat-vertical-stepper
+    [linear]="isLinear"
+    class="show-for-small-only margin-top-small"
+    #stepperMobile
+>
+    <mat-step [stepControl]="addressFormGroupMobile" completed="false">
+        <form [formGroup]="addressFormGroupMobile">
+            <ng-template matStepLabel>Address</ng-template>
+            <div class="header">
+                <h3>Where is your property located?</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <input
+                        type="text"
+                        placeholder="Street"
+                        aria-label="Street"
+                        matInput
+                        formControlName="streetControlMobile"
+                        [(ngModel)]="addressDataMobile.street"
+                        [errorStateMatcher]="matcher"
+                        maxlength="50"
+                        required
+                    />
+                    <mat-error
+                        *ngIf="streetControlMobile!.hasError('required')"
+                    >
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <input
+                        type="text"
+                        placeholder="City"
+                        aria-label="City"
+                        matInput
+                        formControlName="cityControlMobile"
+                        [(ngModel)]="addressDataMobile.city"
+                        [errorStateMatcher]="matcher"
+                        maxlength="50"
+                        required
+                    />
+                    <mat-error *ngIf="cityControlMobile!.hasError('required')">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <mat-select
+                        placeholder="State"
+                        formControlName="stateControlMobile"
+                        [errorStateMatcher]="matcher"
+                        [(ngModel)]="addressDataMobile.state"
+                        required
+                        name="state"
+                    >
+                        <mat-option
+                            *ngFor="let state of states"
+                            [value]="state.key"
+                        >
+                            {{ state.key }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="stateControlMobile!.hasError('required')">
+                        This field is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <input
+                        type="text"
+                        placeholder="Zip/Postal Code"
+                        aria-label="Zip/Postal Code"
+                        matInput
+                        formControlName="zipControlMobile"
+                        [(ngModel)]="addressDataMobile.zip"
+                        [errorStateMatcher]="matcher"
+                        required
+                    />
+                    <mat-error *ngIf="zipControlMobile!.hasError('required')">
+                        This field is required
+                    </mat-error>
+                    <mat-error *ngIf="zipControlMobile!.hasError('pattern')">
+                        Zipcode is invalid. Should be numeric characters and
+                        formatted in either XXXXX-XXXX or XXXXX.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center text-right">
+                    <button
+                        mat-button
+                        [color]="isAccountClosed ? 'disabled' : 'primary'"
+                        id="ev-address-next-mobile"
+                        matStepperNext
+                        [ngClass]="{ 'btn-disabled': isAccountClosed }"
+                        [disabled]="isAccountClosed"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="propertyTypeFormGroupMobile">
+        <form
+            [formGroup]="propertyTypeFormGroupMobile"
+            #ngFormPropertyTypeMobile="ngForm"
+        >
+            <ng-template matStepLabel>Property Type</ng-template>
+            <div class="header">
+                <h3>
+                    What type of property is {{ addressDataMobile.street }}?
+                </h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedPropertyTypeMobile"
+                    formControlName="propertyTypeControlMobile"
+                    (change)="propertyTypeChangeMobile($event)"
+                    required
+                >
+                    <div *ngFor="let propType of propertyTypes">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="propType.name"
+                        >
+                            <div class="text-bold">{{ propType.name }}</div>
+                            <div class="text-gray">
+                                {{ propType.description }}
+                            </div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormPropertyTypeMobile.submitted &&
+                        propertyTypeControlMobile!.hasError('required')
+                    "
+                >
+                    This field is required
+                </mat-error>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-property-back-mobile"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-property-next-mobile"
+                                [ngClass]="
+                                    formatSelectedValue(
+                                        selectedPropertyTypeMobile
+                                    )
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="reportTypeFormGroupMobile">
+        <form
+            [formGroup]="reportTypeFormGroupMobile"
+            #ngFormReportTypeMobile="ngForm"
+        >
+            <ng-template matStepLabel>Report Type</ng-template>
+            <div class="header">
+                <h3>Select a report type</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedReportTypeMobile"
+                    formControlName="reportTypeControlMobile"
+                    (change)="reportTypeChangeMobile($event)"
+                    required
+                >
+                    <div *ngFor="let rptType of getReportTypesMobile()">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="rptType.name"
+                        >
+                            <div class="grid-x grid-margin-x full-width">
+                                <div class="small-8 medium-10">
+                                    <div class="text-bold">
+                                        {{ rptType.name }}
+                                    </div>
+                                    <div class="text-gray">
+                                        <ul
+                                            *ngFor="
+                                                let feature of rptType.features
+                                            "
+                                            class="min-margin"
+                                        >
+                                            <li>{{ feature }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="small-4 medium-2 text-right">
+                                    {{
+                                        getReportPriceByTwoTypes(
+                                            selectedPropertyTypeMobile,
+                                            rptType.name
+                                        )
+                                    }}
+                                </div>
+                            </div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormReportTypeMobile.submitted &&
+                        reportTypeControlMobile!.hasError('required')
+                    "
+                >
+                    Report Type field is required
+                </mat-error>
+            </div>
+            <div
+                class="grid-x grid-margin-x"
+                *ngIf="
+                    selectedReportTypeMobile === 'Premium' &&
+                    selectedPropertyTypeMobile === 'Residential'
+                "
+            >
+                <div
+                    class="cell small-12 medium-8 center with-margin text-bold"
+                >
+                    Add-on Report
+                </div>
+                <div class="cell small-12 medium-8 center with-margin">
+                    <mat-checkbox
+                        [(ngModel)]="selectedHasAddOnReportMobile"
+                        formControlName="hasAddOnReportControlMobile"
+                        (change)="addOnRptChangeMobile($event)"
+                    >
+                        Include add-on Report
+                    </mat-checkbox>
+                    <div
+                        class="margin-left-large"
+                        *ngIf="selectedHasAddOnReportMobile"
+                    >
+                        <mat-radio-group
+                            [(ngModel)]="selectedAddOnReportMobile"
+                            formControlName="addOnReportControlMobile"
+                            required
+                        >
+                            <div *ngFor="let addOnRpt of addOnReports">
+                                <mat-radio-button
+                                    class="with-margin-radio full-width"
+                                    [value]="addOnRpt.name"
+                                >
+                                    <div
+                                        class="grid-x grid-margin-x full-width"
+                                    >
+                                        <div class="small-8 medium-10">
+                                            {{ addOnRpt.name }}
+                                        </div>
+                                        <div
+                                            class="small-4 medium-2 text-right"
+                                        >
+                                            ${{ addOnRpt.price }}
+                                        </div>
+                                    </div>
+                                </mat-radio-button>
+                            </div>
+                        </mat-radio-group>
+                        <div
+                            *ngIf="
+                                selectedReportTypeMobile === 'Premium' &&
+                                selectedPropertyTypeMobile === 'Residential' &&
+                                selectedHasAddOnReportMobile
+                            "
+                        >
+                            <mat-error
+                                class="cell small-12 medium-8 center with-margin"
+                                *ngIf="
+                                    ngFormReportTypeMobile.submitted &&
+                                    addOnReportControlMobile!.hasError(
+                                        'required'
+                                    )
+                                "
+                            >
+                                Please select the add-on report(s) you want to
+                                include
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-report-back-mobile"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-report-next-mobile"
+                                [ngClass]="
+                                    formatSelectedValue(
+                                        selectedReportTypeMobile
+                                    )
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step
+        [stepControl]="deliveryFormGroupMobile"
+        *ngIf="selectedReportTypeMobile === 'Premium'"
+    >
+        <form
+            [formGroup]="deliveryFormGroupMobile"
+            #ngFormDeliveryMobile="ngForm"
+        >
+            <ng-template matStepLabel>Delivery Option</ng-template>
+            <div class="header">
+                <h3>Select your delivery option</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedDeliveryOptionMobile"
+                    formControlName="deliveryControlMobile"
+                    required
+                >
+                    <div *ngFor="let option of deliveryMethodMobile">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="option.name"
+                        >
+                            <div class="text-bold">{{ option.name }}</div>
+                            <div class="text-gray">
+                                {{ option.description }}
+                            </div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormDeliveryMobile.submitted &&
+                        deliveryControlMobile!.hasError('required')
+                    "
+                >
+                    This field is required
+                </mat-error>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-delivery-option-back-mobile"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-delivery-option-next-mobile"
+                                [ngClass]="
+                                    formatSelectedValue(
+                                        selectedDeliveryOptionMobile
+                                    )
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="structuresFormGroupMobile">
+        <form
+            [formGroup]="structuresFormGroupMobile"
+            #ngFormStructuresMobile="ngForm"
+        >
+            <ng-template matStepLabel>Structures</ng-template>
+            <div class="header">
+                <h3>What structures do you want to measure?</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-radio-group
+                    class="cell small-12 medium-8 center with-margin"
+                    [(ngModel)]="selectedStructuresMobile"
+                    formControlName="structuresControlMobile"
+                    required
+                >
+                    <div *ngFor="let structure of getStructuresMobile()">
+                        <mat-radio-button
+                            class="with-margin-radio full-width"
+                            [value]="structure.name"
+                        >
+                            <div class="text-bold">{{ structure.name }}</div>
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-error
+                    class="cell small-12 medium-8 center with-margin"
+                    *ngIf="
+                        ngFormStructuresMobile.submitted &&
+                        structuresControlMobile!.hasError('required')
+                    "
+                >
+                    This field is required
+                </mat-error>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <mat-form-field
+                    class="cell small-12 medium-8 center with-margin"
+                    floatLabel="auto"
+                >
+                    <textarea
+                        placeholder="Special Instructions"
+                        aria-label="Special Instructions"
+                        matInput
+                        formControlName="structuresInstructionControlMobile"
+                        [(ngModel)]="structuresInstructionMobile"
+                    ></textarea>
+                </mat-form-field>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-structures-back-mobile"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-structures-next-mobile"
+                                [ngClass]="
+                                    formatSelectedValue(
+                                        selectedStructuresMobile
+                                    )
+                                "
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="additionalInfoFormGroupMobile">
+        <form
+            [formGroup]="additionalInfoFormGroupMobile"
+            #ngFormAdditionalInfoMobile="ngForm"
+        >
+            <ng-template matStepLabel>Additional Information</ng-template>
+            <div class="header">
+                <h3>
+                    Any additional information you'd like to add?<br />(optional)
+                </h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>error</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Claim Information (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Add information for insurance purposes
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Claim Number"
+                                aria-label="Claim Number"
+                                matInput
+                                formControlName="claimNumberControlMobile"
+                                [(ngModel)]="claimNumberMobile"
+                                maxlength="100"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Claim Information"
+                                aria-label="Claim Information"
+                                matInput
+                                formControlName="claimInfoControlMobile"
+                                [(ngModel)]="claimInfoMobile"
+                                maxlength="100"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>alternate_email</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Email Recipients (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Share a copy of your report with your contacts
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div
+                        class="grid-x grid-margin-x"
+                        *ngIf="
+                            additionalInfoFormGroupMobile.get(
+                                'emailRecipientsMobile'
+                            )
+                        "
+                    >
+                        <div class="small-2 medium-1"></div>
+                        <div
+                            formArrayName="emailRecipientsMobile"
+                            class="small-10 medium-11"
+                        >
+                            <div
+                                *ngFor="
+                                    let email of additionalInfoFormGroupMobile.get(
+                                        'emailRecipientsMobile'
+                                    )?.controls;
+                                    let imobile = index
+                                "
+                                [formGroupName]="imobile"
+                                class="grid-x grid-margin-x"
+                            >
+                                <mat-form-field
+                                    class="small-7 medium-6 with-margin"
+                                    floatLabel="auto"
+                                >
+                                    <input
+                                        matInput
+                                        formControlName="emailAddressMobile"
+                                        [errorStateMatcher]="matcher"
+                                        placeholder="Email"
+                                    />
+                                    <mat-error
+                                        *ngIf="
+                                            email
+                                                .get('emailAddressMobile')!
+                                                .hasError('email')
+                                        "
+                                    >
+                                        Email address is invalid
+                                    </mat-error>
+                                </mat-form-field>
+                                <div class="small-5 medium-6">
+                                    <button
+                                        mat-icon-button
+                                        color="secondary"
+                                        aria-label="Add"
+                                        (click)="addEmailFormGroupMobile()"
+                                        matTooltip="Add"
+                                    >
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                    </button>
+                                    <button
+                                        mat-icon-button
+                                        color="secondary"
+                                        aria-label="Remove/clear"
+                                        (click)="
+                                            removeOrClearEmailMobile(imobile)
+                                        "
+                                        matTooltip="Remove"
+                                    >
+                                        <mat-icon>highlight_off</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>home_repair_service</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Project Name (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Assign a name to your project
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Project Name"
+                                aria-label="Project Name"
+                                matInput
+                                formControlName="projectNameControlMobile"
+                                [(ngModel)]="projectNameMobile"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1">
+                            <mat-icon>reorder</mat-icon>
+                        </div>
+                        <div class="small-10 medium-11 text-bold">
+                            Building ID (optional)
+                        </div>
+                    </div>
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <div class="small-10 medium-11 text-gray margin-bottom">
+                            Add a custom label to identify different structures
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="small-2 medium-1"></div>
+                        <mat-form-field
+                            class="small-10 medium-11 with-margin"
+                            floatLabel="auto"
+                        >
+                            <input
+                                type="text"
+                                placeholder="Building ID"
+                                aria-label="Building ID"
+                                matInput
+                                formControlName="buildingIDControlMobile"
+                                [(ngModel)]="buildingIDMobile"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6 medium-6 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-additional-info-back-mobile"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-6 medium-6 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-additional-info-next-mobile"
+                                matStepperNext
+                                [disabled]="isAccountClosed"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="orderReviewFormGroupMobile">
+        <form
+            [formGroup]="orderReviewFormGroupMobile"
+            #ngFormOrderReviewMobile="ngForm"
+        >
+            <ng-template matStepLabel>Review Order</ng-template>
+            <div class="header">
+                <h3>Review your order and pay</h3>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div class="small-12 medium-8 center bordered">
+                    <div class="cell full-width with-margin-radio">
+                        <div class="full-width text-bold">
+                            {{ addressDataMobile.street }}
+                        </div>
+                        <div class="full-width">
+                            {{ addressDataMobile.city }},
+                            {{ addressDataMobile.state }}
+                            {{ addressDataMobile.zip }}
+                        </div>
+                    </div>
+                    <div class="cell full-width bordered-top with-margin">
+                        <div class="full-width text-gray margin-left">
+                            Property
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedPropertyTypeMobile }}
+                        </div>
+                    </div>
+                    <div class="cell full-width bordered-top with-margin">
+                        <div class="full-width text-gray margin-left">
+                            Report
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedReportTypeMobile }}
+                        </div>
+                        <div
+                            class="full-width margin-left"
+                            *ngIf="
+                                selectedReportTypeMobile === 'Premium' &&
+                                selectedHasAddOnReportMobile
+                            "
+                        >
+                            Add-on Report: {{ getAddOnReportsMobile() }}
+                        </div>
+                    </div>
+                    <div
+                        class="cell full-width bordered-top with-margin"
+                        *ngIf="selectedReportTypeMobile === 'Premium'"
+                    >
+                        <div class="full-width text-gray margin-left">
+                            Delivery
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedDeliveryOptionMobile }}
+                        </div>
+                    </div>
+                    <div class="cell full-width bordered-top with-margin">
+                        <div class="full-width text-gray margin-left">
+                            Structures
+                        </div>
+                        <div class="full-width margin-left">
+                            {{ selectedStructuresMobile }}
+                        </div>
+                        <div
+                            class="full-width margin-left"
+                            *ngIf="structuresInstructionMobile"
+                        >
+                            Special Instructions:
+                            {{ structuresInstructionMobile }}
+                        </div>
+                    </div>
+                    <div
+                        class="cell full-width bordered-top with-margin"
+                        *ngIf="
+                            claimNumberMobile ||
+                            claimInfoMobile ||
+                            projectNameMobile ||
+                            buildingIDMobile ||
+                            emailItemsMobile
+                        "
+                    >
+                        <div class="full-width text-gray margin-left">
+                            Additional Information
+                        </div>
+                        <div class="margin-left" *ngIf="claimNumberMobile">
+                            Claim Number: {{ claimNumberMobile }}
+                        </div>
+                        <div class="margin-left" *ngIf="claimInfoMobile">
+                            Claim Information: {{ claimInfoMobile }}
+                        </div>
+                        <div class="margin-left" *ngIf="emailItemsMobile">
+                            Email Recipients: {{ emailItemsMobile }}
+                        </div>
+                        <div class="margin-left" *ngIf="projectNameMobile">
+                            Project Name: {{ projectNameMobile }}
+                        </div>
+                        <div class="margin-left" *ngIf="buildingIDMobile">
+                            Building ID: {{ buildingIDMobile }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-x grid-margin-x">
+                <div
+                    class="cell small-12 medium-8 margin-top-small center text-small"
+                >
+                    Beacon will send your report request to EagleView. The final
+                    cost of the report will be charged to your Beacon account.
+                </div>
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x margin-top-bottom">
+                        <div
+                            class="cell small-6 medium-6 center text-left text-gray"
+                        >
+                            Total
+                        </div>
+                        <div
+                            class="cell small-6 medium-6 center text-right text-gray"
+                        >
+                            USD {{ reportPriceMobile }}
+                        </div>
+                    </div>
+                </div>
+                <div class="cell small-12 medium-8 center">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-4 medium-3 center text-left">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-review-order-back-mobile"
+                                matStepperPrevious
+                                [disabled]="isAccountClosed"
+                            >
+                                Back
+                            </button>
+                        </div>
+                        <div class="cell small-8 medium-9 center text-right">
+                            <button
+                                mat-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                id="ev-order-now-mobile"
+                                (click)="orderReportMobile()"
+                                [disabled]="
+                                    orderSubmittedMobile || isAccountClosed
+                                "
+                            >
+                                Order Report Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+</mat-vertical-stepper>

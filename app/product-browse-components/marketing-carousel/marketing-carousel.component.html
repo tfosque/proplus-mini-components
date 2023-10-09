@@ -1,0 +1,49 @@
+<ng-container [brManageContentButton]="document"></ng-container>
+<section class="marketing-block" *ngIf="content && visibleAd">
+    <!--storm banner-->
+    <a *ngIf="!visibleAd.title" href="{{ visibleAd.link.url | protocol }}">
+        <img
+            *ngIf="visibleAd.backgroundImage"
+            src="{{ visibleAd.backgroundImage.src }}"
+            alt="{{ visibleAd.backgroundImage.altText }}"
+            [ngClass]="{ hasTitle: visibleAd.title }"
+        />
+    </a>
+    <!-- Marking banner-->
+    <a
+        *ngIf="visibleAd.title && visibleAd.link.text"
+        [routerLink]="visibleAd.link.url"
+    >
+        <img
+            *ngIf="visibleAd.backgroundImage"
+            src="{{ visibleAd.backgroundImage.src }}"
+            alt="{{ visibleAd.backgroundImage.altText }}"
+            [ngClass]="{ hasTitle: visibleAd.title }"
+        />
+    </a>
+    <div *ngIf="visibleAd.title" class="marketing-block__wrapper">
+        <h2>{{ visibleAd.title }}</h2>
+        <p>{{ visibleAd.description }}</p>
+        <ng-container *ngIf="visibleAd.link">
+            <a
+                *ngIf="
+                    !visibleAd.link.isExternal &&
+                        visibleAd.link.url &&
+                        visibleAd.link.text;
+                    else external
+                "
+                [routerLink]="visibleAd.link.url"
+                class="button primary small"
+                >{{ visibleAd.link.text }}</a
+            >
+        </ng-container>
+        <ng-template #external>
+            <a
+                *ngIf="visibleAd.link.url && visibleAd.link.text"
+                href="{{ visibleAd.link.url | protocol }}"
+                class="button primary small"
+                >{{ visibleAd.link.text }}</a
+            >
+        </ng-template>
+    </div>
+</section>

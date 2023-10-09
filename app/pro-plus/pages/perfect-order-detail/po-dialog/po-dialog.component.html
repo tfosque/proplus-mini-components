@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Add Perfect Order To Template</h2>
+
+<div>Add items to template</div>
+<mat-form-field class="formInput" floatLabel="auto">
+    <mat-label>Template Name</mat-label>
+    <input matInput [(ngModel)]="templateName" />
+    <mat-error *ngIf="templateFormControl.hasError('required')">
+        This field is required
+    </mat-error>
+</mat-form-field>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close [mat-dialog-close]="false">
+        Cancel
+    </button>
+    <button
+        mat-button
+        color="primary"
+        [disabled]="canSave"
+        [mat-dialog-close]="templateName"
+        cdkFocusInitial
+    >
+        Create Template
+    </button>
+</mat-dialog-actions>

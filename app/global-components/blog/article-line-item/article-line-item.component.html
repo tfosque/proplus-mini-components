@@ -1,0 +1,32 @@
+<div class="article-container" *ngIf="false; else Posts">
+    <a
+        [routerLink]="['articles', articleInput$.id]"
+        class="cell small-12 medium-10 title"
+    >
+        <span>{{ articleInput$.title }}</span>
+    </a>
+    <div class="cell medium-6 publishedDate">
+        {{ articleInput$.publishedDate }} by
+        <span>{{ articleInput$.author }}</span>
+    </div>
+</div>
+
+<ng-template #Posts>
+    <div style="border-bottom: solid thin #e9e9e9">
+        <div class="blog-post" *ngIf="articleInput$ as a">
+            <h2 class="blog-post-title" [routerLink]="['articles', a?.id]">
+                {{ a?.title }}
+            </h2>
+            <p class="blog-post-meta">
+                {{ a?.publishedDate | date }} by
+                <span class="author">
+                    {{ a?.author }}
+                </span>
+            </p>
+            <p class="body">
+                {{ a?.featured_data?.featured_caption }}
+            </p>
+            <a [routerLink]="['articles', a?.id]">more...</a>
+        </div>
+    </div>
+</ng-template>

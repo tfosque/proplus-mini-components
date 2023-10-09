@@ -1,0 +1,29 @@
+div.pending-bar {
+    background-color: orange;
+    padding: 12px;
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    font-family: SourceSansPro-Bold, Haettenschweiler, 'Arial Narrow Bold',
+        sans-serif;
+    font-size: 1.575rem;
+}
+
+div.pending-text {
+    font-weight: bold;
+    font-family: SourceSansPro-Bold, Haettenschweiler, 'Arial Narrow Bold',
+        sans-serif;
+}
+
+.review-btn {
+    font-size: 1.2rem;
+    font-style: normal;
+    text-transform: capitalize;
+    border-color: #fff;
+    color: #fff;
+    background-color: #025f9e;
+}
+
+mat-icon {
+    padding-top: 8px;
+}

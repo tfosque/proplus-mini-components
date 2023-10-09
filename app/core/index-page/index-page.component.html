@@ -1,0 +1,78 @@
+<noscript>
+    <div class="no-javascript">
+        Your browser does not support JavaScript or you have JavaScript
+        disabled! For full functionality of this site it is necessary to enable
+        JavaScript.
+    </div>
+</noscript>
+
+<!-- <br-page *ngIf="configuration" [configuration]="configuration" [mapping]="mapping" (state)="setPage($event)"
+    (httpError)="onError($event)"> -->
+<!--  <ng-template> -->
+<!--  <ng-container brComponent="menu">
+            <ng-container *ngIf="userService.sessionBehavior | async as s">
+                <ng-container *ngIf="s.isLoggedIn; else mainNav">
+                    <app-pro-plus-navigation></app-pro-plus-navigation>
+                </ng-container>
+
+                <ng-template #mainNav>
+                    <app-main-nav></app-main-nav>
+                </ng-template>
+            </ng-container>
+        </ng-container> -->
+
+<!-- Pending Orders Bar -->
+<ng-container *ngIf="{
+                pendingOrdersCount: pendingOrdersCount$ | async,
+                isApprover: isOrderApprover$ | async
+            } as data">
+    <div *ngIf="data?.pendingOrdersCount > 0 && data?.isApprover" class="grid-x pending-bar flex align-center">
+        <div class="cell small-1">
+            <mat-icon aria-hidden="false" aria-label="Cart icon">shopping_cart</mat-icon>
+        </div>
+        <div class="cell small-3 medium-5 pending-text">
+            {{
+                        'You have ' +
+                            data?.pendingOrdersCount +
+                            ' pending orders'
+                    }}
+        </div>
+        <div class="cell small-2">
+            <a mat-flat-button routerLink="/proplus/pending-orders" class="review-btn">Review Now</a>
+        </div>
+    </div>
+</ng-container>
+
+<div *ngIf="isLastSelectedAccountClosed$ | async" class="grid-x closed-account-bar flex align-center">
+    Your account has been closed. To open a new account, please contact
+    the credit team at&nbsp;<a href="mailto:customercare-1@becn.com"
+        class="white-font">customercare-1@becn.com</a>&nbsp;or call 844-523-6514
+</div>
+
+<main class="main-content">
+    <div *ngIf="overlayActive$ | async" class="menu-overlay"></div>
+
+    <router-outlet *ngIf="
+                    !(isPageProductNotFound | async) &&
+                        !(isPageContentNotFound | async);
+                    else pageNotFound
+                "></router-outlet>
+
+    <ng-template #pageNotFound>
+        <app-generic-content-page [isPageNotFound]="true"></app-generic-content-page>
+    </ng-template>
+
+    <app-loading-container *ngIf="isPageLoading$ | async"></app-loading-container>
+</main>
+
+<!--  <ng-container brComponent="footer"></ng-container> -->
+<!--   </ng-template> -->
+<!-- </br-page> -->
+
+<!--
+    Moved this here from the index.html file as it was causing a "fatal" error in ie11 that prevented the
+    page from loading correctly. This way it should only be loaded once angular has successfully finished
+    initial setup.  Developer note: Through testing this seems to work well, but could still be problems
+    with loading this external script down the line.
+  -->
+<div *ngIf="isBrowser && !local" [innerHTML]="optinMosterScript | safe: 'html'" appRunScripts></div>

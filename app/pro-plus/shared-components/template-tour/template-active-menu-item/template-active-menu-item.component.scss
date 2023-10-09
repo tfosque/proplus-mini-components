@@ -1,0 +1,198 @@
+#active-menu {
+    position: absolute;
+    // top: -760px;
+    top: 122px;
+    // left: 470px;
+    z-index: 20000;
+    padding: 13px 0;
+    font-size: 0.8rem;
+}
+
+div div.step0 {
+    background-color: #025f9e;
+    padding: 6px;
+    text-align: center;
+    width: 180px;
+    height: 38px;
+    color: #fff;
+    // padding-top: 16px;
+    visibility: hidden;
+    transform: translate(5px, -12px);
+    vertical-align: middle;
+}
+
+div div.step0.step0new {
+    visibility: visible;
+}
+
+div div.step1 {
+    visibility: hidden;
+    transform: translate(0, 210px);
+}
+
+div div.step1.step1edit {
+    visibility: visible;
+}
+
+div div.step2 {
+    visibility: hidden;
+    transform: translate(0, 115px);
+}
+
+div div.step2.step2duplicate {
+    visibility: visible;
+}
+
+div div.step2template {
+    visibility: hidden;
+    transform: translate(0, 173px);
+}
+
+div div.step2template.step2template-duplicate {
+    visibility: visible;
+}
+
+div div.step3 {
+    visibility: hidden;
+    transform: translate(-10px, 50px);
+}
+
+div div.step3.step3filter {
+    visibility: visible;
+}
+
+#indicator {
+    width: 22px;
+    text-align: center;
+    position: relative;
+    z-index: 20000;
+    // top: -847px;
+    // left: 400px;
+    height: 24px;
+    visibility: hidden;
+    // transition: transform 0.5s;
+}
+
+#indicator.default {
+    transform: translate(80px, -10px);
+    visibility: visible;
+}
+#indicator.step1 {
+    transform: translate(450px, 210px);
+    visibility: visible;
+}
+
+#indicator.step2 {
+    transform: translate(-2px, 157px);
+    visibility: visible;
+}
+
+#indicator.step3 {
+    transform: translate(120px, 50px);
+    visibility: visible;
+}
+
+.standard-row {
+    font-size: 14px;
+    height: 100%;
+    display: flex; 
+    align-items: center; 
+}
+
+.template-row {
+    width: 880px;
+    height: 48px;
+}
+
+.grid-text-blue {
+    color: #025f9e;
+}
+
+.white-background {
+    background-color: #fff;
+}
+
+.full-height {
+    height: 100%;
+    display: flex; 
+    align-items: center; 
+}
+
+.cta-row {
+    width: 880px;
+    height: 36px;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.cta-copy {
+    margin: 0 6px 0 11px;
+}
+
+.cta-duplicate {
+    margin: 0 20px 0 10px;
+}
+
+.cta-delete {
+    margin: 0 45px 0 0;
+}
+
+.centered {
+    height: 100%;
+    text-align: center;
+    padding-top: 6px;
+}
+
+.delete-icon {
+    color: #025f9e;
+    font-size: 1.275rem;
+}
+
+.checked-checkbox {
+    font-size: 14px;
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
+.filter-row {
+    width: 880px;
+    font-size: .9375rem;
+    font-weight: 400;
+}
+
+.gray-background {
+    background-color: lightgray;
+}
+
+.filter-key {
+    padding: 10px;
+}
+
+.search-btn {
+    text-transform: uppercase;
+    background-color: #025f9e;
+    color: #fff;
+    text-align: center;
+    font-size: 0.9rem;
+    width: 80%;
+    height: 36px;
+    vertical-align: middle;
+    padding-top: 8px;
+}
+
+.button-bold {
+    font-weight: 800; font-size: 1rem;
+}
+
+@media screen and (max-width: 575px) {
+    #active-menu {
+        left: 0;
+    }
+
+    #indicator.default {
+        transform: translate(0, -10px);
+        visibility: visible;
+    }
+}

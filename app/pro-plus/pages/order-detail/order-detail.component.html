@@ -1,0 +1,507 @@
+<div *ngIf="isLoading; else loaded" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #info>
+    <app-dump-grid [input]="orderDetailResponse"></app-dump-grid>
+</ng-template>
+
+<ng-template #loaded>
+    <ng-container *ngIf="orderDetailResponse?.order; else failedToLoad">
+        <!-- Page Header -->
+        <h1>Order {{ orderId }}</h1>
+
+        <!-- Order Details -->
+        <div id="order-header" class="grid-x grid-margin-x">
+            <ng-container *ngIf="orderDate">
+                <!-- Order Placed Date -->
+                <div class="label cell small-4 large-2">
+                    <label>Date Placed:</label>
+                </div>
+                <div class="cell small-8 large-10">{{ orderDate }}</div>
+            </ng-container>
+
+            <!-- Custom PO -->
+            <ng-container *ngIf="orderDetailResponse?.order?.purchaseOrderNo">
+                <div class="label cell small-4 large-2">
+                    <label>Cust PO: </label>
+                </div>
+                <div class="cell small-8 large-10">
+                    {{ orderDetailResponse?.order?.purchaseOrderNo }}
+                </div>
+            </ng-container>
+
+            <!-- Order# -->
+            <ng-container *ngIf="orderId">
+                <div class="label cell small-4 large-2">
+                    <label>Order#:</label>
+                </div>
+                <div class="cell small-8 large-10">{{ orderId }}</div>
+            </ng-container>
+
+            <!-- Job Name -->
+            <ng-container *ngIf="orderDetailResponse?.order?.job?.jobName">
+                <div class="label cell small-4 large-2">
+                    <label class="label">Job Account:</label>
+                </div>
+                <div class="cell small-6 large-10">
+                    {{ orderDetailResponse?.order?.job?.jobName }}
+                </div>
+            </ng-container>
+
+            <!-- Order Status -->
+            <ng-container *ngIf="orderDetailResponse?.order?.orderStatusCode">
+                <div class="label cell small-4 large-2">
+                    <label>Status:</label>
+                </div>
+                <div class="cell small-8 large-10" [ngSwitch]="orderDetailResponse?.order?.orderStatusCode">
+                    <div>
+                        <ng-template ngSwitchCase="I">Invoiced</ng-template>
+                        <ng-template ngSwitchCase="R">Delivered</ng-template>
+                        <ng-template ngSwitchCase="P">Delivered</ng-template>
+                        <ng-template ngSwitchCase="C">Processing</ng-template>
+                        <ng-template ngSwitchCase="O">Ready Delivery/Pick up</ng-template>
+                        <ng-template ngSwitchCase="K">Processing</ng-template>
+                        <ng-template ngSwitchCase="N">Pending</ng-template>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Order Notes -->
+            <ng-container *ngIf="orderNote">
+                <div class="label cell small-4 large-2">
+                    <label>Notes:</label>
+                </div>
+                <div class="cell small-8 large-10">{{ orderNote }}</div>
+            </ng-container>
+
+            <!-- Processed By -->
+            <ng-container *ngIf="account?.accountBranch?.branchName">
+                <div class="label cell small-4 large-2">
+                    <label>Processed By:</label>
+                </div>
+                <div class="cell small-8 large-10">
+                    {{ account?.accountBranch?.branchName }}
+                </div>
+            </ng-container>
+        </div>
+
+        <br />
+
+        <!-- Add Order To Cart -->
+        <div class="grid-x grid-margin-x button-bar">
+            <button class="cell small-12 medium-4 large-4 md-5" mat-raised-button
+                [color]="isAccountClosed ? 'disabled' : 'primary'" (click)="addOrderToCart()"
+                [disabled]="isAccountClosed">
+                Add Order to Cart
+            </button>
+
+            <button class="cell small-12 medium-4 large-4 md-5" mat-raised-button color="secondary"
+                [matMenuTriggerFor]="menu">
+                <mat-menu #menu="matMenu" direction="down">
+                    <button mat-menu-item [matMenuTriggerFor]="excel">
+                        Excel(Current selection)
+                    </button>
+                    <button mat-menu-item [matMenuTriggerFor]="csv">
+                        CSV(Current selection)
+                    </button>
+                    <button mat-menu-item [matMenuTriggerFor]="pdf">
+                        PDF(Current selection)
+                    </button>
+                </mat-menu>
+                <mat-menu #excel="matMenu">
+                    <button mat-menu-item (click)="exportOrder(true, 'excel')" *ngIf="!isAccountClosed">
+                        With Price
+                    </button>
+                    <button mat-menu-item (click)="exportOrder(false, 'excel')">
+                        Without Price
+                    </button>
+                </mat-menu>
+                <mat-menu #csv="matMenu">
+                    <button mat-menu-item (click)="exportOrder(true, 'csv')" *ngIf="!isAccountClosed">
+                        With Price
+                    </button>
+                    <button mat-menu-item (click)="exportOrder(false, 'csv')">
+                        Without Price
+                    </button>
+                </mat-menu>
+                <mat-menu #pdf="matMenu">
+                    <button mat-menu-item (click)="exportOrder(true, 'pdf')" *ngIf="!isAccountClosed">
+                        With Price
+                    </button>
+                    <button mat-menu-item (click)="exportOrder(false, 'pdf')">
+                        Without Price
+                    </button>
+                </mat-menu>
+                Download as
+            </button>
+
+            <!-- Add Items To Template -->
+            <mat-menu #appMenu="matMenu">
+                <button (click)="openDialogNewTemplate()" mat-menu-item>
+                    Create New Template
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="addItemsToTemplate(template)" *ngFor="let template of templateList">
+                    {{ template.templateName }}
+                </button>
+            </mat-menu>
+
+            <button class="cell small-12 medium-4 large-4 md-5" mat-raised-button
+                [color]="isAccountClosed ? 'disabled' : 'primary'" [matMenuTriggerFor]="appMenu"
+                [disabled]="isAccountClosed">
+                Add Items to Template
+            </button>
+        </div>
+        <!-- End of grid-x -->
+
+        <h3>Your Original Order:</h3>
+        <p>Below are details about the item(s) in your order.</p>
+        <div>
+            <div class="list-group">
+                <!-- List Address -->
+                <div>
+                    <ul class="list-address">
+                        <li>
+                            <h3>Branch Address</h3>
+                        </li>
+                        <li>
+                            {{ branchInfo?.branchName}}({{branchInfo?.branchNumber}})
+                        </li>
+                        <li>
+                            {{
+                                branchInfo?.address.address1
+                            }}
+                        </li>
+                        <li>
+                            {{
+                                branchInfo?.address.address2
+                            }}
+                        </li>
+                        <li>
+                            {{
+                                branchInfo?.address.city
+                            }},
+                            {{
+                                branchInfo?.address
+                                    .state
+                            }},
+                            {{
+                                branchInfo?.address
+                                    .postalCode
+                            }}
+                        </li>
+                        <li *ngIf="
+                                orderDetailResponse?.order
+                                    ?.showDeliveryNotification
+                            ">
+                            <button mat-raised-button [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                " (click)="openDialogAlert()" [disabled]="isAccountClosed">
+                                Get Alerts
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Delivery Option -->
+                <!-- Spinner -->
+                <div *ngIf="isDTStatusLoading; else dtStatusLoaded" style="margin: auto; text-align: center">
+                    <mat-spinner diameter="44" color="primary" style="display: inline-block"></mat-spinner>
+                </div>
+                <ng-template #dtStatusLoaded>
+                    <div *ngIf="dtStatus$ | async as dt">
+                        <!-- <h3>Delivery Option:</h3> -->
+                        <h3>Delivery Tracking</h3>
+                        <div>
+                            <b>Status: </b> <span>{{ dt.contValue }}</span>
+                        </div>
+                        <div>
+                            <b>Date: </b> <span>{{ dt.statusEndDate }}</span>
+                        </div>
+                        <span *ngFor="let stage of dt.infos">
+                            <img src="https://beaconproplus.com/{{
+                                    stage.imageUrl
+                                }}" [alt]="stage.value" />
+                        </span>
+                    </div>
+                </ng-template>
+            </div>
+
+            <!-- Job Site Photos -->
+            <div *ngIf="dtPhotos$ | async as dtPhotos">
+                <h3>Job Site Photos</h3>
+                <div>
+                    <span *ngFor="let p of dtPhotos; let i = index">
+                        <a (click)="
+                                openPhotoDialog(
+                                    p.largeUrl.toString(),
+                                    dtPhotos,
+                                    i
+                                )
+                            ">
+                            <img style="padding: 5px" [src]="p.thumbnailUrl" width="78" />
+                        </a>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Line Items -->
+            <div>
+                <table mat-table [dataSource]="dataSource" class="spacing full-width show-for-medium">
+                    <ng-container matColumnDef="product">
+                        <th mat-header-cell *matHeaderCellDef>PRODUCT</th>
+                        <td mat-cell *matCellDef="let element">
+                            <img appImagePreload default="{{
+                                    element.productOnErrorImageUrl
+                                        | errorImage
+                                            : '../../assets/images/image-not-available.svg'
+                                }}" class="img-prod" src="{{
+                                    element.productImageUrl | productImage
+                                }}" alt="" />
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="details">
+                        <th mat-header-cell *matHeaderCellDef>DETAILS</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div>
+                                <a *ngIf="element.productId; else noLink" [routerLink]="getProdUrl(element)"
+                                    [innerHTML]="getName(element)"></a>
+                                <ng-template #noLink><span [innerHTML]="getName(element)"></span></ng-template>
+                            </div>
+                            <div *ngIf="
+                                    element.productId &&
+                                    element.itemNumber &&
+                                    element.itemNumber !== '0'
+                                ">
+                                <label>Item #: </label>
+                                <span>{{ element.itemNumber }}</span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="unit_price">
+                        <th mat-header-cell *matHeaderCellDef>UNIT PRICE</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="
+                                    orderHistoryPermissions.withPrice;
+                                    else unitPriceMedium
+                                ">
+                                {{
+                                    element.unitPrice
+                                        | price: element.unitOfMeasure:true
+                                }}
+                            </div>
+                            <ng-template #unitPriceMedium>
+                                <div *ngIf="element.unitOfMeasure">
+                                    {{ element.unitOfMeasure }}
+                                </div>
+                            </ng-template>
+                        </td>
+                    </ng-container>
+
+                    <!-- Shipped Qty / Order Qty -->
+
+                    <ng-container matColumnDef="qty">
+                        <th mat-header-cell *matHeaderCellDef style="width: 125px; cursor: pointer">
+                            <span (click)="toggleOrderQty()" style="border: solid 1px grey; padding: 10px">{{
+                                    showOrderQty
+                                        ? 'Order Qty &#9650;'
+                                        : 'Shipped Qty &#9660;'
+                                }}</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            <span>{{
+                                showOrderQty
+                                    ? element.orderQuantity
+                                    : element.quantityMsg ||
+                                      element.shipQuantity
+                            }}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="subtotal">
+                        <th mat-header-cell *matHeaderCellDef>SUBTOTAL</th>
+                        <td mat-cell *matCellDef="let element" style="font-weight: bolder">
+                            <div *ngIf="orderHistoryPermissions.withPrice">
+                                {{ element.subTotal | price }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+            </div>
+
+            <!-- Responsive Layout to replace table -->
+            <div class="show-for-small-only">
+                <ng-container *ngFor="let element of dataSource.filteredData">
+                    <div class="order-line-item grid-x grid-padding-x grid-padding-y">
+                        <!-- Image -->
+                        <div class="cell small-3">
+                            <img appImagePreload *ngIf="element.itemOrProductDescription" default="{{
+                                    element.productOnErrorImageUrl
+                                        | errorImage
+                                            : '../../assets/images/image-not-available.svg'
+                                }}" src="{{
+                                    element.productImageUrl | productImage
+                                }}" alt="" />
+                        </div>
+
+                        <!-- Description -->
+                        <div class="cell small-9">
+                            <a *ngIf="element.productId; else noLink" [routerLink]="getProdUrl(element)"
+                                [innerHTML]="getName(element)">
+                            </a>
+                            <ng-template #noLink>
+                                <span [innerHTML]="getName(element)"></span>
+                            </ng-template>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="cell small-12">
+                            <div *ngIf="
+                                    element.productId &&
+                                    element.itemNumber &&
+                                    element.itemNumber !== '0'
+                                ">
+                                <label>Item #: </label>
+                                <span>{{ element.itemNumber }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Unit Price -->
+                        <div class="cell small-12">
+                            <label>Price: </label>
+                            <span *ngIf="
+                                    orderHistoryPermissions.withPrice;
+                                    else unitPriceSmall
+                                ">{{
+                                    element.unitPrice
+                                        | price: element.unitOfMeasure:true
+                                }}</span>
+                            <ng-template #unitPriceSmall>
+                                <span *ngIf="element.unitOfMeasure">
+                                    {{ element.unitOfMeasure }}
+                                </span>
+                            </ng-template>
+                        </div>
+
+                        <div class="cell small-12" *ngIf="
+                                element?.shipQuantity || element?.orderQuantity
+                            ">
+                            <label (click)="toggleOrderQty()">
+                                {{
+                                    showOrderQty ? 'Order Qty:' : 'Shipped Qty:'
+                                }}
+                                <span *ngIf="
+                                        element?.orderQuantity !==
+                                        element?.shipQuantity
+                                    ">{{
+                                        showOrderQty ? '&#9650;' : '&#9660;'
+                                    }}</span>
+                            </label>
+                            <span>
+                                {{
+                                    showOrderQty
+                                        ? element?.orderQuantity
+                                        : element.quantityMsg ||
+                                          element?.shipQuantity
+                                }}
+                            </span>
+                        </div>
+
+                        <div class="cell small-6">
+                            <label>Subtotal: </label>
+                            <span *ngIf="orderHistoryPermissions.withPrice">{{
+                                element.subTotal | price
+                            }}</span>
+                        </div>
+                    </div>
+
+                    <!-- End of grid-x -->
+                </ng-container>
+            </div>
+
+            <div *ngIf="
+                    orderDetailResponse?.EVReportId &&
+                    orderDetailResponse?.EVEligibleForUpgrade
+                " class="grid-x grid-margin-x button-bar">
+                <div class="small-0 medium-7 large-7"></div>
+                <button class="cell small-12 medium-5 large-5 md-6" mat-raised-button
+                    [color]="isAccountClosed ? 'disabled' : 'emphasis'" (click)="upgradeEVReport()"
+                    [disabled]="isAccountClosed">
+                    Upgrade Eagleview Report
+                </button>
+            </div>
+
+            <!-- Order Summary -->
+            <ng-container *ngIf="orderTotal !== 0; else TotalZero">
+                <div class="grid-x">
+                    <div class="small-0 medium-6 large-6"></div>
+                    <table id="order-summary" class="table cell small-12 medium-6" mat-table
+                        [dataSource]="orderTotalDataSource">
+                        <ng-container matColumnDef="orderSummary">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <h3>ORDER SUMMARY</h3>
+                            </th>
+                            <td mat-cell class="table-rows" *matCellDef="let element">
+                                <div class="summary-text">Sub Total</div>
+                                <div class="summary-text">
+                                    Other Charges
+                                    <button class="icon" matTooltipPosition="left" matTooltip="What is Other Charges?
+          Other charges are typically delivery fees, but may include handling and fuel fees."
+                                        matTooltipClass="custom-tooltip">
+                                        <mat-icon>info</mat-icon>
+                                    </button>
+                                </div>
+                                <div class="summary-text">Tax</div>
+                                <div class="summary-text-total">Total</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="empty">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell class="table-rows" *matCellDef="let element">
+                                <div class="summary-value" style="font-weight: bold">
+                                    {{ element.subTotal | price }}
+                                </div>
+                                <div class="summary-value" style="font-weight: bold">
+                                    {{ element.otherCharges | currency }}
+                                </div>
+                                <div class="summary-value">
+                                    {{ element.tax | price }}
+                                </div>
+
+                                <div class="summary-value-total" style="font-weight: 800">
+                                    {{ element.total | price }}
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+                    </table>
+                    <div style="clear: both">&nbsp;</div>
+                </div>
+            </ng-container>
+            <ng-template #TotalZero>
+                <div class="grid-x">
+                    <div class="small-0 medium-8 large-8"></div>
+                    <div class="total small-12 medium-4 large-4">
+                        <div>
+                            <h3>ORDER TOTAL</h3>
+                        </div>
+                        <div>
+                            <p>
+                                Pricing will be calculated at the time of
+                                invoicing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+    </ng-container>
+
+    <ng-template #failedToLoad> Failed to load this order. </ng-template>
+</ng-template>

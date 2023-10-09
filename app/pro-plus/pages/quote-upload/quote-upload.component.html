@@ -1,0 +1,215 @@
+<div class="loading-container" *ngIf="showProgress">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="upload-quote">
+    <div class="upload-quote_title">
+        <div class="grid-x grid-margin-x">
+            <div class="cell auto">
+                <h1 style="margin-bottom: 0px">Upload Quote</h1>
+            </div>
+        </div>
+    </div>
+    <mat-divider class="divider"></mat-divider>
+    <form [formGroup]="uploadQuoteForm">
+        <div class="grid-x">
+            <!-- Full name -->
+            <div class="cell medium-5 large-5">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <input
+                        matInput
+                        placeholder="Full Name"
+                        formControlName="userName"
+                    />
+                </mat-form-field>
+                <form-control-messages
+                    [control]="uploadQuoteForm.get('userName')"
+                ></form-control-messages>
+            </div>
+        </div>
+        <div class="grid-x">
+            <!-- Contact Number (phone) -->
+            <div class="cell medium-5 large-5">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <input
+                        matInput
+                        placeholder="Phone Number"
+                        (keyup)="formatPhone()"
+                        formControlName="contactNumber"
+                        minlength="10"
+                        maxlength="12"
+                    />
+                </mat-form-field>
+                <form-control-messages
+                    [control]="uploadQuoteForm.get('contactNumber')"
+                ></form-control-messages>
+            </div>
+        </div>
+        <div class="grid-x">
+            <!-- Upload Document -->
+            <div class="cell medium-5 large-5">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <input
+                        [hidden]="true"
+                        (change)="onFileSelect($event)"
+                        type="file"
+                        accept=".csv, .docx, .pdf, .xls, .xlsx, image/tiff, .tif, application/pdf, application/msword, pplication/vnd.openxmlformats-officedocument.wordprocessingml.document, application/excel"
+                        #fileSelect
+                    />
+                    <input
+                        readonly
+                        matInput
+                        formControlName="filename"
+                        placeholder="Upload Document"
+                    />
+                    <button
+                        matSuffix
+                        mat-icon-button
+                        (click)="fileSelect.click()"
+                        matTooltip="Select a file"
+                        [matTooltipPosition]="'above'"
+                    >
+                        <mat-icon>file_upload</mat-icon>
+                    </button>
+                </mat-form-field>
+                <form-control-messages
+                    [control]="uploadQuoteForm.get('filename')"
+                ></form-control-messages>
+            </div>
+        </div>
+        <div class="grid-x">
+            <!-- job -->
+            <div class="cell medium-5 large-5" *ngIf="jobs?.jobs.length > 0">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <mat-select
+                        placeholder="Job Name"
+                        formControlName="jobNumber"
+                    >
+                        <mat-option
+                            *ngFor="let job of jobs?.jobs"
+                            [value]="job.jobNumber"
+                        >
+                            {{ job.jobName }} {{ job.jobNumber }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <form-control-messages
+                    [control]="uploadQuoteForm.get('jobNumber')"
+                ></form-control-messages>
+            </div>
+
+            <div class="cell medium-5 large-5" *ngIf="jobs?.jobs.length === 0">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <input
+                        matInput
+                        placeholder="Job Name"
+                        formControlName="jobNumber"
+                        maxlength="16"
+                    />
+                </mat-form-field>
+                <div
+                    [ngStyle]="{
+                        color: uploadQuoteForm
+                            .get('jobNumber')
+                            .hasError('maxlength')
+                            ? '#ff6e40'
+                            : '#0a0a0a'
+                    }"
+                    style="
+                        font-size: 0.75rem;
+                        margin-bottom: 5px;
+                        margin-top: -14px;
+                        margin-bottom: 15px;
+                    "
+                >
+                    {{ uploadQuoteForm.get('jobNumber').value.length }}/15
+                </div>
+                <form-control-messages
+                    [control]="uploadQuoteForm.get('jobNumber')"
+                ></form-control-messages>
+                <mat-error
+                    style="font-size: 0.85rem; margin-bottom: 15px"
+                    *ngIf="
+                        uploadQuoteForm.get('jobNumber').hasError('maxlength')
+                    "
+                >
+                    Too many characters
+                </mat-error>
+            </div>
+        </div>
+        <div class="grid-x">
+            <!-- Work Type -->
+            <div class="cell medium-5 large-5">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <mat-select
+                        placeholder="Work Type"
+                        formControlName="workType"
+                    >
+                        <mat-option [value]="'N'">
+                            New Construction
+                        </mat-option>
+                        <mat-option [value]="'R'"> Remodel </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <form-control-messages
+                    [control]="uploadQuoteForm.get('workType')"
+                ></form-control-messages>
+            </div>
+        </div>
+        <div class="grid-x">
+            <!-- Quote Notes -->
+            <div class="cell">
+                <mat-form-field
+                    appearance="outline"
+                    class="full-width"
+                    floatLabel="auto"
+                >
+                    <mat-label class="upload-quote_label"
+                        >Quote Notes</mat-label
+                    >
+                    <textarea
+                        matInput
+                        placeholder=""
+                        formControlName="quoteNote"
+                    ></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="upload-quote_cta">
+            <div class="grid-container fluid">
+                <div class="grid-x grid-margin-x">
+                    <div class="cell medium-6">
+                        <button
+                            color="secondary"
+                            (click)="redirectNew()"
+                            mat-raised-button
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="cell medium-3">
+                        <div class="button-group">
+                            <button
+                                type="reset"
+                                (click)="resetForm()"
+                                color="emphasis"
+                                mat-raised-button
+                            >
+                                <mat-icon>delete</mat-icon>Clear All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="cell medium-3">
+                        <button
+                            [disabled]="!uploadQuoteForm.valid"
+                            color="primary"
+                            (click)="submitQuoteForm()"
+                            mat-raised-button
+                        >
+                            Submit Request
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

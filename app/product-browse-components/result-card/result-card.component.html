@@ -1,0 +1,36 @@
+<section class="result-card__result">
+    <a [routerLink]="(activeImage | async)?.card?.productUrl">
+        <div class="result-card__image-wrap">
+
+            <app-img-fav-icon [element]="(activeImage | async)?.card"
+                [imgUrl]="(activeImage | async)?.card?.image?.hero" size="large"
+                [fallbackImage]="(activeImage | async)?.card?.productOnErrorImage"
+                [itemNumber]="(activeImage | async)?.card?.itemNumber"
+                [isFavorite]="(activeImage | async)?.card?.isAddedToFavorites"></app-img-fav-icon>
+        </div>
+        <p class="result-card__brand">{{ (activeImage | async)?.card?.brand }}</p>
+    </a>
+
+    <!-- Colors -->
+    <div *ngIf="result?.skus.length > 1;">
+        <div class="skus-container">
+            <ul style="list-style: none; padding-left: 5px; margin-top: 0;">
+                <li style="display: inline-block; padding-right: 5px;" *ngFor="let item of result?.skus | slice:0:6"
+                    (click)="updateActiveSku(item)">
+                    <img style="width: 29; height: 29px" [src]="item.image?.swatch" alt="">
+                </li>
+                <li style="display: inline-block; font-size: .85rem;">
+                    <div class="bold">
+                        <span *ngIf="result?.skus.length > 6">+</span>
+                        <span>{{ result?.skus.length > 6 ? result?.skus.length - 6 : ''}}</span>
+                        <span *ngIf="result?.skus.length > 6">&nbsp;more</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <a [routerLink]="(activeImage | async)?.card?.productUrl">
+        <h3 style="height: 70px;" innerHTML="{{ (activeImage | async)?.card?.productName }}"></h3>
+    </a>
+</section>

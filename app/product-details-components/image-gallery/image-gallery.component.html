@@ -1,0 +1,44 @@
+<div class="image-gallery">
+    <div class="image-gallery__active-image-container">
+        <img
+            appImagePreload
+            [default]="
+                defaultImage
+                    | errorImage: '../../assets/images/image-not-available.svg'
+            "
+            class="image-gallery__active-image"
+            [src]="images[activeIndex].heroSrc()"
+            [alt]="images[activeIndex].altText"
+        />
+    </div>
+
+    <div
+        *ngIf="images && images.length > 1"
+        class="image-gallery__thumb-container"
+    >
+        <ul class="image-gallery__thumb-list">
+            <li
+                *ngFor="let image of images; index as i"
+                class="image-gallery__thumb-item"
+                [ngClass]="{ 'is-active': i === activeIndex }"
+            >
+                <a (click)="setActiveIndex(i)" class="image-gallery__thumb">
+                    <span class="image-gallery__thumb-count">
+                        {{ i + 1 }}
+                    </span>
+                    <img
+                        appImagePreload
+                        [default]="
+                            productAdditionalOnErrorImage
+                                | errorImage
+                                    : '../../assets/images/image-not-available.svg'
+                        "
+                        class="image-gallery__thumb-image"
+                        [src]="image.thumbSrc()"
+                        [alt]="image.altText"
+                    />
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

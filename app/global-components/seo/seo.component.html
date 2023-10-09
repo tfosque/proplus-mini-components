@@ -1,0 +1,14 @@
+<dl *ngIf="isPreview">
+    <dt>Title</dt>
+    <dd>
+        <ng-container *ngIf="seoInfo">{{ seoInfo.title }}</ng-container>
+    </dd>
+    <dt>Description</dt>
+    <dd>
+        <ng-container *ngIf="seoInfo">{{ seoInfo.description }}</ng-container>
+    </dd>
+    <dt>Keywords</dt>
+    <dd>
+        <ng-container *ngIf="seoInfo">{{ seoInfo.keywords }}</ng-container>
+    </dd>
+</dl>

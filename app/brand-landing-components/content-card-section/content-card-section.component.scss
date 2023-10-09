@@ -1,0 +1,7 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.content-card-section {
+    @include contentButtonContainer();
+    margin-top: rem-calc(10px);
+}

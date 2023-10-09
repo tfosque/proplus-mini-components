@@ -1,0 +1,26 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.product-documents {
+    margin-top: rem-calc(20px);
+    ul {
+        margin: 0px;
+        padding: 0px;
+
+        li {
+            list-style-type: none;
+            line-height: rem-calc(20px);
+            margin-bottom: rem-calc(25px);
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        ul {
+            li {
+                font-size: rem-calc(18px);
+                line-height: rem-calc(22px);
+                margin-bottom: rem-calc(16px);
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+<mat-form-field appearance="none">
+  <mat-label>Select a Job (required)</mat-label>
+  <select matNativeControl required style="color: black">
+    <option value="select">{{ (jobs | async)[0]?.jobName }}</option>
+    <option [value]="item.jobName" *ngFor="let item of jobs | async">{{item.jobName}}</option>
+  </select>
+  <!-- <mat-error *ngIf="selectFormControl.hasError('required')">
+  This field is required
+</mat-error> -->
+  <mat-hint>You most recent job name has been selected automatically.</mat-hint>
+</mat-form-field>

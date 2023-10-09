@@ -1,0 +1,17 @@
+<div class="information generic-rail-component">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h3>{{ heading }}</h3>
+    <p>{{ textContent }}</p>
+    <ul>
+        <li *ngFor="let link of linkListArray; let i = index">
+            <a
+                *ngIf="link.isExternal; else internal"
+                href="{{ link.url | protocol }}"
+                >{{ link.text }}</a
+            >
+            <ng-template #internal>
+                <a routerLink="{{ link.url }}">{{ link.text }}</a>
+            </ng-template>
+        </li>
+    </ul>
+</div>

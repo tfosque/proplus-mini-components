@@ -1,0 +1,26 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.product-category-page {
+    &__title {
+        font-size: rem-calc(30px);
+        line-height: rem-calc(34px);
+        margin-top: 0;
+    }
+
+    &__bottom-section {
+        background-color: $color-background-dark;
+        padding: rem-calc(10px 0);
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        &__title {
+            font-size: rem-calc(40px);
+            line-height: rem-calc(46px);
+        }
+
+        &__bottom-section {
+            padding: rem-calc(20px 0);
+        }
+    }
+}

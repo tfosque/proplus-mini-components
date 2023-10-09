@@ -1,0 +1,68 @@
+@import '../../../sass/mixins';
+@import '../../../sass/variables';
+
+.rich-text {
+    @include contentButtonContainer();
+    margin-top: rem-calc(25px);
+    max-width: rem-calc(950px);
+    margin-right: auto;
+    margin-left: auto;
+    &--no-margin {
+        margin: 0;
+    }
+
+    p {
+        font-size: rem-calc(16px);
+        line-height: rem-calc(23px);
+    }
+
+    h3 {
+        margin: rem-calc(12px 0);
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        margin-top: rem-calc(34px);
+
+        &--no-margin {
+            margin: 0;
+        }
+
+        p {
+            font-size: rem-calc(18px);
+            line-height: rem-calc(25px);
+        }
+
+        h3 {
+            margin-top: rem-calc(24px);
+        }
+    }
+}
+
+:host-context(.right-rail) {
+    .rich-text {
+        margin-top: 0;
+        max-width: none;
+
+        h3 {
+            background-color: white;
+            border: 1px solid $color-borders;
+            display: block;
+            font-size: rem-calc(15px);
+            line-height: rem-calc(17px);
+            font-weight: $font-weight-heavy;
+            margin: -15px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding: 13px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: map-get($grid-breakpoints, medium)) {
+            h3 {
+                font-size: rem-calc(15px);
+                line-height: rem-calc(18px);
+            }
+        }
+    }
+}

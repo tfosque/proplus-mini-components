@@ -1,0 +1,293 @@
+@import '../../../../sass/variables';
+@import '../../../../sass/mixins';
+
+table.padded-table {
+    th,
+    td {
+        padding: 15px;
+    }
+}
+
+.full-width {
+    width: 100%;
+}
+
+table {
+    input {
+        border-width: 0px 0px 1px 0px;
+        text-align: center;
+    }
+}
+.quantity-input {
+    width: 30px;
+}
+.divider {
+    margin: 5px 5px 40px 5px;
+}
+.form-email {
+    width: 310px;
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.flexContainerButton {
+    display: flex;
+    justify-content: space-between;
+}
+.divider {
+    margin-bottom: 20px;
+}
+.time {
+    margin-right: 300px;
+}
+.cartEmpty {
+    text-align: center;
+    margin: 50px 50px;
+    font-weight: bold;
+}
+.datetimeinputs {
+    margin: 25px 0px;
+}
+.table {
+    width: 350px;
+    height: 200px;
+    margin: 50px;
+}
+
+.summary-text {
+    font-weight: bolder;
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.summary-text-default {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+    font-size: 14px;
+    padding-left: 8px;
+}
+
+.summary-text-right-default {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    text-align: right;
+    padding-right: 8px;
+}
+
+.summary-text-right-default-number {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    text-align: right;
+    padding-right: 8px;
+    font-weight: bold;
+}
+
+.summary-text-total {
+    font-weight: bolder;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.summary-value-total {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.summary-text-total-default {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 30px;
+    font-size: 14px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.summary-value-total-default {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.summary-value {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.map-section {
+    height: 70vh;
+    position: relative;
+}
+
+.map {
+    height: 100%;
+    width: 100%;
+}
+
+.location-options {
+    height: 70vh;
+    overflow-y: scroll;
+    // font-size: .825rem;
+    // margin: 0px;
+    background: #fff;
+
+    .location-option {
+        padding: 10px 12px;
+        border: 1px solid rgb(223, 223, 223);
+        // border-bottom: none;
+    }
+
+    .location-option:even {
+        background-color: f0f2f5;
+    }
+
+    .location-option:hover {
+        background-color: rgb(235, 233, 233);
+    }
+}
+section.suggested-products {
+    margin-top: rem-calc(50px);
+    margin-top: rem-calc(20px);
+
+    h2 {
+        color: $color-background-dark;
+        text-align: center;
+        font-size: rem-calc(24px);
+    }
+
+    div.suggested-table {
+        div.suggested-table--item {
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            vertical-align: top;
+            text-align: center;
+            padding: 1em 1ex;
+
+            div.suggested-table--thumbnail {
+                vertical-align: middle;
+                min-width: 60px;
+
+                img {
+                    min-width: 0xpx;
+                }
+            }
+            div.suggested-table--price {
+                padding: 1em 1ex;
+            }
+
+            div.suggested-table--description {
+                padding: 1em;
+                color: #34495e;
+            }
+        }
+    }
+}
+
+.mat-raised-button.mat-success {
+    color: #f0fff3;
+    background-color: #155724;
+    font-family: Arial;
+}
+
+.summary-table {
+    border: 1px solid #ddd;
+    padding: 0 8px 10px 8px;
+}
+
+.change-location-btn {
+    margin-left: 20px;
+    font-weight: 400;
+}
+
+.jq-select-time-in-store-notes {
+    font-style: italic;
+    text-transform: none;
+    line-height: normal;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.site-color {
+    color: #025396 !important;
+}
+
+.custom-tooltip {
+    font-size: 40px !important;
+}
+
+.summary-header {
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    padding: 8px;
+}
+
+summary-header-totalZero {
+    text-align: left;
+    padding: 8px 8px 18px 8px;
+}
+
+.summary-text-total-default-left {
+    display: inline-block;
+    width: 30%;
+    vertical-align: top;
+    font-weight: bold;
+}
+
+.summary-text-total-default-right {
+    display: inline-block;
+    width: 70%;
+    vertical-align: top;
+}
+
+.summary-text-total-default-right-number {
+    display: inline-block;
+    width: 70%;
+    vertical-align: top;
+    font-weight: bold;
+}
+
+.button-bar {
+    button {
+        margin-right: 1ex;
+        margin-left: 1ex;
+    }
+    &.wide {
+        button {
+            width: 100%;
+            margin: 3px 0px;
+        }
+    }
+}
+
+@media screen and (max-width: 39.9375em) {
+    .button-bar {
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 2px;
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+
+    ::ng-deep.mat-tab-label {
+        padding: 0 6px !important;
+    }
+}
+
+form.delivery-method {
+    div.cell {
+        margin-top: 10px;
+    }
+}

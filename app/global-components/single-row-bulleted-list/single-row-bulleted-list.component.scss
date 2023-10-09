@@ -1,0 +1,79 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.single-row-bulleted-list {
+    @include contentButtonContainer();
+    margin-bottom: 40px;
+    margin-top: 40px;
+    &__wrapper {
+        border-top: 1px solid $color-borders;
+        border-bottom: 1px solid $color-borders;
+        padding: 20px 0;
+    }
+    h2 {
+        font-size: rem-calc(20px);
+        line-height: rem-calc(24px);
+        margin-bottom: 15px;
+    }
+    ul {
+        color: $color-text-primary;
+        padding-left: 20px;
+        margin-top: 0px;
+        li {
+            font-size: rem-calc(8px);
+            margin-bottom: 10px;
+            span {
+                font-size: rem-calc(16px);
+                line-height: rem-calc(20px);
+                position: relative;
+                top: 3px;
+            }
+        }
+    }
+    .button {
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, large)) {
+    .single-row-bulleted-list {
+        margin-bottom: 50px;
+        margin-top: 50px;
+        &__wrapper {
+            display: flex;
+        }
+        ul {
+            width: 66%;
+            margin-bottom: 0px;
+            &.full-width {
+                width: 100%;
+                li {
+                    width: 33%;
+                }
+            }
+            & + div {
+                width: 33%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            li {
+                float: left;
+                width: 50%;
+                margin-bottom: 10px;
+                &:last-child {
+                    margin-bottom: 10px;
+                }
+                span {
+                    font-size: rem-calc(17px);
+                    line-height: rem-calc(21px);
+                }
+            }
+        }
+        .button {
+            margin-bottom: 0px;
+            margin-top: 0;
+        }
+    }
+}

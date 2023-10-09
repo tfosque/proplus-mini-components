@@ -1,0 +1,75 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <app-breadcrumb
+        [configuration]="breadcrumbConfig"
+        [isProductBrowsePage]="true"
+    ></app-breadcrumb>
+    <div class="grid-container product-browse-page">
+        <div
+            class="grid-x grid-margin-x product-browse-page__content-container"
+        >
+            <div class="cell">
+                <h1 class="product-browse-page__title">
+                    <ng-container *ngIf="activeCateFilter; else showPageTitle">
+                        {{ activeCateFilter?.value }}
+                    </ng-container>
+                    <ng-template #showPageTitle>
+                        {{ pageTitle }}
+                    </ng-template>
+                    <span class="product-browse-page__count">
+                        &nbsp;({{ resultsCount$ | async }}
+                        {{ 'products' | translations: 'products' }})
+                    </span>
+                </h1>
+            </div>
+            <div class="cell">
+                <ng-container brComponent="seo-component"></ng-container>
+                <ng-container
+                    *ngIf="isPreview"
+                    brComponent="facets-selector"
+                ></ng-container>
+                <ng-container brComponent="marketing-content"></ng-container>
+            </div>
+            <div class="grid-container product-browse-page__results-container">
+                <div class="grid-x">
+                    <div class="cell large-3">
+                        <section
+                            class="product-browse-page__facets-section show-for-large"
+                        >
+                            <h2 class="product-browse-page__facets-title">
+                                {{ 'Filter By' | translations: 'filter-by' }}
+                            </h2>
+                            <app-facet-container
+                                [pageTitle]="pageTitle"
+                            ></app-facet-container>
+                        </section>
+                        <div
+                            class="product-browse-page__modal-trigger-wrapper hide-for-large"
+                        >
+                            <a
+                                class="product-browse-page__trigger"
+                                (click)="openFilterModal()"
+                            >
+                                {{
+                                    'Filter Products'
+                                        | translations: 'filter-products'
+                                }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="cell large-9">
+                        <ng-container
+                            brComponent="product-brands"
+                        ></ng-container>
+                        <app-selected-facets-container></app-selected-facets-container>
+                        <app-product-list></app-product-list>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

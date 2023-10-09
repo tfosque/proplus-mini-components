@@ -1,0 +1,21 @@
+<!-- TODO create a component to handle this -->
+<div style="background-color: blue; color: #fff; height: 122px">
+    <div class="grid-x pending-bar flex align-center">
+        <div class="cell small-1">
+            <mat-icon aria-hidden="false" aria-label="Cart icon"
+                >shopping_cart</mat-icon
+            >
+        </div>
+        <div class="cell small-3 pending-text">
+            {{ 'You have ' + pendingOrdersCount + ' pending orders' }}
+        </div>
+        <div class="cell small-2">
+            <a
+                mat-flat-button
+                routerLink="/proplus/pending-orders"
+                class="review-btn"
+                >Review Now</a
+            >
+        </div>
+    </div>
+</div>

@@ -1,0 +1,179 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.statistics-component {
+    @include contentButtonContainer();
+    margin-top: 20px;
+
+    a {
+        color: $color-emphasis;
+        font-size: rem-calc(16px);
+        font-weight: $font-weight-semi-bold;
+        line-height: rem-calc(20px);
+        text-decoration: underline;
+
+        span {
+            display: inline-block;
+            font-size: rem-calc(10px);
+            margin-left: rem-calc(5px);
+            text-decoration: none;
+        }
+        &:hover {
+            font-weight: $font-weight-heavy;
+        }
+    }
+
+    &__container {
+        &--text-content {
+            @include attr-for-widths(padding-right, 0px, 10px, 30px);
+        }
+
+        &--stats {
+            background: $color-primary;
+            padding: rem-calc(45px) rem-calc(25px);
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        &--link {
+            text-transform: uppercase;
+        }
+    }
+
+    &__data,
+    &__label {
+        display: block;
+        text-align: center;
+    }
+    &__data {
+        color: $color-secondary;
+        @include condensed-font();
+        font-size: rem-calc(39px);
+        line-height: 1;
+        font-weight: $font-weight-heavy;
+    }
+
+    &__label {
+        color: $color-emphasis;
+        font-size: rem-calc(15px);
+        line-height: 1;
+        font-weight: $font-weight-heavy;
+        text-transform: uppercase;
+    }
+
+    &--two-column {
+        h2 {
+            @include condensed-fb-title;
+            color: $color-primary;
+            font-weight: $font-weight-bold;
+        }
+    }
+
+    &--one-column {
+        width: 100%;
+
+        h2 {
+            background: $color-background-dark;
+            color: $color-white;
+            display: inline-block;
+            font-size: rem-calc(17px);
+            font-weight: $font-weight-heavy;
+            line-height: rem-calc(26px);
+            text-transform: uppercase;
+            margin-bottom: 0px;
+            padding: rem-calc(2px 5px 1px 10px);
+            @include angle(after, true, 20deg);
+            &:after {
+                right: -15px;
+            }
+        }
+
+        .statistics-component {
+            &__container {
+                &--stats {
+                    flex: 0 0 auto;
+                    width: 50%;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, homepageMedium)) {
+    .statistics-component {
+        margin-bottom: 40px;
+
+        a {
+            font-size: rem-calc(17px);
+        }
+
+        &--two-column {
+            h2 {
+                font-size: rem-calc(38px);
+                line-height: rem-calc(47px);
+                margin-bottom: rem-calc(5px);
+            }
+        }
+
+        &--one-column {
+            h2 {
+                font-size: rem-calc(18px);
+                line-height: rem-calc(21px);
+                padding: rem-calc(7px 5px 5px 10px);
+            }
+        }
+    }
+}
+@media (min-width: map-get($grid-breakpoints, large)) {
+    .statistics-component {
+        margin-bottom: rem-calc(60px);
+
+        &--two-column {
+            margin-top: rem-calc(60px);
+        }
+
+        &--one-column {
+            h2 {
+                font-size: rem-calc(19px);
+                line-height: rem-calc(22px);
+            }
+
+            .statistics-component {
+                &__data {
+                    font-size: rem-calc(60px);
+                }
+                &__label {
+                    font-size: rem-calc(32px);
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, small)) {
+    .statistics-component {
+        &__container {
+            &--stats {
+                padding: rem-calc(45px) rem-calc(12px);
+                margin-bottom: rem-calc(20px);
+                margin-top: rem-calc(20px);
+            }
+        }
+
+        &__data {
+            font-size: rem-calc(25px);
+        }
+        &__label {
+            margin-top: rem-calc(5px);
+            font-size: rem-calc(12px);
+        }
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .statistics-component {
+        &__data {
+            font-size: rem-calc(39px);
+        }
+    }
+}

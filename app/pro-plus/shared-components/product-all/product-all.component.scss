@@ -1,0 +1,78 @@
+@import '../../../../sass/variables';
+@import '../../../../sass/mixins';
+@import '../../../../../node_modules/foundation-sites/scss/foundation.scss';
+
+@include foundation-label;
+
+.full-width {
+    width: 100%;
+}
+
+table.templateTable {
+    tr {
+        cursor: pointer;
+
+        th,
+        td {
+            padding: 5px;
+        }
+    }
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.viewport {
+    height: rem-calc(500px);
+    width: 100%;
+}
+
+.product-card {
+    cursor: pointer;
+}
+
+div.product {
+    &__row {
+        margin-bottom: rem-calc(5px);
+        height: rem-calc(85px);
+        border: 1px solid #777777;
+        width: 20rem;
+        // width: 100%;
+        text-overflow: ellipsis;
+        overflow-y: hidden;
+    }
+
+    &__title {
+        @include condensed-title;
+        font-size: rem-calc(14px);
+        line-height: rem-calc(15px);
+    }
+
+    &__description {
+        font-size: rem-calc(10px) !important;
+
+        > p {
+            font-size: rem-calc(10px) !important;
+        }
+    }
+}
+
+.result-count-label {
+    @include label;
+}
+
+.mat-card {
+    box-shadow: none !important;
+}

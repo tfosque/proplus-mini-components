@@ -1,0 +1,44 @@
+<ng-container *ngIf="selectedFacets$ | async as selectedFacets">
+    <section class="selected-facets" *ngIf="selectedFacets.length">
+        <h2 class="selected-facets__title">
+            {{ 'Selections' | translations: 'selections' }}
+        </h2>
+        <ul class="selected-facets__facet-list">
+            <li
+                *ngFor="let facet of selectedFacets"
+                class="selected-facets__facet-item"
+            >
+                <a
+                    (click)="removeSelectedFacet(facet)"
+                    class="selected-facets__facet-link"
+                >
+                    <span class="selected-facets__facet-group">
+                        {{ facet.group }}:
+                    </span>
+                    <span class="selected-facets__facet-value">
+                        <strong>
+                            {{ facet.value }}
+                        </strong>
+                    </span>
+                    <span class="selected-facets__close-icon icon-close"></span>
+                </a>
+            </li>
+            <li
+                *ngIf="selectedFacets.length > 1"
+                class="selected-facets__facet-item"
+            >
+                <a
+                    (click)="removeAllFacets()"
+                    class="selected-facets__facet-link"
+                >
+                    <span class="selected-facets__facet-group">
+                        <strong>
+                            {{ 'Remove All' | translations: 'remove-all' }}
+                        </strong>
+                    </span>
+                    <span class="selected-facets__close-icon icon-close"></span>
+                </a>
+            </li>
+        </ul>
+    </section>
+</ng-container>

@@ -1,0 +1,214 @@
+<div class="top-hat__right-container show-for-medium">
+    <ul class="top-hat__links">
+        <li class="top-hat__link"></li>
+        <!-- Dropdown Cart -->
+        <li class="top-hat__link">
+            <!-- Dropdown Button -->
+            <div class="dropdown">
+                <button
+                    mat-button
+                    color="primary"
+                    style="width: 65px"
+                    (mouseover)="openCartPreview()"
+                    (mouseout)="closeCartPreview()"
+                >
+                    <!-- <b>Cart &#9662;</b> -->
+                    <div class="main-nav__icon-block">
+                        <a
+                            [attr.ariaLabel]="ariaLabel"
+                            [routerLink]="['proplus', 'shopping-cart']"
+                        >
+                            <mat-icon style="margin-top: 5px"
+                                >shopping_cart</mat-icon
+                            >
+                            <span
+                                style="margin-top: -6px"
+                                class="main-nav__icon-block__text"
+                                >Cart</span
+                            >
+                        </a>
+                    </div>
+                </button>
+                <!-- Content Panel -->
+                <div
+                    (mouseover)="openCartPreview()"
+                    (mouseout)="closeCartPreview()"
+                    (mouseleave)="closeCartPreview()"
+                    #dropdownContent
+                    class="dropdown-content"
+                    *ngIf="cart.getState() | async as c"
+                    [ngStyle]="{ display: displayCartPreview }"
+                >
+                    <div class="branch-info-menu">
+                        <div
+                            style="
+                                border-bottom: solid thin #bbbaba;
+                                padding: 7px 0px;
+                            "
+                        >
+                            <b>Shopping Cart</b>
+                            <span class="badge primary">{{
+                                c?.items?.length
+                            }}</span>
+                            <!-- TODO (Tim): to review since this never renders -->
+                            <!-- <div *ngIf="false" class="search-input-container">
+                                <!-- search Icon
+                                <input
+                                    size="39"
+                                    placeholder="Type to filter cart items"
+                                    type="search"
+                                    name="searchText"
+                                    [(ngModel)]="form.searchText"
+                                    #searchText
+                                />
+                            </div> -->
+                        </div>
+                        <!-- Inner content -->
+                        <div class="inner-scrolling-container">
+                            <ng-container
+                                *ngIf="c?.items?.length; else emptyCart"
+                            >
+                                <section
+                                    id="section"
+                                    *ngFor="
+                                        let item of c.items
+                                            | filterList
+                                                : form.searchText
+                                                : 'itemOrProductDescription';
+                                        let i = index
+                                    "
+                                >
+                                    <div class="grid-x grid-x align-justify">
+                                        <div
+                                            class="cell medium-2"
+                                            style="text-align: left"
+                                        >
+                                            <img
+                                                appImagePreload
+                                                src="https://beaconproplus.com{{
+                                                    item.productImageUrl
+                                                }}"
+                                                default="{{
+                                                    item.productOnErrorImageUrl
+                                                        | errorImage
+                                                            : '../../../assets/images/image-not-available.svg'
+                                                }}"
+                                            />
+                                        </div>
+
+                                        <div
+                                            class="cell medium-10 inner-container"
+                                        >
+                                            <h4>
+                                                {{
+                                                    item.itemOrProductDescription
+                                                        | safeHtml
+                                                }}
+                                            </h4>
+                                            <div
+                                                class="grid-x grid-margin-x"
+                                                style="font-size: 0.9rem"
+                                            >
+                                                <div class="cell medium-3">
+                                                    <span>Item#</span>
+                                                    {{ item.catalogRefId }}
+                                                </div>
+                                                <div class="cell medium-3">
+                                                    {{
+                                                        item.unitPrice
+                                                            | price: item.uom
+                                                    }}
+                                                </div>
+                                                <!-- If quanity is blank display a 0 -->
+                                                <div class="cell medium-2">
+                                                    <span>Qty:</span>
+                                                    {{ item.quantity || 0 }}
+                                                </div>
+                                                <div class="cell medium-3">
+                                                    <span>Total:</span>
+                                                    {{
+                                                        item.totalPrice
+                                                            | totalPrice
+                                                            | price
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="cell medium-1 delBtn"
+                                                    (click)="
+                                                        deleteOneItem(item)
+                                                    "
+                                                >
+                                                    <mat-icon width-16
+                                                        >delete</mat-icon
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </ng-container>
+                        </div>
+
+                        <ng-template #emptyCart>
+                            <div class="callout warning">
+                                <p>Your shopping cart is empty.</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <!-- Action Footer -->
+                    <div
+                        style="
+                            border-top: solid 1px #dbdadae5;
+                            padding: 12px;
+                            margin-top: -10px;
+                            background-color: #fff;
+                            padding: 15px;
+                            text-align: right;
+                            font-size: 0.825rem;
+                        "
+                        *ngIf="c?.items?.length"
+                    >
+                        <div><b>Subtotal:</b> {{ subtotal | currency }}</div>
+                        <div>
+                            <div><b>Other Charges:</b> Pending</div>
+                            <div>
+                                <b>Estimated Tax:</b>
+                                {{ c.summary?.tax | currency }}
+                            </div>
+                        </div>
+                        <div class="subtotal-msg">
+                            <b>TOTAL:</b> Will be calculated at the time of
+                            invoicing.
+                        </div>
+                    </div>
+
+                    <div class="footer-buttons">
+                        <button
+                            (click)="closeCartPreview()"
+                            mat-stroked-button
+                            color="secondary"
+                            [routerLink]="['proplus', 'shopping-cart']"
+                        >
+                            <span>
+                                <mat-icon>shopping_cart</mat-icon>&nbsp; View
+                                Cart
+                            </span>
+                        </button>
+                        <span>&nbsp;</span>
+                        <button
+                            *ngIf="permPlaceOrder && c?.items?.length"
+                            (click)="proceedToCheckOut()"
+                            mat-raised-button
+                            color="emphasis"
+                        >
+                            <span
+                                >Checkout
+                                <mat-icon>navigate_next</mat-icon></span
+                            >
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

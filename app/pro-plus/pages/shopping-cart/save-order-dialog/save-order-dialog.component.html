@@ -1,0 +1,114 @@
+<!-- <h2 mat-dialog-title>Order Name</h2>
+<mat-form-field floatLabel="auto" style="width: 500px">
+    <input matInput placeholder="Order Name" [(ngModel)]="orderName" required />
+</mat-form-field> -->
+
+<h2 mat-dialog-title class="dialog_title">Save Order</h2>
+<div *ngIf="currentStep === 1">
+    <!-- <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button
+            mat-button
+            color="primary"
+            [mat-dialog-close]="orderName"
+            cdkFocusInitial
+        >
+            Create
+        </button>
+    </mat-dialog-actions> -->
+    <button
+        mat-button
+        color="primary"
+        (click)="saveAndEmptyCart()"
+        cdkFocusInitial
+    >
+        Save and Empty Cart
+    </button>
+    <button
+        *ngIf="fromSavedOrder"
+        mat-button
+        color="primary"
+        [mat-dialog-close]="'continue'"
+        cdkFocusInitial
+    >
+        Save and Continue
+    </button>
+    <button
+        *ngIf="!fromSavedOrder"
+        mat-button
+        color="primary"
+        (click)="saveAndContinue()"
+        cdkFocusInitial
+    >
+        Save and Continue
+    </button>
+</div>
+<!-- <ng-template #disable>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button color="primary" cdkFocusInitial disabled>
+            Create
+        </button>
+    </mat-dialog-actions>
+</ng-template> -->
+<div *ngIf="currentStep === 2 && emptyCartOrContinue === 'emptyCart'">
+    <div>Your cart will be emptied. Click on “My Account” and “Saved Orders” to access your saved order.</div>
+    <mat-dialog-actions align="end">
+        <button
+            *ngIf="fromSavedOrder"
+            mat-button
+            color="primary"
+            [mat-dialog-close]="'emptyCart'"
+            cdkFocusInitial
+        >
+            Continue
+        </button>
+        <button
+            *ngIf="!fromSavedOrder"
+            mat-button
+            color="primary"
+            (click)="continueEmptyCart()"
+            cdkFocusInitial
+        >
+            Continue
+        </button>
+        <button
+            mat-button
+            color="primary"
+            (click)="cancelEmptyCart()"
+            cdkFocusInitial
+        >
+            Cancel
+        </button>
+    </mat-dialog-actions>
+</div>
+
+<div *ngIf="(currentStep === 3 && emptyCartOrContinue === 'emptyCart') ||
+    (currentStep === 2 && emptyCartOrContinue === 'continue')">
+    <mat-form-field floatLabel="auto" style="width: 500px">
+        <input matInput placeholder="Order Name" [(ngModel)]="orderName" required />
+    </mat-form-field>
+    <div *ngIf="!orderEmpty; else disable">
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button
+                mat-button
+                color="primary"
+                [mat-dialog-close]="{ orderName: orderName, action: emptyCartOrContinue }"
+                cdkFocusInitial
+            >
+                Create
+            </button>
+        </mat-dialog-actions>
+    </div>
+    <ng-template #disable>
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button mat-button color="primary" cdkFocusInitial disabled>
+                Create
+            </button>
+        </mat-dialog-actions>
+    </ng-template>    
+</div>
+
+

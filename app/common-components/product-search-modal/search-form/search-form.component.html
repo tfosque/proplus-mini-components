@@ -1,0 +1,25 @@
+<form #searchForm id="searchForm">
+  <mat-form-field appearance="none" style="width: 94%; padding: 0 0 0 12px;">
+    <mat-label>Product Search</mat-label>
+    <!-- REFACTOR (mat-form-field with an input with a ngModelChange ???)
+      It looks like you're using ngModel on the same form field as formControlName.
+      Support for using the ngModel input property and ngModelChange event with
+      reactive form directives has been deprecated in Angular v6 and will be removed
+      in a future version of Angular.
+
+      For more information on this, see our API docs here:  https://angular.io/api/forms/FormControlName#use-with-ngmodel
+     -->
+    <input matInput id="searchInput" #searchInput autofocus type="text" autocomplete="off" placeholder=""
+      name="searchStr" [ngModel]="searchStr$ | async" (ngModelChange)="onModelChange(searchInput.value)" (focus)="[]"
+      style="outline: none; 
+        color: #1a1919; caret-color: #4a4242; min-width: 88%; max-width: 90%; padding: 6px;"
+      (keypress)="handleKeyPress($event)">
+    <button type="button" mat-button *ngIf="true" matSuffix mat-icon-button aria-label="Clear">
+      <mat-icon (click)="[clearSearch(), searchInput.value = '']" style="color: #025f9e;">close</mat-icon>
+    </button>
+
+    <!--  <mat-icon matSuffix style="cursor: pointer; color: #025f9e;" (click)="performSearch()">search</mat-icon> -->
+    <mat-hint style="color: #fff; line-height: 1.375; font-size: .8rem;">Search products, then narrow search by
+      selecting categories.</mat-hint>
+  </mat-form-field>
+</form>

@@ -1,0 +1,10 @@
+<div class="rich-text" [ngClass]="{ 'rich-text--no-margin': noMargin }">
+    <ng-container [brManageContentButton]="document"> </ng-container>
+    <h3 *ngIf="title">
+        {{ title }}
+    </h3>
+    <div
+        *ngIf="htmlContent"
+        [innerHTML]="htmlContent | linkRewriter | safe: 'html'"
+    ></div>
+</div>

@@ -1,0 +1,57 @@
+table.table {
+    width: 100%;
+
+    thead {
+        tr {
+            background: lightgray;
+
+            th {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+    th {
+        font-weight: bold;
+        padding: 1ex;
+    }
+
+    tbody {
+        tr:nth-child(even) {
+            background: lightgray;
+        }
+
+        tr {
+            th.selected {
+                background-color: #025f9e;
+                color: white;
+                a {
+                    color: white;
+                }
+            }
+
+            td.selected {
+                background-color: #025f9e;
+                color: white;
+            }
+        }
+    }
+
+    td {
+        padding: 1ex;
+        text-align: center;
+    }
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+}
+
+.button {
+    text-transform: uppercase;
+}

@@ -1,0 +1,124 @@
+<!-- search row -->
+<div class="cell small-12 medium-12 large-12 top-bottom-margin search-filter">
+  <form (submit)="doSearch($event)">
+    <div class="grid-x">
+      <div class="small-12 medium-2 large-2 filter-select">
+        <mat-form-field appearance="standard" class="full-width">
+          <mat-select [(value)]="selectedSearchOption" (selectionChange)="searchTypeChange()">
+            <mat-option *ngFor="let t of searchTypes" [value]="t.name">{{ t.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <ng-container [ngSwitch]="selectedSearch?.type">
+        <div class="small-12 medium-5 large-5 search-box" *ngSwitchCase="'search'">
+          <mat-form-field appearance="fill" class="full-width">
+            <div matPrefix style="position: relative; top: 5px;">
+              <mat-icon matPrefix color="primary">search</mat-icon>
+            </div>
+            <input type="search" matInput [(ngModel)]="searchValue" [ngModelOptions]="{ standalone: true }" class=""
+              (keyup)="filterChange()" />
+          </mat-form-field>
+        </div>
+        <div class="small-12 medium-5 large-5" *ngSwitchCase="'options'">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-select [(value)]="searchValue" (selectionChange)="filterChange()">
+              <mat-option *ngFor="let o of selectedSearch?.options" [value]="o.value || o.name">{{ o.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-container>
+      <div class="small-12 medium-2 large-2">
+        <button mat-raised-button class="full-width search-button" type="submit">
+          <b>Search</b>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="isLoading" class="cell text-centered auto-margin">
+  <mat-spinner diameter="44" color="primary" class="display-inline-block"></mat-spinner>
+</div>
+<!-- completed report table -->
+<div class="cell small-12 medium-12 large-12">
+  <!-- desktop viewport -->
+  <div class="small-12 medium-12 large-12">
+    <table mat-table [dataSource]="eagleViewSource" matSort class="full-width report-table">
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Select
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-radio-button 
+            color="primary" 
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+          >
+          </mat-radio-button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="reportId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Report #
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.Id }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>
+          Address
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div>{{ element.Street1 }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dateCreated">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Date Created
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div>{{ formatDate(element.DatePlaced) }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>
+          Status
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div>{{ element.ReportStatus.Status }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="productType">
+        <th mat-header-cell *matHeaderCellDef>
+          Product Type
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div>{{ element.ReportProducts.ProductPrimary }}</div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" [length]="reportCount" [pageSize]="5" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+  <div class="full-width" style="text-align: center;">
+    <button color="primary" class="dialog-button" mat-raised-button (click)="selectTemplate()">
+      <div class="text-centered bold-text">
+        Select Template
+        <mat-icon class="button-icon" matSuffix>arrow_right_alt</mat-icon>
+      </div>
+    </button>
+  </div>
+</div>

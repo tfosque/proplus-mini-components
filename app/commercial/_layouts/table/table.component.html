@@ -1,0 +1,83 @@
+<div *ngIf="facetGroupList">
+    <app-commercial-facet-selector
+        [facetGroup]="facetGroups"
+        [req]="this.data"
+        (facetSelectedRequest)="facetSelected($event)"
+    ></app-commercial-facet-selector>
+</div>
+
+<div class="grid-x" style="width: 100%; margin: 20px 0 20px 0">
+    <div
+        class="cell auto"
+        [ngClass]="{ shrink: item.length > 25 && btns.length > 3 }"
+        *ngFor="let item of btns"
+        style="text-align: center"
+    >
+        <button mat-raised-button color="primary">{{ item }}</button>
+    </div>
+</div>
+
+<table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8"
+    style="width: 100%"
+>
+    <!-- Code -->
+    <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let element">{{ element.itemNumber }}</td>
+    </ng-container>
+
+    <!-- Description -->
+    <ng-container matColumnDef="desc">
+        <th mat-header-cell *matHeaderCellDef>Product Description</th>
+        <td mat-cell *matCellDef="let element">{{ element.productName }}</td>
+    </ng-container>
+
+    <!-- Color -->
+    <ng-container matColumnDef="color">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+    </ng-container>
+
+    <!-- Unit -->
+    <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef>Unit</th>
+        <td mat-cell *matCellDef="let element">{{ element.uom }}</td>
+    </ng-container>
+
+    <!-- Quantity -->
+    <ng-container matColumnDef="qty">
+        <th mat-header-cell *matHeaderCellDef>Qty</th>
+        <td mat-cell *matCellDef="let element">
+            <mat-form-field style="width: 40px">
+                <input matInput type="number" [(ngModel)]="element.qty" />
+            </mat-form-field>
+        </td>
+    </ng-container>
+
+    <!-- Add to Order -->
+    <ng-container matColumnDef="add">
+        <th mat-header-cell *matHeaderCellDef>Add to Order</th>
+        <td mat-cell *matCellDef="let element">
+            <section class="example-section">
+                <mat-checkbox
+                    (change)="manageSelectedItems(element)"
+                    class="example-margin"
+                    [checked]="element.isSelected"
+                ></mat-checkbox>
+            </section>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<!-- <mat-paginator
+    [pageSizeOptions]="[5, 10, 20, 100]"
+    [length]="itemCont"
+    [pageSize]="10"
+    showFirstLastButtons
+>
+</mat-paginator> -->

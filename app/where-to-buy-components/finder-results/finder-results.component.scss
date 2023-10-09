@@ -1,0 +1,267 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    bottom: 0;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.finder-results {
+    list-style-type: none;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 0px;
+    position: relative;
+
+    &.is-loading {
+        min-height: rem-calc(350px);
+    }
+
+    .finder-icon {
+        background: url('../../../assets/images/finder-icon.png') no-repeat;
+        height: 50px;
+        width: 28px;
+        left: 0;
+        top: 10px;
+        display: block;
+        position: absolute;
+        font-weight: $font-weight-bold;
+        text-align: center;
+        color: $color-secondary;
+        line-height: rem-calc(38px);
+    }
+    li {
+        border: 1px solid transparent;
+        border-bottom: 1px solid $color-borders;
+        padding-bottom: rem-calc(12px);
+        padding-top: rem-calc(12px);
+        position: relative;
+        cursor: pointer;
+        &:hover {
+            h3 {
+                text-decoration: underline;
+            }
+        }
+
+        &.is-active {
+            .finder-icon {
+                background: url('../../../assets/images/finder-icon-selected.png')
+                    no-repeat;
+                color: $color-primary;
+            }
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    &__container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 38px;
+        h3 {
+            font-size: rem-calc(17px);
+            line-height: rem-calc(21px);
+            margin-top: 0px;
+            margin-bottom: 3px;
+        }
+        &--left {
+            width: 56%;
+            td {
+                &:first-child {
+                    font-weight: $font-weight-bold;
+                }
+            }
+        }
+        > span {
+            display: none;
+        }
+        p {
+            color: $color-text-primary;
+            font-size: rem-calc(15px);
+            line-height: rem-calc(20px);
+            margin-bottom: 10px;
+            margin-top: 0px;
+
+            > span {
+                display: block;
+            }
+        }
+        &--right {
+            position: relative;
+            width: 44%;
+            span {
+                display: none;
+                font-size: rem-calc(16px);
+                text-align: right;
+                &:first-child {
+                    display: block;
+                }
+                strong {
+                    font-weight: $font-weight-semi-bold;
+                }
+            }
+            a {
+                display: none;
+            }
+            .mobile {
+                bottom: 0;
+                position: absolute;
+                text-align: right;
+                width: 100%;
+                a {
+                    text-align: center;
+                    display: inline-block;
+                    width: 50%;
+                    max-width: 65px;
+                }
+                div {
+                    font-size: rem-calc(23px);
+                    padding-bottom: 7px;
+                    + div {
+                        font-size: rem-calc(14px);
+                        padding-bottom: 0px;
+                    }
+                }
+                .icon-phone {
+                    font-size: rem-calc(19px);
+                }
+            }
+        }
+    }
+    table {
+        padding: 0;
+        margin-left: -3px;
+        tr {
+            display: none;
+            padding: 0;
+        }
+        .mobile {
+            color: $color-text-primary;
+            display: table-row;
+            font-size: rem-calc(14.5px);
+            line-height: rem-calc(17px);
+            span {
+                font-size: rem-calc(30px);
+                line-height: rem-calc(12px);
+                display: inline-block;
+                top: 3px;
+                position: relative;
+            }
+        }
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .finder-results {
+        height: 100%;
+        overflow: auto;
+        .finder-icon {
+            top: 14px;
+        }
+
+        &__container {
+            h3 {
+                font-size: rem-calc(19px);
+            }
+            &--left {
+                width: 70%;
+                table {
+                    tr {
+                        color: $color-text-primary;
+                        display: table-row;
+                        font-size: rem-calc(15px);
+                        line-height: 18px;
+                        &.mobile {
+                            display: none;
+                        }
+                    }
+                    td {
+                        &:first-child {
+                            color: $color-text-emphasis;
+                            font-size: rem-calc(14px);
+                        }
+                    }
+                }
+            }
+            &--right {
+                width: 30%;
+                .mobile {
+                    display: none;
+                }
+                span {
+                    text-align: left;
+                    display: inline-block;
+                    width: 100%;
+                    margin-bottom: 4px;
+                }
+                a {
+                    display: inline-block;
+                    font-size: rem-calc(15px);
+                }
+            }
+            p {
+                font-size: rem-calc(15px);
+                margin-bottom: 5px;
+                > span {
+                    margin-top: 0px;
+                }
+                .finder-results {
+                    &__address-line-1,
+                    &__address-line-2 {
+                        display: inline;
+                    }
+                    &__address-line-2 {
+                        &:before {
+                            content: ' ';
+                        }
+                    }
+                }
+            }
+
+            > span {
+                display: block;
+                font-size: rem-calc(15px);
+                margin-top: 8px;
+            }
+        }
+        li {
+            padding: 18px 0;
+        }
+    }
+    table {
+        tr {
+            display: table-row;
+        }
+        .mobile {
+            display: none;
+        }
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, large)) {
+    .finder-results {
+        li {
+            &.is-active {
+                background-color: rgba($color-primary, 0.05);
+                border: 1px solid $color-primary;
+                padding-left: rem-calc(12px);
+                padding-right: rem-calc(12px);
+
+                .finder-icon {
+                    left: rem-calc(14px);
+                }
+            }
+        }
+    }
+}

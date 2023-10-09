@@ -1,0 +1,79 @@
+<div class="loading-container" *ngIf="isLoading; else quotes">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<ng-template #quotes>
+    <div>
+        <h1 class="with-sub-title">Quotes</h1>
+        <p class="sub-title">Get the best prices for your special job.</p>
+    </div>
+    <h3>Account - {{ accountId }}</h3>
+
+    <div style="text-align: right" class="show-for-medium">
+        <button
+            class="button"
+            (click)="redirectNew()"
+            [color]="isAccountClosed ? 'disabled' : 'primary'"
+            mat-raised-button
+            [disabled]="isAccountClosed"
+        >
+            <mat-icon>add</mat-icon>ADD NEW QUOTE
+        </button>
+    </div>
+
+    <div class="show-for-small-only">
+        <button
+            class="button add-button"
+            (click)="redirectNew()"
+            [color]="isAccountClosed ? 'disabled' : 'primary'"
+            mat-raised-button
+            [disabled]="isAccountClosed"
+        >
+            <mat-icon>add</mat-icon>ADD NEW QUOTE
+        </button>
+    </div>
+
+    <mat-tab-group
+        style="margin-top: 10px"
+        class="quote-summary-group"
+        dynamicHeight
+        disablePagination
+        [selectedIndex]="getActiveTab()"
+        (selectedTabChange)="tabChanged($event)"
+    >
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span class="">Draft<br />Quotes</span>
+            </ng-template>
+            <app-quote-table
+                [accountId]="accountId"
+                dataType="draftQuote"
+                [response]="response"
+                title="Draft Quotes"
+            >
+            </app-quote-table>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span class="">Quotes<br />In Process</span>
+            </ng-template>
+            <app-quote-table
+                [accountId]="accountId"
+                dataType="inProcessQuote"
+                [response]="response"
+                title="Quotes In Process"
+            ></app-quote-table>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span class="">Received<br />Quotes</span>
+            </ng-template>
+            <app-quote-table
+                [accountId]="accountId"
+                dataType="receivedQuote"
+                [response]="response"
+                title="Received Quotes"
+            >
+            </app-quote-table>
+        </mat-tab>
+    </mat-tab-group>
+</ng-template>

@@ -1,0 +1,29 @@
+<div class="single-row-bulleted-list">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h2>{{ heading }}</h2>
+    <div class="single-row-bulleted-list__wrapper">
+        <ul *ngIf="buttonLink && buttonText">
+            <li *ngFor="let listItem of listArray | slice: 0:6; let i = index">
+                <span>{{ listItem }}</span>
+            </li>
+        </ul>
+        <ul *ngIf="!buttonLink && !buttonText" class="full-width">
+            <li *ngFor="let listItem of listArray; let i = index">
+                <span>{{ listItem }}</span>
+            </li>
+        </ul>
+        <div *ngIf="buttonLink && buttonText">
+            <a
+                *ngIf="buttonIsExternal; else internal"
+                href="{{ buttonLink | protocol }}"
+                class="button primary"
+                >{{ buttonText }}</a
+            >
+            <ng-template #internal>
+                <a routerLink="{{ buttonLink }}" class="button primary">{{
+                    buttonText
+                }}</a>
+            </ng-template>
+        </div>
+    </div>
+</div>

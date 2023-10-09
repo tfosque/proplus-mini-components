@@ -1,0 +1,68 @@
+.main-content {
+  position: relative;
+}
+
+.menu-overlay {
+  bottom: 0;
+  background-color: rgba(36, 36, 36, 0.5);
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+.no-javascript {
+  background-color: red;
+  text-align: center;
+  vertical-align: middle;
+  color: #d0d0d0;
+}
+
+/* Pending Orders Bar */
+div.pending-bar {
+  background-color: #dd4b39;
+  padding: 6px;
+  margin: 0;
+  text-align: center;
+  color: #fff;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 1.875rem;
+  text-transform: capitalize;
+}
+
+div.pending-text {
+  font-weight: bold;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.review-btn {
+  font-size: 1.2rem;
+  font-style: normal;
+  text-transform: capitalize;
+  border: solid thin #fff;
+  color: #fff;
+  background-color: #dd4b39;
+}
+
+mat-icon {
+  padding: 0px;
+  line-height: revert;
+  font-size: 2rem;
+}
+
+/* closed account Bar */
+div.closed-account-bar {
+  background-color: #dd4b39;
+  padding: 6px 20px;
+  margin: 0;
+  text-align: center;
+  color: #fff;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 1.625rem;
+}
+
+.white-font {
+  color: #ffffff;
+  font-family: 'Source Sans Pro', sans-serif;
+}

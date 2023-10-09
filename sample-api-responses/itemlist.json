@@ -1,0 +1,95 @@
+{
+  "message": null,
+  "totalNumRecs": 5275,
+  "pageNumRecs": 21,
+  "items": [
+    {
+      "product": {
+        "productImage": "/images/large/C-476716_default_small.jpg",
+        "longDesc": "<p>Heritage&reg; Premium shingles have a fiberglass mat construction with a random-cut sawtooth design. Two layers of mat are coated with asphalt, surfaced with mineral granules and then laminated together. Also includes a self-sealing strip of asphalt.</p>\n<p>Nothing expresses your style as a homeowner more vividly than Heritage&reg; Premium Laminated Asphalt Shingles. They simulate the rustic, dimensional look of wood shakes, without wood's high cost or safety concerns.</p>",
+        "manufactureNumber": "31000173",
+        "relatedProducts": null,
+        "categories": [
+          {
+            "categoryName": "Laminated/Architectural Shingles",
+            "categoryId": "CAT_RER_ASP_LAM"
+          },
+          {
+            "categoryName": "Asphalt Shingles",
+            "categoryId": "CAT_RER_ASP"
+          },
+          {
+            "categoryName": "Residential Roofing",
+            "categoryId": "CAT_RER"
+          }
+        ],
+        "shortDesc": null,
+        "itemNumber": "404191",
+        "name": "Heritage&reg; Premium Shingles",
+        "brand": "TAMKO",
+        "productId": "C-476716"
+      },
+      "skuList": [
+        {
+          "itemNumber": "404191",
+          "itemImage": "/images/large/404191_default_hero.jpg",
+          "characteristics": {
+            "Color": "Autumn Brown"
+          }
+        },
+        {
+          "itemNumber": "404192",
+          "itemImage": "/images/large/404192_default_hero.jpg",
+          "characteristics": {
+            "Color": "Another Color"
+          }
+        }
+      ]
+    }
+  ],
+  "categories": null,
+  "facetGroups": [
+    {
+      "title": "Type of Shingle",
+      "type": "cateFilter",
+      "facets": [
+        {
+          "value": "Starter Shingles",
+          "count": 20
+        },
+        {
+          "value": "3-Tab Shingles",
+          "count": 32
+        }
+      ]
+    },
+    {
+      "title": "Brands",
+      "type": "filter",
+      "facets": [
+        {
+          "value": "Atlas Roofing",
+          "count": 20
+        },
+        {
+          "value": "GAF",
+          "count": 32
+        }
+      ]
+    },
+    {
+      "title": "Color Family",
+      "type": "filter",
+      "facets": [
+        {
+          "value": "Black",
+          "count": 20
+        },
+        {
+          "value": "White",
+          "count": 32
+        }
+      ]
+    }
+  ]
+}

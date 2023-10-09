@@ -1,0 +1,9 @@
+#Options.hide {
+  display: none
+}
+
+::ng-deep #Options td.mat-cell.highlight {
+  background-color: #025f9e !important;
+  color: #fff !important;
+  border-bottom: solid thick #c4c4c4;
+}

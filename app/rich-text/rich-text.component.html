@@ -1,0 +1,9 @@
+<!-- TODO(Tim): Beacon team to evaluate is this component can be retired -->
+
+<bre-cms-edit-button [configuration]="content"></bre-cms-edit-button>
+<div class="rich-text" [ngClass]="{ 'rich-text--no-margin': noMargin }">
+    <h3 *ngIf="title">
+        {{ title }}
+    </h3>
+    <div [innerHTML]="htmlContent | linkRewriter | safe: 'html'"></div>
+</div>

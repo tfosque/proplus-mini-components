@@ -1,0 +1,11 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <div class="home-page">
+        <ng-container brComponent="seo-component"></ng-container>
+        <ng-container brComponent="main"></ng-container>
+    </div>
+</ng-container>
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

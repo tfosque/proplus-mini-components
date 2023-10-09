@@ -1,0 +1,516 @@
+<ng-container *ngIf="observedItems | async as items">
+    <!-- TODO (Tim): to review since this never renders -->
+    <!-- <table mat-table [dataSource]="items" class="full-width" *ngIf="false">
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef>Product</th>
+            <td mat-cell *matCellDef="let element">
+                <img
+                    src="{{ element?.imageUrl?.thumbnail | productImage }}"
+                    alt=""
+                />
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Detail</th>
+            <td mat-cell *matCellDef="let element">
+                <div style="width: 350px">
+                    <a
+                        [innerHTML]="element.itemOrProductDescription"
+                        href="/productDetail/{{
+                            element.productOrItemNumber
+                        }}/{{ element.selectedSKU }}"
+                    ></a>
+                </div>
+                <span>Item number: #{{ element.selectedSKU }}</span>
+                <!-- Product selector goes here
+                <div
+                    *ngIf="element.variations && element.facetSelectors.length"
+                >
+                    <div class="row bordered">
+                        <div class="col-sm-12">
+                            <div>
+                                <div class="col-sm-4 table-cell-font">
+                                    <div
+                                        class="attribute col-sm-4"
+                                        *ngFor="
+                                            let facet of element.facetSelectors
+                                        "
+                                    >
+                                        <mat-label
+                                            ><b>{{ facet.name }}:</b></mat-label
+                                        ><br />
+                                        <mat-form-field>
+                                            <mat-select
+                                                class="attributeDropDown"
+                                                [(value)]="facet.value"
+                                            >
+                                                <mat-option
+                                                    [ngClass]="{
+                                                        disable: !option.enabled
+                                                    }"
+                                                    *ngFor="
+                                                        let option of element
+                                                            .activeVariations[
+                                                            facet.name
+                                                        ]
+                                                    "
+                                                    [value]="option.value"
+                                                >
+                                                    {{ option.value }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+
+            <td mat-cell *matCellDef="let element" style="width: 300px">
+                <div *ngIf="element.unitPrice > 0; else noPrice">
+                    {{ element.unitPrice }} / {{ element.unitOfMeasure }}
+                </div>
+                <ng-template #noPrice
+                    >Pricing calculated at invoicing</ng-template
+                >
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef>Qty</th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field class="quantity-input">
+                    <input
+                        matInput
+                        [(ngModel)]="element.quantity"
+                        min="0"
+                        max="9999"
+                        type="number"
+                    />
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table> -->
+
+    <!-- ------------------------- Template Model--------------------------------------- -->
+
+    <!-- Products Table Medium to Large -->
+    <table
+        cdkDropList
+        [cdkDropListDisabled]="!isDragDropEnabled"
+        [cdkDropListData]="items"
+        class="full-width product-list show-for-medium"
+        (cdkDropListDropped)="handleListDrop($event)"
+    >
+        <thead>
+            <!-- Reorder column -->
+            <th *ngIf="isColumnVisible('reorder')"></th>
+            <!-- Product column -->
+            <th *ngIf="isColumnVisible('product')">Product</th>
+            <!-- Details column -->
+            <th *ngIf="isColumnVisible('details')" style="padding: 0% 4%">
+                Details
+            </th>
+            <!-- Unit Price column -->
+            <th *ngIf="isColumnVisible('unit_price')">Price</th>
+            <!-- Quantity -->
+            <th *ngIf="isColumnVisible('qty')">Qty</th>
+            <!-- Actions -->
+            <th *ngIf="isColumnVisible('actions')"></th>
+            <th *ngIf="isColumnVisible('shop')">
+                <ng-container *ngIf="hasSelections">
+                    <!--  <mat-checkbox [(ngModel)]="isAllSelectedInt" [indeterminate]="isAllMixed"
+                        [aria-label]="' Check or uncheck all'">
+                    </mat-checkbox> -->
+                </ng-container>
+            </th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let element of items" cdkDrag>
+                <!-- Reorder column -->
+                <td *ngIf="isColumnVisible('reorder')" class="reorder">
+                    <mat-icon cdkDragHandle>reorder</mat-icon>
+                </td>
+                <!-- Product column -->
+                <td *ngIf="isColumnVisible('product')">
+                    <a
+                        [routerLink]="[
+                            '/productDetail',
+                            element.productOrItemNumber,
+                            element.currentSKU
+                        ]"
+                    >
+                        <img
+                            *ngIf="displayErrorImage"
+                            appImagePreload
+                            class="img-prod"
+                            src="{{
+                                element.imageUrl?.thumbnail | productImage
+                            }}"
+                            default="{{ element.imageOnErrorUrl | errorImage }}"
+                            alt=""
+                        />
+                        <img
+                            *ngIf="!displayErrorImage"
+                            appImagePreload
+                            class="img-prod"
+                            src="{{
+                                element.imageUrl?.thumbnail | productImage
+                            }}"
+                            alt=""
+                        />
+                    </a>
+                </td>
+                <!-- Details column -->
+                <td *ngIf="isColumnVisible('details')" class="details-column">
+                    <div class="line-height">
+                        <a [innerHTML]="element.itemOrProductDescription" [routerLink]="[
+                                '/productDetail',
+                                element.productOrItemNumber,
+                                element.currentSKU
+                            ]" class="bold-text"
+                        ></a>
+                    </div>
+                    <!-- item availability message --> 
+                    <ng-container *ngIf="!hasItemAvailabilityError">
+                        <div *ngIf="getAvailabilityByItem(element.currentSKU)"
+                            [ngClass]="{'availability-green-text-template':green, 'availability-blue-text-template':blue, 'availability-grey-text-template':grey}">
+                            {{ getAvailabilityByItem(element.currentSKU) }}
+                        </div>
+                    </ng-container>
+                    <div class="item-number">
+                        <span class="spanOrder">Item #: </span>
+                        {{ element.currentSKU }}
+                    </div>
+                    <!-- Nickname: -->
+                    <div class="col-sm-4 bold-text pb-half">
+                        Nickname:
+                        <span *ngIf="!editMode || isAccountClosed">{{
+                            element.nickName
+                        }}</span>
+                        <input
+                            *ngIf="editMode && !isAccountClosed"
+                            class="nickname"
+                            type="text"
+                            [(ngModel)]="element.nickName"
+                            style="padding: 5px"
+                        />
+                    </div>
+                    <div
+                        *ngIf="
+                            element.variations &&
+                            element.facetSelectors.length &&
+                            editMode &&
+                            !isAccountClosed
+                        "
+                    >
+                        <!-- <a class="table-cell-font pointer" href="javascript:void(0);"
+                            (click)="model.flipShowMore(element.lineItemId)">
+                            <b>Select More Options</b>
+                            <span *ngIf="model.findShowMore(element.lineItemId)">&#9652;</span>
+                            <span *ngIf="!model.findShowMore(element.lineItemId)">&#9662;</span>
+                        </a> -->
+                        <div [hidden]="!model.findShowMore(element.lineItemId)">
+                            <div class="grid-container">
+                                <div class="grid-x grid-margin-x">
+                                    <div class="attribute small-12 medium-4 large-6" *ngFor="
+                                            let facet of element.facetSelectors
+                                        "
+                                    >
+                                        <mat-label class="capitalize-text variations-box"
+                                            ><b>{{ facet.name }}:</b></mat-label
+                                        ><br />
+                                        <mat-form-field>
+                                            <mat-select
+                                                class="attributeDropDown"
+                                                [value]="facet.value"
+                                                (selectionChange)="
+                                                    element.setFilter(
+                                                        facet.name,
+                                                        $event.value
+                                                    ); updateAvailability($event, element);
+                                                "
+                                            >
+                                                <mat-option
+                                                    [ngClass]="{
+                                                        disable: !option.enabled
+                                                    }"
+                                                    *ngFor="
+                                                        let option of element
+                                                            .activeVariations[
+                                                            facet.name
+                                                        ]
+                                                    "
+                                                    [value]="option.value"
+                                                >
+                                                    {{ option.value }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TODO (Tim): to review since this never renders -->
+                            <!-- <div
+                                class="col-md-2 col-sm-2 vertical-bottom"
+                                *ngIf="false"
+                            >
+                                <button
+                                    mat-raised-button
+                                    [disabled]="!element.selectedSKU"
+                                    [ngClass]="{
+                                        disabled: !element.needsSaving
+                                    }"
+                                    (click)="model.saveSpecs(element)"
+                                    color="primary"
+                                    style="margin-bottom: 10px"
+                                >
+                                    Save
+                                </button>
+                            </div> -->
+                        </div>
+                    </div>
+                </td>
+                <!-- Price column -->
+                <td *ngIf="isColumnVisible('unit_price')" style="width: 15ex">
+                    <div *ngIf="element.itemFromQuote==true else fromQuote">Price calculated at invoicing</div>
+                    <ng-template #fromQuote>{{
+                        element.unitPrice | price: element.unitOfMeasure
+                    }}</ng-template>
+                </td>
+                <!-- Quantity -->
+                <td *ngIf="isColumnVisible('qty')">
+                    <app-numeric-input
+                        [className]="'editInput'"
+                        [min]="0"
+                        [max]="99999"
+                        [currentValue]="element.quantity"
+                        (currentValueChange)="setCurrentValue($event, element)"
+                        [editMode]="editMode && !isAccountClosed"
+                        [itemFromQuote]="element.itemFromQuote"
+                        (change)="updateAvailability($event, element)"
+                    >
+                    </app-numeric-input>
+                </td>
+                <!-- Actions -->
+                <td
+                    *ngIf="isColumnVisible('actions')"
+                    style="font-weight: bolder"
+                >
+                    <div class="padding3">
+                        <a
+                            *ngIf="editMode && !isAccountClosed && deleteItem"
+                            href="javascript:void(0);"
+                            (click)="deleteTheItem(element)"
+                        >
+                            <mat-icon class="icon">delete</mat-icon>
+                        </a>
+                    </div>
+                </td>
+                <!-- Actions -->
+                <td *ngIf="isColumnVisible('shop')" style="font-weight: bolder">
+                    <div class="padding3">
+                        <div class="padding3">
+                            <!--   <mat-checkbox [(ngModel)]="element.isSelected" [aria-label]="' Check or uncheck this '">
+                            </mat-checkbox> -->
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Products Small View -->
+    <div
+        cdkDropList
+        [cdkDropListDisabled]="!isDragDropEnabled"
+        [cdkDropListData]="items"
+        class="full-width product-list show-for-small-only"
+        (cdkDropListDropped)="handleListDrop($event)"
+    >
+        <div
+            *ngFor="let element of items"
+            style="border-bottom: solid thin #e8e8e8; padding-top: 10px"
+            cdkDrag
+        >
+            <div class="grid-x grid-padding-x grid-padding-y align-justisfy">
+                <div class="cell small-3">
+                    <a
+                        [routerLink]="[
+                            '/productDetail',
+                            element.productOrItemNumber,
+                            element.currentSKU
+                        ]"
+                    >
+                        <img
+                            *ngIf="displayErrorImage"
+                            appImagePreload
+                            cdkDragHandle
+                            class="img-prod"
+                            src="{{
+                                element.imageUrl?.thumbnail | productImage
+                            }}"
+                            default="{{ element.imageOnErrorUrl | errorImage }}"
+                            alt=""
+                        />
+                        <img
+                            *ngIf="!displayErrorImage"
+                            appImagePreload
+                            cdkDragHandle
+                            class="img-prod"
+                            src="{{
+                                element.imageUrl?.thumbnail | productImage
+                            }}"
+                            alt=""
+                        />
+                    </a>
+                </div>
+                <!-- Details column -->
+                <div class="cell small-9">
+                    <div>
+                        <a
+                            [routerLink]="[
+                                '/productDetail',
+                                element.productOrItemNumber,
+                                element.currentSKU
+                            ]" class="bold-text"
+                        >
+                            {{ element.itemOrProductDescription | safeHtml }}
+                        </a>
+                    </div>
+                    <!-- item availability message -->
+                    <ng-container *ngIf="!hasItemAvailabilityError">
+                        <div *ngIf="getAvailabilityByItem(element.currentSKU)" class="small-view-text"
+                            [ngClass]="{'availability-green-text-template ':green, 'availability-blue-text-template ':blue, 'availability-grey-text-template ':grey}">
+                            {{ getAvailabilityByItem(element.currentSKU) }}
+                        </div>
+                    </ng-container>
+                    <!-- Nickname: -->
+                    <div style="margin-top: 0.5ex" class="bold-text">
+                        Nickname:
+                        <span *ngIf="!editMode || isAccountClosed">{{
+                            element.nickName
+                        }}</span>
+                        <input
+                            *ngIf="editMode && !isAccountClosed"
+                            class="nickname"
+                            type="text"
+                            [(ngModel)]="element.nickName"
+                            style="padding: 5px"
+                        />
+                    </div>
+                </div>
+                <div class="cell small-2">
+                    <div class="spanOrder">Item #:</div>
+                    <div>{{ element.currentSKU }}</div>
+                </div>
+
+                <!-- Price column -->
+                <div class="cell auto center-text">
+                    {{ element.unitPrice | price: element.unitOfMeasure }}
+                </div>
+                <!-- Quantity -->
+                <div class="cell small-2 center-text">
+                    <app-numeric-input
+                        [className]="'quantity-input'"
+                        [(currentValue)]="element.quantity"
+                        min="0"
+                        max="9999"
+                        [editMode]="editMode && !isAccountClosed"
+                        (change)="updateAvailability($event, element)"
+                    ></app-numeric-input>
+                </div>
+                <!-- Actions -->
+                <div class="cell small-1">
+                    <div class="padding3">
+                        <a
+                            *ngIf="editMode && !isAccountClosed && deleteItem"
+                            href="javascript:void(0);"
+                            (click)="deleteTheItem(element)"
+                        >
+                            <mat-icon style="font-size: 1.2rem" class="icon"
+                                >delete</mat-icon
+                            >
+                        </a>
+                    </div>
+                </div>
+                <div class="cell small-1">
+                    <!--   <mat-checkbox [(ngModel)]="element.isSelected" [aria-label]="' Check or uncheck this '">
+                    </mat-checkbox> -->
+                </div>
+
+                <div
+                    class="cell"
+                    *ngIf="
+                        element.variations &&
+                        element.facetSelectors.length &&
+                        editMode &&
+                        !isAccountClosed
+                    "
+                >
+                    <div [hidden]="!model.findShowMore(element.lineItemId)">
+                        <div class="grid-container">
+                            <div class="grid-x grid-padding-x grid-padding-y">
+                                <div
+                                    class="attribute small-6"
+                                    *ngFor="let facet of element.facetSelectors"
+                                >
+                                    <mat-label class="capitalize-text"
+                                        ><b>{{ facet.name }}:</b></mat-label
+                                    ><br />
+                                    <mat-form-field style="width: 136px">
+                                        <mat-select
+                                            class="attributeDropDown"
+                                            [(value)]="facet.value"
+                                        >
+                                            <mat-option
+                                                [ngClass]="{
+                                                    disable: !option.enabled
+                                                }"
+                                                *ngFor="
+                                                    let option of element
+                                                        .activeVariations[
+                                                        facet.name
+                                                    ]
+                                                "
+                                                [value]="option.value"
+                                            >
+                                                {{ option.value }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- TODO (Tim): to review since this never renders -->
+                        <!-- <div
+                            class="col-md-2 col-sm-2 vertical-bottom"
+                            *ngIf="false"
+                        >
+                            <button
+                                mat-raised-button
+                                [disabled]="!element.selectedSKU"
+                                [ngClass]="{ disabled: !element.needsSaving }"
+                                (click)="model.saveSpecs(element)"
+                                color="primary"
+                                style="margin-bottom: 10px"
+                            >
+                                Save
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

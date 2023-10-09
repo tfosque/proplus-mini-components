@@ -1,0 +1,31 @@
+<ngu-carousel #carousel [inputs]="carouselTileConfig" [dataSource]="images">
+    <ngu-item
+        *nguCarouselDef="let item; let i = index; let ani = animate"
+        class="carouselTile item"
+    >
+        <div class="tile">
+            <div class="carousel__image-container">
+                <img [src]="item.src" [alt]="item.altText" />
+            </div>
+        </div>
+    </ngu-item>
+
+    <button *ngIf="!carousel.isFirst" NguCarouselPrev class="leftRs">
+        <!-- (click)="carousel.slide(0)" -->
+        &lt;
+    </button>
+    <button *ngIf="!carousel.isLast" NguCarouselNext class="rightRs">
+        <!-- (click)="carousel.slide(1)" -->
+        &gt;
+    </button>
+
+    <ul class="myPoint" NguCarouselPoint>
+        <li
+            *ngFor="let image of images; let i = index"
+            [ngClass]="{ 'is-active': i === carousel.activePoint }"
+            (click)="carousel.moveTo(i)"
+        >
+            <img [src]="image.src" [alt]="image.altText" />
+        </li>
+    </ul>
+</ngu-carousel>

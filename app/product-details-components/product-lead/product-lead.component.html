@@ -1,0 +1,537 @@
+<div class="loading-container" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-container *ngIf="product">
+    <div class="grid-container">
+        <div class="product-lead grid-x grid-margin-x">
+            <!-- Product Image Selector -->
+            <div class="cell medium-4">
+                <app-image-gallery
+                    [images]="productImages"
+                    [defaultImage]="product?.productOnErrorImage"
+                    [productAdditionalOnErrorImage]="
+                        product?.productAdditionalOnErrorImage
+                    "
+                ></app-image-gallery>
+            </div>
+
+            <!-- Product Name -->
+            <div class="product-lead__mobile-info cell medium-8">
+                <p *ngIf="product.brand" class="product-lead__brand">
+                    {{ product.brand }}
+                </p>
+                <h1 innerHTML="{{ product.productName }}"></h1>
+                <dl>
+                    <dt>{{ 'Item #:' | translations: 'item-#' }}</dt>
+                    <dd>{{ product.itemNumber }}</dd>
+                    <dt style="padding-left: 1ex">
+                        {{ 'Product #: ' | translations: 'product-#' }}
+                    </dt>
+                    <dd>{{ product?.currentSKU?.productNumber }}</dd>
+                    <ng-container *ngIf="product?.manufactureNumber">
+                        <dt style="padding-left: 1ex">
+                            {{
+                                'Manufacturer #:'
+                                    | translations: 'manufacturer-number'
+                            }}
+                        </dt>
+                        <dd>{{ product.manufactureNumber }}</dd>
+                    </ng-container>
+                </dl>
+
+                <!-- Brand, Name and Short Desc -->
+                <span class="product-lead__desktop-info">
+                    <p *ngIf="product.brand" class="product-lead__brand">
+                        {{ product.brand }}
+                    </p>
+                    <h1 innerHTML="{{ product.productName }}"></h1>
+                    <dl>
+                        <dt style="font-weight: bold">
+                            {{ 'Item #:' | translations: 'item-#' }}
+                        </dt>
+                        <dd>{{ product.itemNumber }}</dd>
+                        <dt style="font-weight: bold">
+                            {{ 'Product #:' | translations: 'product-#' }}
+                        </dt>
+                        <dd>{{ product?.currentSKU?.productNumber }}</dd>
+                        <ng-container *ngIf="product?.manufactureNumber">
+                            <dt style="font-weight: bold; padding-left: 1ex">
+                                {{
+                                    'Manufacturer #:'
+                                        | translations: 'manufacturer-number'
+                                }}
+                            </dt>
+                            <dd>{{ product.manufactureNumber }}</dd>
+                        </ng-container>
+                    </dl>
+                </span>
+
+                <div
+                    *ngIf="product.shortDesc"
+                    class="product-lead__short-desc"
+                    [innerHTML]="product.shortDesc"
+                ></div>
+
+                <!-- <div>Unit Price: </div> -->
+                <div
+                    *ngIf="
+                        (showPricing | async) &&
+                            (selectedPriceInfo | async) as priceList;
+                        else unavailablePricing
+                    "
+                >
+                    <div
+                        *ngIf="
+                            excludeEmptyPrices(
+                                priceList?.priceInfo || []
+                            ) as positivePrices
+                        "
+                    >
+                        <span *ngIf="positivePrices.length > 0">
+                            <span
+                                *ngFor="let s of positivePrices; let i = index"
+                            >
+                                <!-- TODO: s.price !== 0 can be one condition -->
+                                <span
+                                    class="product-lead__price"
+                                    *ngIf="s.price !== 0"
+                                    >{{ s.price | currency }}</span
+                                >
+                                <span
+                                    class="product-lead__unit"
+                                    *ngIf="s.price !== 0"
+                                >
+                                    <span>/{{ s.uom }}</span>
+                                    <span
+                                        *ngIf="
+                                            i < priceList.priceInfo.length - 1
+                                        "
+                                    >
+                                        OR
+                                    </span>
+                                    <!-- Item Availability Message -->
+                                    <ng-container *ngIf="!hasItemAvailabilityError">
+                                        <span
+                                            [ngClass]="{'availability-green-text':green, 'availability-blue-text':blue, 'availability-grey-text':grey}">
+                                            {{ itemAvailability }}
+                                        </span>
+                                    </ng-container>
+                                </span>
+                            </span>
+                        </span>
+                        <ng-container *ngIf="positivePrices.length === 0">
+                            <span class="emptyPrice" *ngIf="positivePrices.length === 0">
+                                Price will be calculated at invoicing
+                            </span>
+                            <ng-container *ngIf="!hasItemAvailabilityError">
+                                <span
+                                    [ngClass]="{'availability-green-text':green, 'availability-blue-text':blue, 'availability-grey-text':grey}">
+                                    {{ itemAvailability }}
+                                </span>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <hr />
+                </div>
+                <ng-template #unavailablePricing>
+                    <p class="cell" *ngIf="isLoggedIn && !isAccountClosed">
+                        <span class="product-lead__price emptyPrice">
+                            Price will be calculated at invoicing</span>
+                        <!-- Item Availability Message -->
+                        <ng-container *ngIf="!hasItemAvailabilityError">
+                            <span
+                                [ngClass]="{'availability-green-text':green, 'availability-blue-text':blue, 'availability-grey-text':grey}">
+                                {{ itemAvailability }}
+                            </span>
+                        </ng-container>
+                    </p>
+                    <hr />
+                </ng-template>
+
+                <!-- LOCATION NEW -->
+                <!-- Buy on Pro+ Button -->
+                <div class="grid-x">
+                    <div
+                        class="cell flex-container flex-dir-column large-flex-dir-row"
+                    >
+                        <div
+                            class="m-5"
+                            [ngClass]="{ 'flex-child-auto': isLoggedIn }"
+                        >
+                            <button
+                                class="btn-expand button primary"
+                                mat-raised-button
+                                (click)="buyProduct()"
+                                [ngSwitch]="isLoggedIn"
+                                [disabled]="isLoggedIn && isAccountClosed"
+                            >
+                                <ng-template [ngSwitchCase]="true"
+                                    >Add to Cart</ng-template
+                                >
+                                <ng-template ngSwitchDefault
+                                    >Buy with Beacon PRO+</ng-template
+                                >
+                            </button>
+                        </div>
+
+                        <div class="flex-child-auto m-5" *ngIf="isLoggedIn">
+                            <button
+                                class="btn-expand"
+                                mat-raised-button
+                                [matMenuTriggerFor]="templateMenu"
+                                (click)="loadTemplates()"
+                                [disabled]="isAccountClosed"
+                            >
+                                Add To Template
+                            </button>
+                            <mat-menu
+                                #templateMenu="matMenu"
+                                yPosition="below"
+                                [overlapTrigger]="false"
+                            >
+                                <button
+                                    (click)="openDialogNewTemplate()"
+                                    mat-menu-item
+                                >
+                                    Create New Template
+                                </button>
+                                <ng-container
+                                    *ngIf="
+                                        isLoggedIn &&
+                                        templateList &&
+                                        templateList.length > 0
+                                    "
+                                >
+                                    <mat-divider></mat-divider>
+                                    <button
+                                        mat-menu-item
+                                        (click)="addItemsToTemplate(template)"
+                                        *ngFor="let template of templateList"
+                                    >
+                                        {{ template.templateName }}
+                                    </button>
+                                </ng-container>
+                            </mat-menu>
+                        </div>
+
+                        <div
+                            class="flex-child-auto m-5"
+                            *ngIf="isLoggedIn && permissionToQuote"
+                        >
+                            <button
+                                mat-raised-button
+                                class="btn-expand"
+                                [matMenuTriggerFor]="quoteMenu"
+                                (click)="loadQuotes()"
+                                [disabled]="isAccountClosed"
+                            >
+                                Add To Quote
+                            </button>
+                            <mat-menu
+                                #quoteMenu="matMenu"
+                                [overlapTrigger]="false"
+                            >
+                                <button
+                                    (click)="openDialogNewQuote()"
+                                    mat-menu-item
+                                >
+                                    Create New Quote
+                                </button>
+                                <ng-container
+                                    *ngIf="
+                                        isLoggedIn &&
+                                        quoteList &&
+                                        quoteList.length > 0
+                                    "
+                                >
+                                    <mat-divider></mat-divider>
+                                    <button
+                                        mat-menu-item
+                                        (click)="addItemsToQuote(quote)"
+                                        *ngFor="let quote of quoteList"
+                                    >
+                                        {{ quote.quoteName }}
+                                    </button>
+                                </ng-container>
+                            </mat-menu>
+                        </div>
+                    </div>
+                    <div class="cell mat-divider m-5"></div>
+                </div>
+                <!-- Current Selection -->
+                <!-- SKU Selector -->
+                <div
+                    class="product-lead__additional-options grid-x grid-margin-x"
+                >
+                    <div
+                        class="cell medium-6"
+                        *ngFor="
+                            let select of calculatedFacetOptions | keyvalue;
+                            let i = index
+                        "
+                    >
+                        <div
+                            *ngIf="
+                                select.key !== 'color1' &&
+                                    hasMultipleSelectOption(
+                                        select.key,
+                                        select.value
+                                    );
+                                else singleFacetOption
+                            "
+                            class="facet"
+                            [id]="getFacetId(i)"
+                        >
+                            <app-search-selector
+                                [caption]="select.key | titlecase"
+                                [selectedOption]="
+                                    productVariationFormGroup?.controls[
+                                        select.key
+                                    ].value
+                                "
+                                [options]="select.value"
+                                (selected)="setFilter(select.key, $event)"
+                            ></app-search-selector>
+                        </div>
+                        <ng-template #singleFacetOption>
+                            <div
+                                class="facet"
+                                *ngIf="
+                                    select.key !== 'color1' &&
+                                    hasSingleSelectOption(
+                                        select.key,
+                                        select.value
+                                    )
+                                "
+                            >
+                                <div class="caption">
+                                    {{ select.key | titlecase }}
+                                </div>
+                                <div>{{ select.value[0].value }}</div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="grid-x grid-margin-x qty-cont">
+                    <div class="cell medium-6" *ngIf="isLoggedIn">
+                        <div>
+                            <div>
+                                <mat-label style="font-weight: bold"
+                                    >Quantity</mat-label
+                                >
+                            </div>
+                            <div>
+                                <app-numeric-input
+                                    placeholder="Quantity"
+                                    [className]="'editInput'"
+                                    [min]="1"
+                                    [max]="99999"
+                                    [(currentValue)]="quantity"
+                                    (currentValueChange)="setQuantity($event)"
+                                >
+                                </app-numeric-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cell medium-6" *ngIf="isLoggedIn">
+                        <mat-form-field
+                            *ngIf="hasTwoOrMoreUOMs"
+                            class="product-lead__options-select"
+                        >
+                            <mat-label>Purchasing Unit</mat-label>
+                            <mat-select
+                                placeholder="Purchasing Unit"
+                                [(ngModel)]="selectedUOM"
+                            >
+                                <!-- <mat-option [value]="selectedUOM">{{selectedUOM}}</mat-option> -->
+                                <mat-option value=""
+                                    >Select an Option</mat-option
+                                >
+                                <mat-option
+                                    *ngFor="let uom of UOMList"
+                                    [value]="uom"
+                                    >{{ uom }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="!hasTwoOrMoreUOMs">
+                            <mat-label style="font-weight: bold"
+                                >Purchasing Unit</mat-label
+                            >
+                            <div>{{ selectedUOM }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End grid-x -->
+                <section
+                    *ngIf="
+                        product.skuList &&
+                        product.skuList.length >= 1 &&
+                        hasColors()
+                    "
+                    class="product-lead__color-options"
+                >
+                    <!-- NEW LOCATION -->
+                    <!-- Show other Variations -->
+                    <mat-divider></mat-divider>
+
+                    <!-- TABLE COLOR OPTIONS -->
+                    <div style="margin: 20px 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    {{
+                                        'Color Options'
+                                            | translations: 'color-options'
+                                    }}
+                                </td>
+                                <ng-container
+                                    *ngIf="
+                                        product?.currentSKU?.variations &&
+                                        product?.currentSKU?.variations.color
+                                    "
+                                >
+                                    <td>
+                                        {{
+                                            'Viewing' | translations: 'viewing'
+                                        }}:
+                                        <strong>{{
+                                            (product?.currentSKU?.variations
+                                                ?.color)[0]
+                                        }}</strong>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Variation Viewer -->
+                    <p class="color"></p>
+                    <ng-container *ngIf="params$ | async as params">
+                        <!-- Color Picker -->
+                        <ul class="product-lead__color-picker" #colorSwatchUl>
+                            <ng-container
+                                *ngFor="let colorOption of getColorThumbnails()"
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        productVariationFormGroup?.controls[
+                                            'color'
+                                        ] as colorFormControl
+                                    "
+                                >
+                                    <li
+                                        class="product-lead__color-item"
+                                        [ngClass]="{
+                                            'is-active':
+                                                colorFormControl.value ===
+                                                colorOption.value,
+                                            disabled: checkIfInvalidOption(
+                                                colorOption.value,
+                                                'color'
+                                            )
+                                        }"
+                                    >
+                                        <label class="product-lead__color-link">
+                                            <span class="show-for-sr">{{
+                                                colorOption.color
+                                            }}</span>
+                                            <input
+                                                *ngIf="
+                                                    product.itemNumber !==
+                                                    colorOption.itemNumber
+                                                "
+                                                class="hide"
+                                                type="radio"
+                                                (change)="
+                                                    navigateToSku(
+                                                        colorOption.itemNumber
+                                                    )
+                                                "
+                                                [formControl]="colorFormControl"
+                                                [value]="colorOption.itemNumber"
+                                                required
+                                            />
+                                            <img
+                                                appImagePreload
+                                                [default]="
+                                                    product?.productOnErrorImage
+                                                        | errorImage
+                                                            : '../../assets/images/image-not-available.svg'
+                                                "
+                                                src="{{
+                                                    colorOption.itemImage.smallSrc()
+                                                }}"
+                                                alt="{{ colorOption.color }}"
+                                                title="{{
+                                                    colorOption.color
+                                                }} - {{
+                                                    colorOption.itemNumber
+                                                }}"
+                                            />
+                                        </label>
+                                    </li>
+                                </ng-container>
+                            </ng-container>
+                        </ul>
+                        <div *ngIf="displayShowMore">
+                            <a (click)="seeMoreColors(seeMore)" *ngIf="seeMore"
+                                >See more...</a
+                            >
+                            <a (click)="seeMoreColors(seeMore)" *ngIf="!seeMore"
+                                >See less</a
+                            >
+                        </div>
+                    </ng-container>
+                </section>
+                <!-- OLD LOCATION -->
+            </div>
+        </div>
+
+        <!-- Video thumbs -->
+        <app-video-gallery
+            [productImageVideoObj]="_productImageVideoObj"
+            class="cell medium-6"
+        >
+        </app-video-gallery>
+    </div>
+</ng-container>
+
+<!-- TODO (Tim): to review since this never renders -->
+<app-dump-grid *ngIf="false" [input]="product"></app-dump-grid>
+
+<ng-template #newQuote>
+    <form [formGroup]="newQuoteForm">
+        <h2 mat-dialog-title>Quote Detail</h2>
+        <mat-dialog-content class="mat-dialog-content">
+            <div class="grid-x">
+                <div class="cell small-12 medium-12 large-12">
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <input
+                            matInput
+                            placeholder="Quote Name"
+                            maxlength="25"
+                            [(ngModel)]="quote.quoteName"
+                            [formControl]="quoteFormControl"
+                            [errorStateMatcher]="matcher"
+                            required
+                        />
+                        <mat-error
+                            *ngIf="quoteFormControl.hasError('required')"
+                        >
+                            This field is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+
+        <!-- Dialog Buttons -->
+        <mat-dialog-actions align="end">
+            <button mat-stroked-button mat-dialog-close>Cancel</button>
+            <button mat-stroked-button (click)="createQuote()" type="submmit">
+                Create
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>

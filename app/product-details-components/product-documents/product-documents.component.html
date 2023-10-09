@@ -1,0 +1,10 @@
+<div class="product-documents">
+    <ul>
+        <li
+            *ngFor="let prodResource of productResources | keyvalue"
+            innerHTML="<a href='{{
+                getFullPath(prodResource.value)
+            }}' target='_blank'>{{ prodResource.key }}</a>"
+        ></li>
+    </ul>
+</div>

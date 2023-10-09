@@ -1,0 +1,158 @@
+#onboarding-container {
+    width: 800px;
+    margin: auto;
+    border-radius: 15px;
+    border: solid 3px orange;
+    background: #fff;
+    height: 398px;
+    position: absolute;
+    top: -44px;
+    left: 342px;
+    z-index: 5000;
+    margin-bottom: -333px;
+    padding: 30px;
+    transition: transform 0.5s;
+
+    #stepper {
+        .row {
+            margin-bottom: 15px;
+            display: block;
+        }
+        app-step-title {
+            margin-bottom: 0;
+        }
+        text-align: center;
+
+        .btn-group {
+            text-align: right;
+            padding-top: 24px;
+            padding-right: 49px;
+
+            button.skip-btn {
+                text-transform: capitalize;
+            }
+        }
+    }
+}
+
+#onboarding-container.default {
+    transform: translate(0px, 0px);
+}
+
+#onboarding-container.step1 {
+    transform: translate(-30px, 0px);
+}
+
+#onboarding-container.step2 {
+    transform: translate(120px, 0px);
+}
+
+#onboarding-container.step3 {
+    transform: translate(234px, 0px);
+}
+
+#indicator {
+    width: 22px;
+    text-align: center;
+    position: relative;
+    z-index: 20000;
+    top: -847px;
+    left: 400px;
+    height: 24px;
+    visibility: hidden;
+    transition: transform 0.5s;
+}
+
+#indicator.default {
+    transform: translate(0px, 0px);
+    visibility: hidden;
+}
+#indicator.step1 {
+    transform: translate(-18px, 0px);
+    visibility: visible;
+}
+
+#indicator.step2 {
+    transform: translate(542px, 0px);
+    visibility: visible;
+}
+
+#indicator.step3 {
+    transform: translate(650px, 0px);
+    visibility: visible;
+}
+
+.backdrop {
+    width: 100%;
+    background-color: #202020;
+    opacity: 0.65;
+    height: 1448px;
+    position: absolute;
+    z-index: 2500;
+    top: -133px;
+    left: 0;
+}
+
+/* MOBILE */
+@media screen and (max-width: 575px) {
+    .backdrop {
+        height: 2317px;
+    }
+
+    #onboarding-container,
+    #onboarding-container.default {
+        width: 98%;
+        top: -27px;
+        position: absolute;
+    }
+
+    div#buttons {
+        padding-right: 0px !important;
+    }
+
+    #onboarding-container.default {
+        transform: translate(-338px, 0px);
+    }
+
+    #onboarding-container.step1 {
+        transform: translate(-338px, 0px);
+    }
+
+    #onboarding-container.step2 {
+        transform: translate(-338px, 49px);
+    }
+
+    #onboarding-container.step3 {
+        transform: translate(-338px, 49px);
+    }
+
+    #indicator {
+        width: 22px;
+        text-align: center;
+        position: relative;
+        z-index: 20000;
+        top: -1242px;
+        left: 0px;
+        height: 24px;
+        visibility: visible;
+        transition: transform 0.5s;
+    }
+    #indicator.default {
+        transform: translate(230px, -55px);
+        visibility: hidden;
+    }
+    #indicator.step1 {
+        transform: translate(230px, -55px);
+        visibility: visible;
+    }
+
+    #indicator.step2 {
+        transform: translate(109px, -6px);
+        visibility: visible;
+    }
+
+    #indicator.step3 {
+        transform: translate(245px, -6px);
+        visibility: visible;
+    }
+}

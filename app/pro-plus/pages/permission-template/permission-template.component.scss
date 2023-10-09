@@ -1,0 +1,36 @@
+.divider {
+    margin-bottom: 20px;
+}
+table.padded-table {
+    th,
+    td {
+        padding: 5px;
+    }
+}
+.icon {
+    margin: 0px 10px;
+}
+.full-width {
+    width: 100%;
+    margin-bottom: 25px;
+}
+.email {
+    width: 350px;
+}
+.button {
+    margin: 20px 0px;
+}
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}

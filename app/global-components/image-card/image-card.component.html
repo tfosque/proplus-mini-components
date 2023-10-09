@@ -1,0 +1,33 @@
+<div class="image-card">
+    <a
+        *ngIf="!isExternal(); else external"
+        class="image-card__link"
+        routerLink="{{ link }}"
+        [queryParams]="{ filters: filters, cateFilter: cateFilter }"
+    >
+        <div class="image-card__content-container">
+            <div *ngIf="image" class="image-card__image-wrap">
+                <img src="{{ image.src }}" alt="{{ image.altText }}" />
+            </div>
+            <div class="image-card__text-wrap">
+                <span class="image-card__text">
+                    {{ title }}
+                </span>
+            </div>
+        </div>
+    </a>
+    <ng-template #external>
+        <a class="image-card__link" href="{{ link }}">
+            <div class="image-card__content-container">
+                <div *ngIf="image" class="image-card__image-wrap">
+                    <img src="{{ image.src }}" alt="{{ image.altText }}" />
+                </div>
+                <div class="image-card__text-wrap">
+                    <span class="image-card__text">
+                        {{ title }}
+                    </span>
+                </div>
+            </div>
+        </a>
+    </ng-template>
+</div>

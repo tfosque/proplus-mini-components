@@ -1,0 +1,104 @@
+<h2 mat-dialog-title>Product Items</h2>
+<mat-dialog-content class="mat-dialog-content">
+    <p class="callout alert">
+        <ng-container *ngIf="config.availableLineItems.length">
+            Some of these items aren't available, do you wish to continue?
+        </ng-container>
+        <ng-container *ngIf="!config.availableLineItems.length">
+            The following items are unavailable.
+        </ng-container>
+    </p>
+    <h3>Unavailable Items</h3>
+    <table class="full-width">
+        <tbody *ngFor="let element of config.unavailableLineItems">
+            <td>
+                <img
+                    class="img-prod"
+                    src="{{ element.productImageUrl }}"
+                    alt=""
+                />
+            </td>
+
+            <td>
+                <div class="detail">
+                    <div>
+                        <a
+                            *ngIf="element.productId; else noLink"
+                            [routerLink]="element.prodUrl"
+                            [innerHTML]="element.name"
+                        ></a>
+                        <ng-template #noLink
+                            ><span [innerHTML]="element.name"></span
+                        ></ng-template>
+                    </div>
+                    <div
+                        *ngIf="
+                            element.productId &&
+                            element.itemNumber &&
+                            element.itemNumber !== '0'
+                        "
+                    >
+                        <span class="spanOrder">Item #: </span>
+                        {{ element.itemNumber }}
+                    </div>
+                </div>
+            </td>
+        </tbody>
+    </table>
+    <ng-container *ngIf="config.availableLineItems.length">
+        <hr />
+        <h3>Items to be Added</h3>
+        <table class="full-width">
+            <tbody *ngFor="let element of config.availableLineItems">
+                <td>
+                    <img
+                        class="img-prod"
+                        src="{{ element.productImageUrl }}"
+                        alt=""
+                    />
+                </td>
+
+                <td>
+                    <div class="detail">
+                        <div>
+                            <a
+                                *ngIf="element.productId; else noLink"
+                                [routerLink]="element.prodUrl"
+                                [innerHTML]="element.name"
+                            ></a>
+                            <ng-template #noLink
+                                ><span [innerHTML]="element.name"></span
+                            ></ng-template>
+                        </div>
+                        <div
+                            *ngIf="
+                                element.productId &&
+                                element.itemNumber &&
+                                element.itemNumber !== '0'
+                            "
+                        >
+                            <span class="spanOrder">Item #: </span>
+                            {{ element.itemNumber }}
+                        </div>
+                    </div>
+                </td>
+            </tbody>
+        </table>
+    </ng-container>
+</mat-dialog-content>
+
+<!-- Dialog Buttons -->
+<mat-dialog-actions align="end">
+    <button *ngIf="config.cartOrTemplate !== 'EagleView Order'" mat-stroked-button mat-dialog-close>Cancel</button>
+    <ng-container *ngIf="config.availableLineItems.length">
+        <span>&nbsp;</span>
+        <button
+            color="primary"
+            mat-stroked-button
+            mat-dialog-close
+            (click)="addToCart()"
+        >
+            Add To {{ config.cartOrTemplate }}
+        </button>
+    </ng-container>
+</mat-dialog-actions>

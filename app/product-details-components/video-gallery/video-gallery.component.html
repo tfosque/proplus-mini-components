@@ -1,0 +1,56 @@
+<div class="image-gallery">
+    <div *ngIf="videos && videos.length > 0">
+        <h1>Video Gallery</h1>
+        <ul class="cell grid-x">
+            <!-- Loop over videos -->
+            <li *ngFor="let video of videos; index as i">
+                <div class="medium-4">
+                    <!-- Account for different video types (TODO: detect different types )
+              'mp4', 'youtube', 'other'
+            -->
+                    <!-- <video
+                        *ngIf="video.type === 'mp4'; else iframe"
+                        width="200"
+                        height="120"
+                        controls
+                    >
+                        <source
+                            [src]="
+                                'https://www.beaconproplus.com' + video.videoUrl
+                            "
+                            type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                    </video> -->
+                    <a *ngIf="video.type === 'mp4'; else iframe" (click)="videoClick(video.videoUrl)">
+                        <img [src]="video.image">
+                    </a>
+
+                    <ng-template #iframe>
+                        <iframe
+                            width="200"
+                            height="120"
+                            [src]="video.videoUrl"
+                            frameborder="0"
+                            allowfullscreen
+                        >
+                        </iframe>
+                    </ng-template>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<ng-template #videoPlay let-data>
+    <mat-dialog-actions align="end">
+        <button mat-dialog-close class="bold">X</button>
+    </mat-dialog-actions>
+    <mat-dialog-content class="dialog-content">
+        <div>
+            <video width="100%" height="100%" class="video" layout-fill controls autoplay>
+                <source src='https://www.beaconproplus.com{{data.source}}' type='video/mp4' />
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </mat-dialog-content>
+</ng-template>

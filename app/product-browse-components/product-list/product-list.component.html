@@ -1,0 +1,30 @@
+<div class="product-list grid-container full" #listingWrapper>
+    <div class="grid-x medium-grid-margin-x product-list__results-container" #resultsContainer
+        [ngClass]="{ 'no-products': !(productList | async) || !(productList | async)?.length }">
+        <ng-container *ngIf="(productList | async)?.length; else noResults">
+            <app-result-card *ngFor="let product of productList | async" class="cell small-6 medium-4"
+                [result]="product" [isSearch]="isSearch"></app-result-card>
+        </ng-container>
+        <ng-template #noResults>
+            <div *ngIf="!isLoading" class="cell">
+                <p class="product-list__no-results">
+                    {{
+                        'Sorry, there were no results for the selected filters.'
+                            | translations: 'product-browse-no-results'
+                    }}
+                </p>
+            </div>
+        </ng-template>
+        <div *ngIf="isLoading && !(isNavigating | async)" class="loading-container">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+    </div>
+    <div *ngIf="isLoadingMore" class="loading-more-container">
+        <mat-progress-spinner mode="indeterminate" [diameter]="50"></mat-progress-spinner>
+    </div>
+    <a *ngIf="loadMoreButtonClicked" class="gotoTop" (click)="gotoTop()" #gotoTopButton
+        [ngStyle]="setGotoButtonStyles(gotoTopButton)">
+        <span class="gotoTop--arrow icon-arrow-up"></span>
+        <span>{{ 'Back To Top' | translations: 'back-to-top' }}</span>
+    </a>
+</div>

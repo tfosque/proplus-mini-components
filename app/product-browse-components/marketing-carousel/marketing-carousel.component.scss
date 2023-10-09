@@ -1,0 +1,117 @@
+@import '../../../sass/vendor/foundation-settings';
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+.marketing-carousel {
+    @include contentButtonContainer();
+}
+.marketing-block {
+    background-color: $color-background-dark;
+    border: 6px solid $color-primary;
+    margin-top: rem-calc(12px);
+    &__wrapper {
+        color: $color-secondary;
+        padding: rem-calc(16px); //16
+    }
+    h2 {
+        color: $color-secondary;
+        font-family: $font-family;
+        font-weight: $font-weight-bold;
+        font-size: rem-calc(18px);
+        line-height: rem-calc(22px);
+        margin-bottom: rem-calc(5px);
+    }
+    p {
+        color: $color-white;
+        font-size: rem-calc(14px);
+        line-height: rem-calc(18px);
+        margin-top: 0px;
+        opacity: 0.8;
+    }
+    img {
+        height: auto;
+        width: 100%;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .marketing-block {
+        border: 5px solid $color-primary;
+        background-color: transparent;
+        display: flex;
+        margin-bottom: rem-calc(50px);
+        position: relative;
+        overflow: hidden;
+        @include ie-flex-min-height();
+        &__wrapper {
+            background-color: $color-background-dark;
+            max-width: rem-calc(450px);
+            padding: rem-calc(28px 25px);
+            top: 0;
+            z-index: 2;
+            @include angle(after, false, 20deg);
+            &:after {
+                background-color: $color-background-dark;
+                bottom: -1px;
+                box-shadow: 2px 0 4px -1px rgba(0, 0, 0, 0.4);
+                height: calc(120%);
+                width: 120%;
+                top: -1px;
+            }
+        }
+        //sizing for brand pages
+        // .marketing-block-brand {
+        //     border: 5px solid $color-primary;
+        //     background-color: transparent;
+        //     display: flex;
+        //     margin-bottom: rem-calc(50px);
+        //     position: relative;
+        //     overflow: hidden;
+        //     @include ie-flex-min-height();
+        //     &__wrapper {
+        //         max-width: rem-calc(450px);
+        //         padding: rem-calc(50px 50px 165px 50px);
+        //         top: 0;
+        //         z-index: 2;
+        //         @include angle(after, false, 20deg);
+        //         &:after {
+        //             background-color: $color-background-dark;
+        //             bottom: -1px;
+        //             box-shadow: 2px 0 4px -1px rgba(0, 0, 0, 0.4);
+        //             height: calc(70%);
+        //             width: 130%;
+        //             top: -1px;
+        //         }
+        //     }
+        // }
+
+        h2 {
+            font-size: rem-calc(24px); //24 34
+            line-height: rem-calc(28px); //28 38
+        }
+        p {
+            font-size: rem-calc(16px); //16 20
+            line-height: rem-calc(20px); //20 24
+            margin-bottom: rem-calc(22px);
+        }
+        .brandWrapper p {
+            font-size: rem-calc(20px);
+            line-height: rem-calc(24px);
+            margin-bottom: rem-calc(22px);
+        }
+
+        img.hasTitle {
+            bottom: 0;
+            @include object-fit(cover, center);
+            height: 100%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            width: 100%;
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}

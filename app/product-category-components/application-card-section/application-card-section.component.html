@@ -1,0 +1,19 @@
+<section
+    *ngFor="let appCardSection of appCardSections"
+    class="application-card-section grid-container"
+>
+    <h2 class="application-card-section__title">
+        {{ 'By Application' | translations: 'by-application' }}
+    </h2>
+    <div
+        class="grid-x grid-margin-x small-up-1 large-up-2 application-card-section__card-grid"
+    >
+        <app-application-card
+            *ngFor="let appCard of appCardSection.imageCards"
+            class="cell"
+            [title]="appCard.title"
+            [imageSrc]="appCard.imageSrc"
+            [url]="appCard.pageLink"
+        ></app-application-card>
+    </div>
+</section>

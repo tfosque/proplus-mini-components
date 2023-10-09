@@ -1,0 +1,22 @@
+<section class="facet-modal">
+    <div class="facet-modal__title-wrap">
+        <h2 class="facet-modal__title">
+            {{ 'filter' | translations: 'filter' }}
+            <span class="facet-modal__count">
+                ({{ resultsCount$ | async }}
+                {{ 'products' | translations: 'products' }})
+            </span>
+        </h2>
+
+        <a (click)="closeModal()" class="facet-modal__close icon-close"></a>
+    </div>
+    <app-facet-container></app-facet-container>
+    <div class="facet-modal__controls">
+        <a (click)="clearFacets()" class="button secondary">
+            {{ 'Reset All' | translations: 'reset-all' }}
+        </a>
+        <a (click)="closeModal()" class="button primary">
+            {{ 'Done' | translations: 'done' }}
+        </a>
+    </div>
+</section>

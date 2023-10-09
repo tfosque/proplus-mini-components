@@ -1,0 +1,27 @@
+<section class="image-card-section grid-container">
+    <h2
+        *ngIf="!isSubSection && title; else subSection"
+        class="image-card-section__title"
+    >
+        {{ title }}
+    </h2>
+    <ng-template #subSection>
+        <h3 *ngIf="title" class="image-card-section__title">
+            {{ title }}
+        </h3>
+    </ng-template>
+    <div
+        class="grid-x grid-margin-x small-up-2 medium-up-3 large-up-5 image-card-section__card-grid"
+        [ngClass]="{ 'no-title': !title }"
+    >
+        <app-image-card
+            *ngFor="let card of imageCards"
+            class="cell"
+            [title]="card.title"
+            [link]="card.pageLink"
+            [imageUrl]="card.displayImage"
+            [filters]="card.filters"
+            [cateFilter]="card.cateFilter"
+        ></app-image-card>
+    </div>
+</section>

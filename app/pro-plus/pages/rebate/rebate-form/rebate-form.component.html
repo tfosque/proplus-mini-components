@@ -1,0 +1,335 @@
+<div [ngSwitch]="activeForm">
+    <ng-template ngSwitchDefault>
+        <form [formGroup]="form" *ngIf="form">
+            <div style="margin: 30px 50px">
+                <!-- Start Grid -->
+                <div
+                    class="grid-x grid-margin-x align-center justify-content-center"
+                >
+                    <!-- constrain to foundations cell width of 8 -->
+                    <div class="cell medium-8">
+                        <div class="grid-x justify-content-center">
+                            <div class="cell" *ngFor="let row of rows">
+                                <div class="grid-x">
+                                    <ng-container>
+                                        <div
+                                            [class]="convertCSS(field.css)"
+                                            *ngFor="let field of row"
+                                        >
+                                            <!-- Fields -->
+                                            <div [ngSwitch]="getType(field.type)">
+                                                <ng-template
+                                                    ngSwitchCase="htmlBlock"
+                                                >
+                                                    <div
+                                                        [innerHTML]="field.html"
+                                                    ></div>
+                                                </ng-template>
+
+                                                <div>
+                                                    <ng-template
+                                                        ngSwitchCase="text"
+                                                    >
+                                                        <mat-form-field
+                                                            class="inputStyle"
+                                                            floatLabel="auto"
+                                                        >
+                                                            <mat-label
+                                                                *ngIf="
+                                                                    field.label
+                                                                "
+                                                                >{{
+                                                                    field.label
+                                                                }}</mat-label
+                                                            >
+                                                            <input
+                                                                matInput
+                                                                [pattern]="
+                                                                    field.pattern
+                                                                "
+                                                                [type]="
+                                                                    field.htmlType
+                                                                "
+                                                                [id]="field.key"
+                                                                [formControlName]="
+                                                                    field.key
+                                                                "
+                                                                ng-pattern="^\d+$"
+                                                                [required]="
+                                                                    field.required
+                                                                "
+                                                            />
+                                                            <mat-error
+                                                                *ngIf="
+                                                                    textController.hasError(
+                                                                        'required'
+                                                                    ) &&
+                                                                    field.required
+                                                                "
+                                                            >
+                                                                {{
+                                                                    field.invalidMsg
+                                                                }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </ng-template>
+                                                </div>
+
+                                                <ng-template
+                                                    ngSwitchCase="select"
+                                                >
+                                                    <div>
+                                                        <mat-form-field
+                                                            class="inputStyle"
+                                                            style="width: 100%"
+                                                            floatLabel="auto"
+                                                        >
+                                                            <mat-label
+                                                                *ngIf="
+                                                                    field.label
+                                                                "
+                                                                >{{
+                                                                    field.label
+                                                                }}
+                                                            </mat-label>
+                                                            <mat-select
+                                                                [formControlName]="
+                                                                    field.key
+                                                                "
+                                                                [id]="field.key"
+                                                                [required]="
+                                                                    field.required
+                                                                "
+                                                            >
+                                                                <mat-option
+                                                                    value=""
+                                                                    >{{
+                                                                        field.placeHolder
+                                                                    }}</mat-option
+                                                                >
+                                                                <mat-option
+                                                                    *ngFor="
+                                                                        let item of field.selectValues
+                                                                    "
+                                                                    [value]="
+                                                                        item.value
+                                                                    "
+                                                                >
+                                                                    {{
+                                                                        item.displayName
+                                                                    }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                                *ngIf="
+                                                                    selectController.hasError(
+                                                                        'required'
+                                                                    ) &&
+                                                                    field.required
+                                                                "
+                                                            >
+                                                                {{
+                                                                    field.invalidMsg
+                                                                }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </ng-template>
+
+                                                <div>
+                                                    <ng-template
+                                                        ngSwitchCase="radio"
+                                                    >
+                                                        <span
+                                                            *ngIf="
+                                                                field.label &&
+                                                                field.required
+                                                            "
+                                                            style="color: red"
+                                                            >*</span
+                                                        >
+                                                        <mat-radio-button
+                                                            type="radio"
+                                                            [value]="
+                                                                field.value
+                                                            "
+                                                            [formControlName]="
+                                                                field.key
+                                                            "
+                                                        >
+                                                        </mat-radio-button>
+                                                        <label
+                                                            class="radio-inline"
+                                                            [for]="field.key"
+                                                            >{{
+                                                                field.value
+                                                            }}</label
+                                                        >
+                                                        <span
+                                                            *ngIf="
+                                                                !isValid(
+                                                                    field.key
+                                                                ) &&
+                                                                field.required
+                                                            "
+                                                            style="color: red"
+                                                            >{{
+                                                                getErrorMessage(
+                                                                    field
+                                                                )
+                                                            }}</span
+                                                        >
+                                                    </ng-template>
+
+                                                    <!-- Terms and Conditions -->
+                                                    <ng-template
+                                                        ngSwitchCase="terms"
+                                                    >
+                                                        <div
+                                                            style="
+                                                                margin: 15px 0px;
+                                                            "
+                                                        >
+                                                            <input
+                                                                formControlName="acceptTerms"
+                                                                (change)="
+                                                                    changeCheck(
+                                                                        $event
+                                                                    )
+                                                                "
+                                                                type="checkbox"
+                                                                [disabled]="
+                                                                    internalUser ||
+                                                                    !submitRebate
+                                                                "
+                                                            />
+                                                            &nbsp;
+                                                            <label
+                                                                class="validField icr__text"
+                                                                for="acceptTerms"
+                                                                >{{
+                                                                    field.label
+                                                                }}</label
+                                                            >
+                                                        </div>
+                                                    </ng-template>
+
+                                                    <ng-template
+                                                        ngSwitchCase="button"
+                                                    >
+                                                        <div
+                                                            *ngIf="internalUser"
+                                                            style="
+                                                                margin: 15px 0px;
+                                                            "
+                                                        >
+                                                            Beacon employees
+                                                            cannot sign up for
+                                                            manufacturer
+                                                            promotions. Please
+                                                            encourage your
+                                                            customer to sign up
+                                                            for promotion
+                                                            tracking.
+                                                        </div>
+                                                        <button
+                                                            style="margin: 1ex"
+                                                            mat-raised-button
+                                                            color="{{
+                                                                isAccountClosed
+                                                                    ? 'disabled'
+                                                                    : getSubmitBtnClass()
+                                                            }}"
+                                                            type="submit"
+                                                            [value]="
+                                                                field.label
+                                                            "
+                                                            [name]="field.name"
+                                                            (click)="
+                                                                submitForm()
+                                                            "
+                                                            [disabled]="
+                                                                (!terms &&
+                                                                    termsPresent) ||
+                                                                internalUser ||
+                                                                !submitRebate ||
+                                                                isAccountClosed
+                                                            "
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                        <!-- <input type="button" name="cancel" class="cancel-button" value="Cancel"> -->
+                                                        <button
+                                                            style="margin: 1ex"
+                                                            mat-raised-button
+                                                            [routerLink]="
+                                                                '/proplus/rebate/landing'
+                                                            "
+                                                            class="link-button"
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <ng-template ngSwitchCase="successMessage">
+        <div class="container-fluid">
+            <div class="jumbotron" style="text-align: center; height: 410px">
+                <div class="container">
+                    <h1>You're all set!</h1>
+                    <img
+                        style="padding-top: 30px"
+                        src="https://beaconproplus.com/images/checkmark.png"
+                    />
+                </div>
+            </div>
+
+            <div class="row" style="text-align: center">
+                <h3 style="padding-bottom: 10px; margin: 0">
+                    Thank you for submitting your rebate request. We'll take it
+                    from here!
+                </h3>
+                <h4 style="padding-bottom: 10px; margin: 0">
+                    Now you can get back to the important things and let Beacon
+                    save you time and money.
+                </h4>
+                <p style="padding-bottom: 10px">
+                    An email will be sent to you once we submit your rebate to
+                    the manufacturer.
+                </p>
+            </div>
+        </div>
+        <div style="margin-top: 50px; margin-bottom: 30px" class="container">
+            <h6 style="text-align: center; padding-bottom: 2px">
+                ﾠ ﾠ ﾠ No additional action is required to earn these rewards;
+                the registration form and qualifying purchases will be submitted
+                directly to the manufacturer on your behalf.
+            </h6>
+            <h6 style="text-align: center; padding-bottom: 2px">
+                Although Beacon Roofing Supply works hard to ensure reporting
+                accuracy, please compare this report with your internal records
+                to verify it is correct.
+            </h6>
+            <h6 style="text-align: center; padding-bottom: 2px">
+                Beacon Roofing Supply is not responsible for any missed program
+                rewards. Rewards are paid by and are the responsibility of the
+                manufacturer.
+            </h6>
+        </div>
+    </ng-template>
+</div>
+
+<!-- TODO (Tim): to review since this never renders -->
+<div *ngIf="false">
+    <app-dump-grid [input]="rows"></app-dump-grid>
+</div>

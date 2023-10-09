@@ -1,0 +1,306 @@
+<div class="loading-container" *ngIf="loadingBool">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<h1>Saved Order</h1>
+<ng-container *ngIf="savedOrder$ | async as savedOrder; else loading">
+    <div class="grid-x">
+        <div class="small-6">
+            <mat-form-field class="full-width" floatLabel="auto">
+                <input
+                    placeholder="Order Name"
+                    [(ngModel)]="
+                        savedOrderDetail && savedOrderDetail.displayName
+                    "
+                    matInput
+                    [formControl]="displayNameControler"
+                    [errorStateMatcher]="matcher"
+                    maxlength="40"
+                    [readonly]="!getEditMode || !isReadyForSubmission"
+                    required
+                />
+                <mat-error *ngIf="displayNameControler.hasError('required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div *ngIf="pickupValidator && !getEditMode">
+        <mat-divider class="divider"></mat-divider>
+        <p style="font-weight: bold">PREFERRED PICKUP/DELIVERY DATE AND TIME</p>
+        <div class="grid-x">
+            <div class="small-6">
+                <span style="font-weight: bold">Date:</span>
+                {{ savedOrder.deliveryDate }}
+            </div>
+            <div class="small 6">
+                <span style="font-weight: bold">Time:</span
+                >{{ savedOrder.deliveryTime | formatTime }}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!getEditMode">
+        <mat-divider class="divider"></mat-divider>
+        <div class="grid-x">
+            <div class="small-12 medium-6">
+                <div class="grid-y">
+                    <div *ngIf="validDeliveryOpt">
+                        <h3>Delivery Option:</h3>
+                        {{ savedOrderDetail?.deliveryOption }}
+                    </div>
+                    <div *ngIf="validDeliveryMethod">
+                        <h3>Delivery Method:</h3>
+                        {{ savedOrderDetail?.shippingMethod }}
+                    </div>
+                    <ul *ngIf="validAddress" class="list-address">
+                        <li>
+                            <h3>Address:</h3>
+                        </li>
+                        <li>{{ savedOrderDetail?.branchAddress.address1 }}</li>
+                        <li>{{ savedOrderDetail?.branchAddress.address2 }}</li>
+                        <li>
+                            {{ savedOrderDetail?.branchAddress.city }},
+                            {{ savedOrderDetail?.branchAddress.state }},
+                            {{ savedOrderDetail?.branchAddress.postalCode }}
+                        </li>
+                    </ul>
+                    <div *ngIf="phoneValidation">
+                        <h3>Phone Number:</h3>
+                        {{ savedOrderDetail?.contactInfo.phoneNumber }}
+                    </div>
+                    <div *ngIf="orderValidation">
+                        <h3>Order Notes:</h3>
+                        {{ savedOrderDetail?.instructions }}
+                    </div>
+                </div>
+            </div>
+            <div class="small-12 medium-6">
+                <div class="grid-y">
+                    <div
+                        *ngIf="
+                            savedOrder.job &&
+                            savedOrder.job.jobNumberDisplayName
+                        "
+                    >
+                        <h3>Job Account Name:</h3>
+                        <mat-form-field floatLabel="auto">
+                            <input
+                                [(ngModel)]="
+                                    savedOrder.job.jobNumberDisplayName
+                                "
+                                matInput
+                                disabled
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="savedOrder.job && savedOrder.job.jobNumber">
+                        <h3>Job Account Number:</h3>
+                        <mat-form-field floatLabel="auto">
+                            <input
+                                [(ngModel)]="savedOrder.job.jobNumber"
+                                matInput
+                                disabled
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-product-lines
+        [deleteItem]="deleteItem.bind(this)"
+        [displayedColumns]="[
+            'product',
+            'details',
+            'unit_price',
+            'qty',
+            'actions'
+        ]"
+        [observedItems]="lineItems$"
+        [editMode]="getEditMode"
+    >
+    </app-product-lines>
+    <div class="grid-x" *ngIf="!getEditMode">
+        <div class="small-12 medium-8"></div>
+        <div class="small-12 medium-4">
+            <div>
+                <h3>ORDER SUMMARY</h3>
+            </div>
+            <div *ngIf="!itemsTotal; else noPrice">
+                <div class="grid-x">
+                    <div class="small-6 medium-6" style="font-weight: bold">
+                        Sub Total:
+                    </div>
+                    <div class="small-6 medium-6">
+                        {{ savedOrder.itemsTotal | currency }}
+                    </div>
+                    <mat-divider class="small-8"></mat-divider>
+                </div>
+                <div class="grid-x">
+                    <div class="small-6 medium-6" style="font-weight: bold">
+                        Other Charges:
+                        <button
+                            class="icon"
+                            matTooltipPosition="left"
+                            matTooltip="What is Other Charges?
+                        Other charges are typically delivery fees, but may include handling and fuel fees."
+                            matTooltipClass="custom-tooltip"
+                        >
+                            <mat-icon>info</mat-icon>
+                        </button>
+                    </div>
+                    <div class="small-6 medium-6">
+                        {{ savedOrder.otherCharges | currency }}
+                    </div>
+                    <mat-divider class="small-8"></mat-divider>
+                </div>
+                <div class="grid-x">
+                    <div class="small-6 medium-6" style="font-weight: bold">
+                        Tax:
+                    </div>
+                    <div class="small-6 medium-6">
+                        {{ savedOrder.taxes | currency }}
+                    </div>
+                    <mat-divider class="small-8"></mat-divider>
+                </div>
+                <div class="grid-x">
+                    <div class="small-6 medium-6" style="font-weight: bold">
+                        Total:
+                    </div>
+                    <div class="small-6 medium-6">
+                        {{ savedOrder.subTotal | currency }}
+                    </div>
+                    <mat-divider class="small-8"></mat-divider>
+                </div>
+            </div>
+            <ng-template #noPrice>
+                Price will be calculated at the time of invoicing.
+            </ng-template>
+        </div>
+    </div>
+    <mat-divider class="divider"></mat-divider>
+    <div
+        class="grid-x margin-y"
+        style="margin-bottom: 30px"
+        *ngIf="getEditMode"
+    >
+        <div class="cell small-12 medium-5 buttons">
+            <app-product-selector
+                [accountId]="accountId"
+                (productAdded)="addProduct($event)"
+            >
+            </app-product-selector>
+        </div>
+        <div class="cell small-12 medium-5 buttons">
+            <button
+                color="primary"
+                (click)="save()"
+                mat-raised-button
+                [disabled]=""
+            >
+                Save
+            </button>
+        </div>
+    </div>
+    <div
+        class="grid-x margin-y"
+        style="margin-bottom: 30px"
+        *ngIf="!getEditMode"
+    >
+        <div class="cell small-12 medium-4 buttons">
+            <button
+                mat-raised-button
+                color="secondary"
+                [matMenuTriggerFor]="menu"
+            >
+                <mat-menu #menu="matMenu" direction="down">
+                    <button mat-menu-item [matMenuTriggerFor]="excel">
+                        Excel(Current selection)
+                    </button>
+                    <button mat-menu-item [matMenuTriggerFor]="pdf">
+                      PDF(Current selection)
+                  </button>
+                </mat-menu>
+                <mat-menu #excel="matMenu">
+                    <button
+                        mat-menu-item
+                        (click)="exportOrder(true, 'excel')"
+                        *ngIf="!isAccountClosed"
+                    >
+                        With Price
+                    </button>
+                    <button mat-menu-item (click)="exportOrder(false, 'excel')">
+                        Without Price
+                    </button>
+                </mat-menu>
+                <mat-menu #pdf="matMenu">
+                  <button
+                      mat-menu-item
+                      (click)="exportOrder(true, 'pdf')"
+                      *ngIf="!isAccountClosed"
+                  >
+                      With Price
+                  </button>
+                  <button mat-menu-item (click)="exportOrder(false, 'pdf')">
+                      Without Price
+                  </button>
+              </mat-menu>
+                Download as
+            </button>
+        </div>
+        <div
+            class="cell small-12 medium-4 buttons"
+            *ngIf="isReadyForSubmission"
+        >
+            <button
+                [color]="isAccountClosed ? 'disabled' : 'primary'"
+                (click)="switchEdit()"
+                mat-raised-button
+                [disabled]="isAccountClosed"
+            >
+                Edit
+            </button>
+        </div>
+        <div
+            class="cell small-12 medium-4 buttons"
+            *ngIf="isReadyForSubmission"
+        >
+            <div *ngIf="userPermValueApprove || !(isOrderValid$ | async)">
+                <button
+                    [color]="isAccountClosed ? 'disabled' : 'primary'"
+                    mat-raised-button
+                    [disabled]="isAccountClosed"
+                    (click)="finalizeOrder()"
+                >
+                    Finalize Order
+                </button>
+            </div>
+            <div *ngIf="!userPermValueApprove && (isOrderValid$ | async)">
+                <button
+                    [color]="isAccountClosed ? 'disabled' : 'primary'"
+                    mat-raised-button
+                    [matMenuTriggerFor]="menu"
+                    [disabled]="isAccountClosed"
+                >
+                    <span>Submit For Approval</span>
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" direction="down">
+                    <button
+                        mat-menu-item
+                        (click)="placeSubmitterOrderFromSavedOrder(approver)"
+                        *ngFor="let approver of approvers"
+                    >
+                        {{ approver.email }}
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #loading>
+    <p>Loading...</p>
+</ng-template>
+<!-- <app-dump-grid *ngIf="true" [input]="savedOrder$"></app-dump-grid> -->

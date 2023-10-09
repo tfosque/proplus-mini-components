@@ -1,0 +1,360 @@
+@use 'sass:math';
+@import '../../../sass/mixins';
+@import '../../../sass/variables';
+
+.home-mosaic {
+    @include contentButtonContainer();
+    $mosaicPaddingTop: 25px;
+    $mosaicPaddingLeft: 25px;
+
+    width: 100%;
+
+    &__tile {
+        display: flex;
+        padding: rem-calc(2px 0);
+        min-height: rem-calc(650px);
+        @include ie-flex-min-height();
+        position: relative;
+        width: 100%;
+
+        &--large {
+            padding-top: 0;
+            min-height: rem-calc(284px);
+
+            .home-mosaic {
+                &__content-container {
+                    background: linear-gradient(
+                        0deg,
+                        #0a0a0a 0%,
+                        rgba(12, 12, 12, 0.68) 61.43%,
+                        rgba(16, 16, 16, 0) 100%
+                    );
+                }
+            }
+        }
+
+        &--icon-tile {
+            justify-content: center;
+            min-height: rem-calc(315px);
+
+            &:last-of-type {
+                .home-mosaic {
+                    &__content-container {
+                        background: $color-background-dark;
+                    }
+                }
+            }
+
+            .home-mosaic {
+                &__content-container {
+                    background: $color-primary;
+                    justify-content: center;
+                    text-align: center;
+                }
+
+                &__text-content {
+                    align-self: center;
+                }
+            }
+        }
+    }
+
+    &__background-image {
+        bottom: 0;
+        height: 100%;
+        left: 0;
+        @include object-fit(cover, center);
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+    }
+
+    &__image {
+        margin-bottom: rem-calc(24px);
+    }
+
+    &__tag {
+        background-color: $color-primary;
+        color: #fff;
+        display: block;
+        font-size: rem-calc(13px);
+        font-weight: $font-weight-heavy;
+        left: rem-calc($mosaicPaddingLeft);
+        padding: rem-calc(3px 6px 2px);
+        position: absolute;
+        text-transform: uppercase;
+        top: rem-calc($mosaicPaddingTop);
+    }
+
+    &__content-container {
+        background: linear-gradient(
+            0deg,
+            #0a0a0a 0%,
+            rgba(12, 12, 12, 0.56) 51.96%,
+            rgba(16, 16, 16, 0) 100%
+        );
+        display: flex;
+        padding: rem-calc($mosaicPaddingTop $mosaicPaddingLeft 24px);
+        position: relative;
+        width: 100%;
+    }
+
+    &__text-content {
+        align-self: flex-end;
+    }
+
+    &__title {
+        color: #fff;
+        font-size: rem-calc(28px);
+        font-weight: $font-weight-bold;
+        line-height: rem-calc(31px);
+        margin-bottom: rem-calc(5px);
+    }
+
+    &__description {
+        &,
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: rem-calc(17px);
+            line-height: rem-calc(21px);
+            margin: rem-calc(0 0 16px 0);
+        }
+    }
+
+    &__link-container {
+        a {
+            color: #fff;
+            font-size: rem-calc(16px);
+            font-weight: $font-weight-semi-bold;
+            line-height: rem-calc(20px);
+            text-decoration: underline;
+
+            span {
+                display: inline-block;
+                font-size: rem-calc(10px);
+                margin-left: rem-calc(5px);
+                text-decoration: none;
+            }
+            &:hover {
+                font-weight: $font-weight-heavy;
+            }
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, homepageMedium)) {
+        $mosaicPaddingTop: 30px;
+        $mosaicPaddingLeft: 25px;
+
+        display: flex;
+        min-height: rem-calc(665px);
+        padding: rem-calc(0 0 4px);
+        @include ie-flex-min-height();
+
+        &__image-tiles {
+            display: flex;
+            width: 75%;
+
+            &:first-child:last-child {
+                width: 100%;
+            }
+        }
+
+        &__icon-tiles {
+            display: flex;
+            flex-flow: column nowrap;
+            padding: rem-calc(0 0 0 2px);
+            width: 25%;
+        }
+
+        &__tile {
+            padding: rem-calc(0 2px);
+
+            &--large {
+                padding-left: 0;
+
+                .home-mosaic {
+                    &__content-container {
+                        background: linear-gradient(
+                            0deg,
+                            #0a0a0a 0%,
+                            rgba(12, 12, 12, 0.56) 51.96%,
+                            rgba(16, 16, 16, 0) 100%
+                        );
+                        padding: rem-calc(
+                            $mosaicPaddingTop $mosaicPaddingLeft 25px
+                        );
+                    }
+
+                    &__title {
+                        font-size: rem-calc(26px);
+                        line-height: rem-calc(29px);
+                    }
+
+                    &__description {
+                        &,
+                        p {
+                            font-size: rem-calc(17px);
+                            line-height: rem-calc(21px);
+                        }
+                    }
+                }
+            }
+
+            &--icon-tile {
+                flex-basis: 50%;
+                padding: rem-calc(2px 0 0);
+
+                .home-mosaic {
+                    &__title {
+                        font-size: rem-calc(23px);
+                        line-height: rem-calc(26px);
+                    }
+                }
+
+                &:first-of-type {
+                    padding: rem-calc(0 0 2px);
+
+                    &:last-of-type {
+                        flex-basis: 100%;
+                    }
+                }
+            }
+        }
+
+        &__tag {
+            font-size: rem-calc(15px);
+            left: $mosaicPaddingLeft;
+            line-height: rem-calc(23px);
+            padding: rem-calc(3px 7px);
+            top: $mosaicPaddingTop;
+        }
+
+        &__title {
+            font-size: rem-calc(26px);
+            line-height: rem-calc(29px);
+        }
+
+        &__description {
+            &,
+            p {
+                font-size: rem-calc(17px);
+                line-height: rem-calc(20px);
+            }
+        }
+
+        &__link-container {
+            a {
+                font-size: rem-calc(16px);
+            }
+        }
+    }
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        $mosaicPaddingTop: 30px;
+        $mosaicPaddingLeft: 35px;
+
+        &__image-tiles {
+            .home-mosaic {
+                &__tile {
+                    width: 1 / 3 * 100%;
+
+                    &--large {
+                        flex-grow: 1;
+                    }
+
+                    &:first-child:nth-last-child(3) {
+                        .home-mosaic,
+                        ~ .home-mosaic__tile .home-mosaic {
+                            &__title {
+                                font-size: rem-calc(32px);
+                                line-height: rem-calc(36px);
+                            }
+
+                            &__description {
+                                &,
+                                p {
+                                    font-size: rem-calc(18px);
+                                    line-height: rem-calc(22px);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:first-child:last-child {
+                .home-mosaic {
+                    &__tile {
+                        &--large {
+                            &:nth-last-child(2) {
+                                width: 50%;
+
+                                + .home-mosaic__tile {
+                                    width: 50%;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__tile {
+            &--large {
+                .home-mosaic {
+                    &__content-container {
+                        padding: rem-calc(
+                            $mosaicPaddingTop $mosaicPaddingLeft 35px
+                        );
+                    }
+
+                    &__title {
+                        font-size: rem-calc(40px);
+                        line-height: rem-calc(43px);
+                        margin-bottom: 8px;
+                    }
+
+                    &__description {
+                        &,
+                        p {
+                            font-size: rem-calc(20px);
+                            line-height: rem-calc(24px);
+                        }
+                    }
+                }
+            }
+
+            &--icon-tile {
+                .home-mosaic {
+                    &__title {
+                        font-size: rem-calc(26px);
+                        line-height: rem-calc(29px);
+                    }
+                }
+            }
+        }
+
+        &__title {
+            font-size: rem-calc(28px);
+            line-height: rem-calc(31px);
+        }
+
+        &__description {
+            &,
+            p {
+                font-size: rem-calc(17px);
+                line-height: rem-calc(20px);
+            }
+        }
+
+        &__link-container {
+            a {
+                font-size: rem-calc(16px);
+            }
+        }
+        &__content-container {
+            padding: rem-calc(20px 25px 30px);
+        }
+    }
+}

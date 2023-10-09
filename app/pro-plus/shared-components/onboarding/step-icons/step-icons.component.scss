@@ -1,0 +1,25 @@
+#step-icons {
+    div div mat-icon {
+        width: auto;
+        background-color: #fff;
+        color: orange;
+        position: relative;
+        z-index: 200;
+        font-size: 2.275rem;
+    }
+}
+
+div.divider {
+    position: relative;
+    z-index: 200;
+    top: 18px;
+    width: 566px;
+    height: 1px;
+    margin: auto;
+    background-color: #025f9e;
+}
+@media only screen and (max-width: 575px) {
+    div.divider {
+        width: 86%;
+    }
+}

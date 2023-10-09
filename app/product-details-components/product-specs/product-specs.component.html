@@ -1,0 +1,20 @@
+<div class="product-specs">
+    <dl>
+        <div>
+            <dt>{{ 'Item Number' | translations: 'item-number' }}</dt>
+            <dd>{{ productItemNum }}</dd>
+        </div>
+        <div *ngIf="productManuNum">
+            <dt>
+                {{
+                    'Manufacturer Number' | translations: 'manufacturer-number'
+                }}
+            </dt>
+            <dd>{{ productManuNum }}</dd>
+        </div>
+        <div *ngFor="let spec of productSpecifications | keyvalue">
+            <dt>{{ spec.key }}</dt>
+            <dd [innerHTML]="spec.value"></dd>
+        </div>
+    </dl>
+</div>

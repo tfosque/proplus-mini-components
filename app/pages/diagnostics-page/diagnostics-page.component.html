@@ -1,0 +1,29 @@
+<!-- <h1>Diagnostics</h1> -->
+<!-- <button (click)="doubleIt()">Double It</button> -->
+<!-- 	C-046880 -->
+<ng-container *ngIf="api.userSession | async as u">
+    <!-- <h2>User</h2> -->
+    <!-- 
+    <pre>{{ u | json }}</pre>
+    <app-dump-grid [input]="u.lastSelectedAccount"></app-dump-grid>
+    <app-dump-grid [input]="selectedProduct"></app-dump-grid> -->
+    <!-- <h2>Sku Selector</h2> -->
+    <!-- <ng-container *ngIf="u.session && u.session.lastSelectedAccount">
+    </ng-container> -->
+    <!-- <app-shipping-form></app-shipping-form> -->
+    <!-- <app-sku-selector [accountId]="u.accountId"
+        [selectedProduct]="selectedProduct" (skuSelected)="setSkuSelected($event)"></app-sku-selector> -->
+    <!-- <app-dump-grid [input]="info" maxDepth="4"></app-dump-grid> -->
+    <!-- <app-dump-grid [input]="selectedProduct" maxDepth="4"></app-dump-grid> -->
+    <!-- <app-dump-grid [input]="setSkuSelected" maxDepth="4"></app-dump-grid> -->
+    <!-- <app-thank-you-page></app-thank-you-page> -->
+</ng-container>
+<!-- <pre *ngIf="(info | async) as o">{{ o | json }}</pre> -->
+
+<app-numeric-input
+    className="blueBorder"
+    [(currentValue)]="testValue"
+    min="10"
+    max="123"
+></app-numeric-input>
+<div class="blueBorder">{{ testValue }}</div>

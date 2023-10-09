@@ -1,0 +1,8 @@
+<div class="image-card-section-group grid-x grid-margin-x">
+    <app-image-card-section
+        *ngFor="let section of imageCardSections"
+        [title]="section.sectionTitle"
+        [isSubSection]="true"
+        [imageCards]="section.imageCards"
+    ></app-image-card-section>
+</div>

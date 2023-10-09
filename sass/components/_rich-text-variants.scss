@@ -1,0 +1,12 @@
+.rich-text {
+    &--no-margin {
+        p {
+            line-height: rem-calc(23px);
+            margin: rem-calc(13px 0);
+
+            &:first-of-type {
+                margin-top: 0;
+            }
+        }
+    }
+}

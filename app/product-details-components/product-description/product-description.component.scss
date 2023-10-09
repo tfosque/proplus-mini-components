@@ -1,0 +1,13 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.product-description {
+    margin-bottom: rem-calc(35px);
+    margin-top: rem-calc(20px);
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        color: $color-text-primary;
+        font-size: rem-calc(20px);
+        line-height: rem-calc(30px);
+        max-width: rem-calc(895px);
+    }
+}

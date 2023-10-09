@@ -1,0 +1,104 @@
+<section
+    *ngIf="content"
+    class="marketing-banner"
+    [ngClass]="[alignmentOptions[alignment], colorOptions[colorOption]]"
+>
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <img
+        *ngIf="isMediumScreen && bannerSecondaryImage"
+        src="{{ bannerSecondaryImage.src }}"
+        class="marketing-banner__background-image"
+        alt="{{ bannerSecondaryImage.altText }}"
+    />
+    <div
+        class="marketing-banner__content grid-container"
+        [ngClass]="!isMediumScreen ? 'full' : ''"
+    >
+        <ng-container
+            *ngIf="alignment === 'left' || !isMediumScreen; else reverseView"
+        >
+            <div class="marketing-banner__main-image-wrap">
+                <img
+                    *ngIf="bannerMainImage"
+                    src="{{ bannerMainImage.src }}"
+                    alt="{{ bannerMainImage.altText }}"
+                />
+            </div>
+            <div class="marketing-banner__text-area-wrap">
+                <div class="marketing-banner__text-area">
+                    <h2 class="marketing-banner__text-area-title">
+                        {{ bannerTitle }}
+                    </h2>
+                    <p class="marketing-banner__text-area-description">
+                        {{ bannerDescription }}
+                    </p>
+                    <a
+                        mat-stroked-button
+                        *ngIf="
+                            !bannerCTAIsExternal &&
+                                bannerCTAText &&
+                                bannerCTAUrl;
+                            else external
+                        "
+                        routerLink="{{ bannerCTAUrl }}"
+                        class="marketing-banner__text-area-cta"
+                    >
+                        {{ bannerCTAText }}
+                    </a>
+                    <ng-template #external>
+                        <a
+                            *ngIf="bannerCTAText && bannerCTAUrl"
+                            mat-stroked-button
+                            href="{{ bannerCTAUrl | protocol }}"
+                            class="marketing-banner__text-area-cta"
+                        >
+                            {{ bannerCTAText }}
+                        </a>
+                    </ng-template>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #reverseView>
+            <div class="marketing-banner__text-area-wrap">
+                <div class="marketing-banner__text-area">
+                    <h2 class="marketing-banner__text-area-title">
+                        {{ bannerTitle }}
+                    </h2>
+                    <p class="marketing-banner__text-area-description">
+                        {{ bannerDescription }}
+                    </p>
+                    <a
+                        mat-stroked-button
+                        *ngIf="
+                            !bannerCTAIsExternal &&
+                                bannerCTAText &&
+                                bannerCTAUrl;
+                            else external
+                        "
+                        routerLink="{{ bannerCTAUrl }}"
+                        class="marketing-banner__text-area-cta"
+                    >
+                        {{ bannerCTAText }}
+                    </a>
+                    <ng-template #external>
+                        <a
+                            *ngIf="bannerCTAText && bannerCTAUrl"
+                            mat-stroked-button
+                            href="{{ bannerCTAUrl | protocol }}"
+                            class="marketing-banner__text-area-cta"
+                        >
+                            {{ bannerCTAText }}
+                        </a>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="marketing-banner__main-image-wrap">
+                <img
+                    *ngIf="bannerMainImage"
+                    src="{{ bannerMainImage.src }}"
+                    alt="{{ bannerMainImage.altText }}"
+                />
+            </div>
+        </ng-template>
+    </div>
+</section>

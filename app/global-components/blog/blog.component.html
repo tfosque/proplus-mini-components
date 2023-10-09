@@ -1,0 +1,43 @@
+<div class="grid-container page-container">
+    <div class="grid-x grid-margin-x">
+        <!-- Banner -->
+        <div class="cell banner-container">
+            <div class="banner-header">
+                <h3>Beacon Bits</h3>
+                <p class="subtitle">
+                    Discover, enhance and build your business with articles from our
+                    experts. Learn more with Beacon Talks.
+                </p>
+            </div>
+
+        </div>
+        <!-- Section Header -->
+        <div class="cell medium-9 section">
+            <h3 class="section-header">What are you interested in?</h3>
+        </div>
+
+        <!-- Articles -->
+        <div class="cell medium-9 articles">
+            <ng-container *ngFor="let article of selectedArticles$ | async">
+                <!-- All Articles -->
+                <app-article-line-item [articleInput$]="article"></app-article-line-item>
+            </ng-container>
+            <!-- No Articles -->
+        </div>
+
+        <!-- Archives Sidebar-->
+        <div class="cell medium-3 archives-header">
+            <h3 class="header-3">Archives</h3>
+
+            <!-- <div *ngIf="($months | async) as m">
+            </div> -->
+            <div>
+                <a (click)="setSelArchive('')"> All </a>
+            </div>
+            <div *ngFor="let m of months$ | async">
+                <a (click)="setSelArchive(m.value)"> {{m.text}} </a>
+            </div>
+
+        </div>
+    </div>
+</div>

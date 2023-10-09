@@ -1,0 +1,291 @@
+@import '../../../sass/mixins';
+@import '../../../sass/variables';
+
+.home-hero-carousel {
+    position: relative;
+    margin-bottom: rem-calc(23px);
+    width: 100%;
+
+    &--no-foreground {
+        margin-bottom: 0;
+    }
+
+    .carouselTile.item {
+        display: flex;
+    }
+
+    .ngucarousel {
+        width: 100%;
+    }
+
+    .tile {
+        display: flex;
+        width: 100%;
+    }
+
+    &__images-container {
+        background: linear-gradient(
+            119.55deg,
+            rgba(14, 14, 14, 0.84) 0%,
+            rgba(14, 14, 14, 0.72) 100%
+        );
+        flex-shrink: 0;
+        height: rem-calc(110px);
+        position: relative;
+        width: 100%;
+
+        &.no-foreground {
+            background: none;
+        }
+
+        &:before {
+            bottom: 0;
+            content: '';
+            display: block;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 100%;
+            z-index: 0;
+        }
+    }
+
+    &__background-image {
+        bottom: 0;
+        height: 100%;
+        left: 0;
+        @include object-fit(cover, center);
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+    }
+
+    &__foreground-image {
+        bottom: 0;
+        @include object-fit(cover, left);
+        height: calc(100% + #{rem-calc(11.5px)});
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+    }
+
+    &__content {
+        display: flex;
+        flex-flow: column nowrap;
+        width: 100%;
+    }
+
+    &__content-container {
+        background-color: $color-background-dark;
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    &__text-container {
+        padding: rem-calc(25px 15px 30px);
+    }
+
+    &__title {
+        @include condensed-fb-title;
+        color: #fff;
+        font-size: rem-calc(32px);
+        font-weight: $font-weight-bold;
+        line-height: rem-calc(36px);
+        margin-bottom: rem-calc(10px);
+    }
+
+    &__description {
+        &,
+        p {
+            color: rgba(255, 255, 255, 0.91);
+            font-size: rem-calc(18px);
+            line-height: rem-calc(23px);
+        }
+
+        p {
+            margin-top: rem-calc(10px);
+        }
+    }
+
+    &__button-container {
+        margin-top: rem-calc(24px);
+    }
+
+    &__indicators {
+        display: none;
+    }
+
+    &__arrow {
+        display: none;
+    }
+
+    @media (min-width: map-get($grid-breakpoints, homepageMedium)) {
+        $foregroundImageOverflow: rem-calc(52px);
+
+        margin-bottom: rem-calc(0px);
+
+        &--no-foreground {
+            margin-bottom: 0;
+        }
+
+        .medium-home-6 {
+            width: 70%;
+        }
+
+        &__content {
+            align-items: center;
+            flex-flow: row nowrap;
+            min-height: rem-calc(482px);
+            margin-bottom: $foregroundImageOverflow;
+            padding: 0 rem-calc(36px);
+            position: relative;
+
+            @include ie-flex-min-height();
+
+            &--no-foreground {
+                margin-bottom: 0;
+            }
+        }
+
+        &__content-container {
+            background-color: transparent;
+            position: relative;
+        }
+
+        &__text-container {
+            padding: rem-calc(12px 0 32px);
+        }
+
+        &__foreground-image {
+            height: calc(100% + #{$foregroundImageOverflow});
+            max-width: 40%;
+        }
+
+        &__images-container {
+            bottom: 0;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+
+            &.no-foreground {
+                background: linear-gradient(
+                    116.01deg,
+                    rgba(14, 14, 14, 0.64) 0%,
+                    rgba(14, 14, 14, 0) 100%
+                );
+            }
+        }
+
+        &__title {
+            font-size: rem-calc(38px);
+            line-height: rem-calc(42px);
+            margin-bottom: rem-calc(5px);
+        }
+
+        &__description {
+            &,
+            p {
+                font-size: rem-calc(21px);
+                line-height: rem-calc(25px);
+                margin-top: 0;
+                margin-bottom: rem-calc(30px);
+            }
+        }
+
+        &__arrow {
+            background-color: $color-primary;
+            bottom: 0;
+            color: #fff;
+            cursor: pointer;
+            display: block;
+            font-size: rem-calc(20px);
+            height: rem-calc(60px);
+            margin: auto;
+            position: absolute;
+            text-align: center;
+            top: 0;
+            width: rem-calc(40px);
+            z-index: 2;
+
+            &:hover {
+                background-color: $color-primary-hover;
+            }
+            &:focus {
+                outline: none;
+            }
+
+            &--prev {
+                left: 0;
+
+                span {
+                    left: -2px;
+                    font-weight: $font-weight-heavy;
+                }
+            }
+
+            &--next {
+                right: 0;
+
+                span {
+                    right: -2px;
+                    font-weight: $font-weight-heavy;
+                }
+            }
+
+            span {
+                position: relative;
+            }
+        }
+
+        &__indicators {
+            bottom: rem-calc(60px);
+            display: block;
+            list-style: none;
+            padding: 0;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+        }
+
+        &__point {
+            background-color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-block;
+            height: rem-calc(15px);
+            margin: rem-calc(0 3px);
+            width: rem-calc(15px);
+
+            &.is-active {
+                background-color: $color-primary;
+                border: 1.5px solid #fff;
+            }
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        &__foreground-image {
+            max-width: none;
+        }
+        &__title {
+            font-size: rem-calc(76px);
+            line-height: rem-calc(80px);
+        }
+
+        &__description {
+            &,
+            p {
+                font-size: rem-calc(25px);
+                line-height: rem-calc(30px);
+                margin-bottom: rem-calc(35px);
+            }
+        }
+    }
+}

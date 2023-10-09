@@ -1,0 +1,637 @@
+<div class="grid-container">
+    <div class="grid-x grid-margin-x">
+        <ng-template
+            [ngIf]="
+                activeForm === '' ||
+                activeForm === 'contactSupport' ||
+                activeForm === 'successMessage'
+            "
+        >
+            <div
+                class="cell small-12 medium-6 large-6 why-beacon-pro hide-for-small-only"
+            >
+                <h1>Why Beacon Pro+</h1>
+                <div class="grid-container fluid">
+                    <div
+                        class="grid-x grid-margin-x"
+                        *ngFor="let item of menuItems"
+                    >
+                        <div class="cell small-2">
+                            <img
+                                src="/assets/images/sign-up/{{
+                                    item.menuImage
+                                }}"
+                            />
+                        </div>
+                        <div class="cell auto why-beacon-pro__text">
+                            {{ item.menuText }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template [ngIf]="activeForm === 'contactSupport'">
+            <div
+                class="cell medium-6 large-6 beacon-customer-form sign-up-border"
+            >
+                <div class="cell">
+                    <h1>We Got It!</h1>
+                    <div>
+                        <img
+                            class="practical"
+                            src="../assets/images/sign-up/headset.png"
+                            alt=""
+                        />
+                    </div>
+                    <div class="cell medium-3 large">
+                        <p>
+                            We weren't able to find your account, but we're
+                            working on it. Our support team will be in touch
+                            with you within the next business day
+                        </p>
+                    </div>
+                    <div>
+                        <input
+                            class="login-box-submit-button"
+                            type="submit"
+                            (click)="homePage()"
+                            name="signup_submit"
+                            value="Return to Homepage"
+                        />
+                    </div>
+                    <div class="back-button">
+                        <a (click)="backClick()">back</a>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template [ngIf]="activeForm === 'successMessage'">
+            <div class="cell medium-6 large-6 beacon-customer-form">
+                <div class="cell">
+                    <h1>Congratulations!</h1>
+                    <div>
+                        <img
+                            class="practical"
+                            src="../assets/images/sign-up/approval.png"
+                            alt=""
+                        />
+                    </div>
+                    <div class="cell medium-3 large">
+                        <p>
+                            Your Beacon Pro+ account has been created. Check
+                            your email to set your password.
+                        </p>
+                    </div>
+                    <div style="float: right" class="row grid-x grid-padding-x">
+                        <div class="cell large-6 medium-11">
+                            <input
+                                class="login-box-submit-button"
+                                type="submit"
+                                (click)="homePage()"
+                                name="signup_submit"
+                                value="Return to Homepage"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <form
+            [class]="getFormClass()"
+            [formGroup]="signupFormEmail"
+            #formDirective="ngForm"
+        >
+            <div class="grid-x grid-margin-x">
+                <ng-template
+                    [ngIf]="activeForm === '' || activeForm === 'secondaryForm'"
+                >
+                    <div [class]="getFirstFormClass()">
+                        <div class="sign-up-border full-height-div">
+                            <div
+                                class="alert alert-danger"
+                                *ngIf="displayErrorMsg"
+                            >
+                                Please correct the error(s) indicated below.
+                                <br />
+                                <div
+                                    *ngIf="
+                                        errorMsgFirstForm.startsWith(
+                                            'Your account already exists'
+                                        );
+                                        else otherMessage
+                                    "
+                                >
+                                    Your account already exists. Click
+                                    <a (click)="signIn()" class="f-blue"
+                                        >here</a
+                                    >
+                                    to sign into your account. If you forgot
+                                    your password, click
+                                    <a (click)="forgotPassword()" class="f-blue"
+                                        >here</a
+                                    >
+                                </div>
+                                <ng-template #otherMessage>
+                                    <div>{{ errorMsgFirstForm }}</div>
+                                </ng-template>
+                            </div>
+                            <div>
+                                <h1 *ngIf="activeForm === ''">
+                                    Are you an existing Beacon customer?
+                                </h1>
+                                <p
+                                    *ngIf="activeForm === ''"
+                                    style="margin-top: -18px"
+                                >
+                                    You must be an existing customer to register
+                                    as a user of Pro+
+                                </p>
+
+                                <div
+                                    class="alert alert-danger-inside"
+                                    *ngIf="activeForm === 'secondaryForm'"
+                                >
+                                    Please correct the error(s) indicated below.
+                                    <br />
+                                    We were unable to find your account with
+                                    that information. Please fill out
+                                    information from one of the 5 most recent
+                                    invoices.
+                                </div>
+
+                                <div class="grid-container">
+                                    <div class="row grid-x">
+                                        <div class="cell medium-12 full-height">
+                                            <!-- <input class="login-box-input" type="text" name="username" placeholder="Email Address" /> -->
+                                            <mat-form-field
+                                                class="full-width"
+                                                floatLabel="auto"
+                                            >
+                                                <input
+                                                    placeholder="Email Address"
+                                                    matInput
+                                                    [(ngModel)]="
+                                                        signupFirstForm.email
+                                                    "
+                                                    [formControl]="
+                                                        emailAddressFormControl
+                                                    "
+                                                    [errorStateMatcher]="
+                                                        matcher
+                                                    "
+                                                    required
+                                                />
+                                                <mat-error
+                                                    *ngIf="
+                                                        emailAddressFormControl.hasError(
+                                                            'required'
+                                                        )
+                                                    "
+                                                >
+                                                    Email Address is required
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="
+                                                        emailAddressFormControl.hasError(
+                                                            'email'
+                                                        )
+                                                    "
+                                                >
+                                                    Email Address is invalid
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row grid-x grid-padding-x">
+                                        <div class="cell medium-5 full-height">
+                                            <!-- <input class="login-box-input" type="text" name="username" placeholder="First Name" /> -->
+                                            <mat-form-field
+                                                class="full-width"
+                                                floatLabel="auto"
+                                            >
+                                                <input
+                                                    placeholder="First Name"
+                                                    matInput
+                                                    [(ngModel)]="
+                                                        signupFirstForm.firstName
+                                                    "
+                                                    [formControl]="
+                                                        firstNameFormControl
+                                                    "
+                                                    [errorStateMatcher]="
+                                                        matcher
+                                                    "
+                                                    required
+                                                />
+                                                <mat-error
+                                                    *ngIf="
+                                                        firstNameFormControl.hasError(
+                                                            'required'
+                                                        )
+                                                    "
+                                                >
+                                                    First Name is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div
+                                            class="cell medium-5 medium-offset-2 full-height"
+                                        >
+                                            <!-- <input class="login-box-input" type="text" name="username" placeholder="Last Name" /> -->
+                                            <mat-form-field
+                                                class="full-width"
+                                                floatLabel="auto"
+                                            >
+                                                <input
+                                                    placeholder="Last Name"
+                                                    matInput
+                                                    [(ngModel)]="
+                                                        signupFirstForm.lastName
+                                                    "
+                                                    [formControl]="
+                                                        lastNameFormControl
+                                                    "
+                                                    [errorStateMatcher]="
+                                                        matcher
+                                                    "
+                                                    required
+                                                />
+                                                <mat-error
+                                                    *ngIf="
+                                                        lastNameFormControl.hasError(
+                                                            'required'
+                                                        )
+                                                    "
+                                                >
+                                                    Last Name is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row grid-x grid-padding-x">
+                                        <div class="cell medium-5 full-height">
+                                            <!-- <input class="login-box-input" type="text" name="username" placeholder="Zip Code" /> -->
+                                            <mat-form-field
+                                                class="full-width"
+                                                floatLabel="auto"
+                                            >
+                                                <input
+                                                    placeholder="Zip Code"
+                                                    matInput
+                                                    [(ngModel)]="
+                                                        signupFirstForm.zip
+                                                    "
+                                                    [formControl]="
+                                                        zipFormControl
+                                                    "
+                                                    [errorStateMatcher]="
+                                                        matcher
+                                                    "
+                                                    maxlength="10"
+                                                    required
+                                                />
+                                                <mat-error
+                                                    *ngIf="
+                                                        zipFormControl.hasError(
+                                                            'required'
+                                                        )
+                                                    "
+                                                >
+                                                    Zip Code is required
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="
+                                                        zipFormControl.hasError(
+                                                            'pattern'
+                                                        )
+                                                    "
+                                                >
+                                                    Zipcode is invalid. Should
+                                                    be numeric characters and
+                                                    formatted in either
+                                                    XXXXX-XXXX or XXXXX.
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div
+                                            class="cell medium-5 medium-offset-2 full-height"
+                                        >
+                                            <!-- <input class="login-box-input" type="text" name="username" placeholder="Phone Number" /> -->
+                                            <mat-form-field
+                                                class="full-width"
+                                                floatLabel="auto"
+                                            >
+                                                <input
+                                                    placeholder="Phone Number"
+                                                    matInput
+                                                    [(ngModel)]="
+                                                        signupFirstForm.phone
+                                                    "
+                                                    [formControl]="
+                                                        phoneFormControl
+                                                    "
+                                                    [errorStateMatcher]="
+                                                        matcher
+                                                    "
+                                                    maxlength="20"
+                                                    required
+                                                />
+                                                <mat-error
+                                                    *ngIf="
+                                                        phoneFormControl.hasError(
+                                                            'required'
+                                                        )
+                                                    "
+                                                >
+                                                    Phone Number is required
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="
+                                                        phoneFormControl.hasError(
+                                                            'pattern'
+                                                        )
+                                                    "
+                                                >
+                                                    Phone Number is invalid.
+                                                    Should be 10 numeric
+                                                    characters.
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="row grid-x grid-padding-x"
+                                        *ngIf="activeForm === ''"
+                                        style="margin-top: 20px"
+                                    >
+                                        <div class="cell large-5 medium-12">
+                                            <input
+                                                class="login-box-submit-button"
+                                                type="submit"
+                                                (click)="submitEmailForm()"
+                                                name="signup_submit"
+                                                value="Sign me up"
+                                            />
+                                        </div>
+                                        <div
+                                            class="cell large-5 large-offset-2 sign-up-form__become-customer"
+                                        >
+                                            <a href="/open-an-account">
+                                                Become a Customer
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template [ngIf]="activeForm === 'secondaryForm'">
+                    <div class="cell medium-6 large-6 beacon-customer-form">
+                        <div class="sign-up-border full-height-div">
+                            <div
+                                class="alert alert-danger"
+                                *ngIf="displayAcctErrorMsg"
+                            >
+                                {{ errorMsgAccountForm }}
+                            </div>
+                            <h1 *ngIf="!displayAcctErrorMsg">
+                                Just One More Step!
+                            </h1>
+                            <p style="margin-top: -18px">
+                                Fill out your account information to verify your
+                                online account.
+                            </p>
+                            <div class="grid-container">
+                                <div class="row grid-x">
+                                    <!-- <div class="cell medium-11">
+                  <input class="login-box-input" type="text" name="username" placeholder="Account" />
+                </div> -->
+                                    <div class="cell medium-12 full-height">
+                                        <mat-form-field
+                                            class="full-width"
+                                            floatLabel="auto"
+                                        >
+                                            <input
+                                                placeholder="Company Name"
+                                                matInput
+                                                [(ngModel)]="
+                                                    signupSecondForm.company
+                                                "
+                                                [formControl]="
+                                                    companyFormControl
+                                                "
+                                                [errorStateMatcher]="matcher"
+                                                required
+                                            />
+                                            <mat-error
+                                                *ngIf="
+                                                    companyFormControl.hasError(
+                                                        'required'
+                                                    )
+                                                "
+                                            >
+                                                Company Name is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="row grid-x grid-padding-x">
+                                    <div class="cell medium-12 full-height">
+                                        <mat-form-field
+                                            class="full-width"
+                                            floatLabel="auto"
+                                        >
+                                            <input
+                                                placeholder="Account #"
+                                                matInput
+                                                [(ngModel)]="
+                                                    signupSecondForm.account
+                                                "
+                                                [formControl]="
+                                                    accountFormControl
+                                                "
+                                                [errorStateMatcher]="matcher"
+                                                required
+                                            />
+                                            <mat-error
+                                                *ngIf="
+                                                    accountFormControl.hasError(
+                                                        'required'
+                                                    )
+                                                "
+                                            >
+                                                Account # is required
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="
+                                                    accountFormControl.hasError(
+                                                        'pattern'
+                                                    )
+                                                "
+                                            >
+                                                Account # is invalid. Should be
+                                                numeric characters and formatted
+                                                in XXXXXX.
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="row grid-x grid-padding-x">
+                                    <div class="cell medium-5 full-height">
+                                        <mat-form-field
+                                            class="full-width"
+                                            floatLabel="auto"
+                                        >
+                                            <input
+                                                placeholder="Invoice Number"
+                                                matInput
+                                                [(ngModel)]="
+                                                    signupSecondForm.invoiceNumber
+                                                "
+                                                [formControl]="
+                                                    invoiceNumberFormControl
+                                                "
+                                                [errorStateMatcher]="matcher"
+                                                required
+                                            />
+                                            <mat-error
+                                                *ngIf="
+                                                    invoiceNumberFormControl.hasError(
+                                                        'required'
+                                                    )
+                                                "
+                                            >
+                                                Invoice Number is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div
+                                        class="cell medium-5 full-height medium-offset-2"
+                                    >
+                                        <mat-form-field
+                                            class="full-width"
+                                            floatLabel="auto"
+                                        >
+                                            <input
+                                                matInput
+                                                [(ngModel)]="
+                                                    signupSecondForm.invoiceDate
+                                                "
+                                                [max]="maxDate"
+                                                [matDatepicker]="datePicker"
+                                                placeholder="Invoice Date"
+                                                [errorStateMatcher]="matcher"
+                                                [formControl]="
+                                                    invoiceDateFormControl
+                                                "
+                                                required
+                                            />
+                                            <mat-datepicker-toggle
+                                                matSuffix
+                                                [for]="datePicker"
+                                            ></mat-datepicker-toggle>
+                                            <mat-datepicker
+                                                #datePicker
+                                            ></mat-datepicker>
+                                            <mat-error
+                                                *ngIf="
+                                                    invoiceDateFormControl.hasError(
+                                                        'required'
+                                                    )
+                                                "
+                                            >
+                                                Invoice Date is required
+                                            </mat-error>
+                                            <mat-error *ngIf="!isValidDate()">
+                                                Date can not be after today
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="row grid-x grid-padding-x">
+                                    <div class="cell large-5 medium-12">
+                                        <div class="back-button">
+                                            <a (click)="backClick()">back</a>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="cell large-5 medium-12 medium-offset-2"
+                                    >
+                                        <input
+                                            class="login-box-submit-button"
+                                            type="submit"
+                                            (click)="goToNext()"
+                                            name="signup_submit"
+                                            value="Next"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </form>
+
+        <!-- <div class="cell medium-12 large-12"><app-dump-grid [input]="signupFirstForm"></app-dump-grid></div>
+    <div class="cell medium-12 large-12"><app-dump-grid [input]="emailForm"></app-dump-grid></div>
+    <div class="cell medium-12 large-12"><app-dump-grid [input]="signupSecondForm"></app-dump-grid></div>
+    <div class="cell medium-12 large-12"><app-dump-grid [input]="accountForm"></app-dump-grid></div>
+    <div class="cell medium-12 large-12"><app-dump-grid [input]="emailResponse"></app-dump-grid></div>
+    <div class="cell medium-12 large-12"><app-dump-grid [input]="accountResponse"></app-dump-grid></div> -->
+    </div>
+</div>
+<ng-template #branchSelection let-data>
+    <form [formGroup]="formBranchSelection" #ngForm="ngForm">
+        <h2 mat-dialog-title>Choose Location #{{ accountId }}</h2>
+        <mat-dialog-content class="mat-dialog-content">
+            <div class="grid-x">
+                <div class="cell small-12 medium-12 large-12">
+                    <!-- TODO (Chen): to review with tim since errorStateMatcher is not supported for radio-group -->
+                    <!-- removed: [errorStateMatcher]="matcherRegular" -->
+                    <mat-radio-group
+                        [(ngModel)]="selectedBranch"
+                        [formControl]="branchFormControl"
+                        required
+                    >
+                        <div *ngFor="let branch of branches">
+                            <mat-radio-button [value]="branch.branchId">{{
+                                branch.branchName
+                            }}</mat-radio-button>
+                        </div>
+                    </mat-radio-group>
+                    <mat-error
+                        *ngIf="
+                            branchFormControl.hasError('required') &&
+                            ngForm.submitted
+                        "
+                    >
+                        This field is required
+                    </mat-error>
+                </div>
+            </div>
+        </mat-dialog-content>
+
+        <!-- Dialog Buttons -->
+        <mat-dialog-actions align="end">
+            <button
+                mat-stroked-button
+                (click)="selectBranch(data.source)"
+                type="submit"
+            >
+                Submit
+            </button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>

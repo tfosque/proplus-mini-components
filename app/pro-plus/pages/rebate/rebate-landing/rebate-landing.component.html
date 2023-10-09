@@ -1,0 +1,143 @@
+<ng-container *ngIf="noPerms == false else permDenied">
+<section class="marketing-block">
+    <img src="../../../../../assets/images/promo-tracker-banner.png" alt="" />
+    <div class="marketing-block__wrapper">
+        <h2>BEACON PRO+</h2>
+        <h3>CONTRACTOR REWARDS</h3>
+    </div>
+</section>
+<!-- How It Works Text -->
+<section class="how-it-work">
+    <p>
+        Spend less time tracking and submitting promotions and more time
+        delivering value for your customers. Let Beacon manage your promotions
+        for you.
+    </p>
+    <h1><b>How It Works</b></h1>
+    <div class="grid-x grid-margin-x" style="text-align: center">
+        <div class="small-12 medium-4" style="margin: 0px 10px">
+            <button color="emphasis" class="step-btn disable-click"  [disableRipple]="true" mat-raised-button >
+                <b>Step 1 </b>
+            </button>
+            <p><img src="../../../../../assets/images/step1.png" /></p>
+            <h4>
+                Select&nbsp;the manufacturer promotion that you would like to
+                participate.
+            </h4>
+        </div>
+
+        <div class="small-12 medium-4" style="margin: 0px 10px">
+            <button color="emphasis" class="step-btn disable-click" [disableRipple]="true" mat-raised-button>
+                <b>Step 2 </b>
+            </button>
+            <p><img src="../../../../../assets/images/pencil.png" /></p>
+            <h4>
+                Enroll in the promotion by completing the online registration
+                form.
+            </h4>
+        </div>
+
+        <div class="small-12 medium-4" style="margin: 0px 10px">
+            <button color="emphasis" class="step-btn disable-click" [disableRipple]="true" mat-raised-button>
+                <b>Step 3 </b>
+            </button>
+            <p><img src="../../../../../assets/images/contractor.png" /></p>
+            <h4>Sit back, relax and let Beacon do the rest! We’ll submit your registration and provide you with updates.</h4>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x promo-btn">
+        <div class="cell medium-12">
+            <button
+                color="emphasis"
+                [routerLink]="'/proplus/rebateRedeemed/summary'"
+                mat-raised-button
+            >
+                View your submissions and promotions
+            </button>
+        </div>
+    </div>
+</section>
+<section class="rebate-promo-items">
+    <div class="grid-container fluid">
+        <div class="grid-x grid-margin-x">
+            <div class="cell medium-6 card-cell"  *ngFor="let rebate of dataSource">
+                <mat-card class="promo-card">
+                    <mat-card-content>
+                        <div class="grid-x grid rebate-card-row">
+                            <div class="cell rebate-cell--left">
+                                <div class="rebate-img">
+                                    <a href="{{rebateLink(rebate.action,rebate.rebateName,rebate.rebateId)}}">
+                                        <img
+                                            src="{{ rebate.image }}"
+                                            class="img-responsive hidden-xs"
+                                        />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cell rebate-cell--right">
+                                <p class="rebate-name"><b>{{ rebate.rebateName }}</b></p>
+                                <hr/>
+                                <p>{{ rebate.startDate }} To {{ rebate.endDate }}</p>
+                                <button (click)="viewRebateSummary(rebate.action,rebate.rebateName,rebate.rebateId)"
+                                    type="button"
+                                    class="btn"
+                                    [ngClass]="{ 'btn-disabled': isAccountClosed && rebate.action.toUpperCase() !== 'VIEW PROMOTION',
+                                                'btn-primary' : !isAccountClosed || rebate.action.toUpperCase() === 'VIEW PROMOTION'
+                                    }"
+                                    [disabled]="isAccountClosed && rebate.action.toUpperCase() !== 'VIEW PROMOTION'">
+                                    {{ rebate.action }}
+                                </button>
+                            </div>
+                            
+                        </div>
+                        
+                    </mat-card-content>
+                </mat-card>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background-color: #404040">
+    <div class="container" style="padding: 10px; margin-top: 60px;">
+        <h2 style="text-align: center; color: #ffffff; padding-top: 15px">
+            Don't Leave Money On The Table!
+        </h2>
+
+        <h3 style="text-align: center; color: #ffffff; margin-top: 0px">
+            Let Beacon take the work out of submitting your promotions!
+        </h3>
+
+        <h4 style="text-align: center; color: #ffffff; padding-top: 3px">
+            Once a month, Beacon will automatically submit your rebates to the
+            manufacturer you choose.
+        </h4>
+    </div>
+</section>
+
+<!-- End -->
+
+<div class="container" style="margin: 10px 10px 0px 10px; text-align: center">
+    <h6>
+        No additional action is required to earn these rewards; the registration
+        form and qualifying purchases will be submitted directly to the
+        manufacturer on your behalf.
+    </h6>
+
+    <h6>
+        Although Beacon Roofing Supply works hard to ensure reporting accuracy,
+        please compare this report with your internal records to verify it is
+        correct.
+    </h6>
+
+    <h6>
+        Beacon Roofing Supply is not responsible for any missed program rewards.
+        Rewards are paid by and are the responsibility of the manufacturer.
+    </h6>
+</div>
+</ng-container>
+<ng-template #permDenied>
+    <h1>Sorry, you do not have permission to view this page.</h1>
+    <p class="noPerms">This page may contain sensitive Rebate information. If you feel this is a mistake, please contact the Beacon Pro+ support team via the orange chat bubble at the bottom right of your screen or email support@beaconproplus.com.</p>
+</ng-template>

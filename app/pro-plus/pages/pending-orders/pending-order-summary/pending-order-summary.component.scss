@@ -1,0 +1,35 @@
+.full-width {
+    width: 100%;
+}
+div#mobile-view table td {
+    padding: 15px;
+
+    div span.label {
+        font-weight: bold;
+        font-size: 0.825rem;
+        text-transform: uppercase;
+    }
+}
+
+.right-align {
+    text-align: right;
+    margin: 10px 20px 0 20px;
+}
+
+::ng-deep .approver-field {
+    .mat-select {
+        width: 100%;
+    }
+}
+
+.smaller-width {
+    width: 88%;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.bottom-margin {
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,43 @@
+.padding-right {
+    padding-right: 20px;
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
+.sub-text {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.padding {
+    padding: 5px 0;
+}
+
+.img-prod {
+    width: 80px;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+.actions {
+    ::ng-deep .mat-raised-button {
+        background-color: #FAA41A;
+        text-transform: uppercase; 
+        font-weight: 700;
+        color: black;
+    }
+}
+
+.align-center {
+    text-align: center;
+}
+
+.linked-button-text {
+    font-size: 14px;
+    font-family: arial;
+    font-weight: 700;
+}

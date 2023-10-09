@@ -1,0 +1,464 @@
+<ng-container *ngIf="evOrderResult; else error">
+    <ng-container *ngTemplateOutlet="reviewSelections"></ng-container>
+</ng-container>
+
+<ng-template #error>
+    <!-- An error occurred loading the smart order. -->
+    <span></span>
+</ng-template>
+
+<ng-template #reviewSelections>
+    <div class="grid-x grid-margin-x margin-header">
+        <div class="small-12 medium-12 large-12">
+            <h1>Create Smart Order</h1>
+        </div>
+        <div class="small-0 medium-2 large-2"></div>
+        <div class="small-12 medium-8 large-8 stepper">
+            <mat-horizontal-stepper
+                labelPosition="bottom"
+                selectedIndex="3"
+                #stepper
+            >
+                <mat-step label="Select a report"> </mat-step>
+                <mat-step label="Template"> </mat-step>
+                <mat-step label="Review Selections"> </mat-step>
+            </mat-horizontal-stepper>
+        </div>
+        <div class="small-0 medium-2 large-2"></div>
+        <div class="grid-x">
+            <div class="small-12 medium-3 large-3 right-padding">
+                <div class="sub-title">Report</div>
+                <div class="top-margin small-text">
+                    <div>{{ evOrderResult.report.reportId }}</div>
+                    <div>{{ evOrderResult.report.location.address }}</div>
+                    <div>
+                        {{ evOrderResult.report.location.city }},
+                        {{ evOrderResult.report.location.state }}
+                        {{ evOrderResult.report.location.postcode }}
+                    </div>
+                </div>
+                <div class="small-text">
+                    Roof Area: {{ evOrderResult.report.rootArea }} sq ft
+                </div>
+                <div class="top-margin-link">
+                    <a
+                        [href]="evOrderResult.report.reportDownloadLink"
+                        target="_blank"
+                        >View Details</a
+                    >
+                </div>
+            </div>
+            <div class="small-12 medium-3 large-3 right-padding">
+                <div class="sub-title">Template</div>
+                <div class="top-margin small-text">
+                    {{ evOrderResult.template?.templateName }}
+                </div>
+                <div class="top-margin-link">
+                    <!-- <a [routerLink]="['/proplus/eagle-view/template-selection', evOrderId]">Edit</a> -->
+                    <a (click)="openTemplateSelectionDialog()">Edit</a>
+                </div>
+            </div>
+            <div class="small-12 medium-3 large-3 right-padding">
+                <div class="sub-title">Base Waste Factor</div>
+                <div class="small-text">
+                    This waste factor will be used to calculate the amount of
+                    materials to order.
+                </div>
+                <div class="small-input top-margin">
+                    <form [formGroup]="myGroup">
+                        <mat-form-field>
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="baseWasteFactor"
+                                required
+                                [(ngModel)]="evOrderResult.baseWasteFactor"
+                                (change)="baseWasteFactorChange($event)"
+                            />
+                        </mat-form-field>
+                        <span class="margin-left-small">%</span>
+                    </form>
+                </div>
+            </div>
+            <div class="small-12 medium-3 large-3 right-padding-small">
+                <div class="sub-title">Optional Job Account</div>
+                <div class="small-text">
+                    To ensure correct pricing select the Job Account you would
+                    like to use for this report.
+                </div>
+                <div class="job-account top-margin">
+                    <mat-form-field class="full-width" floatLabel="auto">
+                        <mat-select
+                            placeholder="Select Job Account"
+                            [ngModel]="evOrderResult.selectedJobNumber"
+                            (selectionChange)="updateJob($event.value)"
+                            [disabled]="isAccountClosed"
+                        >
+                            <mat-option [value]="''">
+                                --Select a Job--
+                            </mat-option>
+                            <mat-option
+                                *ngFor="let job of jobs?.jobs"
+                                [value]="job.jobNumber"
+                            >
+                                {{ job.jobName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="small-12 medium-12 large-12 selections">
+            <table
+                mat-table
+                [dataSource]="dataSource"
+                class="full-width material-list"
+            >
+                <!-- Product column -->
+                <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef>Product</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a
+                            [routerLink]="[
+                                '/productDetail',
+                                element.productId,
+                                element.itemNumber
+                            ]"
+                        >
+                            <img
+                                appImagePreload
+                                class="img-prod"
+                                [src]="
+                                    buildImageUrl(
+                                        element.itemImage | productImage
+                                    )
+                                "
+                                alt=""
+                            />
+                        </a>
+                    </td>
+                </ng-container>
+                <!-- Details column -->
+                <ng-container matColumnDef="details">
+                    <th mat-header-cell *matHeaderCellDef>Details</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div style="width: 75%">
+                            <a
+                                [routerLink]="[
+                                    '/productDetail',
+                                    element.productId,
+                                    element.itemNumber
+                                ]"
+                            >
+                                {{ element.itemName | safeHtml }}
+                            </a>
+                        </div>
+                        <div>Item #: {{ element.itemNumber }}</div>
+                        <div
+                            *ngIf="
+                                element.variations &&
+                                element.facetSelectors.length
+                            "
+                        >
+                            <div class="row bordered">
+                                <div class="grid-container facet">
+                                    <div class="grid-x grid-margin-x">
+                                        <div
+                                            class="attribute small-12 medium-4"
+                                            *ngFor="
+                                                let facet of element.facetSelectors
+                                            "
+                                        >
+                                            <mat-label
+                                                ><b
+                                                    >{{ facet.name }}:</b
+                                                ></mat-label
+                                            ><br />
+                                            <mat-form-field>
+                                                <mat-select
+                                                    class="attributeDropDown"
+                                                    [value]="facet.value"
+                                                    (selectionChange)="
+                                                        setFilter(
+                                                            element,
+                                                            facet.name,
+                                                            $event.value
+                                                        )
+                                                    "
+                                                >
+                                                    <mat-option
+                                                        [ngClass]="{
+                                                            disable:
+                                                                !option.enabled
+                                                        }"
+                                                        *ngFor="
+                                                            let option of element
+                                                                .activeVariations[
+                                                                facet.name
+                                                            ]
+                                                        "
+                                                        [value]="option.value"
+                                                    >
+                                                        {{ option.value }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <!-- Waste Factor column -->
+                <ng-container matColumnDef="waste_factor">
+                    <th mat-header-cell *matHeaderCellDef>Waste%</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.support3DMeasurement">
+                            <div
+                                *ngIf="element.editing; else display"
+                                class="very-small-column-input"
+                            >
+                                <mat-form-field>
+                                    <input
+                                        matInput
+                                        [(ngModel)]="element.wasteFactor"
+                                    /> </mat-form-field
+                                >%
+                                <div>
+                                    <a (click)="confirmWasteFactor(element)"
+                                        >Confirm</a
+                                    >
+                                </div>
+                            </div>
+                            <ng-template #display>
+                                <div *ngIf="element.manualQuantity">--</div>
+                                <div *ngIf="!element.manualQuantity">
+                                    {{ element.wasteFactor }}%
+                                </div>
+                                <div>
+                                    <a (click)="editWasteFactor(element)"
+                                        >Edit</a
+                                    >
+                                </div>
+                            </ng-template>
+                            <div
+                                *ngIf="element.wasteFactorMessage"
+                                class="alert"
+                            >
+                                {{ element.wasteFactorMessage }}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <!-- Price column -->
+                <ng-container matColumnDef="unit_price">
+                    <th mat-header-cell *matHeaderCellDef>Price</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.price | price: element.uom }}
+                    </td>
+                </ng-container>
+                <!-- Quantity column -->
+                <ng-container matColumnDef="qty">
+                    <th mat-header-cell *matHeaderCellDef>Qty</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="small-column-input">
+                            <input
+                                matInput
+                                type="text"
+                                [(ngModel)]="element.quantity"
+                                (change)="quantityChange(element, $event)"
+                            />
+                            <mat-error
+                                *ngIf="
+                                    !isQuantityValid(element.quantity) &&
+                                    isSubmitting
+                                "
+                            >
+                                Please enter a number for the quantity. Example:
+                                10
+                            </mat-error>
+                            <div
+                                class="alert"
+                                *ngIf="element.quantityMessage && !isSubmitting"
+                            >
+                                {{ element.quantityMessage }}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <!-- Actions -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <a
+                            href="javascript:void(0);"
+                            (click)="deleteProduct(element)"
+                        >
+                            <mat-icon class="icon">delete</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+
+                <!-- Group header -->
+                <ng-container matColumnDef="groupHeader">
+                    <td colspan="2" mat-cell *matCellDef="let groupBy">
+                        <div class="sub-text-container">
+                            <span class="sub-text">{{
+                                groupBy.categoryName
+                            }}</span>
+                            <span
+                                *ngIf="
+                                    groupBy.itemCount > 1 &&
+                                    isShingles(groupBy.categoryName)
+                                "
+                            >
+                                <button
+                                    class="icon"
+                                    matTooltipPosition="left"
+                                    matTooltip="Your template contains more than one type of shingle, we recommend reviewing this section."
+                                    matTooltipClass="custom-tooltip"
+                                >
+                                    <mat-icon>info</mat-icon>
+                                </button>
+                            </span>
+                        </div>
+                        <div>
+                            <button
+                                color="primary"
+                                mat-raised-button
+                                style="margin-bottom: 30px"
+                                (click)="
+                                    openSearchModal(
+                                        groupBy.categoryId,
+                                        '',
+                                        groupBy.categoryName
+                                    )
+                                "
+                            >
+                                <div class="grid-x">
+                                    <div class="margin-right linked-sub-text">
+                                        Add {{ groupBy.categoryName }}
+                                    </div>
+                                    <div class="linked-sub-text">+</div>
+                                </div>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr
+                    mat-row
+                    *matRowDef="
+                        let row;
+                        columns: ['groupHeader'];
+                        when: isGroup
+                    "
+                ></tr>
+
+                <ng-container matColumnDef="groupEmptyMessage">
+                    <td colspan="6" mat-cell *matCellDef="let groupBy">
+                        <div class="empty-message">
+                            No {{ groupBy.categoryName }} products selected in
+                            template
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr
+                    mat-row
+                    *matRowDef="
+                        let row;
+                        columns: ['groupEmptyMessage'];
+                        when: isGroupEmpty
+                    "
+                ></tr>
+            </table>
+        </div>
+        <div class="small-0 medium-8 large-8"></div>
+        <div class="small-12 medium-4 large-4">
+            <div class="grid-x summary-small-text bottom-margin">
+                <div class="small-12 medium-12 large-12 bottom">
+                    <h3 class="upper-case">Smart Order Summary</h3>
+                </div>
+                <mat-divider class="small-12 medium-12 large-12"></mat-divider>
+                <div class="small-5 medium-5 large-5">Subtotal</div>
+                <div class="small-7 medium-7 large-7">
+                    {{ displaySubTotal(evOrderResult.summary?.subTotal) }}
+                </div>
+                <mat-divider class="small-12 medium-12 large-12"></mat-divider>
+
+                <div class="small-5 medium-5 large-5" style="display: contents">
+                    <span> Other Charges </span>
+                    <button
+                        class="icon"
+                        matTooltipPosition="left"
+                        matTooltip="What is Other Charges?
+  Other charges are typically delivery fees, but may include handling and fuel fees."
+                        matTooltipClass="custom-tooltip"
+                    >
+                        <mat-icon class="tooltip-icon">info</mat-icon>
+                    </button>
+                </div>
+                <div class="small-7 medium-7 large-7"></div>
+                <mat-divider class="small-12 medium-12 large-12"></mat-divider>
+                <div class="small-5 medium-5 large-5">Tax</div>
+                <div class="small-7 medium-7 large-7"></div>
+                <mat-divider class="small-12 medium-12 large-12"></mat-divider>
+                <div class="small-5 medium-5 large-5">Total</div>
+                <div class="small-7 medium-7 large-7">
+                    {{ evOrderResult.summary?.total }}
+                </div>
+                <mat-divider class="small-12 medium-12 large-12"></mat-divider>
+            </div>
+        </div>
+        <div class="large-6"></div>
+        <div class="small-12 medium-6 large-3 align-right margin-right-cta">
+            <button
+                color="secondary"
+                mat-raised-button
+                class="cta"
+                (click)="openDialogNewTemplate()"
+            >
+                <div class="grid-x">
+                    <div class="small-10 medium-10 linked-sub-text">
+                        Save to Template
+                    </div>
+                    <div class="small-10 medium-2 align-right icon-padding">
+                        <mat-icon>save</mat-icon>
+                    </div>
+                </div>
+            </button>
+        </div>
+        <!-- <div class="small-12 medium-4 large-4 align-center">
+      <button color="primary" mat-raised-button class="cta">
+        <div class="grid-x">
+          <div class="small-10 medium-10 linked-sub-text">Download as Quote</div>
+          <div class="small-10 medium-2 align-right icon-padding"><mat-icon>get_app</mat-icon></div>
+        </div>
+      </button>
+    </div> -->
+        <div class="small-12 medium-6 large-3 align-right margin-left-cta">
+            <button
+                color="primary"
+                mat-raised-button
+                class="cta"
+                (click)="goToCheckout()"
+            >
+                <div class="grid-x">
+                    <div class="small-10 medium-10 linked-sub-text">
+                        Continue to Checkout
+                    </div>
+                    <div class="small-10 medium-2 align-right icon-padding">
+                        <mat-icon>shopping_cart</mat-icon>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+</ng-template>

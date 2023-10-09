@@ -1,0 +1,143 @@
+<div class="header">
+    <img
+        src="https://beaconproplus.com/Beacon3Dplus/images/Beacon3D.png"
+        alt="Beacon 3D+"
+        class="header-image"
+    />
+    <div style="text-align: center; margin-top: -5px; font-size: 30px">
+        A Fully, Customizable 3D Model of Any Home
+    </div>
+    <button mat-raised-button class="video-button" (click)="videoClick()">
+        See How it Works
+    </button>
+</div>
+<hr />
+<section>
+    <div class="grid-x grid-margin-x">
+        <div class="small-4 medium-3 image-top-margin">
+            <img
+                src="https://beaconproplus.com/Beacon3Dplus/images/download.png"
+                alt="download 3D+ app"
+            />
+        </div>
+        <div class="small-8 medium-9 text-top-margin">
+            <div class="grid-x grid-margin-x">
+                <div class="small-2 medium-2 number">
+                    <img
+                        src="https://beaconproplus.com/Beacon3Dplus/images/one.png"
+                        alt="step 1"
+                    />
+                </div>
+                <div class="small-9 medium-7 action">
+                    <h3>Download the Beacon 3D+ app on your mobile device</h3>
+                    <div class="message">
+                        <div class="full-width sms-message">
+                            <div
+                                *ngIf="downloadApp && smsMessageSuccess"
+                                class="alert alert-success"
+                            >
+                                {{ smsMessage }}
+                            </div>
+                            <div
+                                *ngIf="downloadApp && !smsMessageSuccess"
+                                class="alert alert-danger"
+                            >
+                                {{ smsMessage }}
+                            </div>
+                        </div>
+                        <div class="full-width">
+                            <p class="text-link">Text me the download link:</p>
+                        </div>
+                        <div class="full-width">
+                            <div class="grid-x grid-margin-x">
+                                <div class="large-9 medium-8 small-12 padding">
+                                    <input
+                                        class="form-control"
+                                        id="phoneNumber"
+                                        [(ngModel)]="phoneNumber"
+                                        placeholder="Enter phone number"
+                                        type="text"
+                                    />
+                                </div>
+                                <div class="large-3 medium-4 small-12 padding">
+                                    <button
+                                        mat-raised-button
+                                        color="primary"
+                                        id="sendMsgBtn"
+                                        (click)="getLink()"
+                                    >
+                                        GET LINK
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="step-2">
+    <div class="grid-x grid-margin-x">
+        <div class="small-4 medium-3 image-top-margin">
+            <img
+                class="image-left"
+                src="https://beaconproplus.com/Beacon3Dplus/images/login.png"
+                style="display: block"
+                alt="log into Beacon Pro+"
+            />
+        </div>
+        <div class="small-8 medium-9 text-top-margin">
+            <div class="grid-x grid-margin-x">
+                <div class="small-2 medium-2 number">
+                    <img
+                        src="https://beaconproplus.com/Beacon3Dplus/images/two.png"
+                        alt="step 2"
+                    />
+                </div>
+                <div class="small-9 medium-7 action">
+                    <h3>
+                        <a href="http://www.beacon3dplus.com/" target="_blank"
+                            >Log in
+                        </a>
+                        with your Beacon Pro+ credentials
+                    </h3>
+                    <p class="text-margin">
+                        Once you download the Beacon 3D+ app, use your Beacon
+                        Pro+ credentials to log in.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="grid-x grid-margin-x">
+        <div class="small-4 medium-3 image-top-margin">
+            <img
+                src="https://beaconproplus.com/Beacon3Dplus/images/house.png"
+                alt="receive 3D model and exterior measurements"
+            />
+        </div>
+        <div class="small-8 medium-9 text-top-margin">
+            <div class="grid-x grid-margin-x">
+                <div class="small-2 medium-2 number">
+                    <img
+                        src="https://beaconproplus.com/Beacon3Dplus/images/three.png"
+                        alt="step 3"
+                    />
+                </div>
+                <div class="small-9 medium-7 action">
+                    <h3>
+                        Receive the 3D model &amp; all exterior measurements
+                    </h3>
+                    <p class="text-margin">
+                        Take at least 8 photos of any property with the Beacon
+                        3D+ app and receive the 3D model and all the exterior
+                        measurements to quote any job.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

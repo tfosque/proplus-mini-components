@@ -1,0 +1,37 @@
+.perfect-order-card {
+    width: 300px;
+    margin: 20px;
+}
+.content {
+    margin: 30px 0px 0px 30px;
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.no-data-container {
+    align-items: center;
+    height: 40vh;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    margin-top: 20vh;
+}
+
+.no-data-text {
+    font-weight: bolder;
+    font-size: x-large;
+    color: #34495e;
+}

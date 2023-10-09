@@ -1,0 +1,201 @@
+<div class="job-container" id="jq_container_hoverJobDetail">
+    <div class="grid-x" style="margin-left: 0.5rem">
+        <div
+            class="container-left medium-6 large-6 small-12"
+            id="jq_imageContainer_hoverJobDetail"
+        >
+            <div class="big-image-box">
+                <img
+                    id="bigImg"
+                    src="{{ jobDetailImages[activeImageIndex]?.imageUrl }}"
+                />
+            </div>
+            <p class="qtyImg" id="jq_qtyImgContainer_hoverjobdetail">
+                PHOTOS(<span id="jq_qtyImg_hoverjobdetail">{{
+                    jobDetailImages.length
+                }}</span
+                >)
+            </p>
+            <div
+                data-move="left"
+                class="left glyphicon glyphicon-chevron-left"
+                id="jq_left_hoverJobDetail"
+                (click)="imageMove('left')"
+            >
+                <mat-icon style="font-size: 30px; font-weight: bold"
+                    >chevron_left</mat-icon
+                >
+            </div>
+            <div id="imgBox">
+                <div *ngFor="let image of jobDetailImages; let i = index">
+                    <div
+                        *ngIf="i % 4 == 0"
+                        class="imagesBox"
+                        [ngClass]="{
+                            activeThumbRow:
+                                activeImageIndex >= i &&
+                                activeImageIndex <= i + 3,
+                            inactiveThumbRow:
+                                activeImageIndex < i || activeImageIndex > i + 3
+                        }"
+                    >
+                        <img
+                            id="{{ image.imageId }}"
+                            src="{{ image.imageUrl }}"
+                            class="image"
+                            (click)="thumbImageClick(i)"
+                            [ngClass]="{
+                                activeThumb: i === activeImageIndex,
+                                inactiveThumb: i !== activeImageIndex
+                            }"
+                        />
+                        <img
+                            *ngIf="i + 1 < jobDetailImages.length"
+                            (click)="thumbImageClick(i + 1)"
+                            [ngClass]="{
+                                activeThumb: i + 1 === activeImageIndex,
+                                inactiveThumb: i + 1 !== activeImageIndex
+                            }"
+                            id="{{ jobDetailImages[i + 1].imageId }}"
+                            src="{{ jobDetailImages[i + 1].imageUrl }}"
+                            class="image"
+                        />
+                        <img
+                            *ngIf="i + 2 < jobDetailImages.length"
+                            (click)="thumbImageClick(i + 2)"
+                            [ngClass]="{
+                                activeThumb: i + 2 === activeImageIndex,
+                                inactiveThumb: i + 2 !== activeImageIndex
+                            }"
+                            id="{{ jobDetailImages[i + 2].imageId }}"
+                            src="{{ jobDetailImages[i + 2].imageUrl }}"
+                            class="image"
+                        />
+                        <img
+                            *ngIf="i + 3 < jobDetailImages.length"
+                            (click)="thumbImageClick(i + 3)"
+                            [ngClass]="{
+                                activeThumb: i + 3 === activeImageIndex,
+                                inactiveThumb: i + 3 !== activeImageIndex
+                            }"
+                            id="{{ jobDetailImages[i + 3].imageId }}"
+                            src="{{ jobDetailImages[i + 3].imageUrl }}"
+                            class="image"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div
+                data-move="right"
+                class="right glyphicon glyphicon-chevron-right"
+                id="jq_right_hoverJobDetail"
+                (click)="imageMove('right')"
+            >
+                <mat-icon style="font-size: 30px; font-weight: bold"
+                    >chevron_right</mat-icon
+                >
+            </div>
+        </div>
+        <div
+            class="container-right medium-5 large-5 col-md-offset-1 small-12"
+            id="jq_containerRight_hoverJobDetail"
+        >
+            <div class="right-header">
+                <div class="header-left">
+                    <span class="state jq_state_hoverjobdetail">done</span>
+                </div>
+            </div>
+            <h5 class="job-title jq_title_hoverjobdetail">
+                {{ jobDetail.name }}
+            </h5>
+            <p class="address jq_address_hoverjobdetail">
+                {{ jobDetail.location_line_1 }}, {{ jobDetail.location_city }},
+                {{ jobDetail.location_region }}
+            </p>
+            <div class="job-buttons">
+                <a
+                    id="jq_3d_hoverjobdetail"
+                    target="_blank"
+                    href="{{ jobDetail.threeDimensions }}"
+                >
+                    <button
+                        class="job-threedimensions"
+                        id="jq_3dContainer_hoverjobdetail"
+                    >
+                        <img
+                            src="https://beaconproplus.com/images/hoverJodDetail3dIcon.png"
+                            class="3dIcon"
+                            width="18px"
+                        />
+                        3D
+                    </button>
+                </a>
+                <a
+                    id="jq_pdf_hoverjobdetail"
+                    target="_blank"
+                    (click)="getMeasurementsPdf()"
+                    *ngIf="jobDetail.pdf"
+                >
+                    <button
+                        class="job-measurement"
+                        id="jq_pdfContainer_hoverjobdetail"
+                    >
+                        <i class="file-icon"></i> Measurements
+                    </button>
+                </a>
+            </div>
+            <div class="order-materials">
+                <div class="order-materials-title">
+                    Order Materials for This Property
+                </div>
+                <div class="order-materials-content">
+                    Use the 3D+ measurements to auto-calculate the materials you
+                    need, and quickly place an order with your local Beacon
+                    store.
+                </div>
+                <a
+                    id="jq_om_hoverjobdetail"
+                    target="_blank"
+                    href="{{ jobDetail.orderMaterials }}"
+                >
+                    <button
+                        class="job-ordermaterials"
+                        id="jq_omContainer_hoverjobdetail"
+                        width="250px"
+                    >
+                        <img
+                            src="https://beaconproplus.com/images/icon-cart.png"
+                            class="orderMaterialsIcon"
+                            width="18px"
+                        />
+                        ORDER MATERIALS
+                    </button>
+                </a>
+            </div>
+            <p class="job-id">
+                <span class="type">JOB ID:</span>
+                <span class="value" id="jq_jobId_hoverjobdetail">{{
+                    jobDetail.id
+                }}</span>
+            </p>
+            <p class="job-type">
+                <span class="type">MEASUREMENT TYPE:</span>
+                <span class="value" id="jq_type_hoverjobdetail">{{
+                    jobDetail.state
+                }}</span>
+            </p>
+            <p class="create">
+                <span class="type">CREATED:</span>
+                <span class="value" id="jq_create_hoverjobdetail">{{
+                    jobDetail.created_at
+                }}</span>
+            </p>
+            <p class="creator">
+                <span class="type">CREATOR:</span>
+                <span class="value" id="jq_creator_hoverjobdetail">{{
+                    jobDetail.creator
+                }}</span>
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="home-mosaic" *ngIf="content">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <div class="home-mosaic__image-tiles">
+        <section
+            *ngFor="let tile of imageTiles; first as isFirst"
+            class="home-mosaic__tile"
+            [ngClass]="{ 'home-mosaic__tile--large': isFirst }"
+        >
+            <div class="home-mosaic__content-container">
+                <img
+                    *ngIf="tile.image"
+                    class="home-mosaic__background-image"
+                    src="{{ tile.image.src }}"
+                    alt="{{ tile.image.altText }}"
+                />
+                <span *ngIf="isFirst" class="home-mosaic__tag">
+                    {{ tile.tag }}
+                </span>
+                <div class="home-mosaic__text-content">
+                    <h2 class="home-mosaic__title">{{ tile.title }}</h2>
+                    <div class="home-mosaic__description">
+                        <p>
+                            {{ tile.description }}
+                        </p>
+                    </div>
+                    <div class="home-mosaic__link-container">
+                        <a
+                            *ngIf="!tile.link.isExternal; else external"
+                            routerLink="{{ tile.link.url }}"
+                        >
+                            {{ tile.link.text
+                            }}<span class="icon-arrow-right"></span>
+                        </a>
+                        <ng-template #external>
+                            <a href="{{ tile.link.url | protocol }}">
+                                {{ tile.link.text
+                                }}<span class="icon-arrow-right"></span>
+                            </a>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="home-mosaic__icon-tiles" *ngIf="iconTiles && iconTiles.length">
+        <section
+            *ngFor="let tile of iconTiles"
+            class="home-mosaic__tile home-mosaic__tile--icon-tile"
+        >
+            <div class="home-mosaic__content-container">
+                <div class="home-mosaic__text-content">
+                    <img
+                        *ngIf="tile.image"
+                        class="home-mosaic__image"
+                        src="{{ tile.image.src }}"
+                        alt="{{ tile.image.altText }}"
+                    />
+                    <h2 class="home-mosaic__title">{{ tile.title }}</h2>
+                    <div class="home-mosaic__link-container">
+                        <a
+                            *ngIf="!tile.link.isExternal; else external"
+                            routerLink="{{ tile.link.url }}"
+                        >
+                            {{ tile.link.text
+                            }}<span class="icon-arrow-right"></span>
+                        </a>
+                        <ng-template #external>
+                            <a href="{{ tile.link.url | protocol }}">
+                                {{ tile.link.text
+                                }}<span class="icon-arrow-right"></span>
+                            </a>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

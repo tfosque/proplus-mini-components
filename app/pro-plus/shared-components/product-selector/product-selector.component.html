@@ -1,0 +1,10 @@
+<button
+    mat-raised-button
+    [color]="isAccountClosed ? 'disabled' : 'primary'"
+    (click)="searchAll('')"
+    class="add-product-to-cart"
+    [disabled]="isAccountClosed"
+>
+    <span>Add Product</span>
+    <mat-icon>arrow_drop_down</mat-icon>
+</button>

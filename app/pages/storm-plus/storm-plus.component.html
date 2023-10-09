@@ -1,0 +1,26 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <div class="grid-container container contentsContainer">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div
+                    class="container-fluid hidden-xs md"
+                    style="margin-top: 20px; margin-bottom: 40px"
+                >
+                    <ng-container brComponent="main"></ng-container>
+                </div>
+                <div class="container-fluid hidden-xs" style="margin-top: 20px">
+                    <iframe
+                        height="968px"
+                        src="https://becn.stormersite.com/desk3.cfm"
+                        width="100%"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

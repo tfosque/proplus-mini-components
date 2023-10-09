@@ -1,0 +1,255 @@
+<div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<h2 mat-dialog-title>
+    <div *ngIf="!selectedProduct" class="grid-x">
+        <div class="small-9">
+            <span>Find a Product</span>
+        </div>
+        <div class="small-3" style="text-align: right">
+            <button class="button small primary" mat-dialog-close>Close</button>
+        </div>
+    </div>
+    <div *ngIf="selectedProduct">
+        <div class="grid-x">
+            <div class="cell small-7">
+                <button class="button small primary" (click)="clearProduct()">
+                    Back
+                </button>
+                <span>&nbsp;</span>
+                <button class="button small secondary" mat-dialog-close>
+                    Close
+                </button>
+            </div>
+            <div class="cell small-5" style="text-align: right">
+                <button
+                    class="button small primary"
+                    [mat-dialog-close]="true"
+                    (click)="selectSku()"
+                    [disabled]="!this.selectedSku"
+                    cdkFocusInitial
+                >
+                    <span>Select Product</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</h2>
+<mat-dialog-content style="max-height: 85vh">
+    <div
+        class="grid-container"
+        [ngStyle]="{ width: calculatedWindowWidth, height: '75vh' }"
+    >
+        <div
+            #productSearchDiv
+            class="grid-y product-search-divy"
+            [ngStyle]="{ height: '75vh' }"
+        >
+            <!-- Search Box -->
+            <div class="cell shrink" *ngIf="displayMode !== 'Product Detail'">
+                <form autocomplete="off">
+                    <mat-form-field class="full-width">
+                        <input
+                            type="text"
+                            cdkFocusInitial
+                            matInput
+                            [(ngModel)]="searchText"
+                            [ngModelOptions]="{ standalone: true }"
+                        />
+                    </mat-form-field>
+                    <div
+                        *ngIf="fullProductSearchResult?.totalNumRecs"
+                        style="
+                            text-align: right;
+                            margin-bottom: 15px;
+                            max-width: 97%;
+                        "
+                    >
+                        <span class="label secondary">
+                            {{ fullProductSearchResult?.totalNumRecs }} results
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Content -->
+            <div class="cell auto">
+                <!-- Product Search -->
+                <div [hidden]="displayMode === 'Product Detail'">
+                    <cdk-virtual-scroll-viewport
+                        itemSize="30"
+                        class="viewport"
+                        (scrolledIndexChange)="scrollIndexChanged($event)"
+                        [ngStyle]="{ height: '75vh' }"
+                        autosize
+                        hidden
+                    >
+                        <div *cdkVirtualFor="let itemList of viewedItems">
+                            <mat-grid-list [cols]="productColumns">
+                                <mat-grid-tile *ngFor="let item of itemList">
+                                    <mat-card
+                                        class="product-card"
+                                        [ngStyle]="{ width: imageWidth }"
+                                    >
+                                        <img
+                                            mat-card-image
+                                            src="{{
+                                                getProductImage(
+                                                    item
+                                                )?.thumbSrc()
+                                            }}"
+                                            alt="{{ item.productName }}"
+                                            appImagePreload
+                                            [default]="
+                                                item?.productOnErrorImage
+                                                    | errorImage
+                                                        : '/assets/images/image-not-available.svg'
+                                            "
+                                            (click)="selectProduct(item)"
+                                        />
+                                        <mat-card-content>
+                                            <span
+                                                [innerHTML]="item.productName"
+                                                (click)="selectProduct(item)"
+                                            ></span>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <hr />
+                        </div>
+
+                        <div
+                            class="loading-container"
+                            *ngIf="isLoading"
+                            style="align-content: center; width: 100%"
+                        >
+                            <mat-progress-spinner
+                                style="margin: 0 auto"
+                                mode="indeterminate"
+                            ></mat-progress-spinner>
+                        </div>
+                    </cdk-virtual-scroll-viewport>
+
+                    <div class="grid-x grid-margin-x">
+                        <ng-container *ngIf="fullProductSearchResult?.items">
+                            <ng-container *ngIf="(fullProductSearchResult?.items.length === 1 && fullProductSearchResult?.items[0].skuList.length === 1)">
+                                <div
+                                    class="medium-3 large-3 small-12"
+                                    *ngFor="let item of fullProductSearchResult?.items"
+                                    style="
+                                        border-bottom: 1px solid lightgray;
+                                        margin-top: 10px;
+                                    "
+                                >
+                                    <mat-card
+                                        class="product-card"
+                                        [ngStyle]="{ width: imageWidth }"
+                                    >
+                                        <img
+                                            mat-card-image
+                                            src="{{
+                                                getExactSkuProductImage(item)?.smallSrc()
+                                            }}"
+                                            alt="{{ item.productName }}"
+                                            appImagePreload
+                                            [default]="
+                                                item?.productOnErrorImage
+                                                    | errorImage
+                                                        : '/assets/images/image-not-available.svg'
+                                            "
+                                            (click)="selectProduct(item)"
+                                        />
+                                        <mat-card-content>
+                                            <span
+                                                [innerHTML]="item.productName"
+                                                (click)="selectProduct(item)"
+                                            ></span>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="fullProductSearchResult?.items.length > 1 || (fullProductSearchResult?.items.length === 1 && fullProductSearchResult?.items[0].skuList.length > 1)">
+                                <div
+                                    class="medium-3 large-3 small-12"
+                                    *ngFor="let item of fullProductSearchResult?.items"
+                                    style="
+                                        border-bottom: 1px solid lightgray;
+                                        margin-top: 10px;
+                                    "
+                                >
+                                    <mat-card
+                                        class="product-card"
+                                        [ngStyle]="{ width: imageWidth }"
+                                    >
+                                        <img
+                                            mat-card-image
+                                            src="{{
+                                                getProductImage(item)?.smallSrc()
+                                            }}"
+                                            alt="{{ item.productName }}"
+                                            appImagePreload
+                                            [default]="
+                                                item?.productOnErrorImage
+                                                    | errorImage
+                                                        : '/assets/images/image-not-available.svg'
+                                            "
+                                            (click)="selectProduct(item)"
+                                        />
+                                        <mat-card-content>
+                                            <span
+                                                [innerHTML]="item.productName"
+                                                (click)="selectProduct(item)"
+                                            ></span>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <mat-paginator
+                        [pageSizeOptions]="[20]"
+                        [length]="fullProductSearchResult?.totalNumRecs"
+                        [pageSize]="20"
+                        showFirstLastButtons
+                    >
+                    </mat-paginator>
+                </div>
+
+                <!-- Product Details -->
+                <div [hidden]="displayMode === 'Search Results'">
+                    <app-sku-selector
+                        [accountId]="accountId"
+                        [selectedProduct]="selectedProduct"
+                        (skuSelected)="setSkuSelected($event)"
+                    ></app-sku-selector>
+                </div>
+
+                <!-- Default Page -->
+                <div
+                    [hidden]="
+                        displayMode === 'Search Results' ||
+                        displayMode === 'Product Detail'
+                    "
+                >
+                    <div
+                        *ngFor="let category of categories"
+                        style="margin-bottom: 5px"
+                    >
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            class="full-width"
+                            (click)="setFacet(category.facetId)"
+                        >
+                            <b>{{ category.facetName }}</b> ({{
+                                category.recordCount
+                            }})
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>

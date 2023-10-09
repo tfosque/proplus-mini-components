@@ -1,0 +1,93 @@
+@import '../../../sass/vendor/foundation-settings';
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.brand-banner-block {
+    @include contentButtonContainer();
+    background-color: $color-background-dark;
+    border: 6px solid $color-primary;
+    margin-bottom: rem-calc(20px);
+
+    &__wrapper {
+        color: $color-secondary;
+        padding: rem-calc(18px 20px 20px);
+    }
+    h2 {
+        color: $color-secondary;
+        font-family: $font-family;
+        font-weight: $font-weight-bold;
+        font-size: rem-calc(28px);
+        line-height: rem-calc(32px);
+        margin-bottom: rem-calc(7px);
+    }
+    p {
+        color: $color-secondary;
+        font-size: rem-calc(16px);
+        line-height: rem-calc(21px);
+        margin-top: 0px;
+        margin-bottom: rem-calc(20px);
+    }
+    img {
+        height: auto;
+        width: 100%;
+    }
+    a.button {
+        position: absolute;
+        padding: rem-calc(12px 15px 10px);
+        font-size: rem-calc(14px);
+        line-height: rem-calc(17px);
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .brand-banner-block {
+        border: 6px solid $color-primary;
+        background-color: transparent;
+        display: flex;
+        margin-bottom: rem-calc(60px);
+        min-height: rem-calc(408px);
+        position: relative;
+        overflow: hidden;
+        @include ie-flex-min-height();
+        h2 {
+            font-size: rem-calc(38px);
+            line-height: rem-calc(41px);
+            margin-bottom: rem-calc(11px);
+        }
+        p {
+            font-size: rem-calc(19px);
+            line-height: rem-calc(24px);
+            margin-bottom: rem-calc(30px);
+        }
+        a.button {
+            position: absolute;
+            padding: rem-calc(16px 20px 14px);
+            font-size: rem-calc(16px);
+            line-height: rem-calc(19px);
+        }
+        &__wrapper {
+            min-width: rem-calc(464px);
+            padding-left: rem-calc(40px);
+            padding-right: rem-calc(40px);
+            padding-top: rem-calc(31px);
+            top: 0;
+            z-index: 2;
+            @include angle(after, false, 20deg);
+            position: absolute;
+            width: 40%;
+            &:after {
+                background-color: $color-background-dark;
+                bottom: -1px;
+                left: -30%;
+                box-shadow: 2px 0 4px -1px rgba(0, 0, 0, 0.4);
+                height: calc(100%);
+                width: 120%;
+                top: -1px;
+            }
+        }
+
+        img {
+            @include object-fit(cover, center);
+        }
+    }
+}

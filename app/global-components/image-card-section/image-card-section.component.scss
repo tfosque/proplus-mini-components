@@ -1,0 +1,40 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+:host {
+    width: 100%;
+}
+
+.image-card-section {
+    margin-bottom: rem-calc(10px);
+
+    &__title {
+        font-size: rem-calc(23px);
+        font-weight: $font-weight-semi-bold;
+        line-height: rem-calc(27px);
+        margin-bottom: rem-calc(20px);
+    }
+
+    &__card-grid {
+        &.no-title {
+            margin-top: rem-calc(23px);
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        margin-bottom: rem-calc(40px);
+
+        &__title {
+            font-size: rem-calc(28px);
+            line-height: rem-calc(36px);
+            margin-bottom: rem-calc(25px);
+            margin-top: rem-calc(30px);
+        }
+
+        &__card-grid {
+            &.no-title {
+                margin-top: rem-calc(30px);
+            }
+        }
+    }
+}

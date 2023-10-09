@@ -1,0 +1,266 @@
+<div
+    *ngIf="hasEVAccount; else NoEVAccount"
+    class="grid-x grid-margin-x margin-top-header linked-filter"
+>
+    <div class="cell small-12 medium-12 large-12 bottom-margin">
+        <img
+            src="assets/images/Eagleview_logo.jpg"
+            alt="EagleView"
+            class="logo-small"
+        />
+    </div>
+    <div class="cell small-12 medium-12 large-12 bottom-margin-small">
+        <div class="grid-x">
+            <div class="cell small-0 medium-1 large-1"></div>
+            <div class="cell small-12 medium-10 large-10">
+                <div class="grid-x">
+                    <div class="cell small-12 medium-8 large-8">
+                        <div class="grid-x">
+                            <div
+                                class="cell small-12 medium-12 large-12 bottom-margin-small sub-title"
+                            >
+                                <h1>smart order</h1>
+                            </div>
+                            <div
+                                class="cell small-12 medium-8 large-8 bottom-margin-medium sub-text-large"
+                            >
+                                Create an order based on your templates and
+                                measurements from your EagleView report.
+                            </div>
+                            <div
+                                class="cell small-12 medium-4 large-4 bottom-margin-medium"
+                            ></div>
+                            <div
+                                class="cell small-12 medium-4 large-4 text-centered section-padding"
+                            >
+                                <div class="bottom-margin-small">
+                                    <img src="assets/images/house_icon.png" />
+                                </div>
+                                <div class="sub-header">
+                                    Accurate Roof Measurements
+                                </div>
+                                <div class="sub-text-small">
+                                    Geospacial software, aerial imagery and
+                                    analytics to get accurate measurements
+                                    remotely
+                                </div>
+                            </div>
+                            <div
+                                class="cell small-12 medium-4 large-4 text-centered section-padding"
+                            >
+                                <div class="bottom-margin-small">
+                                    <img src="assets/images/list_icon.png" />
+                                </div>
+                                <div class="sub-header">
+                                    Complete Materials List
+                                </div>
+                                <div class="sub-text-small">
+                                    Use your own templates to build your
+                                    complete materials list
+                                </div>
+                            </div>
+                            <div
+                                class="cell small-12 medium-4 large-4 text-centered section-padding"
+                            >
+                                <div class="bottom-margin-small">
+                                    <img src="assets/images/clock_icon.png" />
+                                </div>
+                                <div class="sub-header">
+                                    Easy Order Creation
+                                </div>
+                                <div class="sub-text-small">
+                                    Material list and quantities created with
+                                    just a few clicks
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="hr-border" />
+                <div class="grid-x bottom-margin-medium">
+                    <div class="cell small-12 medium-4 large-4">
+                        <div class="sub-title bottom-margin-small">
+                            eagleview report
+                        </div>
+                        <div class="sub-text-large">
+                            Create a report that will be sent to you by email.
+                        </div>
+                    </div>
+                    <div
+                        class="cell small-12 medium-4 large-4 centered align-right button-section"
+                    >
+                        <button
+                            class="linked-button-text"
+                            color="warn"
+                            (click)="unlinkAccount()"
+                            mat-raised-button
+                        >
+                            Unlink EagleView Account
+                        </button>
+                    </div>
+                    <div
+                        class="cell small-12 medium-4 large-4 centered align-right button-section"
+                    >
+                        <button
+                            color="primary"
+                            class="linked-button-text"
+                            routerLink="/proplus/eagle-view/order-report"
+                            mat-raised-button
+                        >
+                            <div class="grid-x">
+                                <div style="margin-right: 20px">
+                                    new eagleview report
+                                </div>
+                                <div>+</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="cell small-0 medium-1 large-1"></div>
+        </div>
+    </div>
+    <app-eagle-view-report-list class="full-width"></app-eagle-view-report-list>
+    <!-- <div class="full-width button-section text-centered">
+        <button
+            color="primary"
+            class="linked-button-text"
+            (click)="openSmartOrderDialog()"
+            mat-raised-button
+        >
+            <div class="text-centered">
+                <span style="margin-right: 20px">Begin smart order</span>
+                <span>+</span>
+            </div>
+        </button>
+    </div> -->
+</div>
+
+<ng-template #NoEVAccount>
+    <div class="grid-x grid-margin-x margin-top-header">
+        <div class="cell small-12 medium-12 large-12 bottom-margin">
+            <img
+                src="assets/images/Eagleview_logo.jpg"
+                alt="EagleView"
+                class="logo-large"
+            />
+        </div>
+        <div class="cell small-12 medium-6 large-6 right-border right-padding">
+            <div class="sub-title">Link Your EagleView Account</div>
+            <div class="sub-text sub-text-large">
+                You will get access to all your reports and be able to
+                automatically place orders using your Beacon Templates from any
+                EagleView reports.
+            </div>
+            <div>
+                <button
+                    class="full-width"
+                    color="primary"
+                    (click)="linkAccount()"
+                    mat-raised-button
+                >
+                    <div class="grid-x">
+                        <div class="large-11 text-centered">
+                            Link or Create Your EagleView Account
+                        </div>
+                        <div class="large-1 text-left">
+                            <mat-icon>chevron_right</mat-icon>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="cell small-12 medium-6 large-6 left-padding-large">
+            <div class="sub-title">Create an EagleView Report</div>
+            <div class="sub-text sub-text-large">
+                You can create a report that will be sent to you by email.
+            </div>
+            <div>
+                <button
+                    style="width: 350px"
+                    color="secondary"
+                    routerLink="/proplus/eagle-view/order-report"
+                    mat-raised-button
+                >
+                    <div class="grid-x">
+                        <div class="large-11">Create EagleView Report</div>
+                        <div class="large-1 text-centered">+</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="cell small-12 medium-12 large-12 mid-header-margin">
+            <div class="grid-x">
+                <div class="small-12 medium-1 large-1">
+                    <img src="assets/images/new_icon.png" />
+                </div>
+                <div
+                    class="small-12 medium-11 large-11 centered sub-title-black"
+                >
+                    Save time now with Smart Order!
+                </div>
+            </div>
+        </div>
+        <div class="cell small-12 medium-4 large-4">
+            <div class="grid-x">
+                <div class="small-12 medium-3 large-3">
+                    <img src="assets/images/house_large_icon.png" />
+                </div>
+                <div class="small-12 medium-9 large-9 left-padding-small">
+                    <div class="feature-header">Accurate Roof Measurements</div>
+                    <div class="sub-paragraph">
+                        Geospacial software, aerial imagery and analytics to get
+                        accurate measurements remotely
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell small-12 medium-4 large-4">
+            <div class="grid-x">
+                <div class="small-12 medium-3 large-3">
+                    <img src="assets/images/list_large_icon.png" />
+                </div>
+                <div class="small-12 medium-9 large-9 left-padding-small">
+                    <div class="feature-header">Complete Materials List</div>
+                    <div class="sub-paragraph">
+                        Use your own templates to build your complete materials
+                        list
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell small-12 medium-4 large-4">
+            <div class="grid-x">
+                <div class="small-12 medium-3 large-3 centered">
+                    <img src="assets/images/clock_large_icon.png" />
+                </div>
+                <div class="small-12 medium-9 large-9 left-padding-medium">
+                    <div class="feature-header">Easy Order Creation</div>
+                    <div class="sub-paragraph">
+                        Material list and quantities created with just a few
+                        clicks
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell small-12 medium-6 large-6 mid-header-margin">
+            <div>
+                <button
+                    class="full-width"
+                    color="primary"
+                    (click)="linkAccount()"
+                    mat-raised-button
+                >
+                    <div class="grid-x">
+                        <div class="large-11 text-centered">
+                            Link or Create Your EagleView Account
+                        </div>
+                        <div class="large-1 text-left">
+                            <mat-icon>chevron_right</mat-icon>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>

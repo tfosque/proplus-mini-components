@@ -1,0 +1,53 @@
+.spanOrder {
+    font-weight: bolder;
+    margin-right: 5px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.cell {
+    margin-bottom: 25px;
+}   
+
+button[disabled] {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    opacity: .65;
+    cursor: not-allowed;
+}
+
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.divider {
+    margin: 5px 5px 40px 5px;
+}
+
+@media screen and (max-width: 39.9375em) {
+    .mat-raised-button {
+        width: 100%;
+    }
+    .button-bar {
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 2px;
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+}

@@ -1,0 +1,4 @@
+<div id="custom-rich-text" [class]="cssClass">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <div [innerHTML]="htmlContent | linkRewriter | safe: 'html'"></div>
+</div>

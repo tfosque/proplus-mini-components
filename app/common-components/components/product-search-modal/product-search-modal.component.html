@@ -1,0 +1,121 @@
+<!--  Modal Questions
+  3. Stop screen at 1275 by 695?
+  4. Should we leave the show all state in the same state after product selection?
+  5. Sort table for details to display the selected sku first in the table
+  6. Scroll horizontal should be turned off
+  7. [-] Todo: NextPage isLoading keep facetSidebar displayed (1hr) (NOT MVP)
+  8. [-] Todo: sidebar on right side looses its border line at smaller screen sizes (.5hrs) (NOT MVP)
+  9. [ Partial ] Bug: FallbackImg for searchResults images, details images and skus .25hrs  Next Sprint
+  10. [-] Todo: Sku vs ItemNumber  in table view (1hr) Next Sprint
+ 
+
+<!-- HEADER Area -->
+<div class="grid-x">
+  <div class="cell medium-auto" style="margin: 0">
+    <h1 style="margin: 0;">{{modalTitle}}</h1>
+    <div style="font-size: .975rem;" [hidden]="(productDetails$ | async)">
+      <mat-hint style="margin-left: 0px;">
+        <div class="search-results-message">
+          <span>{{(totalRecords$ | async) | number:'1.0':'en-US'}} Results
+          </span>
+          <span>for </span>
+          <span>"{{ (searchStr$.value) ? (searchStr$.value) : modalTitle }}"</span>
+        </div>
+      </mat-hint>
+    </div>
+  </div>
+
+  <div class="cell medium-9">
+    <div class="grid-x grid-margin-x">
+      <div class="cell medium-shrink">
+        <!-- FACET BUTTONS -->
+        <app-search-modal-bread-crumb [searchFacets$]=" searchFacets$" [accountName]="accountName"
+          [hidden]="(productDetails$ | async) || (totalRecords$ | async) === 0"></app-search-modal-bread-crumb>
+      </div>
+      <div class="cell medium-auto" style="text-align: right;">
+        <button class="modal-button" mat-stroked-button mat-dialog-close (click)="cancelModal()"
+          style="color: #025f9e; text-transform: uppercase; font-size: .95rem;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT AREA -->
+<div class="grid-x grid-margin-x"
+  [ngStyle]="{'border': !(emptySearchResults$ | async) ?'solid thin #ececec' : 'none' }">
+
+  <mat-dialog-content [ngClass]="{'proplus': isLoggedIn}" class="cell medium-12 mat-typography"
+    *ngIf="!(emptySearchResults$ | async); else EmptySearchResults" style="width: 77.775vw; height: 66vh; 
+    padding:0; margin: 0">
+
+    <!-- CONTAINER -->
+    <div class="grid-x grid-margin-x">
+
+      <!-- SIDEBAR -->
+      <div class="cell medium-3" *ngIf="showFacetSidebar && !(productDetails$ | async)" style="height: 60vh">
+
+        <!-- SEARCH -->
+        <div style="padding: 0">
+          <div class="grid-x grid-margin-x">
+            <div class="cell medium-12" style="background: #025f9e; height: 110px;">
+              <app-search-form></app-search-form>
+              <div style="height: 3px">
+                <mat-progress-bar *ngIf="isLoadingSearch$ | async" mode="indeterminate"
+                  style="margin-top: 38px;"></mat-progress-bar>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FACETS -->
+        <div style="font-size: .85rem; overflow-y: scroll; overflow-x: hidden; height: 46vh">
+          <div id="facet-results" class="grid-x" style="height: 50vh">
+            <app-search-modal-facets class="cell" [searchFacets]="searchFacets$"></app-search-modal-facets>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPINNER Search Results -->
+      <div class="cell-medium-12" *ngIf="(isLoadingSearch$ | async) && (!showFacetSidebar)">
+        <div style="position: relative; top: 22.5vh; left: 38vw;">
+          <mat-spinner diameter=" 90"></mat-spinner>
+        </div>
+      </div>
+
+      <!-- RESULTS Search -->
+      <div class="cell medium-9"
+        style="height: 60vh; overflow-x: hidden; margin-left: 2px; padding-right: 10px; padding-top: 8px;"
+        *ngIf="!(productDetails$ | async)">
+
+        <!-- SPINNER Search Results with Facets -->
+        <div class="cell medium-12" style="position: relative; top: 22vh; left: 25vw;"
+          *ngIf="(isLoadingSearch$ | async) && (showFacetSidebar)">
+          <mat-spinner diameter=" 90"></mat-spinner>
+        </div>
+
+        <!-- CARDS -->
+        <app-search-modal-results [searchResults]="searchResults$.value" [data]="data" [fromModal]="fromModal"
+          *ngIf="!(productDetails$ | async) && (searchResults$ | async) && !(isLoadingSearch$ | async)"></app-search-modal-results>
+      </div>
+
+      <!-- DETAILS MODE -->
+      <div class="cell medium-12" *ngIf="(productDetails$ | async)">
+        <app-search-modal-details [productDetails]="productDetails$.value" [fromModal]="fromModal"
+          [data]="data"></app-search-modal-details>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>
+
+<!-- PAGINATION -->
+<div class="grid-x grid-padding-y" style="float: right" *ngIf="!(productDetails$ | async)">
+  <app-search-pagination [page]="pagination$" [pagination]="pagination$"
+    [disablePagination]="(productDetails$ | async) || (isLoadingSearch$ | async)"></app-search-pagination>
+</div>
+
+<!-- EMPTY SEARCH RESULTS MESSAGE -->
+<ng-template #EmptySearchResults>
+  <div style="min-width: 70vw">
+    <app-search-modal-empty-results></app-search-modal-empty-results>
+  </div>
+</ng-template>

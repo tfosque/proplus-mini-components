@@ -1,0 +1,25 @@
+.label-text-item {
+    width: 120px;
+    margin: auto;
+    font-weight: bold;
+    font-size: 1.1rem;
+    line-height: 1.38rem;
+}
+
+div mat-icon {
+    color: #025f9e;
+    font-weight: bold;
+    font-size: 1.75rem;
+}
+
+.step-btn {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 575px) {
+    .label-text-item {
+        width: auto;
+        line-height: normal;
+        font-size: 0.75rem;
+    }
+}

@@ -1,0 +1,826 @@
+<header class="main-nav" id="main-nav">
+    <ng-container [brManageMenuButton]="menuDocument"></ng-container>
+    <!-- Top Level Menus -->
+    <div class="top-hat">
+        <div class="grid-container">
+            <div class="top-hat__content-container">
+                <div class="top-hat__left-container"></div>
+                <!-- My Account -->
+                <div class="top-hat__right-container show-for-large">
+                    <ul class="top-hat__links">
+                        <!-- SPANISH ENGLISH Pro+ -->
+                        <li
+                            class="top-hat__link"
+                            *ngIf="(spanishRef | async)?.showSpanishBtn"
+                        >
+                            <button mat-button class="dropbtn">
+                                <a (click)="goToSpanish()"> Español </a>
+                            </button>
+                        </li>
+                        <li
+                            class="top-hat__link"
+                            *ngIf="(spanishRef | async)?.showEnglishBtn"
+                        >
+                            <button mat-button class="dropbtn">
+                                <a (click)="goToEnglish()" translate="no" lang="en"> English </a>
+                            </button>
+                        </li>
+
+                        <li class="top-hat__link">
+                            <div class="dropdown">
+                                <button mat-button class="dropbtn">
+                                    <b>My Account &#9662;</b>
+                                </button>
+                                <!-- My Account Menu Items -->
+                                <div
+                                    class="dropdown-content"
+                                    *ngIf="
+                                        myAccountMenuItems$
+                                            | async as myAccountMenuItems
+                                    "
+                                >
+                                    <ng-container
+                                        *ngFor="let m of myAccountMenuItems"
+                                    >
+                                        <ng-container>
+                                            <a
+                                                [routerLink]="m.address"
+                                                (click)="isReload(m.address)"
+                                            >
+                                                <mat-icon>{{
+                                                    m.icon
+                                                }}</mat-icon>
+                                                <span style="margin-left: 5px">
+                                                    {{ m.text }}</span
+                                                >
+                                            </a>
+                                        </ng-container>
+                                    </ng-container>
+
+                                    <a (click)="logout()">
+                                        <mat-icon>transit_enterexit</mat-icon>
+                                        <span style="margin-left: 5px"
+                                            >Logout</span
+                                        >
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- My Branch -->
+                        <li class="top-hat__link">
+                            <div class="dropdown">
+                                <button mat-button class="dropbtn">
+                                    <b>My Branch &#9662;</b>
+                                </button>
+                                <div class="dropdown-content">
+                                    <div class="branch-info-menu">
+                                        <div><b>Branch Information</b></div>
+                                        <hr />
+                                        <div>
+                                            <b>{{ branchInfo?.account }}</b>
+                                        </div>
+                                        <div>{{ branchInfo?.branchName }}</div>
+                                        <div>{{ branchInfo?.address }}</div>
+                                        <div>{{ branchInfo?.cityLine }}</div>
+                                        <div>
+                                            <span>{{
+                                                branchInfo?.branchPhone | phone
+                                            }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Pro+ Tools -->
+
+                        <li class="top-hat__link">
+                            <div class="dropdown">
+                                <button mat-button class="dropbtn">
+                                    <b>Pro+ Tools &#9662;</b>
+                                </button>
+                                <div
+                                    class="dropdown-content"
+                                    *ngIf="
+                                        proToolsMenuItems$
+                                            | async as proToolsMenuItems
+                                    "
+                                >
+                                    <ng-container
+                                        *ngFor="let m of proToolsMenuItems"
+                                    >
+                                        <a
+                                            *ngIf="m.internalUrl"
+                                            [routerLink]="[m.internalUrl]"
+                                            (click)="isReload(m.internalUrl)"
+                                        >
+                                            {{ m.text }}
+                                        </a>
+                                        <a
+                                            *ngIf="m.externalUrl"
+                                            [href]="m.externalUrl"
+                                            target="{{
+                                                m.newWindow ? '_blank' : '_self'
+                                            }}"
+                                        >
+                                            {{ m.text }}
+                                        </a>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main Toolbar -->
+    <div class="main-nav__top-container">
+        <div class="grid-container main-nav__top-wrap">
+            <div class="main-nav__left-wrap">
+                <!-- Beacon Logo -->
+                <a
+                    class="main-nav__logo"
+                    [routerLink]="['/proplus/home']"
+                    (click)="isReloadHomePage('/proplus/home')"
+                >
+                    <img src="{{ logoSrc }}" alt="{{ logoAltText }}" />
+                </a>
+                <!-- Search Textbox -->
+                <form
+                    class="show-for-large main-nav__desktop-search-form"
+                    name="search-form"
+                >
+                    <label class="main-nav__search-input">
+                        <span class="show-for-sr">{{ searchText }}</span>
+                        <input
+                            (keyup)="onKeyPress($event)"
+                            type="text"
+                            placeholder="{{ searchText }}"
+                            [(ngModel)]="searchTerm"
+                            name="searchTerm"
+                            required
+                            [matAutocomplete]="auto"
+                        />
+                        <mat-autocomplete
+                            [panelWidth]="autoCompleteWidth"
+                            #auto="matAutocomplete"
+                        >
+                            <ng-container
+                                *ngIf="searchResults$ | async as results"
+                            >
+                                <ng-container
+                                    *ngIf="!results.message; else message"
+                                >
+                                    <mat-option
+                                        class="auto"
+                                        *ngFor="let filter of results.items"
+                                        [value]="filter.baseProductName"
+                                        [innerHtml]="filter.baseProductName"
+                                        [routerLink]="[filter.link]"
+                                    >
+                                    </mat-option>
+                                </ng-container>
+                                <ng-template #message>
+                                    <mat-option [disabled]="true">
+                                        {{ results.message }}
+                                    </mat-option>
+                                </ng-template>
+                            </ng-container>
+                        </mat-autocomplete>
+                    </label>
+                    <button
+                        [attr.aria-label]="searchText"
+                        type="submit"
+                        class="main-nav__search-submit"
+                        (click)="submitSearch()"
+                    >
+                        <span class="icon-search" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+            <!-- Find a Store -->
+            <div id="menu-labels-icons" class="main-nav__right-wrap">
+                <ul style="margin-top: 12px;" class="main-nav__mobile-icons large-mat-icons">
+                    <li
+                        class="main-nav__icon-item show-for-large"
+                        *ngIf="account"
+                    >
+                        <div
+                            *ngIf="accountList.length > 1; else singleAccount"
+                            style="
+                                color: white;
+                                font-size: 0.75rem;
+                                max-height: 83px;
+                            "
+                            [matMenuTriggerFor]="accountMenu"
+                        >
+                            <div
+                                style="
+                                    text-overflow: ellipsis;
+                                    max-width: 15rem;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                "
+                            >
+                                <b
+                                    >{{ account?.accountLegacyId }} -
+                                    {{ account?.accountName }}</b
+                                >
+                            </div>
+                            <div
+                                style="
+                                    text-overflow: ellipsis;
+                                    max-width: 15rem;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                "
+                            >
+                                {{ sessionInfo?.accountBranch?.branchName }}
+                            </div>
+                            <!-- <div style="text-overflow: ellipsis; max-width: 15rem; white-space: nowrap; overflow: hidden;">
+                <strong>Phone: </strong>
+                <span>{{sessionInfo?.accountBranch?.branchPhone | phone}}</span>
+              </div> -->
+                            <div>
+                                <a
+                                    style="
+                                        font-size: 12px;
+                                        text-align: right;
+                                        text-decoration: underline;
+                                    "
+                                    >Switch Account</a
+                                >
+                            </div>
+                        </div>
+                    </li>
+                    <li class="hide-for-large">
+                        <input
+                            (keyup)="onKeyPress($event)"
+                            type="text"
+                            style="padding: 4px"
+                            placeholder="{{ searchText }}"
+                            [(ngModel)]="searchTerm"
+                            name="searchTerm"
+                            ngModel
+                            required
+                        />
+                        <button
+                            [attr.aria-label]="searchText"
+                            class="main-nav__search-submit"
+                            type="submit"
+                            (click)="submitSearch()"
+                        >
+                            <span
+                                class="icon-search"
+                                aria-hidden="true"
+                                style="padding: 12px"
+                            ></span>
+                        </button>
+                    </li>
+                    <li class="main-nav__icon-item show-for-large">
+                        <a
+                            [attr.aria-label]="contactUs"
+                            [routerLink]="[
+                                'proplus',
+                                'accounts',
+                                accountId,
+                                'orders'
+                            ]"
+                            (click)="
+                                isReload([
+                                    'proplus',
+                                    'accounts',
+                                    accountId,
+                                    'orders'
+                                ])
+                            "
+                        >
+                            <div class="main-nav__icon-block">
+                                <mat-icon>list</mat-icon>
+                                <span class="main-nav__icon-block__text"
+                                    >Order History</span
+                                >
+                            </div>
+                        </a>
+                    </li>
+                    <li class="main-nav__icon-item show-for-large">
+                        <a
+                            [attr.aria-label]="contactUs"
+                            [routerLink]="['proplus', 'templates']"
+                            (click)="isReload(['proplus', 'templates'])"
+                        >
+                            <div class="main-nav__icon-block">
+                                <mat-icon>check_circle_outline</mat-icon>
+                                <span class="main-nav__icon-block__text"
+                                    >Templates</span
+                                >
+                            </div>
+                        </a>
+                    </li>
+                    <li class="main-nav__icon-item show-for-large">
+                        <a
+                            [attr.aria-label]="contactUs"
+                            [routerLink]="['proplus', 'shopping-cart']"
+                        >
+                            <div class="main-nav__icon-block">
+                                <mat-icon
+                                [matBadgeHidden]="(cartCnt$ | async) ===  0 || (cartCnt$ | async) === null"
+                                 matBadgeSize="medium" 
+                                [matBadge]="cartCnt$ | async"                                 
+                                >shopping_cart</mat-icon>
+                                <span id="mat-badge-content-0"class="main-nav__icon-block__text"
+                                    >Cart</span
+                                >
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Mobile Search Bar -->
+        <form
+            *ngIf="mobileSearchActive"
+            class="hide-for-large main-nav__mobile-search-form"
+            name="search-form-mobile"
+        >
+            <label class="main-nav__search-input">
+                <span class="show-for-sr">{{ searchText }}</span>
+                <input
+                    (keyup)="onKeyPress($event)"
+                    type="text"
+                    placeholder="{{ searchText }}"
+                    [(ngModel)]="searchTerm"
+                    name="searchTerm"
+                    ngModel
+                    required
+                />
+            </label>
+            <button
+                class="main-nav__search-submit"
+                type="submit"
+                (click)="submitSearch()"
+            >
+                <span class="icon-search"></span>
+            </button>
+        </form>
+    </div>
+    <!-- Dropdown Menu -->
+    <nav class="main-nav__nav" #navContainer>
+        <div class="grid-container main-nav__nav-container" #navItemContainer>
+            <ng-container *ngIf="isLargeScreen">
+                <ul class="main-nav__nav-items">
+                    <li
+                        class="main-nav__nav-item"
+                        *ngFor="let navItem of navItems; index as i"
+                        [ngClass]="{ 'is-active': i === activeIndex }"
+                        #navItemRef
+                    >
+                        <a
+                            *ngIf="!navItem.isExternal; else externalLink"
+                            class="main-nav__primary-link"
+                            [routerLink]="
+                                isLargeScreen || !isBrowser ? navItem.url : []
+                            "
+                            id="main-nav-mega-menu-label-{{ i }}"
+                            (click)="
+                                isLargeScreen
+                                    ? closeAllMenus()
+                                    : setActiveMegaMenuAndNavItem(
+                                          i,
+                                          navItemRef,
+                                          false,
+                                          true
+                                      )
+                            "
+                        >
+                            {{ navItem.title }}
+                        </a>
+                        <ng-template #externalLink>
+                            <a
+                                class="main-nav__primary-link"
+                                [href]="
+                                    isLargeScreen || !isBrowser
+                                        ? (navItem.url | protocol)
+                                        : ''
+                                "
+                                id="main-nav-mega-menu-label-{{ i }}"
+                                (click)="
+                                    isLargeScreen
+                                        ? closeAllMenus()
+                                        : setActiveMegaMenuAndNavItem(
+                                              i,
+                                              navItemRef,
+                                              false,
+                                              true
+                                          )
+                                "
+                            >
+                                {{ navItem.title }}
+                            </a>
+                        </ng-template>
+                    </li>
+                </ul>
+                <!-- <div
+                    [ngClass]="{ visible: isOverflowing }"
+                    class="main-nav__more-link"
+                >
+                    <a
+                        class="button primary"
+                        (click)="toggleMenuActive($event)"
+                    >
+                        {{ 'More' | translations: 'more' }}
+                        <span class="icon-chevron-down"></span>
+                    </a>
+                </div> -->
+            </ng-container>
+            <ng-container *ngIf="!isLargeScreen">
+                <ul class="main-nav__nav-items">
+                    <li class="main-nav__nav-item">
+                        <a
+                            href="#"
+                            class="main-nav__primary-link"
+                            (click)="toggleMenuActive($event)"
+                        >
+                            <span class="material-icons">menu</span>
+                        </a>
+                    </li>
+                    <!-- Order History, Templages, Cart -->
+                    <li class="main-nav__nav-item">
+                        <a
+                            href="#"
+                            class="main-nav__primary-link"
+                            [attr.aria-label]="contactUs"
+                            [routerLink]="[
+                                'proplus',
+                                'accounts',
+                                accountId,
+                                'orders'
+                            ]"
+                            (click)="
+                                isReload([
+                                    'proplus',
+                                    'accounts',
+                                    accountId,
+                                    'orders'
+                                ])
+                            "
+                            >Order History</a
+                        >
+                    </li>
+                    <li class="main-nav__nav-item">
+                        <a
+                            href="#"
+                            class="main-nav__primary-link"
+                            [attr.aria-label]="contactUs"
+                            [routerLink]="['proplus', 'templates']"
+                            (click)="isReload(['proplus', 'templates'])"
+                            >Templates</a
+                        >
+                    </li>
+                    <li class="main-nav__nav-item">
+                        <a
+                            href="#"
+                            class="main-nav__primary-link"
+                            [attr.aria-label]="contactUs"
+                            [routerLink]="['proplus', 'shopping-cart']"
+                        >
+                            <span class="material-icons">shopping_cart</span>
+                        </a>
+                    </li>
+                </ul>
+            </ng-container>
+        </div>
+    </nav>
+
+    <mat-menu #accountMenu="matMenu">
+        <button
+            mat-menu-item
+            *ngFor="let a of accountList"
+            (click)="switchAccount(a)"
+            [ngClass]="{ inactive: a.isAccountClosed || false }"
+        >
+            <mat-icon>location_on</mat-icon>{{ a?.accountLegacyId }} -
+            {{ a?.accountName }}
+        </button>
+    </mat-menu>
+
+    <!-- Responsive Hamburger Menu -->
+    <div class="main-nav__menu" [ngClass]="{ 'menu-active': menuActive }">
+        <div class="main-nav__menu-close-bar" *ngIf="menuActive">
+            <span class="main-nav__menu-text">
+                {{ 'Menu' | translations: 'menu' }}
+            </span>
+            <a (click)="toggleMenuActive($event)">
+                <span class="icon-close"></span>
+            </a>
+        </div>
+        <div
+            class="main-nav__all-categories"
+            *ngIf="activeIndex === -1 && menuActive"
+        >
+            <!-- Shop By Category -->
+            <ul class="main-nav__category-list">
+                <li
+                    class="main-nav__category-item"
+                    style="
+                        text-transform: uppercase;
+                        color: #fff;
+                        background: #323640;
+                    "
+                >
+                    Shop By Category
+                </li>
+                <li
+                    class="main-nav__category-item"
+                    *ngFor="let navItem of navItems; index as i"
+                >
+                    <a (click)="setActiveMegaMenu(i)">
+                        {{ navItem.title }}
+                        <span class="icon-chevron-right"></span>
+                    </a>
+                </li>
+            </ul>
+            <!-- Account and Features -->
+            <ul class="vertical menu main-nav__category-list">
+                <li
+                    class="main-nav__category-item"
+                    style="
+                        text-transform: uppercase;
+                        color: #fff;
+                        background: #323640;
+                    "
+                >
+                    Account & Features
+                </li>
+                <!-- SWITCH ACCOUNT -->
+                <li
+                    class="main-nav__category-item"
+                    style="border-bottom: solid 1px #c3c3c3"
+                    [ngClass]="{ hide: accountList.length < 0 }"
+                >
+                    <a
+                        (click)="mySwitchAccountCollapseToggle($event)"
+                        *ngIf="accountList.length > 1"
+                        >Switch Account -</a
+                    >
+                    <div>
+                        <span style="color: #9a9898">Current Branch:</span>
+                        <span style="color: #025f9e"
+                            >&nbsp;({{ branchInfo?.branchName }})</span
+                        >
+                    </div>
+                    <!-- List of Accounts -->
+                    <ul
+                        class="nested vertical menu nested-menu-override-padding"
+                        [ngClass]="{ hide: !mySwitchAccountCollapse }"
+                    >
+                        <li
+                            *ngFor="let a of accountList"
+                            (click)="switchAccount(a)"
+                            style="margin: 10px 0px"
+                            [ngClass]="{ inactive: a.isAccountClosed || false }"
+                        >
+                            {{ a?.accountName }} -
+                            <small>{{ a?.accountLegacyId }}</small>
+                        </li>
+                    </ul>
+                </li>
+                <!-- My Account -->
+                <li
+                    class="main-nav__category-item"
+                    style="border-bottom: solid 1px #c3c3c3"
+                >
+                    <a href="#" (click)="myAccountCollapseToggle($event)">
+                        My Account
+                    </a>
+                    <!-- My Account MenuItems -->
+                    <ul
+                        class="nested vertical menu nested-menu-override-padding"
+                        [ngClass]="{ hide: !myAccountCollapse }"
+                        *ngIf="
+                            myAccountMenuItems$ | async as myAccountMenuItems
+                        "
+                    >
+                        <!-- TODO configure permissions for mobile -->
+                        <ng-container *ngFor="let link of myAccountMenuItems">
+                            <li>
+                                <a
+                                    [routerLink]="link.address"
+                                    (click)="navigateUrl(link.address)"
+                                    >{{ link.text }}</a
+                                >
+                            </li>
+                            <!-- TODO Remove -->
+                            <!--   <ng-template #defMenuCompact>
+                                <li>
+                                    <a
+                                        [routerLink]="link.address"
+                                        (click)="navigateUrl(link.address)"
+                                        >{{ link.text }}</a
+                                    >
+                                </li>
+                            </ng-template> -->
+                        </ng-container>
+                    </ul>
+                </li>
+                <!-- My Branch  -->
+                <li
+                    class="main-nav__category-item"
+                    style="border-bottom: solid 1px #c3c3c3"
+                >
+                    <a href="#" (click)="myBranchCollapseToggle($event)">
+                        My Branch
+                    </a>
+                    <ul
+                        class="nested vertical menu nested-menu-override-padding"
+                        [ngClass]="{ hide: !myBranchCollapse }"
+                    >
+                        <li>
+                            <div>
+                                <b>{{ branchInfo?.account }}</b>
+                            </div>
+                            <div>
+                                <span>{{ branchInfo?.branchName }}</span>
+                            </div>
+                            <div>{{ branchInfo?.address }}</div>
+                            <div>{{ branchInfo?.cityLine }}</div>
+                            <div>
+                                <span>{{
+                                    branchInfo?.branchPhone | phone
+                                }}</span>
+                            </div>
+                        </li>
+                        <li *ngIf="accountList.length > 1; else singleAccount">
+                            <a href="#">Switch Account</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Logout -->
+                <li
+                    class="main-nav__category-item"
+                    style="border-bottom: solid 1px #c3c3c3"
+                >
+                    <a (click)="logout()"> Logout </a>
+                </li>
+                <!-- My ProTools Full -->
+                <li
+                    class="main-nav__category-item"
+                    style="border-bottom: solid 1px #c3c3c3"
+                    *ngIf="proToolsMenuItems$ | async as proToolsMenuItems"
+                >
+                    <a href="#" (click)="proPlusToolsCollapseToggle($event)">
+                        Pro+ Tools
+                    </a>
+                    <ul
+                        class="nested vertical menu nested-menu-override-padding"
+                        *ngFor="let m of proToolsMenuItems"
+                        [ngClass]="{ hide: !proPlusToolsCollapse }"
+                    >
+                        <li>
+                            <a
+                                *ngIf="m.internalUrl"
+                                [routerLink]="m.internalUrl"
+                            >
+                                {{ m.text }}
+                            </a>
+                            <a
+                                *ngIf="m.externalUrl"
+                                [href]="m.externalUrl"
+                                target="{{ m.newWindow ? '_blank' : '_self' }}"
+                            >
+                                {{ m.text }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Careers About Contact -->
+            <ul class="main-nav__category-list" style="background: #323640">
+                <!-- SPANISH ENGLISH Pro+ -->
+                <li
+                    class="main-nav__category-item"
+                    *ngIf="(spanishRef | async)?.showSpanishBtn"
+                >
+                    <a style="color: #fff" (click)="goToSpanish()"> Español </a>
+                </li>
+                <li
+                    class="main-nav__category-item"
+                    *ngIf="(spanishRef | async)?.showEnglishBtn"
+                >
+                    <a style="color: #fff" (click)="goToSpanish()"> Español </a>
+                </li>
+                <li
+                    class="main-nav__category-item"
+                    *ngFor="let link of utilityLinks"
+                >
+                    <a
+                        style="color: #fff"
+                        *ngIf="!link.isExternal; else externalLink"
+                        (click)="closeAllMenus()"
+                        [routerLink]="link.url"
+                    >
+                        {{ link.title }}
+                    </a>
+                    <ng-template #externalLink>
+                        <a
+                            style="color: #fff"
+                            (click)="closeAllMenus()"
+                            [href]="link.url | protocol"
+                        >
+                            {{ link.title }}
+                        </a>
+                    </ng-template>
+                </li>
+                <!-- Find Store -->
+                <li
+                    class="main-nav__category-item"
+                    style="text-align: center"
+                    style="text-align: center"
+                >
+                    <a
+                        *ngIf="
+                            !findAStoreIsExternal;
+                            else moreExternalFindAStoreLink
+                        "
+                        [routerLink]="findAStoreLink"
+                        (click)="closeAllMenus()"
+                        class="button primary main-nav__find-a-store-mobile"
+                        style="color: #fff; display: block"
+                    >
+                        {{ findAStoreText }}
+                    </a>
+                    <ng-template #moreExternalFindAStoreLink>
+                        <a
+                            *ngIf="findAStoreLink"
+                            [href]="findAStoreLink | protocol"
+                            (click)="closeAllMenus()"
+                            class="button primary main-nav__find-a-store-mobile"
+                            style="color: #fff; display: block"
+                        >
+                            {{ findAStoreText }}
+                        </a>
+                    </ng-template>
+                </li>
+            </ul>
+        </div>
+        <!--  -->
+        <div
+            class="main-nav__menu-back-bar"
+            *ngIf="activeIndex > -1 && menuActive"
+        >
+            <a (click)="setActiveMegaMenu(-1)">
+                <span class="icon-chevron-left"></span>
+                <span class="main-nav__back-text">
+                    {{ 'All Categories' | translations: 'all-categories' }}
+                </span>
+            </a>
+        </div>
+        <ng-container *ngFor="let navItem of navItems; index as i">
+            <app-main-nav-mega-menu
+                class="main-nav__mega-menu"
+                [ngClass]="{ 'is-active': i === activeIndex }"
+                (mouseenter)="setActiveMegaMenuAndNavItem(i, null, true)"
+                (mouseleave)="setActiveMegaMenuAndNavItem(-1)"
+                attr.aria-labelledby="main-nav-mega-menu-label-{{ i }}"
+                [ngStyle]="{
+                    'left.px':
+                        isLargeScreen && !menuActive ? megaMenuHoriPosition : 0
+                }"
+                [isActive]="i === activeIndex"
+                [menuActive]="menuActive"
+                [title]="navItem.title"
+                [titleUrl]="navItem.url"
+                [titleIsExternal]="navItem.isExternal"
+                [menuSections]="navItem.megaMenu.megaMenuSections"
+                [marketingBlock]="navItem.megaMenu.marketingBlock"
+                (navigated)="closeAllMenus()"
+            ></app-main-nav-mega-menu>
+        </ng-container>
+    </div>
+    <!-- <app-dump-grid [input]="searchResults$"></app-dump-grid> -->
+</header>
+
+<ng-template #singleAccount>
+    <div style="color: white; font-size: 0.75rem; max-height: 83px">
+        <div
+            style="
+                text-overflow: ellipsis;
+                max-width: 15rem;
+                white-space: nowrap;
+                overflow: hidden;
+            "
+        >
+            <b>{{ account?.accountLegacyId }} - {{ account?.accountName }}</b>
+        </div>
+        <div
+            style="
+                text-overflow: ellipsis;
+                max-width: 15rem;
+                white-space: nowrap;
+                overflow: hidden;
+            "
+        >
+            {{ sessionInfo?.accountBranch?.branchName }}
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,75 @@
+@import '../../../sass/mixins';
+@import '../../../sass/variables';
+
+.selected-facets {
+    border-bottom: 1px solid $color-borders;
+    border-top: 1px solid $color-borders;
+    margin-bottom: rem-calc(24px);
+    padding: rem-calc(14px 0 16px);
+
+    &__title {
+        color: $color-text-emphasis;
+        font-size: rem-calc(15px);
+        font-weight: $font-weight-heavy;
+        line-height: rem-calc(24px);
+        margin-bottom: 0;
+        text-transform: uppercase;
+    }
+
+    &__facet-list {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+    }
+
+    &__facet-item {
+        flex-shrink: 0;
+        margin-right: rem-calc(8px);
+        margin-top: rem-calc(10px);
+    }
+
+    &__facet-value {
+        margin-left: rem-calc(5px);
+    }
+
+    &__facet-link {
+        align-items: center;
+        border: 1px solid $color-primary;
+        color: $color-primary;
+        display: flex;
+        flex-wrap: nowrap;
+        font-size: rem-calc(15px);
+        line-height: rem-calc(18px);
+        padding: rem-calc(11px 12px 10px 12px);
+        width: 100%;
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            background-color: rgba($color-primary, 0.1);
+        }
+    }
+
+    &__close-icon {
+        font-size: rem-calc(11px);
+        line-height: rem-calc(11px);
+        margin-left: rem-calc(12px);
+    }
+
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        border-top: none;
+        padding-top: 0;
+
+        &__facet-link {
+            font-size: rem-calc(14px);
+            line-height: rem-calc(17px);
+            padding: rem-calc(6px 8px 5px 8px);
+        }
+        &__close-icon {
+            font-size: rem-calc(9px);
+            line-height: rem-calc(9px);
+            margin-left: rem-calc(12px);
+        }
+    }
+}

@@ -1,0 +1,47 @@
+.custom-checkbox {
+    .mat-checkbox-label {
+        color: $color-text-emphasis;
+        font-size: rem-calc(14.75px);
+        line-height: rem-calc(18px);
+    }
+
+    .mat-checkbox-layout {
+        white-space: normal !important;
+        vertical-align: baseline;
+    }
+
+    .mat-checkbox-frame {
+        border: 1px solid $color-borders;
+        border-radius: 0;
+    }
+
+    &.mat-accent {
+        .mat-checkbox-background {
+            background-color: #fff;
+            border: 1px solid $color-borders;
+            border-radius: 0;
+        }
+
+        &.mat-checkbox-checked {
+            .mat-checkbox-background {
+                background-color: $color-primary;
+                border: none;
+            }
+        }
+    }
+
+    &__count {
+        color: $color-text-primary;
+        font-size: rem-calc(14px);
+        line-height: rem-calc(19px);
+    }
+}
+
+.finder {
+    .custom-checkbox {
+        .mat-checkbox-inner-container {
+            margin-right: rem-calc(6px);
+            margin-top: 1px;
+        }
+    }
+}

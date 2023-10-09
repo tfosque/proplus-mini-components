@@ -1,0 +1,113 @@
+.header-title {
+    font-family: "titling-gothic-fb-compressed-bold", "arial", sans-serif;
+    color: #025F9E;
+    font-size: 2em;
+    text-transform: uppercase;
+    margin: 0.67em 0 0.25em 0;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.beacon-blue {
+    color: #285D99;
+}
+
+.bottom-border {
+    border-bottom: 1px solid #285D99;
+}
+
+.bottom-small-padding {
+    padding-bottom: 8px;
+}
+
+div.link a:hover {
+    text-decoration: none;
+}
+
+.large-top-margin {
+    margin-top: 100px;
+}
+
+.rebate-detail-group {
+    .action-buttons {
+        margin: 1ex 0ex;
+    }
+
+    ::ng-deep .mat-tab-label {
+        border-color: #C7C9C8;
+        border-style: solid;
+        border-width: 1px 1px 1px 0;
+        line-height: 1.2em;
+        padding: 1ex 2ex;
+        opacity: 1;
+        width: 200px;
+        height: 64px;
+    }
+
+    ::ng-deep .mat-tab-label:first-child {
+        border-width: 1px;
+    }
+
+    ::ng-deep .mat-tab-label-active {
+        background-color: #33363F;
+        color: white;
+        border: none;
+    }
+
+    ::ng-deep .mat-tab-header {
+        border-bottom: none;
+        margin-left: 100px;
+    }
+}
+
+::ng-deep .mat-tab-body-content {
+    overflow: hidden !important;
+}
+
+.large-left-margin {
+    margin-left: 100px;
+}
+
+.header {
+    font-weight: 700;
+    color: #285D99;
+    text-transform: uppercase;
+    font-family: "titling-gothic-fb-compressed-bold", "arial", sans-serif;
+    font-size: 28px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.unenrollmentActions {
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+    ::ng-deep .mat-raised-button {
+        text-transform: uppercase;
+        width: 170px;
+    }
+
+    ::ng-deep .mat-button-wrapper {
+        font-weight: 800;
+    }
+
+    .error-btn {
+        background-color: #EA3223;
+        color: white;
+    }
+
+    ::ng-deep .mat-dialog-actions .mat-button-base+.mat-button-base {
+        margin-left: 16px;
+    }
+}
+
+.custom-modalbox {
+    ::ng-deep .mat-dialog-container {
+        padding: 30px 60px !important;
+    }
+}
+

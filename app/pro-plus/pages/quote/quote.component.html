@@ -1,0 +1,79 @@
+<!-- <div class="loading-container" *ngIf="showProgress">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div> -->
+<div class="create-quote">
+    <div class="create-quote_title">
+        <div class="grid-x grid-margin-x">
+            <div class="cell auto">
+                <h1 style="margin-bottom: 0px">Create Quote</h1>
+            </div>
+        </div>
+    </div>
+    <mat-divider style="margin-bottom: 0px" class="divider"></mat-divider>
+    <form [formGroup]="createQuoteForm">
+        <div class="grid-x grid-margin-x">
+            <div class="cell auto">
+                <h3>Step 1:</h3>
+            </div>
+        </div>
+        <div class="grid-x">
+            <div class="cell medium-5 large-5">
+                <mat-form-field class="full-width" floatLabel="auto">
+                    <input
+                        matInput
+                        placeholder="Quote Name"
+                        maxlength="25"
+                        formControlName="quoteName"
+                        required
+                    />
+                </mat-form-field>
+                <form-control-messages
+                    [control]="createQuoteForm.get('quoteName')"
+                ></form-control-messages>
+            </div>
+        </div>
+        <mat-divider style="margin-bottom: 0px" class="divider"></mat-divider>
+        <div class="grid-x grid-margin-x">
+            <div class="cell auto">
+                <h3>Step 2:</h3>
+            </div>
+        </div>
+        <div class="create-quote_cta">
+            <div class="grid-container fluid">
+                <div class="grid-x grid-margin-x">
+                    <div class="cell medium-5">
+                        <button
+                            color="secondary"
+                            (click)="redirectSummary()"
+                            mat-raised-button
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="cell medium-4">
+                        <button
+                            *ngIf="permissionToUpload"
+                            color="emphasis"
+                            (click)="redirectUpload()"
+                            mat-raised-button
+                        >
+                            <mat-icon>upload_file</mat-icon> Upload Quote
+                        </button>
+                    </div>
+                    <div class="cell medium-3">
+                        <button
+                            type="submit"
+                            [disabled]="!createQuoteForm.valid"
+                            color="primary"
+                            (keyup.enter)="redirectCreate()"
+                            (click)="redirectCreate()"
+                            mat-raised-button
+                        >
+                            Create Quote
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

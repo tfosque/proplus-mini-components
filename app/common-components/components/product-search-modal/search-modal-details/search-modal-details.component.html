@@ -1,0 +1,115 @@
+<mat-expansion-panel [expanded]="true" (opened)="onHandleOpen()"><!-- REVIEW  -->
+
+  <!-- CTAS -->
+  <div class="grid-x grid-margin-x" [ngStyle]="{'border-bottom': true ? 'solid thin #e5e3e3' : 'none'}"
+    style="padding-bottom: 15px; margin-bottom: 15px; ">
+
+    <!-- BACK -->
+    <div class="cell medium-6">
+      <button mat-stroked-button class="modal-button" style="margin-top: 10px; font-size: .95rem; color: #025f9e;"
+        (click)="[closeDetailsView()]">
+        <mat-icon style="font-weight: bold !important; margin-top: -3px;">arrow_back</mat-icon> BACK</button>
+    </div>
+
+    <!-- SELECT PRODUCT ADD TO TEMPLATE -->
+    <div class="cell medium-6" style="text-align: right;">
+      <button mat-raised-button class="modal-button" style="margin-top: 10px; font-size: .9rem; font-weight: bold;"
+        color="primary" [mat-dialog-close]="productDetails$.value" (click)="addSelectedItem()">
+        SELECT PRODUCT <mat-icon style="margin-top: -4px; font-weight: bold;">add</mat-icon></button>
+    </div>
+  </div>
+
+  <!-- DETAILS -->
+  <div class="grid-x grid-margin-x" style="overflow-y: scroll; height: 50vh">
+    <h1 style="font-weight: bold; font-size: 1.8rem; text-transform: capitalize; height: 66px" class="cell"
+      [innerHtml]="(productDetails$ | async)?.product?.productName"></h1>
+
+    <!-- HERO -->
+    <div class="cell medium-3" style="text-align: center">
+      <div *ngIf="!(isLoadingSelectedSku$ | async); else HeroSpinner">
+        <img appImagePreload [default]="(productDetails$ | async)?.productOnErrorImage | errorImage : '/assets/images/image-not-available.svg'
+        " [src]="createSkuImage((productDetails$ | async))" alt="" style="border-radius: 2px;">
+        <p style="padding: 6px 0 0 0; font-weight: bold;">#{{ (productDetails$ | async)?.currentSKU?.itemNumber }}</p>
+      </div>
+      <!-- <app-img-fav-icon [element]="productDetails$.value" *ngIf="!(isLoadingSelectedSku$ | async); else HeroSpinner"
+          [fromPage]="data.fromPage" [fromModal]="data.fromModal" size="large"
+          [account]="accountInfo$.value"></app-img-fav-icon> -->
+    </div>
+
+
+    <div class="cell medium-8">
+      <div class="grid-x grid-margin-x grid-margin-y">
+        <h1 *ngIf="(productDetails$ | async)?.currentSKU?.unitPrice !== 0; else Price" class="cell">
+          {{(productDetails$ | async)?.currentSKU?.unitPrice | currency}} /
+          {{ (productDetails$ | async)?.currentSKU?.currentUOM }}
+        </h1>
+        <ng-template #Price>
+          <h3 class="cell"> Price will be calculated at invoicing.</h3>
+        </ng-template>
+
+        <!-- TODO Handle hundreds of skus with show more... 
+            if > 21 then show more
+          -->
+        <!-- THUMBS SKULIST-->
+        <ng-container
+          *ngFor="let sku of (showAllSkus ? (productDetails$ | async)?.skuList : (productDetails$ | async)?.skuList?.slice(0, 11))">
+          <img appImagePreload [default]="
+          sku.product?.productOnErrorImage | errorImage : '/assets/images/image-not-available.svg'
+          " class="cell medium-2" style="cursor: pointer;"
+            [ngClass]="{'sel-thumb': (productDetails$ | async)?.product?.itemNumber === sku.itemNumber}"
+            [src]="createSkuImage(sku)" [alt]="sku.itemNumber" (click)="changeSelectedProduct(sku)">
+        </ng-container>
+
+        <!-- TODO   (productDetails$ | async)?.skuList?.length > 11 -->
+        <div class="cell medium-2" *ngIf="(productDetails$ | async)?.skuList?.length > 11 && !showAllSkus">
+          <button mat-raised-button color="primary" style="margin-top: 35%" (click)="showAllSkus = true">Show
+            All</button>
+        </div>
+
+        <!-- CURRENTSKU Info -->
+        <div class="cell medium-12">
+          <div class="grid-x grid-margin-x grid-margin-y">
+            <div class="cell"><span class="col-name">Item #:</span> {{ (productDetails$ |
+              async)?.currentSKU?.itemNumber }}</div>
+
+            <ng-container *ngIf="(columns$ | async)?.length">
+              <ng-container *ngFor="let item of columns$ | async">
+                <div class="cell" style="text-transform: capitalize;" *ngIf="item !== 'sku'">
+                  <span class="col-name"> {{item}}:</span> {{( productDetails$ | async)?.currentSKU?.variations[item]}}
+                </div>
+              </ng-container>
+            </ng-container>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTIONS TABLE -->
+    <div class="cell medium-12" style="margin: 15px 0" *ngIf="(columns$ | async)?.length > 0">
+      <!-- TABLE CTAS -->
+      <!--  <button [hidden]="!(dataSource$ | async)?.length" (click)="handleHide()" mat-button mat-raised-button
+        style="font-size: .75rem; margin-bottom: 4px; float: right;">
+        <span *ngIf="!hideOptions">Hide</span> <span *ngIf="hideOptions">Show</span> Options:
+        <mat-icon style="color: #bebdbd; font-size: 1.27rem;">remove_red_eye</mat-icon></button> -->
+
+      <!-- TABLE -->
+      <div class="cell" *ngIf="(dataSource$ | async)?.length > 0">
+        <app-details-options-table [productDetails$]="productDetails$.value"
+          [dataSource]="dataSource$.value"></app-details-options-table>
+      </div>
+    </div>
+
+    <!-- DESC -->
+    <h2 style="font-weight: bold; text-transform: capitalize">Description:</h2>
+    <p class="cell medium-12" [innerHtml]="(productDetails$ | async)?.product?.longDesc | safeHtml"></p>
+  </div>
+</mat-expansion-panel>
+
+
+<!-- REVIEW -->
+<ng-template #HeroSpinner>
+  <div class="hero-spinner" style="margin: auto; height: 257px;">
+    <mat-spinner diameter="46" style="margin: auto; top: 5.5vw"></mat-spinner>
+  </div>
+</ng-template>

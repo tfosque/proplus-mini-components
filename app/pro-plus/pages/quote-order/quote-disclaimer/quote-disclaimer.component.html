@@ -1,0 +1,61 @@
+<div *ngIf="!getSmallScreen">
+	<div class="grid-x">
+		<div class="medium-12 large-12">
+			<mat-accordion>
+				<mat-expansion-panel [expanded]="false">
+					<mat-expansion-panel-header>
+						<mat-panel-title class="disclaimer-title">
+							<b>Quote Disclaimer:</b>
+						</mat-panel-title>
+						<mat-panel-description style="font-weight: 700; color: #000000DE;">
+							*** Disclaimer Details ***
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+
+					<mat-grid-list cols="12" rowHeight="40px">
+						<mat-grid-tile
+							*ngFor="let list of disclaimerList"
+							[colspan]="list.cols"
+							[rowspan]="list.rows"
+							class="disclaimer-item sp-font"
+						>
+						<i>{{ list.text }}</i>
+						</mat-grid-tile>
+					</mat-grid-list>
+				</mat-expansion-panel>
+			</mat-accordion>
+		</div>
+	</div>
+</div>
+<br>
+<!-- Mobile View -->
+<div *ngIf="getSmallScreen">
+	<div class="grid-x small-viewport">
+		<div class="small-12">
+			<mat-accordion>
+				<mat-expansion-panel [expanded]="false">
+					<mat-expansion-panel-header>
+						<mat-panel-title class="disclaimer-title">
+							<b>Quote Disclaimer:</b>
+						</mat-panel-title>
+						<mat-panel-description style="font-weight: 700; color: #000000DE;">
+							Disclaimer Details
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+
+					<mat-grid-list cols="12" rowHeight="100px">
+						<mat-grid-tile
+							*ngFor="let list of disclaimerList"
+							[colspan]="list.cols"
+							[rowspan]="list.rows"
+							class="disclaimer-item sp-font"
+						>
+						<i>{{ list.text }}</i>
+						</mat-grid-tile>
+					</mat-grid-list>
+				</mat-expansion-panel>
+			</mat-accordion>
+		</div>
+	</div>
+</div>
+<br>

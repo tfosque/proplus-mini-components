@@ -1,0 +1,91 @@
+<form (submit)="doSearch($event)">
+    <div class="grid-x grid-margin-x">
+        <div class="cell medium-shrink">
+            <mat-form-field appearance="standard" class="full-width-search">
+                <mat-select
+                    class="full-width-search"
+                    [(value)]="selectedSearchOption"
+                    (selectionChange)="searchTypeChange()"
+                >
+                    <mat-option
+                        *ngFor="let t of searchTypes"
+                        [value]="t.name"
+                        >{{ t.name }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <ng-container [ngSwitch]="selectedSearch?.type">
+            <div class="cell medium-auto" *ngSwitchCase="'search'">
+                <mat-form-field appearance="standard" class="full-width-search">
+                    <input
+                        type="search"
+                        matInput
+                        [(ngModel)]="searchValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Search"
+                        (keyup)="filterChange()"
+                    />
+                </mat-form-field>
+            </div>
+            <div class="cell medium-auto" *ngSwitchCase="'options'">
+                <mat-form-field appearance="standard" class="full-width-search">
+                    <mat-select
+                        class="full-width-search"
+                        [(value)]="searchValue"
+                        (selectionChange)="filterChange()"
+                    >
+                        <mat-option
+                            *ngFor="let o of selectedSearch?.options"
+                            [value]="o.value || o.name"
+                            >{{ o.name }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="cell medium-auto" *ngSwitchCase="'date'">
+                <mat-form-field appearance="standard" class="full-width-search">
+                    <input
+                        matInput
+                        [(ngModel)]="searchValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        [matDatepicker]="createdDatePicker"
+                        placeholder="Created Date"
+                        (ngModelChange)="filterChange()"
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="createdDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #createdDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </ng-container>
+        <div
+            class="cell medium-shrink show-for-medium"
+            style="border-top: 0.84375em solid transparent"
+        >
+            <button mat-raised-button color="primary" type="submit">
+                Search
+            </button>
+        </div>
+        <div class="cell small-12 medium-shrink show-for-small-only">
+            <button
+                class="full-width"
+                mat-raised-button
+                color="primary"
+                type="submit"
+            >
+                Search
+            </button>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="searchValue !== ''" style="margin-top: 10px; margin-left: 10px">
+    <span *ngIf="!filterChanging">{{ totalCount }}</span> {{ itemName }}(s)
+    matching {{ filterName }} = {{ getSearchValue(filterName, searchValue) }}
+    <a (click)="clearFilter($event)">
+        <mat-icon style="vertical-align: middle">clear</mat-icon>Clear
+    </a>
+</div>

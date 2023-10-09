@@ -1,0 +1,14 @@
+.sp-font {
+    font-size: 14px;
+    color: #000000DE;
+}
+.mat-grid-tile.mat-grid-tile.disclaimer-item ::ng-deep figure.mat-figure {
+    justify-content: flex-start;
+}
+.disclaimer-title {
+    text-transform: uppercase;
+}
+.disclaimer-item {
+    height: 40px;
+    overflow: auto;
+}

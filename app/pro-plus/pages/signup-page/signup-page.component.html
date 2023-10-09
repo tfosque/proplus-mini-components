@@ -1,0 +1,90 @@
+<div *ngIf="isLoading; else loaded" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #loaded>
+    <div class="login-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12 large-10">
+                <div *ngIf="hasError" class="">
+                    <h2>Error</h2>
+                    <p>{{ error | json }}</p>
+                </div>
+
+                <p>Are you a Beacon customer?</p>
+
+                <p>
+                    <!-- Email Address, First Name, Last Name, Phone, Zip Code -->
+                    <!-- Email Address, First Name, Last Name, Phone, Zip Code, Account #, Invoice #, Invoice Date -->
+                </p>
+
+                <form
+                    class="login"
+                    #f="ngForm"
+                    (ngSubmit)="onSubmit(f)"
+                    novalidate
+                >
+                    <div class="horizontal-center">
+                        <img
+                            class="proplus-logo"
+                            src="https://beaconproplus.com/images/common/beacon-pro-plus-logo.jpg"
+                        />
+                    </div>
+                    <div class="grid-container">
+                        <div class="grid-x grid-padding-x">
+                            <div class="medium-12 cell row">
+                                <label>
+                                    Email Address
+                                    <input
+                                        type="email"
+                                        class="textbox"
+                                        name="email"
+                                        placeholder="Email Address"
+                                    />
+                                </label>
+                            </div>
+                            <div class="medium-12 cell row">
+                                <label>
+                                    Password
+                                    <input
+                                        type="password"
+                                        class="textbox"
+                                        name="password"
+                                        placeholder="Password"
+                                    />
+                                </label>
+                            </div>
+                            <div class="medium-12 cell row">
+                                <a routerLink="/proplus/forgot-password"
+                                    >Forgot your password?</a
+                                >
+                            </div>
+                            <div class="medium-12 cell row horizontal-center">
+                                <button
+                                    class="full-width"
+                                    mat-raised-button
+                                    color="primary"
+                                    type="submit"
+                                >
+                                    Login
+                                </button>
+                            </div>
+                            <div class="medium-12 cell row">
+                                <label>
+                                    <input type="checkbox" name="rememberMe" />
+                                    Remember me
+                                </label>
+                            </div>
+                            <div class="medium-12 cell row">
+                                Need an account?
+                                <a href="#">Sign up today</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,99 @@
+<!-- PRODUCT -->
+<div *ngIf="columnDef === 'product'" style="padding-top: 15px; padding-bottom: 8px;">
+  <!--   <img appImgErr width="80" [src]="displayThumb(element.itemNumber)" [alt]="element.itemNumber"
+    [fallbackImgSrc]="element.productOnErrorImageUrl" style="padding-bottom: 6px;" /> -->
+
+  <!-- <app-img-fav-icon [element]="element"></app-img-fav-icon> -->
+  <div>#{{element.itemNumber}}</div>
+</div>
+
+
+<!-- DETAILS -->
+<div class="grid-x grid-margin-x" *ngIf="columnDef === 'details'">
+  <div class="cell" style="margin-left: 0; padding-top: 4px; height: 20px">
+    <div style="display: inline; color: grey"> Nickname:</div>
+    <!-- <input type="text" [value]="element.nickName"> -->
+    <input #nickName *ngIf="element.nickName" style="display: inline; outline: none; border: none;" type="text"
+      type="text" (change)="updateNickname(element, nickName.value)" [value]="element.nickName"
+      matTooltipPosition="above" matTooltip="Edit nickname" matTooltipClass="custom-tooltip">
+
+    <span *ngIf="!element.nickName" style="font-size: .95rem; padding: 1px 6px; margin: 0 2px; font-weight: bold; cursor: text;
+    background: #e4e1e180;" (click)="[editNickName(element, nickName.value)]" matTooltipPosition="above"
+      matTooltip="Add nickname" matTooltipClass="custom-tooltip">+</span>
+  </div>
+  <a type="button" class="cell medium-11" style="
+        margin-bottom: 4px; 
+        margin-top: 4px; 
+        margin-left: 0;
+        color: #025f9e; 
+        line-height: 1.25;
+        cursor: pointer; 
+        font-size: 1rem;
+        text-transform: capitalize" [routerLink]="createPdpUrl(element)"
+    [innerHtml]="element.itemOrProductDescription"> </a>
+
+  <!-- NICKNAME -->
+  <form class="cell" style="margin-left: 0" style="font-size: .75rem;" hidden>
+    <mat-form-field>
+      <input #nickName type="text" matInput type="text" (change)="updateNickname(element, nickName.value)"
+        [value]="element.nickName || 'Nickname'">
+    </mat-form-field>
+    <!--  <div class="example-full-width" style="font-size: .75rem;">      
+        <span *ngIf="nickName.value !== ''">Nickname:</span>
+        <input #nickName type="text" placeholder="Nickname:"
+          [value]="element.nickName" style="font-size: .75rem; width: 100%;padding: 2px; border: none">
+    </div> -->
+  </form>
+
+  <!-- VARIATIONS -->
+  <div class="cell" style="padding-bottom: 10px;">
+    <div class="cell large-12 grid-x grid-margin-x">
+
+      <mat-form-field appearance="outline"
+        style="width: 148px; margin-right: 10px; margin-top: 3px; margin-bottom: 3px;"
+        *ngFor="let variationType of element.multiVariationData?.allVariationTypes; let i = index">
+        <mat-label class="input-label" style="color: #a6a6a6; padding-left: 10px">{{ variationType }}</mat-label>
+
+        <!-- SELECT  variation control component -->
+        <mat-select name="variation.value" #variation [value]="getDefaultSku(element, variationType)" (selectionChange)="[handleSkuChange(element,variationType, variation.value), 
+          updateVariation(element,variationType, variation.value)]"
+          style="font-size: .825rem !important; padding-left: 10px !important; text-transform: capitalize">
+
+          <!-- OPTION -->
+          <mat-option [ngStyle]="{ background: !isAvailSku(element,variationType, lineItem) ? '#fff' : '#edeeef54'}"
+            style="text-transform: captilize"
+            *ngFor="let lineItem of displayDropdownFacets(element.multiVariationData, variationType)"
+            [value]="lineItem">
+            <div class="grid-x grid-margin-x">
+              <div class="cell medium-10">{{ lineItem }}</div>
+              <div class="cell medium-2" *ngIf="variationType === 'color'">
+                <img [src]="displayDropdownThumb(element.multiVariationData, variationType,lineItem)" alt="">
+              </div>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+
+<!-- PRICE -->
+<ng-container *ngIf="columnDef === 'price'">
+  <span style="color: grey" *ngIf="element.unitPrice !== 0">{{ element.unitPrice | currency }} /
+    {{element.defaultUnitOfMeasure }}</span>
+  <span style="color: grey" *ngIf="element.unitPrice === 0">Calculated at invoice</span>
+
+  <!-- QTY -->
+  <div id="Qty">
+    <mat-form-field appearance="none" style="text-align: center">
+      <mat-icon (click)="updateQty(element, 'decrease')">remove</mat-icon>
+      <input [(ngModel)]="model.qty" name="qty" id="itemQty" #itemQty matInput min="0" max="9999" class="input-qty"
+        type="number" [value]="element.quantity" (change)="updateQty(element, 'change')">
+      <mat-icon (mouseup)="updateQty(element, 'increase')">add</mat-icon>
+      <div style="display: block; text-align: center; font-size: .7rem; padding: 4px;">
+        <mat-hint style="color: red;" *ngIf="itemQty.value < 0">Min qty is 1</mat-hint>
+        <mat-hint style="color: red;" *ngIf="itemQty.value > 9998">Max qty is 9999</mat-hint>
+      </div>
+    </mat-form-field>
+  </div>
+</ng-container>

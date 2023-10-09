@@ -1,0 +1,40 @@
+<div *ngIf="isLoggedIn && isMaterPageNeeded(); else loggedOut" class="grid-container">
+    <div class="grid-x grid-margin-x" style="margin: 10px 0px">
+        <div class="cell large-3 medium-3 small-0 show-for-large">
+            <mat-card class="">
+                <mat-card-content>
+                    <mat-nav-list>
+                        <ng-container *ngFor="
+                                let m of menuItems$ | async;
+                                trackBy: trackByIndex
+                            ">
+                            <a mat-list-item [routerLink]="m.link" routerLinkActive="active-link"
+                                [routerLinkActiveOptions]="{ exact: true }" (click)="isReload(m.link)">
+                                <mat-icon>{{ m.icon }}</mat-icon>
+                                <span style="margin-left: 5px">{{
+                                    m.title
+                                }}</span>
+                            </a>
+                        </ng-container>
+                        <a mat-list-item (click)="logout()">
+                            <mat-icon>transit_enterexit</mat-icon>
+                            <span style="margin-left: 5px">Logout</span>
+                        </a>
+                    </mat-nav-list>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="cell small-12g large-9 proplus-page">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+<ng-template #loggedOut>
+    <div class="grid-container">
+        <div class="cell proplus-page">
+            <ng-content></ng-content>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</ng-template>

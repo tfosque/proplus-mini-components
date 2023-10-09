@@ -1,0 +1,37 @@
+<div id="active-menu">
+    <div class="grid-x">
+        <div class="cell small-2">&nbsp;</div>
+        <div class="cell small-3 input-container">
+            <div
+                class="step1"
+                [ngClass]="{
+                    step1search: (currStep | async) === 1
+                }"
+            >
+                <input type="text" disabled placeholder="Product Search" />
+            </div>
+        </div>
+        <div class="cell small-3">&nbsp;</div>
+        <div class="cell auto step2-container">
+            <div
+                class="step2"
+                [ngClass]="{
+                    step2orderhistory: (currStep | async) === 2
+                }"
+            >
+                Order History
+            </div>
+        </div>
+        <div class="cell auto">
+            <div
+                class="step3"
+                [ngClass]="{
+                    step3templates: (currStep | async) === 3
+                }"
+            >
+                Templates
+            </div>
+        </div>
+        <div class="cell small-1">&nbsp;</div>
+    </div>
+</div>

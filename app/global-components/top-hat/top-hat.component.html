@@ -1,0 +1,42 @@
+<div class="top-hat">
+    <div class="grid-container">
+        <div class="top-hat__content-container">
+            <div class="top-hat__left-container"></div>
+            <div class="top-hat__right-container show-for-medium">
+                <ul class="top-hat__links">
+                    <li
+                        class="top-hat__link"
+                        *ngIf="(spanishRef | async)?.showSpanishBtn"
+                    >
+                        <a (click)="goToSpanish()"> Español</a>
+                    </li>
+                    <li
+                        class="top-hat__link"
+                        *ngIf="(spanishRef | async)?.showEnglishBtn"
+                    >
+                        <a (click)="goToEnglish()" translate="no" lang="en"> English </a>
+                    </li>
+ 
+                    <li class="top-hat__link" *ngFor="let link of utilityLinks">
+                        <a
+                            *ngIf="!link.isExternal; else externalLink"
+                            [routerLink]="link.url"
+                        >
+                            {{ link.title }}
+                        </a>
+                        <ng-template #externalLink>
+                            <a [href]="link.url | protocol">
+                                {{ link.title }}
+                            </a>
+                        </ng-template>
+                    </li>
+                    <!-- <li class="top-hat__link top-hat__link--phone">
+            <a href="tel:{{ contactPhone }}">
+              <span class="icon-phone"></span>{{ contactPhone }}
+            </a>
+          </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

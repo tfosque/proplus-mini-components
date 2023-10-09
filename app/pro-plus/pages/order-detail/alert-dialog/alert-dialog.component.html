@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>Sign up for Delivery Tracking</h2>
+<div>
+    <mat-error *ngIf="isTextInvalid()">Phone number is needed</mat-error>
+    <mat-error *ngIf="isEmailInvalid()">Email is needed</mat-error>
+    <mat-error *ngIf="isSaveToProfileInvalid()"
+        >Please click the checkbox firstly</mat-error
+    >
+</div>
+<div>
+    <mat-checkbox [(ngModel)]="alertSettings.textAlert"
+        ><span class="boldText">Text</span></mat-checkbox
+    >
+</div>
+<div>
+    <mat-form-field class="full-width" floatLabel="auto">
+        <input
+            matInput
+            placeholder="Phone Number"
+            (keyup)="addDash()"
+            [formControl]="phoneFormControl"
+            [errorStateMatcher]="matcher"
+            maxlength="12"
+            placeholder="Phone Number"
+            [(ngModel)]="alertSettings.phoneNumber"
+            [readonly]="!isExternalUser"
+        />
+        <!-- <mat-error *ngIf="phoneFormControl.hasError('required')">
+      This field is required
+    </mat-error> -->
+        <mat-error *ngIf="phoneFormControl.hasError('pattern')">
+            Only numerical values allowed and it should follow format like
+            'xxxxxxxxxx' or 'xxx-xxx-xxxx'
+        </mat-error>
+        <mat-error *ngIf="phoneFormControl.hasError('min')">
+            Must be 10 digits
+        </mat-error>
+    </mat-form-field>
+</div>
+<div style="margin-top: 30px">
+    <mat-checkbox [(ngModel)]="alertSettings.emailAlert"
+        ><span class="boldText">Email</span></mat-checkbox
+    >
+</div>
+<div>
+    <mat-form-field class="full-width" floatLabel="auto">
+        <input
+            matInput
+            placeholder="E-mail"
+            [formControl]="emailFormControl"
+            [errorStateMatcher]="matcher"
+            placeholder="E-mail"
+            [(ngModel)]="alertSettings.emailAddress"
+            [readonly]="!isExternalUser"
+        />
+        <!-- <mat-error *ngIf="emailFormControl.hasError('required')">
+      This field is required
+    </mat-error> -->
+        <mat-error
+            *ngIf="
+                emailFormControl.hasError('email') ||
+                emailFormControl.hasError('pattern')
+            "
+        >
+            Must be a valid email address
+        </mat-error>
+    </mat-form-field>
+</div>
+<div style="margin-top: 10px">
+    <mat-checkbox [(ngModel)]="alertSettings.saveToProfile"
+        ><span class="text-red">Save to Profile</span></mat-checkbox
+    >
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+        mat-button
+        color="primary"
+        [mat-dialog-close]="alertSettings"
+        [disabled]="!canSave"
+    >
+        Save
+    </button>
+</mat-dialog-actions>

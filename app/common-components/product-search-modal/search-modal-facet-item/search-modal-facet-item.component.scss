@@ -1,0 +1,55 @@
+div.cell.label {
+  background: #fff;
+  padding: 10px 0 10px 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-top: solid thin lightgrey;
+  border-bottom: solid thin lightgrey;
+  border-right: none;
+  border-left: none;
+}
+
+.categories-section {
+  background: #eeeded;
+  color: #025f9e;
+}
+
+div.cell.label.categories-border {
+  border-top: none;
+}
+
+::ng-deep mat-checkbox.category-label {
+  label.mat-checkbox-layout {
+    margin-left: -18px;
+
+    span.mat-checkbox-label {
+      white-space: nowrap;
+      /* Prevents text from wrapping */
+      overflow: hidden;
+      /* Hides any overflowing content */
+      text-overflow: ellipsis;
+      /* Displays an ellipsis (...) when text overflows */
+      width: 15vw;
+      /* Set the width to your desired value */
+    }
+  }
+
+  .mat-checkbox-inner-container {
+    visibility: hidden;
+  }
+}
+
+::ng-deep mat-checkbox {
+  label.mat-checkbox-layout {
+    span.mat-checkbox-label {
+      white-space: nowrap;
+      /* Prevents text from wrapping */
+      overflow: hidden;
+      /* Hides any overflowing content */
+      text-overflow: ellipsis;
+      /* Displays an ellipsis (...) when text overflows */
+      width: 14vw;
+      /* Set the width to your desired value */
+    }
+  }
+}

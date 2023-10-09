@@ -1,0 +1,302 @@
+<div class="loading-container" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<!-- validation that the shopping cart has items -->
+<div *ngIf="cart.value.items.length; else emptyCart">
+    <ng-container>
+        <ng-template mat-tab-label> &#10122; Cart </ng-template>
+        <h1>
+            <mat-icon style="margin-right: 10px; font-size: 30px"
+                >shopping_cart</mat-icon
+            >Shopping Cart
+        </h1>
+        <!-- Button Bar -->
+        <div class="button-bar" [hidden]="!userPermPlaceOrder">
+            <app-product-selector
+                [accountId]="accountId"
+                (productAdded)="addProduct($event)"
+            ></app-product-selector>
+            <button
+                mat-raised-button
+                [color]="isAccountClosed ? 'disabled' : 'primary'"
+                [matMenuTriggerFor]="appMenu"
+                [disabled]="isAccountClosed"
+            >
+                <span>Pick from Template</span>
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+        </div>
+        <div class="grid-x grid-margin-x">
+            <!-- Shopping Cart  -->
+            <div style="padding-right: 10px" class="cell large-9">
+                <app-cart-list
+                    [cartItems]="cart.value.items"
+                    [displayedColumns]="displayedColumns"
+                    [deleteOneItem]="deleteOneItem.bind(this)"
+                    [deleteAll]="eraseCart.bind(this)"
+                >
+                </app-cart-list>
+
+                <!-- TODO - Cart actions here -->
+                <div
+                    class="grid-x grid-margin-x button-bar wide"
+                    style="margin-top: 10px; background-color: #ebedef"
+                >
+                    <!-- TODO - Move to below -->
+                    <div
+                        class="cell small-12 medium-6 xlarge-3"
+                        [hidden]="!userPermPlaceOrder"
+                    >
+                        <button
+                            mat-raised-button
+                            [color]="isAccountClosed ? 'disabled' : 'primary'"
+                            (click)="openDialogSaveOrder()"
+                            [disabled]="isAccountClosed"
+                        >
+                            Save Order
+                            <mat-icon style="vertical-align: middle"
+                                >save
+                            </mat-icon>
+                        </button>
+                    </div>
+                    <!-- TODO - Move to below -->
+                    <div
+                        class="cell small-12 medium-6 xlarge-3"
+                        *ngIf="templateList.length > 0"
+                    >
+                        <mat-menu #appMenu="matMenu">
+                            <button
+                                (click)="openDialogNewTemplate()"
+                                mat-menu-item
+                            >
+                                Create New Template
+                            </button>
+                            <mat-divider></mat-divider>
+                            <button
+                                mat-menu-item
+                                (click)="addItemsToTemplate(template)"
+                                *ngFor="let template of templateList"
+                            >
+                                {{ template.templateName }}
+                            </button>
+                        </mat-menu>
+                        <button
+                            mat-raised-button
+                            [color]="isAccountClosed ? 'disabled' : 'primary'"
+                            [matMenuTriggerFor]="appMenu"
+                            [disabled]="isAccountClosed"
+                        >
+                            Move All Items To Template
+                        </button>
+                    </div>
+                    <div
+                        class="cell small-12 medium-6 xlarge-3"
+                        *ngIf="templateList.length === 0"
+                    >
+                        <button
+                            mat-raised-button
+                            [color]="isAccountClosed ? 'disabled' : 'primary'"
+                            (click)="openDialogNewTemplate()"
+                            [disabled]="isAccountClosed"
+                        >
+                            Move All Items To Template
+                        </button>
+                    </div>
+                    <ng-container *ngIf="jobInfo | async as j">
+                        <div
+                            class="cell small-12 medium-6 xlarge-3"
+                            *ngIf="j?.jobs && j?.jobs?.length > 0"
+                        >
+                            <mat-menu #appMenuJob="matMenu">
+                                <button mat-menu-item (click)="selectJob()">
+                                    Select Job Account
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="selectJob(job, true)"
+                                    *ngFor="let job of j?.jobs"
+                                >
+                                    {{ job.jobName }}
+                                </button>
+                            </mat-menu>
+                            <button
+                                mat-raised-button
+                                [color]="
+                                    isAccountClosed ? 'disabled' : 'primary'
+                                "
+                                [matMenuTriggerFor]="appMenuJob"
+                                [disabled]="isAccountClosed"
+                            >
+                                <span>{{ selectedJobName }}</span>
+                                <mat-icon>arrow_drop_down</mat-icon>
+                            </button>
+                        </div>
+                    </ng-container>
+                    <div
+                        class="cell small-12 medium-6 xlarge-3"
+                        style="text-align: right"
+                    >
+                        <button
+                            mat-raised-button
+                            [color]="isAccountClosed ? 'disabled' : 'primary'"
+                            (click)="updateCart()"
+                            [disabled]="isAccountClosed"
+                        >
+                            Update Cart
+                            <mat-icon style="vertical-align: middle"
+                                >refresh</mat-icon
+                            >
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Order Summary -->
+            <div
+                style="vertical-align: top"
+                class="cell large-3"
+                [hidden]="!userPermPlaceOrder"
+            >
+                <ng-container *ngIf="cart.getState() | async as c">
+                    <table
+                        class="summary-table"
+                        style="width: 100%"
+                        *ngIf="
+                            permissions.price &&
+                                c.summary &&
+                                !c.summary.displayTotalMsg;
+                            else TotalZeroFirst
+                        "
+                    >
+                        <tr>
+                            <th colspan="2" class="summary-header">
+                                <h3>Order Summary</h3>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td class="summary-text-default">Sub Total</td>
+                            <td class="summary-text-right-default-number">
+                                {{ c.summary.itemsTotal | currency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                class="summary-text-default"
+                                style="white-space: nowrap"
+                            >
+                                Other Charges
+                                <button
+                                    class="icon"
+                                    matTooltipPosition="left"
+                                    matTooltip="What is Other Charges?
+                    Other charges are typically delivery fees, but may include handling and fuel fees."
+                                    matTooltipClass="custom-tooltip"
+                                >
+                                    <mat-icon>info</mat-icon>
+                                </button>
+                            </td>
+                            <td [class]="otherCharges.cssClass">
+                                {{ otherCharges.value }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="summary-text-default">Tax</td>
+                            <td [class]="tax.cssClass">{{ tax.value }}</td>
+                        </tr>
+                        <tr>
+                            <td class="summary-text-total-default" colspan="2">
+                                <div class="summary-text-total-default-left">
+                                    Total
+                                </div>
+                                <div [class]="total.cssClass">
+                                    {{ total.value }}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </ng-container>
+                <ng-template #TotalZeroFirst>
+                    <table
+                        class="summary-table"
+                        width="100%"
+                        *ngIf="permissions.price"
+                    >
+                        <tr>
+                            <td class="summary-header-totalZero">
+                                <h3>Order Summary</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 10px; padding-bottom: 20px">
+                                Will be calculated at the time of invoicing.
+                            </td>
+                        </tr>
+                    </table>
+                </ng-template>
+                <div>
+                    <button
+                        class="cell"
+                        [color]="isAccountClosed ? 'disabled' : 'emphasis'"
+                        mat-raised-button
+                        (click)="goToCheckoutPage()"
+                        [disabled]="isAccountClosed"
+                    >
+                        <span>Proceed to Checkout</span>
+                        <mat-icon>navigate_next</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <!-- <div style="clear:both;"></div> -->
+        </div>
+        <!-- Customers Also Bought -->
+        <app-customers-also-bought
+            (addProduct)="addToCart($event)"
+            [suggestedProducts]="suggestedProds$"
+        >
+        </app-customers-also-bought>
+    </ng-container>
+</div>
+<ng-template #emptyCart>
+    <h1>
+        <mat-icon style="margin-right: 10px; font-size: 30px"
+            >shopping_cart</mat-icon
+        >Shopping Cart
+    </h1>
+    <div>
+        <p class="cartEmpty">Your cart is currently empty.</p>
+    </div>
+    <div>
+        <p style="text-align: center" class="button-bar">
+            <app-product-selector
+                [accountId]="accountId"
+                (productAdded)="addProduct($event)"
+            ></app-product-selector>
+            <button
+                mat-raised-button
+                [color]="isAccountClosed ? 'disabled' : 'primary'"
+                [matMenuTriggerFor]="appMenu"
+                type="button"
+                class="small-only-expanded"
+                [disabled]="isAccountClosed"
+            >
+                <span>Pick from Template</span>
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+        </p>
+    </div>
+</ng-template>
+<mat-menu #appMenu="matMenu">
+    <button
+        mat-menu-item
+        *ngFor="let template of templateList"
+        (click)="addItemsFromTemplate(template)"
+    >
+        {{ template.templateName }}
+    </button>
+</mat-menu>
+
+<!-- <h1>Items</h1>
+<app-dump-grid [input]="cart.value.items"></app-dump-grid> -->
+
+<!-- <h1>Cart</h1>
+<app-dump-grid [input]="cart.getState()"></app-dump-grid> -->

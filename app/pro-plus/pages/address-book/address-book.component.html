@@ -1,0 +1,86 @@
+<div class="loading-container" *ngIf="isloading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div>
+    <h1 class="with-sub-title">Address Book</h1>
+    <p class="sub-title">
+        Manage your address book. Save time ordering by adding frequently used
+        addresses.
+    </p>
+</div>
+<mat-divider class="divider"></mat-divider>
+
+<div>
+    <button
+        class="button"
+        color="primary"
+        (click)="openDialog()"
+        mat-raised-button
+    >
+        <mat-icon>add</mat-icon>ADD NEW ADDRESS
+    </button>
+</div>
+
+<div class="flexcontainer">
+    <div class="container grid-x" *ngFor="let addressBook of addressBookList">
+        <div class="medium-6 large-6">
+            <mat-card class="card">
+                <!-- <mat-card-header> -->
+                <!-- <mat-card-title class="title"> -->
+                <!-- <h4 style="font-weight: bold"> Account: {{addressBook.accountLegacyId}} ({{addressBook.accountName}}</h4> -->
+                <h4 style="font-weight: bold">{{ addressBook.accountName }}</h4>
+                <!-- </mat-card-title> -->
+                <!-- </mat-card-header> -->
+                <mat-card-content>
+                    <p class="text">
+                        <span style="font-weight: bold">Nickname:</span>
+                        {{ addressBook.addressBookInfo.nickName }}
+                    </p>
+                    <p class="text">
+                        <span style="font-weight: bold"
+                            >First & Last Name:</span
+                        >
+                        {{ addressBook.addressBookInfo.firstName }}
+                        {{ addressBook.addressBookInfo.lastName }}
+                    </p>
+                    <p class="text">
+                        <span style="font-weight: bold">Address:</span>
+                        {{ addressBook.addressBookInfo.address1 }}
+                        {{ addressBook.addressBookInfo.address2 }}
+                    </p>
+                    <p class="text">
+                        {{ addressBook.addressBookInfo.city }},
+                        {{ addressBook.addressBookInfo.state }},
+                        {{ addressBook.addressBookInfo.postalCode }}
+                    </p>
+                    <p class="text">
+                        <span style="font-weight: bold">Phone Number:</span>
+                        {{ addressBook.addressBookInfo.phoneNumber }}
+                    </p>
+                    <p class="text">
+                        <span style="font-weight: bold">Country:</span>
+                        {{ addressBook.addressBookInfo.countryValue }}
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button
+                        color="primary"
+                        mat-raised-button
+                        (click)="openDialogEdit(addressBook)"
+                    >
+                        Edit
+                    </button>
+                    <button
+                        color="secondary"
+                        (click)="openDeleteDialog(addressBook)"
+                        mat-raised-button
+                        type="button"
+                    >
+                        Delete
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

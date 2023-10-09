@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Save Permissions As Template</h2>
+<mat-form-field floatLabel="auto" style="width: 500px">
+  <input matInput placeholder="Template Name" [(ngModel)]="templateName" required />
+</mat-form-field>
+
+<div *ngIf="templateName; else disable">
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button color="primary" [mat-dialog-close]="templateName" cdkFocusInitial>
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>
+<ng-template #disable>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button color="primary" cdkFocusInitial disabled>
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>

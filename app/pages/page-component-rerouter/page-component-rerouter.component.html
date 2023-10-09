@@ -1,0 +1,33 @@
+<ng-container [ngSwitch]="pageType">
+    <app-proplus-master-page *ngSwitchCase="pageTypes.proPlusLanding"
+        ><app-proplus-landing-page [reRouted]="true"></app-proplus-landing-page
+    ></app-proplus-master-page>
+    <app-home-page
+        *ngSwitchCase="pageTypes.home"
+        [reRouted]="true"
+    ></app-home-page>
+    <app-brand-landing-page
+        *ngSwitchCase="pageTypes.brandLanding"
+        [reRouted]="true"
+    ></app-brand-landing-page>
+    <app-product-browse-page
+        *ngSwitchCase="pageTypes.browse"
+        [reRouted]="true"
+    ></app-product-browse-page>
+    <app-product-category-page
+        *ngSwitchCase="pageTypes.category"
+        [reRouted]="true"
+    ></app-product-category-page>
+    <app-generic-content-page
+        *ngSwitchCase="pageTypes.content"
+        [reRouted]="true"
+    ></app-generic-content-page>
+    <app-product-details-page
+        *ngSwitchCase="pageTypes.productDetails"
+        [reRouted]="true"
+    ></app-product-details-page>
+    <app-where-to-buy-page
+        *ngSwitchCase="pageTypes.whereToBuy"
+        [reRouted]="true"
+    ></app-where-to-buy-page>
+</ng-container>

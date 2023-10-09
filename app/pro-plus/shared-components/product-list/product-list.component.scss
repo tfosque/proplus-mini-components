@@ -1,0 +1,48 @@
+table.padded-table {
+    th,
+    td {
+        padding: 15px;
+    }
+}
+
+.full-width {
+    width: 100%;
+}
+
+table {
+    input {
+        border-width: 0px 0px 1px 0px;
+        text-align: center;
+    }
+}
+::ng-deep input.quantity-input {
+    width: 5em;
+    border-width: 0px 0px 1px 0px;
+    text-align: center;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.show-for-small-only {
+    mat-icon {
+        color: #025f9e;
+        font-size: 1.275rem;
+    }
+
+    ::ng-deep input.quantity-input {
+        width: 4em;
+        border: solid thin #e8e8e8;
+        padding: 2px 2px;
+    }
+
+    .grid-padding-x > .cell {
+        padding-right: 0.2rem;
+        padding-left: 0.2rem;
+    }
+    .small-view-text {
+        padding-left: 0.5rem;
+        font-size: 0.7rem
+    }
+}

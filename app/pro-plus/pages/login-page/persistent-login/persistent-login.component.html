@@ -1,0 +1,36 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                <p
+                    *ngFor="let title of data.titles"
+                    [innerHTML]="title"
+                    style="font-size: 18px"
+                ></p>
+            </h4>
+        </div>
+        <div class="modal-body" [innerHTML]="data.declarationContent"></div>
+        <div class="modal-footer">
+            <mat-dialog-actions style="display: inline">
+                <button
+                    mat-button
+                    color="secondary"
+                    mat-raised-button
+                    mat-dialog-close
+                    class="btn"
+                >
+                    {{ findCancel() }}
+                </button>
+                <button
+                    mat-button
+                    color="primary"
+                    mat-raised-button
+                    [mat-dialog-close]="true"
+                    cdkFocusInitial
+                >
+                    {{ findConfirm() }}
+                </button>
+            </mat-dialog-actions>
+        </div>
+    </div>
+</div>

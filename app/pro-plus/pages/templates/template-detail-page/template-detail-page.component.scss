@@ -1,0 +1,244 @@
+.flexContainerButton {
+    display: flex;
+    justify-content: space-between;
+}
+
+.top-inputs {
+    margin: 10px;
+}
+
+.input {
+    margin-right: 30px;
+}
+
+.button {
+    margin-right: 15px;
+}
+
+.divider {
+    margin: 20px 5px 40px 5px;
+}
+
+.quantity-input {
+    width: 30px;
+}
+
+.nickname {
+    margin-top: 20px;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+    opacity: 1;
+}
+
+.disable {
+    color: grey;
+}
+
+button.disabled {
+    opacity: 0.5;
+}
+
+.alignCenter {
+    text-align: center;
+}
+
+.button {
+    margin-left: 10px;
+}
+
+.buttons {
+    margin-bottom: 20px;
+}
+
+.container {
+    margin-bottom: 20px;
+}
+
+table.templateTable {
+    td.mat-cell {
+        padding: 5px !important;
+    }
+
+    th.mat-cell {
+        padding: 5px !important;
+    }
+}
+
+md-input-container label {
+    font-weight: bold;
+}
+
+table.full-width {
+    width: 100%;
+}
+
+mat-form-field.full-width {
+    width: 100%;
+}
+
+// backlog styling, to be completed
+
+div.show-for-small-only {
+    .margin-top {
+        margin-top: 0.5ex;
+    }
+
+    .action-button {
+        margin-top: 0.5ex;
+        width: 100%;
+    }
+}
+
+button.full {
+    width: 100%;
+}
+
+.hide {
+    display: none;
+}
+
+.action-button {
+    width: 100%;
+}
+
+.input-qty {
+    border: solid thin #dad6d6;
+}
+
+/* table */
+
+.drop-placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 177px;
+    transition: transform 250ms cubic-bezier(1, 1, 0.5, 2);
+}
+
+.drop-placeholder-small {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 100px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drop-placeholder-table {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 100px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #025f9e;
+}
+
+td[mat-cell] {
+    padding: 8px 0px 0px 0;
+}
+
+.mat-table-sticky {
+    border-top: 1px solid #e0e0e0;
+}
+
+tr.mat-footer-row {
+    font-weight: bold;
+}
+
+td[mat-footer-cell] {
+    font-weight: bold;
+}
+
+.footer-container {
+    height: 270px;
+    overflow: auto;
+}
+
+/* ::ng-deep .mat-form-field-appearance-outline.mat-form-field-disabled,
+::ng-deep .mat-form-field-outline {
+    opacity: 0;
+} */
+
+tr:mousedown {
+    cursor: grabbing;
+}
+
+.table-headers {
+    div div.cell {
+        font-weight: bold;
+    }
+}
+
+section {
+    div.sub-title {
+        font-weight: bold;
+    }
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+
+    height: 88px;
+    background-color: white;
+    display: table;
+}
+
+.cdk-drag-placeholder {
+    opacity: 0.3;
+    background-color: rgb(232, 230, 230);
+    border: dotted 3px #999;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .mat-row:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+:host::ng-deep {
+    button.add-product-to-cart {
+        width: 100% !important;
+    }
+}
+
+::ng-deep div.proplus-page .mat-form-field-wrapper .mat-select,
+div.proplus-page .mat-form-field-wrapper .mat-input-element {
+    font-size: 0.9rem !important;
+    line-height: 1 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0px !important;
+    padding-bottom: 0.75rem;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0;
+}
+
+/* ::ng-deep mat-label .input-label {
+    padding: 0px;
+    color: #a6a6a6;
+    font-size: 1.25rem;
+} */
+
+/* ::ng-deep div.proplus-page .mat-form-field-wrapper .mat-form-field-label-wrapper .mat-form-field-label, 
+div.proplus-page .mat-list .faux-label.mat-subheader, 
+div.proplus-page .mat-list .faux-label.mat-subheader:first-child {
+
+} */
+
+/* input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {  
+    -webkit-appearance: none;
+    margin: 0;   
+}
+// Firefox
+input[type=number] {
+    -moz-appearance: textfield;   
+} */

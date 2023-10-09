@@ -1,0 +1,238 @@
+@mixin mat-default-proplus {
+    // .mat-form-field-underline {
+    //   display: none;
+    // }
+
+    .mat-form-field-wrapper .mat-form-field-label-wrapper .mat-form-field-label,
+    .mat-list .faux-label.mat-subheader,
+    .mat-list .faux-label.mat-subheader:first-child {
+        // font-size: rem-calc(16px);
+        // line-height: rem-calc(27px);
+        color: $color-text-emphasis;
+        // font-weight: $font-weight-semi-bold;
+        font-family: $font-family;
+        // display: block !important;
+        // margin: rem-calc(0 0 2px 0);
+        // padding: 0;
+        // transform: translateY(rem-calc(-25px)) scale(1) perspective(100px) translateZ(0) !important;
+        // height: auto;
+    }
+
+    // .mat-list .faux-label.mat-subheader,
+    // .mat-list .faux-label.mat-subheader:first-child {
+    //   transform: none !important;
+    // }
+
+    .mat-form-field-wrapper
+        .mat-form-field-label-wrapper
+        .mat-form-field-label
+        mat-label {
+        font-weight: $font-weight-semi-bold;
+    }
+
+    .mat-form-field-appearance-legacy .mat-form-field-infix {
+        margin-top: -18px;
+        display: flex;
+    }
+
+    .mat-form-field-wrapper .mat-select,
+    .mat-form-field-wrapper .mat-input-element {
+        // border: 1px solid $color-borders;
+        font-size: rem-calc(15px);
+        line-height: rem-calc(19px);
+        //  TODO:  Update this to fix profile form
+        // padding: rem-calc(10px);
+
+        &.error {
+            border: 1px solid $color-error;
+        }
+    }
+
+    // .mat-list,
+    // .mat-form-field-wrapper {
+    //   padding-bottom: rem-calc(10px);
+    //   margin-bottom: rem-calc(10px);
+    // }
+
+    .mat-list {
+        // padding-top: 0 !important;
+
+        .mat-radio-button {
+            // width: 100%;
+            // margin-top: rem-calc(6px);
+            // font-size: rem-calc(15px);
+            // line-height: rem-calc(25px);
+            color: $color-text-primary;
+
+            // &:first-child {
+            //   margin-top: 0;
+            // }
+        }
+    }
+    .mat-radio-button.mat-accent {
+        &.mat-radio-checked {
+            .mat-radio-outer-circle {
+                border-color: $color-primary;
+            }
+
+            .mat-radio-inner-circle {
+                background-color: $color-primary;
+            }
+        }
+    }
+
+    .mat-focused {
+        .mat-form-field-required-marker {
+            color: $color-primary;
+        }
+    }
+
+    // @media (min-width: map-get($breakpoints, medium)) {
+    //   .mat-form-field-wrapper .mat-select {
+    //     width: 60%;
+    //   }
+    // }
+
+    // @media (min-width: map-get($breakpoints, large)) {
+    //   .mat-form-field-wrapper .mat-select {
+    //     width: 45%;
+    //   }
+    // }
+
+    .mat-paginator {
+        .mat-form-field-wrapper .mat-select {
+            width: 100%;
+            text-align: center;
+            padding: 0px;
+            border-width: 0px 0px 1px 0px;
+        }
+    }
+
+    mat-form-field.full-width {
+        width: 100%;
+        display: block;
+    }
+
+    .mat-stepper-horizontal-line {
+        min-width: 0px;
+    }
+}
+
+@mixin mat-default-mixin {
+    .mat-form-field-underline {
+        display: none;
+    }
+
+    .mat-form-field-wrapper .mat-form-field-label-wrapper .mat-form-field-label,
+    .mat-list .faux-label.mat-subheader,
+    .mat-list .faux-label.mat-subheader:first-child {
+        font-size: rem-calc(16px);
+        line-height: rem-calc(27px);
+        color: $color-text-emphasis;
+        font-weight: $font-weight-semi-bold;
+        font-family: $font-family;
+        display: block !important;
+        margin: rem-calc(0 0 2px 0);
+        padding: 0;
+        transform: translateY(rem-calc(-25px)) scale(1) perspective(100px)
+            translateZ(0) !important;
+        height: auto;
+    }
+
+    .mat-list .faux-label.mat-subheader,
+    .mat-list .faux-label.mat-subheader:first-child {
+        transform: none !important;
+    }
+
+    .mat-form-field-wrapper
+        .mat-form-field-label-wrapper
+        .mat-form-field-label
+        mat-label {
+        font-weight: $font-weight-semi-bold;
+    }
+
+    .mat-form-field-wrapper .mat-select,
+    .mat-form-field-wrapper .mat-input-element {
+        border: 1px solid $color-borders;
+        font-size: rem-calc(15px);
+        line-height: rem-calc(19px);
+        //  TODO:  Update this to fix profile form
+        padding: rem-calc(10px);
+
+        &.error {
+            border: 1px solid $color-error;
+        }
+    }
+
+    .mat-list,
+    .mat-form-field-wrapper {
+        padding-bottom: rem-calc(10px);
+        margin-bottom: rem-calc(10px);
+    }
+    #first-child .mat-form-field-wrapper {
+        @media (min-width: map-get($breakpoints, medium)) {
+            margin-right: 10px;
+        }
+    }
+    .mat-list {
+        padding-top: 0 !important;
+
+        .mat-radio-button {
+            width: 100%;
+            margin-top: rem-calc(6px);
+            font-size: rem-calc(15px);
+            line-height: rem-calc(25px);
+            color: $color-text-primary;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+    .mat-radio-button.mat-accent {
+        &.mat-radio-checked {
+            .mat-radio-outer-circle {
+                border-color: $color-primary;
+            }
+
+            .mat-radio-inner-circle {
+                background-color: $color-primary;
+            }
+        }
+    }
+
+    .mat-focused {
+        .mat-form-field-required-marker {
+            color: $color-primary;
+        }
+    }
+
+    @media (min-width: map-get($breakpoints, medium)) {
+        .mat-form-field-wrapper .mat-select {
+            width: 60%;
+        }
+    }
+
+    @media (min-width: map-get($breakpoints, large)) {
+        .mat-form-field-wrapper .mat-select {
+            width: 45%;
+        }
+    }
+
+    mat-form-field.full-width {
+        width: 100%;
+        display: block;
+    }
+}
+
+div.proplus-page {
+    @include mat-default-proplus();
+
+    .mat-form-field-flex {
+        padding: 0px;
+    }
+}
+
+div.shift7-page {
+    @include mat-default-mixin();
+}

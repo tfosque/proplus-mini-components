@@ -1,0 +1,148 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <app-breadcrumb [configuration]="breadcrumbConfig"></app-breadcrumb>
+    <ng-container
+        *ngIf="{
+            isLargeScreen: isLargeScreen$ | async,
+            curSearchLocation: curSearchLocation$ | async,
+            isExpandedMap: isExpandedMap$ | async
+        } as data"
+    >
+        <div
+            class="where-to-buy-page"
+            [ngClass]="{
+                'where-to-buy-page--expanded grid-frame grid-y':
+                    data?.isExpandedMap && !data?.isLargeScreen
+            }"
+        >
+            <div
+                *ngIf="
+                    !data?.isExpandedMap || data?.isLargeScreen;
+                    else expandedModal
+                "
+            >
+                <div class="grid-container">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-12 large-12">
+                            <h1>{{ pageTitle }}</h1>
+                            <ng-container
+                                [brComponent]="'seo-component'"
+                            ></ng-container>
+                        </div>
+                        <div
+                            class="cell small-12 large-6 where-to-buy-page__finder-container"
+                            [ngClass]="{ 'is-loading': isLoading }"
+                        >
+                            <app-finder></app-finder>
+                            <div class="where-to-buy-page__results-container">
+                                <app-map-section
+                                    *ngIf="!data?.isLargeScreen && isBrowser"
+                                    [labels]="labels"
+                                    [activeLabel]="activeLabel"
+                                    (activeLabelChange)="setActiveLabel($event)"
+                                    (expandedChange)="toggleIsExpanded($event)"
+                                    [expanded]="data?.isExpandedMap"
+                                ></app-map-section>
+                                <ng-container
+                                    *ngIf="
+                                        !locationRequestFailed ||
+                                            data?.curSearchLocation;
+                                        else locationFailed
+                                    "
+                                >
+                                    <app-finder-results
+                                        class="where-to-buy-page__finder-results"
+                                        [labels]="labels"
+                                        [activeLabel]="activeLabel"
+                                        (activeLabelChange)="
+                                            setActiveLabel($event)
+                                        "
+                                        [expanded]="data?.isExpandedMap"
+                                    ></app-finder-results>
+                                </ng-container>
+                                <ng-template #locationFailed>
+                                    <p>
+                                        {{
+                                            'Please enter a location to initiate the search.'
+                                                | translations
+                                                    : 'find-a-store-enter-location'
+                                        }}
+                                    </p>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div
+                            *ngIf="data?.isLargeScreen && isBrowser"
+                            class="cell small-12 large-6"
+                        >
+                            <app-map-section
+                                [expanded]="data?.isExpandedMap"
+                                [labels]="labels"
+                                [activeLabel]="activeLabel"
+                                (expandedChange)="toggleIsExpanded($event)"
+                                (activeLabelChange)="setActiveLabel($event)"
+                            ></app-map-section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #expandedModal>
+                <ng-container>
+                    <div class="where-to-buy-page__nav-container cell shrink">
+                        <a
+                            class="where-to-buy-page__back-button"
+                            (click)="toggleIsExpanded(false)"
+                        >
+                            <span class="icon-chevron-left"></span>
+                            {{
+                                'Back to List View'
+                                    | translations: 'back-to-list-view'
+                            }}
+                        </a>
+                        <a
+                            class="where-to-buy-page__close-button"
+                            (click)="toggleIsExpanded(false)"
+                        >
+                            <span
+                                class="icon-close"
+                                [attr.aria-label]="
+                                    'Close' | translations: 'close'
+                                "
+                            ></span>
+                        </a>
+                    </div>
+                    <div
+                        class="grid-container cell auto where-to-buy-page__expanded-map-container"
+                        style="width: 100%"
+                    >
+                        <div class="grid-y grid-margin-x" style="height: 100%">
+                            <app-finder class="cell shrink"></app-finder>
+                            <app-map-section
+                                *ngIf="isBrowser"
+                                class="where-to-buy-page__expanded-map cell auto"
+                                [labels]="labels"
+                                [activeLabel]="activeLabel"
+                                (expandedChange)="toggleIsExpanded($event)"
+                                (activeLabelChange)="setActiveLabel($event)"
+                                [expanded]="data?.isExpandedMap"
+                            ></app-map-section>
+                            <app-finder-results
+                                class="where-to-buy-page__finder-results cell shrink"
+                                [labels]="labels"
+                                [activeLabel]="activeLabel"
+                                (activeLabelChange)="setActiveLabel($event)"
+                                [expanded]="data?.isExpandedMap"
+                            >
+                            </app-finder-results>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

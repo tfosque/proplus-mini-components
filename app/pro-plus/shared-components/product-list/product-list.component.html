@@ -1,0 +1,126 @@
+<ng-container *ngIf="cartItems">
+    <div class="show-for-medium">
+        <table mat-table [dataSource]="cartItems" matSort class="full-width padded-table">
+            <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef>
+                    Product
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <img [src]="getPrdImageUrl(element.productImageUrl)" appImagePreload
+                        default="{{element.productOnErrorImageUrl | errorImage: '/assets/images/image-not-available.svg'}}"
+                        width="80" height="80" />
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="details">
+                <th mat-header-cell *matHeaderCellDef>
+                    Details
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <a [routerLink]="['/productDetail', element.productId, element.catalogRefId]">
+                        {{ element.itemOrProductDescription | safeHtml }}
+                    </a>
+                    <div>
+                        <strong>Item #:</strong>
+                    <span>{{ element.catalogRefId }}</span>
+                        <!-- Item Availability Message -->
+                        <ng-container *ngIf="!hasItemAvailabilityError">
+                            <span *ngIf="getAvailablityByItem(element.catalogRefId)" [ngClass]="{'availability-green-text-cart':green, 'availability-blue-text-cart':blue, 'availability-grey-text-cart':grey}">
+                                {{ getAvailablityByItem(element.catalogRefId) }}
+                            </span>
+                        </ng-container>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Price</th>
+                <td mat-cell *matCellDef="let element">
+                    <strong>
+                        <span>{{
+                            element.unitPrice | price: element.uom
+                        }}</span>
+                    </strong>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="qty">
+                <th mat-header-cell *matHeaderCellDef>Qty</th>
+                <td mat-cell *matCellDef="let element">
+                    <app-numeric-input [className]="'quantity-input'" [(currentValue)]="element.quantity" min="0"
+                        max="99999" (change)="updateAvailability($event, element)">
+                        <!-- TODO is 99999 correct -->
+                    </app-numeric-input>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef>Total</th>
+                <td mat-cell *matCellDef="let element">
+                    <span>{{
+                        element.unitPrice * element.quantity
+                            | totalPrice
+                            | price
+                    }}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>
+                    <ng-container *ngIf="deleteAll">
+                        <a (click)="deleteAll()" style="color: red">
+                            <mat-icon matTooltip="Erase Cart">remove_shopping_cart</mat-icon>
+                        </a>
+                    </ng-container>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngIf="deleteOneItem">
+                        <a href="javascript:void(0);" (click)="deleteOneItem(element)">
+                            <mat-icon color="emphasis">delete</mat-icon>
+                        </a>
+                    </ng-container>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </div>
+</ng-container>
+
+<ng-container>
+    <div class="show-for-small-only" style="font-size: 0.775rem">
+        <div *ngFor="let item of cartItems" style="border-bottom: solid thin #e8e8e8; padding-top: 10px">
+            <div class="grid-x grid-padding-x grid-padding-y align-justisfy">
+                <div class="cell small-3">
+                    <img [src]="getPrdImageUrl(item.productImageUrl)" appImagePreload
+                        [default]="item.productOnErrorImageUrl | errorImage: '/assets/images/image-not-available.svg'"
+                        width="52" height="52" />
+                </div>
+                <div class="cell small-9">
+                    {{ item.itemOrProductDescription | safeHtml }}
+                    <!-- Item Availability Message -->
+                    <ng-container *ngIf="!hasItemAvailabilityError">
+                        <span class="small-view-text" *ngIf="getAvailablityByItem(item.catalogRefId)" [ngClass]="{'availability-green-text-cart':green, 'availability-blue-text-cart':blue, 'availability-grey-text-cart':grey}">
+                            {{ getAvailablityByItem(item.catalogRefId) }}
+                        </span>
+                    </ng-container>
+                </div>
+
+                <!-- Row Two  -->
+                <div class="cell small-2">
+                    <div><b>Item#:</b></div>
+                    <div>{{ item.catalogRefId }}</div>
+                </div>
+                <div class="cell auto center-text">
+                    {{ item.unitPrice | currency }} / {{ item.uom }}
+                </div>
+                <div class="cell small-2 center-text">
+                    <app-numeric-input [className]="'quantity-input'" [(currentValue)]="item.quantity" min="0"
+                        max="9999" (change)="updateAvailability($event, item)">
+                    </app-numeric-input>
+                </div>
+                <div class="cell small-3 center-text">
+                    {{ item.quantity * item.unitPrice | currency }}
+                </div>
+                <div class="cell small-1" (click)="deleteOneItem(item)">
+                    <mat-icon>delete</mat-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

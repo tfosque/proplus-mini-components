@@ -1,0 +1,157 @@
+#jq_container_hoverJobList.job-content {
+    max-width: 1000px;
+    height: auto;
+    margin: auto;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.search-box {
+    position: relative;
+    width: 80%;
+    height: 36px;
+    background-color: rgb(250, 250, 250);
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    z-index: 1;
+    margin: 5px 0;
+    overflow: hidden;
+}
+
+#jq_container_hoverJobList .search-box .search-input {
+    outline: none;
+    border: none;
+    padding-left: 10px;
+    font-size: 16px;
+    width: 80%;
+    height: 32px;
+    line-height: 32px;
+    vertical-align: top;
+    color: black;
+    background-color: rgb(250, 250, 250);
+    position: relative;
+    text-align: left;
+}
+
+#jq_container_hoverJobList .search-box .search {
+    display: inline-block;
+    width: 35px;
+    height: 32px;
+    outline: none;
+    border: none;
+    background: rgb(244, 244, 244) url(/images/search.png) no-repeat center
+        center;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#jq_container_hoverJobList .sort-box .type {
+    width: 80px;
+    color: grey;
+    text-align: left;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 38px;
+}
+
+#jq_container_hoverJobList.job-content .minict_wrapper {
+    text-align: left;
+    border: 2px solid #ccc;
+    background-color: rgb(250, 250, 250);
+    border-radius: 4px;
+}
+
+#jq_container_hoverJobList .sort-box .value {
+    width: 138px;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+#jq_container_hoverJobList .job-list .list-box {
+    background-color: rgb(246, 245, 245);
+    background-clip: content-box;
+    padding: 0 10px 28px 10px;
+    color: #000;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    position: relative;
+    border: none;
+    cursor: pointer;
+}
+
+#jq_container_hoverJobList .list-box p {
+    padding: 0 15px;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.job-list-item {
+    margin: 0 0 10px;
+}
+
+#jq_container_hoverJobList .list-box .complete {
+    color: rgb(149, 164, 178);
+    margin-top: 8px;
+}
+
+#jq_container_hoverJobList .list-box .time {
+    display: block;
+    padding: 0 15px;
+    margin-top: 5px;
+    text-align: right;
+    color: grey;
+    font-size: 12px;
+    line-height: normal;
+}
+
+.jq_searchArea_hoverJobList {
+    margin: 20px 0 5px 0;
+}
+
+.JobDetailLink:hover {
+    text-decoration: none;
+}
+
+.jq_jobListEmpty_hoverJobDetail {
+    text-align: center;
+    height: 410px;
+    display: flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.jumbotron {
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding: 30px;
+    margin-bottom: 30px;
+    color: inherit;
+    background-color: #eee;
+}
+
+.jq_jobListEmpty_hoverJobDetail h1 {
+    line-height: 60px;
+    font-size: 60px;
+    width: 100%;
+    color: #34495e;
+}
+
+.job-search:focus {
+    border: 0;
+    outline: none;
+}
+
+.jq_listItem_img_hoverJobList {
+    max-height: 158px;
+}
+
+.img-box {
+    text-align: center;
+}

@@ -1,0 +1,87 @@
+@import '../../../sass/mixins';
+@import '../../../sass/variables';
+
+.product-list {
+    position: relative;
+    &__load-more-container {
+        margin: rem-calc(10px 0 30px);
+        text-align: center;
+    }
+
+    &__results-container {
+        position: relative;
+
+        &.no-products {
+            min-height: 90vw;
+        }
+    }
+
+    &__no-results {
+        font-size: rem-calc(22);
+    }
+
+    .loading-container {
+        background-color: rgba(255, 255, 255, 0.6);
+        bottom: 0;
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        left: 0;
+        padding: rem-calc(40px);
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .loading-more-container {
+        display: flex;
+        justify-content: center;
+        padding: rem-calc(16px);
+        width: 100%;
+
+        .mat-progress-spinner {
+            height: 50px;
+            width: 50px;
+        }
+    }
+    .gotoTop {
+        display: block;
+        background: $color-primary;
+        border-radius: 1px;
+        box-shadow: -2px -1px 4px 0 rgba(53, 53, 53, 0.21);
+        color: $color-white;
+        font-size: rem-calc(12px);
+        line-height: rem-calc(14px);
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        z-index: 3;
+        padding: rem-calc(11px 8px 8px);
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        text-align: center;
+        max-width: rem-calc(65px);
+        text-transform: uppercase;
+        span {
+            display: block;
+            width: 100%;
+            font-weight: $font-weight-heavy;
+            &.gotoTop--arrow {
+                margin-bottom: rem-calc(5px);
+            }
+        }
+        &:hover {
+            text-decoration: none;
+            background-color: $color-primary-hover;
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        &__load-more-container {
+            margin: rem-calc(10px 0 80px);
+        }
+    }
+}

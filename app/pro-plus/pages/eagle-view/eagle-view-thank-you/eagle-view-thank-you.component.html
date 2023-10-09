@@ -1,0 +1,24 @@
+<div class="text-center margin-top">
+    <img src="assets/images/Eagleview_logo.jpg" alt="Order Eagleview Report" class="logo"/>
+    <h1>Thank you</h1>
+</div>
+<div class="message">
+    Thank you for ordering an EagleView report through Beacon PRO+! You will receive an email from EagleView with property details. Should there be any questions, EagleView will contact you directly to assist. The final cost of the report will be charged to your Beacon account.
+</div>
+<!-- <div class="margin-left" *ngIf="apiResult">
+    Report Ids: {{ apiResult.reportIds.join(', ') }}<br />
+    Order Id: {{ apiResult.orderId }}
+</div> -->
+<div class="margin-left" *ngIf="message">
+    {{message}} The retry will be performed.
+</div>
+<div class="grid-x grid-margin-x margin-top">
+    <button 
+        class="cell small-12 medium-4 large-4 md-5 centered"
+        mat-raised-button
+        color="primary"
+        (click)="navigatePLP()"
+    >
+        Continue Shopping
+    </button>
+</div>

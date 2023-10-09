@@ -1,0 +1,12 @@
+<!-- <mat-input type="search" placeholder="search job accounts"></mat-input> -->
+<mat-form-field class="example-full-width" style="padding: 20px 0 0 0;">
+  <mat-label>Search</mat-label>
+  <input [(ngModel)]="searchStr" name="searchStr" matInput placeholder="Job account name" type="search"
+    (change)="update($event)">
+</mat-form-field>
+
+<!-- RESULTS -->
+<!-- <mat-list role="list" style="padding-top: 0">
+  <mat-list-item role="listitem" style="height: auto" *ngFor="let item of jobAccounts | searchFilter: searchStr">
+    {{item.jobName}}</mat-list-item>
+</mat-list> -->

@@ -1,0 +1,28 @@
+<div class="image-list generic-rail-component">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h3>{{ heading }}</h3>
+    <ul>
+        <li *ngFor="let linkItem of imageListArray; let i = index">
+            <a
+                *ngIf="
+                    linkItem.link.isExternal && linkItem.image;
+                    else internal
+                "
+                href="{{ linkItem.link.url | protocol }}"
+            >
+                <img
+                    src="{{ linkItem.image.src }}"
+                    alt="{{ linkItem.image.altText }}"
+                />
+            </a>
+            <ng-template #internal>
+                <a *ngIf="linkItem.image" routerLink="{{ linkItem.link.url }}">
+                    <img
+                        src="{{ linkItem.image.src }}"
+                        alt="{{ linkItem.image.altText }}"
+                    />
+                </a>
+            </ng-template>
+        </li>
+    </ul>
+</div>

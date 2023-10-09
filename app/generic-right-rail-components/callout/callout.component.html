@@ -1,0 +1,12 @@
+<div class="callout generic-rail-component">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h3>{{ heading }}</h3>
+    <img *ngIf="image" src="{{ image.src }}" alt="{{ image.altText }}" />
+    <p>{{ textContent }}</p>
+    <a *ngIf="linkIsExternal && link; else internal" href="{{ link }}">{{
+        linkText
+    }}</a>
+    <ng-template #internal>
+        <a *ngIf="link" routerLink="{{ link }}">{{ linkText }}</a>
+    </ng-template>
+</div>

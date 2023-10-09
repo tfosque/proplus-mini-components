@@ -1,0 +1,224 @@
+@import '../../../../../sass/vendor/foundation-settings';
+@import '../../../../../sass/variables';
+@import '../../../../../sass/mixins';
+
+.marketing-block {
+    height: 190px;
+    background-color: $color-background-dark;
+    border: 6px solid $color-primary;
+    margin-top: rem-calc(12px);
+    &__wrapper {
+        color: $color-secondary;
+        padding: rem-calc(16px);
+    }
+    h2, h3 {
+        color: $color-secondary;
+        font-family: $font-family;
+        font-weight: $font-weight-bold;
+        font-size: rem-calc(18px);
+        line-height: rem-calc(22px);
+        margin-bottom: rem-calc(5px);
+    }
+    h2{
+        text-align: center;
+    }
+    p {
+        color: $color-white;
+        font-size: rem-calc(14px);
+        line-height: rem-calc(18px);
+        margin-top: 0px;
+        opacity: 0.8;
+    }
+    img {
+        height: auto;
+        width: 100%;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .marketing-block {
+        border: 5px solid $color-primary;
+        background-color: transparent;
+        display: flex;
+        margin-bottom: rem-calc(50px);
+        position: relative;
+        overflow: hidden;
+        @include ie-flex-min-height();
+        &__wrapper {
+            background-color: $color-background-dark;
+            max-width: rem-calc(450px);
+            padding: 3.75rem 6.5625rem;;
+            top: 0;
+            z-index: 2;
+            @include angle(after, false, 20deg);
+            // &:after {
+            //     background-color: $color-background-dark;
+            //     bottom: -1px;
+            //     box-shadow: 2px 0 4px -1px rgba(0, 0, 0, 0.4);
+            //     height: calc(120%);
+            //     width: 120%;
+            //     top: -1px;
+            // }
+        }
+        h2 {
+            font-size: rem-calc(24px);
+            line-height: rem-calc(28px);
+        }
+        p {
+            font-size: rem-calc(16px);
+            line-height: rem-calc(20px);
+            margin-bottom: rem-calc(22px);
+        }
+
+        img {
+            bottom: 0;
+            @include object-fit(cover, center);
+            height: 100%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            width: 100%;
+        }
+    }
+}
+
+.how-it-work{
+    margin-top: 20px;
+    padding-bottom: 40px;
+    h1{
+        text-align: center
+    }
+    p {
+        // font-size: 21px;
+        text-align: center
+    }
+    .promo-btn{
+        text-align: center;
+    }
+    p img {
+        background: #025f9e;
+        border: 1px solid #025f9e;
+        border-radius: 5px;
+        width: 100px;
+        height: 80px;
+    }
+    .step-btn{
+        width: 70%;
+    }
+    .disable-click {
+      pointer-events: none;
+      cursor: default;
+    }
+}
+.mainImage {
+    background-image: url('https://beaconproplus.com/images/RebatesHeaderImage.png');
+}
+
+.box {
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    width: 180px;
+    max-width: 100%;
+    margin: auto;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background: #025396 !important;
+    border: 2px solid #025396 !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover {
+    background: #003670 !important;
+    color: #fff !important;
+    border: 2px solid #003670 !important;
+}
+
+.btn-disabled {
+    background: rgba(0,0,0,.12) !important;
+    border: 2px solid rgba(0,0,0,.12) !important;
+    color: rgba(0, 0, 0, 0.26);
+}
+
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    white-space: nowrap;
+    padding: 7px 8px;
+    line-height: 1.42857;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background: #025396;
+}
+
+.col-xs-offset-1 {
+    margin-left: 8.33333%;
+}
+
+h6 {
+    margin: 0;
+    padding-bottom: 15px;
+}
+
+.rebate-promo-items{
+  .promo-card{
+    margin: 1.25rem;
+    background: #ccc;
+  }
+  .card-cell{
+    margin: 0rem;
+  }
+  .rebate-card-row {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: stretch space-between;
+    align-items: stretch
+  }
+  .rebate-cell--left {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 100%;
+    max-width: 40%;
+    min-width: 40%;
+  }
+  .rebate-cell--right {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 100%;
+    max-width: 50%;
+    min-width: 50%;
+  }
+  .rebate-img{
+    text-align: center;
+    padding-top: 25px;
+    background: white;
+    padding-bottom: 25px;
+  }
+  .rebate-name{
+    border-bottom: 2px solid #000;
+    text-align: center;
+  }
+  p{
+    color: #000000;
+    text-align: center;
+  }
+}
+
+.noPerms{
+    max-width: 70%;
+    margin-bottom: 200px;
+}

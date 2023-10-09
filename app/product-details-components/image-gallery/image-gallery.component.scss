@@ -1,0 +1,87 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.image-gallery {
+    &__thumb-item {
+        box-shadow: $box-shadow;
+        &.is-active {
+            border: 4px solid white;
+            outline: 1px solid $color-borders;
+        }
+    }
+
+    &__active-image-container {
+        border: 1px solid $color-borders;
+        height: 0;
+        padding-bottom: 100%;
+        position: relative;
+        width: 100%;
+
+        img {
+            bottom: 0;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 100%;
+
+            & + a {
+                color: white;
+                font-size: rem-calc(13px);
+                font-weight: $font-weight-heavy;
+                text-transform: uppercase;
+                position: absolute;
+                bottom: rem-calc(20px);
+                right: rem-calc(20px);
+                display: none;
+            }
+        }
+    }
+
+    &__thumb-list {
+        list-style-type: none;
+        padding-left: 0px;
+
+        li {
+            display: inline-block;
+            margin-right: rem-calc(20px);
+            &:last-child {
+                margin-right: 0px;
+            }
+        }
+    }
+
+    &__thumb-image {
+        max-width: rem-calc(50px);
+    }
+
+    &__thumb-count {
+        display: none;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, large)) {
+    .image-gallery {
+        margin-right: rem-calc(20px);
+
+        &__thumb-list {
+            li {
+                margin-right: rem-calc(20px);
+                margin-top: rem-calc(5px);
+            }
+        }
+
+        &__thumb-image {
+            max-width: rem-calc(75px);
+        }
+
+        &__active-image-container {
+            img {
+                & + a {
+                    right: rem-calc(40px);
+                }
+            }
+        }
+    }
+}

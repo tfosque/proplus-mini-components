@@ -1,0 +1,15 @@
+h4[matLine] {
+  font-weight: bold !important;
+}
+
+.border {
+  border: solid thin #b1aeae3b;
+}
+
+.border-left {
+  border-left: solid thin #b1aeae3b;
+}
+
+::ng-deep .mat-vertical-stepper-content {
+  border: solid thin #b1aeae3b;
+}

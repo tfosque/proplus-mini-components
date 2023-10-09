@@ -1,0 +1,92 @@
+<section class="finder">
+    <form
+        class="location-form"
+        name="location-form"
+        #locationForm="ngForm"
+        (ngSubmit)="onLocationSubmit()"
+    >
+        <label for="location">{{
+            'Zip, City, State' | translations: 'find-a-store-search-text'
+        }}</label>
+        <span class="finder__search-wrapper">
+            <button
+                class="icon-search"
+                [attr.aria-label]="'Search' | translations: 'search'"
+            ></button>
+            <input
+                name="location"
+                type="text"
+                id="location"
+                [(ngModel)]="location"
+            />
+        </span>
+    </form>
+    <div class="select-wrapper field-group">
+        <label for="distance">{{
+            'Distance' | translations: 'distance'
+        }}</label>
+        <div>
+            <select
+                name="distance"
+                id="distance"
+                [(ngModel)]="distance"
+                (ngModelChange)="onDistanceChange()"
+            >
+                <option
+                    *ngFor="let distanceOption of distanceOptions"
+                    [ngValue]="distanceOption.value"
+                >
+                    {{ distanceOption.text }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div
+        [ngClass]="{ 'is-hidden': !storeCategories || !storeCategories.length }"
+        class="finder__content-container"
+        #contentContainer
+    >
+        <div class="finder__stores field-group">
+            <div class="finder__title-container" #titleContainer>
+                <h2>{{ 'Stores with' | translations: 'stores-with' }}:</h2>
+            </div>
+            <div class="finder__stores--container" #storesContainer>
+                <ul>
+                    <li
+                        *ngFor="
+                            let storeCategory of storeCategories;
+                            index as i
+                        "
+                    >
+                        <mat-checkbox
+                            *ngIf="isMediumScreen; else nativeCheckbox"
+                            class="custom-checkbox"
+                            [checked]="storeCategory.selected"
+                            (change)="onFacetChange(storeCategory)"
+                        >
+                            {{ storeCategory.title }}
+                        </mat-checkbox>
+                        <ng-template #nativeCheckbox>
+                            <input
+                                type="checkbox"
+                                id="store-filter-{{ i }}"
+                                [checked]="storeCategory.selected"
+                                (change)="onFacetChange(storeCategory)"
+                            />
+                            <label for="store-filter-{{ i }}">
+                                {{ storeCategory.title }}
+                            </label>
+                        </ng-template>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <span
+        [ngClass]="{ visible: isOverflowing && !contentEnd }"
+        class="finder__icon-container"
+        #overflowIcon
+    >
+        <span class="finder__icon icon-chevron-right"></span>
+    </span>
+</section>

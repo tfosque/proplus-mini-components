@@ -1,0 +1,10 @@
+<div class="open-quote">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <blockquote *ngIf="quote">
+        <p>{{ quote }}</p>
+    </blockquote>
+    <span *ngIf="author && title" class="open-quote--author"
+        ><strong>- {{ author }}</strong
+        >, {{ title }}</span
+    >
+</div>

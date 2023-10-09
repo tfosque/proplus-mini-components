@@ -1,0 +1,33 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <app-breadcrumb [configuration]="breadcrumbConfig"></app-breadcrumb>
+    <div class="product-category-page">
+        <div class="product-category-page__top-section">
+            <div class="grid-container">
+                <h1 class="product-category-page__title">
+                    {{ pageTitle }}
+                </h1>
+                <ng-container brComponent="seo-component"></ng-container>
+                <ng-container brComponent="marketing-content"></ng-container>
+                <ng-container brComponent="popular-brands"></ng-container>
+                <ng-container brComponent="product-browse-cards"></ng-container>
+            </div>
+            <div
+                *ngIf="showBottomSection"
+                class="product-category-page__bottom-section"
+            >
+                <div class="grid-container">
+                    <div class="grid-x grid-margin-x grid-item">
+                        <ng-container
+                            brComponent="by-application-cards"
+                        ></ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

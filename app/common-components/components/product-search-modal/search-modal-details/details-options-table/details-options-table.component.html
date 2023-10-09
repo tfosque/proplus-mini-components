@@ -1,0 +1,14 @@
+<table id="Options" [ngClass]="{'hide': hideOptions}" mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+  style="width: 100%">
+  <ng-container [matColumnDef]="item" *ngFor="let item of (columns$ | async); let i = index">
+    <th mat-header-cell *matHeaderCellDef style="text-transform: capitalize; font-size: 1rem; color: #000;
+    font-weight: bold;"> {{ item }}</th>
+    <td mat-cell *matCellDef="let element" (click)="changeSelectedProduct(element)"
+      [ngClass]="{'highlight': element?.isSelected}">
+      <span> {{ element[ item] }}</span>
+      <!--  <mat-spinner *ngIf="element[0] === nextSku" diameter="26" style="display: inline; top: -5px"></mat-spinner> -->
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="columns$| async"></tr>
+  <tr mat-row *matRowDef="let row; columns: (columns$ | async);" style="cursor: pointer"></tr>
+</table>

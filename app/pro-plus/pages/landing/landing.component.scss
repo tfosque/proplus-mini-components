@@ -1,0 +1,106 @@
+@import '../../../../../node_modules/foundation-sites/scss/foundation.scss';
+
+div.landing-container {
+    background-color: white;
+    padding-top: 0.5in;
+    padding-bottom: 0.5in;
+    padding-left: 2.5in;
+}
+
+.quote {
+    float: left;
+    width: 49%;
+    padding-right: 2%;
+    text-align: right;
+    /*margin: 2px 10px;*/
+}
+.online {
+    float: right;
+    width: 49%;
+    text-align: right;
+}
+
+@media all and (max-width: 990px) {
+    .quote {
+        margin-left: 16%;
+        width: 32%;
+        height: 100%;
+    }
+    .online {
+        float: right;
+        margin-left: 10px;
+        width: 30%;
+        height: 100%;
+        text-align: right;
+    }
+}
+
+.history {
+    div.cell {
+        padding-top: 20px;
+    }
+}
+
+@include breakpoint(large) {
+    .history {
+        div.cell {
+            padding-top: 0px;
+        }
+        img {
+            margin-bottom: 20px;
+        }
+    }
+}
+
+@media all and (max-width: 767px) {
+    .banner {
+        width: 97%;
+    }
+    .quote {
+        float: left;
+        margin-left: 0%;
+        width: 49%;
+        height: 100%;
+        text-align: left;
+    }
+    .online {
+        float: right;
+        width: 47%;
+        height: 100%;
+        text-align: right;
+    }
+    .rebate img {
+        padding-top: 20px;
+        display: block;
+        margin: auto;
+    }
+    .storm img {
+        padding-top: 20px;
+        display: block;
+        margin: auto;
+    }
+    .porder img {
+        display: block;
+        margin: auto;
+    }
+}
+
+@media all and (max-width: 725px) {
+    /*body {background-color: red;} */
+    .banner {
+        width: 100%;
+    }
+}
+
+.img-responsive {
+    width: 100%;
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+@media all and (max-width: 1250px) {
+    .targeted-screens {
+        display: none;
+    }
+}

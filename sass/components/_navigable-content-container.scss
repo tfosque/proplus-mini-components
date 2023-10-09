@@ -1,0 +1,26 @@
+// Global styles to fix issues with cms edited version of component.
+
+.navigable-content-container {
+    @media (min-width: map-get($breakpoints, medium)) {
+        bre-render-cms-component {
+            bre-container {
+                > * {
+                    .content-section {
+                        border-bottom: 1px solid $color-borders;
+                    }
+
+                    &:last-child {
+                        .content-section {
+                            border-bottom: none;
+                        }
+                    }
+                    &:nth-child(even) {
+                        .content-section {
+                            background-color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

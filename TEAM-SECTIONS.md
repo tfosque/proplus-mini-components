@@ -1,0 +1,22 @@
+Gardening Sections
+
+- Site Navigation - Tim, Robert
+- Login - Robert, Tim
+- My Account -
+  - Address Book - Robert, Chen
+  - Accounts - Tim, Chen
+  - Profile - Chen, Tim
+  - Change Password - Robert, Tim
+  - Delivery Tracking - Tim, Chen
+- Sign-up - Chen, Robert
+- Cart - Tim, Robert
+- Quotes - Robert, Tim
+- Order History - Robert, Chen
+- Saved Orders - Robert, Chen
+- Perfect Order - Tim, Robert
+- Templates - Chen, Tim
+- Storm+ - Chen, Tim
+- Promotion Tracker / Rebates - Chen, Tim
+- Beacon 3D+ - Chen, Robert
+- Product Listing - Tim, Robert
+- Product Detail - Robert, Chen

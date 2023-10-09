@@ -1,0 +1,82 @@
+<section class="popular-brands" *ngIf="needRotating; else staticBanners">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <div class="popular-brands__content-container-rotating" #contentContainer>
+        <div class="popular-brands__title-container-rotating" #titleContainer>
+            <h2 class="popular-brands__title">
+                {{ title }}
+            </h2>
+        </div>
+
+        <div class="popular-brands__brands-container-rotating" #brandsContainer>
+            <div class="slider">
+                <div class="slide-track" [ngStyle]="{ width: calculatedslideWidth(), animation: setAnimation() }">
+                    <div *ngFor="let brandLink of brandLinks" class="slide">
+                        <a [routerLink]="brandLink.pageLink" [queryParams]="{
+                                    filters: brandLink.filters,
+                                    cateFilter: brandLink.cateFilter
+                                }">
+                            <img (load)="imageLoaded()" [src]="brandLink.brandImage.src"
+                                alt="{{ brandLink.brandImage.altText }}" 
+                                />
+                        </a>
+                    </div>
+
+                    <div *ngFor="let brandLink of brandLinks" class="slide">
+                        <a [routerLink]="brandLink.pageLink" [queryParams]="{
+                                    filters: brandLink.filters,
+                                    cateFilter: brandLink.cateFilter
+                                }">
+                            <img (load)="imageLoaded()" [src]="brandLink.brandImage.src"
+                                alt="{{ brandLink.brandImage.altText }}" 
+                                />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<ng-template #staticBanners>
+    <section class="popular-brands">
+        <div class="popular-brands__content-container" #contentContainer>
+            <div class="popular-brands__title-container" #titleContainer>
+                <h2 class="popular-brands__title">
+                    {{ title }}
+                </h2>
+            </div>
+            <div class="popular-brands__brands-container" #brandsContainer>
+                <ul class="popular-brands__brands-list">
+                    <ng-container *ngFor="let brandLink of brandLinks">
+                        <li
+                            class="popular-brands__brand-item"
+                            *ngIf="brandLink.brandImage"
+                        >
+                            <a
+                                class="popular-brands__link"
+                                [routerLink]="brandLink.pageLink"
+                                [queryParams]="{
+                                    filters: brandLink.filters,
+                                    cateFilter: brandLink.cateFilter
+                                }"
+                            >
+                                <img
+                                    (load)="imageLoaded()"
+                                    class="popular-brands__image"
+                                    [src]="brandLink.brandImage.src"
+                                    alt="{{ brandLink.brandImage.altText }}"
+                                />
+                            </a>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+        <span
+            [ngClass]="{ visible: isOverflowing && !contentEnd }"
+            class="popular-brands__icon-container"
+            #overflowIcon
+        >
+            <span class="popular-brands__icon icon-chevron-right"></span>
+        </span>
+    </section>
+</ng-template>

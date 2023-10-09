@@ -1,0 +1,86 @@
+<div
+    class="map-section"
+    *ngIf="{
+        isLargeScreen: isLargeScreen$ | async,
+        results: resultsList$ | async,
+        isLoading: loading$ | async
+    } as data"
+>
+    <div
+        *ngIf="data?.isLargeScreen && data?.isLoading"
+        class="loading-container"
+    >
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <agm-map
+        *ngIf="data?.isLargeScreen || expanded; else miniMap"
+        class="map"
+        [mapDraggable]="true"
+        [draggableCursor]="'default'"
+        [zoomControl]="true"
+        [latitude]="data?.isLargeScreen ? desktopLat : mobileLat"
+        [longitude]="data?.isLargeScreen ? desktopLong : mobileLong"
+        [zoom]="data?.isLargeScreen ? desktopZoom : mobileZoom"
+        [fitBounds]="!!data?.results.length"
+        [disableDefaultUI]="false"
+    >
+        <agm-marker
+            *ngFor="let result of data?.results; index as i"
+            [latitude]="result.latitude"
+            [longitude]="result.longitude"
+            [iconUrl]="
+                activeLabel === labels[i]
+                    ? markerIconsStatic.selectedIcon
+                    : markerIconsStatic.regularIcon
+            "
+            [label]="{
+                text: labels[i],
+                color: activeLabel === labels[i] ? '#0056A8' : '#fff',
+                fontWeight: markerFontStatic.weight,
+                fontFamily: markerFontStatic.family,
+                fontSize: '16px'
+            }"
+            [title]="labels[i]"
+            [agmFitBounds]="true"
+            (markerClick)="setActiveLabel(labels[i])"
+        >
+        </agm-marker>
+    </agm-map>
+
+    <ng-template #miniMap>
+        <agm-map
+            class="mini-map"
+            [mapDraggable]="true"
+            [draggableCursor]="'default'"
+            [latitude]="data?.isLargeScreen ? desktopLat : mobileLat"
+            [longitude]="data?.isLargeScreen ? desktopLong : mobileLong"
+            [zoom]="data?.isLargeScreen ? desktopZoom : mobileZoom"
+            [fitBounds]="!!data?.results.length"
+            (mapClick)="toggleExpanded()"
+            [disableDefaultUI]="false"
+            [zoomControl]="true"
+        >
+            <agm-marker
+                *ngFor="let result of data?.results; index as i"
+                [latitude]="result.latitude"
+                [longitude]="result.longitude"
+                [iconUrl]="
+                    activeLabel === labels[i]
+                        ? markerIconsStatic.selectedIcon
+                        : markerIconsStatic.regularIcon
+                "
+                [label]="{
+                    text: labels[i],
+                    color: activeLabel === labels[i] ? '#0056A8' : '#fff',
+                    fontWeight: markerFontStatic.weight,
+                    fontFamily: markerFontStatic.family,
+                    fontSize: '13px'
+                }"
+                [title]="labels[i]"
+                [agmFitBounds]="true"
+                (markerClick)="toggleExpanded()"
+            >
+            </agm-marker>
+        </agm-map>
+    </ng-template>
+</div>

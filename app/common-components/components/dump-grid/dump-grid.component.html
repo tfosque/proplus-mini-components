@@ -1,0 +1,103 @@
+<div *ngIf="isExpanded; else nothing">
+    <div [ngSwitch]="objectInfo.type">
+        <ng-template ngSwitchCase="simple">{{
+            objectInfo.stringValue
+        }}</ng-template>
+        <ng-template ngSwitchCase="promise">
+            <ng-container *ngIf="input | async as i; else loadingOrError">
+                <app-dump-grid
+                    [input]="i"
+                    [maxDepth]="childDepth"
+                ></app-dump-grid>
+            </ng-container>
+        </ng-template>
+        <ng-template ngSwitchCase="observable">
+            <ng-container *ngIf="input | async as i; else loadingOrError">
+                <app-dump-grid
+                    [input]="i"
+                    [maxDepth]="childDepth"
+                ></app-dump-grid>
+            </ng-container>
+        </ng-template>
+        <ng-template ngSwitchCase="object">
+            <table class="grid">
+                <tr *ngFor="let key of keys">
+                    <th>{{ key }}</th>
+                    <td>
+                        <app-dump-grid
+                            [input]="input[key]"
+                            [maxDepth]="childDepth"
+                        ></app-dump-grid>
+                    </td>
+                </tr>
+            </table>
+        </ng-template>
+        <ng-template ngSwitchCase="array">
+            <table class="grid table" *ngIf="keys">
+                <thead>
+                    <tr>
+                        <th *ngFor="let key of keys">{{ key }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of input">
+                        <td *ngFor="let key of keys">
+                            <app-dump-grid
+                                [input]="item[key]"
+                                [maxDepth]="childDepth"
+                            ></app-dump-grid>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="grid table" *ngIf="keys && !keys.length">
+                <thead>
+                    <tr>
+                        <th>Array</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of input">
+                        <app-dump-grid
+                            [input]="item"
+                            [maxDepth]="childDepth"
+                        ></app-dump-grid>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-template>
+        <ng-template ngSwitchCase="action">
+            <button
+                mat-button
+                color="primary"
+                class="button"
+                (click)="input.doAction()"
+            >
+                Hello
+            </button>
+        </ng-template>
+        <ng-template ngSwitchCase="component"> Control </ng-template>
+        <ng-template ngSwitchDefault
+            >ObjectType: {{ objectInfo.type }}...</ng-template
+        >
+    </div>
+</div>
+
+<ng-template #nothing>
+    <span [ngSwitch]="objectInfo.type" (click)="toggleExpanded()">
+        <ng-template ngSwitchCase="simple">{{
+            objectInfo.stringValue
+        }}</ng-template>
+        <ng-template ngSwitchCase="object">...object...</ng-template>
+        <ng-template ngSwitchCase="array">...array...</ng-template>
+        <ng-template ngSwitchDefault>({{ objectInfo.type }})...</ng-template>
+    </span>
+</ng-template>
+
+<ng-template #loadingOrError>
+    <ng-container *ngIf="input | async as i; else loading">
+        <app-dump-grid [input]="i" [maxDepth]="childDepth"></app-dump-grid>
+    </ng-container>
+    <ng-template #loading> &lt;loading...&gt; </ng-template>
+</ng-template>

@@ -1,0 +1,14 @@
+<div class="brand-browse" *ngIf="!(selectedFacets$ | async)?.length && content">
+    <ng-container [brManageContentButton]="document"></ng-container>
+    <h3>{{ brandsBrowseTitle }}</h3>
+    <ul *ngIf="brandsArray">
+        <li *ngFor="let brand of brandsArray; let i = index">
+            <img
+                *ngIf="brand.brandImage"
+                [src]="brand.brandImage.src"
+                [alt]="brand.brandImage.altText"
+                (click)="onClick(brand.brandFacet)"
+            />
+        </li>
+    </ul>
+</div>

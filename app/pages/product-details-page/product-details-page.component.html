@@ -1,0 +1,29 @@
+<ng-container *ngIf="isCorrectTemplate || reRouted; else findTemplate">
+    <app-breadcrumb
+        *ngIf="product && product.name"
+        [configuration]="breadcrumbConfig"
+        [isProductPage]="true"
+        [productName]="product.name"
+        [extraBreadcrumb]="searchBreadcrumb"
+    >
+    </app-breadcrumb>
+    <div class="product-details-page">
+        <ng-container *ngIf="product && navItems">
+            <app-product-lead
+                [currentUser]="currentUser$ | async"
+                [product]="product"
+            ></app-product-lead>
+            <app-navigable-content-container
+                [product]="product"
+                [containerType]="containerType"
+                [navItems]="navItems"
+            ></app-navigable-content-container>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-template #findTemplate>
+    <app-page-component-rerouter
+        [pageName]="pageName"
+    ></app-page-component-rerouter>
+</ng-template>

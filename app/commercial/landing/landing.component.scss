@@ -1,0 +1,21 @@
+::ng-deep .mat-step-header .mat-step-icon-selected {
+  background-color: orange;
+}
+
+::ng-deep .mat-step-header .mat-step-icon-state-edit {
+  background-color: #025f93;
+  color: white;
+}
+
+.btn-warn {
+  background: orange;
+}
+
+.btn-right {
+  color: #fff;
+  float: right;
+}
+
+button[matStepperNext] {
+  float: right;
+}

@@ -1,0 +1,6 @@
+<div class="grid-container full">
+  <div class="grid-x">
+    <app-search-modal-facet-item *ngFor="let item of searchFacets | async" [facet]="item"
+      [label]="item[0]"></app-search-modal-facet-item>
+  </div>
+</div>

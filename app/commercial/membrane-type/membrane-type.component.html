@@ -1,0 +1,48 @@
+<!-- <app-table
+    [data]="req"
+    [btns]="['EPDM', 'TPO', 'PVC', 'FLEECEBACK']"
+></app-table>
+<app-table
+    [data]="req"
+    [btns]="['EPDM', 'TPO', 'PVC', 'FLEECEBACK']"
+></app-table>
+<app-table
+    [data]="req"
+    [btns]="['EPDM', 'TPO', 'PVC', 'FLEECEBACK']"
+></app-table> -->
+
+<mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title class="disclaimer-title">
+                <b>EPDM</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-grid-list cols="12">
+            <app-table [data]="reqEPDM"></app-table>
+        </mat-grid-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title class="disclaimer-title">
+                <b>TPO</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-grid-list cols="12">
+            <app-table [data]="reqTPO"></app-table>
+        </mat-grid-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title class="disclaimer-title">
+                <b>PVC</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-grid-list cols="12">
+            <app-table [data]="reqPVC"></app-table>
+        </mat-grid-list>
+    </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,196 @@
+.text-centered {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.filter-select {
+    // ::ng-deep .mat-form-field-flex {
+    //     border: 1px solid #dddee0;
+    // }
+    margin: 0px;
+
+    ::ng-deep .mat-form-field-infix {
+        padding: 0.6em 0;
+        border-top: 0;
+    }
+
+    ::ng-deep .mat-form-field-flex {
+        padding-left: 0.75em;
+    }
+}
+
+.select-field {
+    margin: 0px;
+    ::ng-deep .mat-select-arrow-wrapper {
+        transform: translateY(0%);
+    }
+
+    ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+        background-color: #ffffff;
+    }
+
+    ::ng-deep .mat-form-field-infix {
+        padding: 0.6em 0;
+        border-top: 0;
+    }
+
+    ::ng-deep .mat-form-field-flex {
+        padding-left: 0.75em;
+    }
+}
+
+.search-field {
+    margin: 0px;
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+        margin: 0;
+    }
+
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+        background-color: rgba(2, 95, 158, 0.1);
+        border-radius: 5px;
+    }
+
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: 0 0 0.75em 0.25em;
+    }
+
+    ::ng-deep .mat-form-field-flex {
+        padding-left: 0.75em;
+    }
+
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-prefix {
+        top: 0.5em;
+    }
+}
+.search-button {
+    border-radius: 4px;
+    border: 2px solid #285d99;
+    color: #285d99;
+}
+.search-icon {
+    font-size: 13px;
+    vertical-align: baseline;
+}
+.search-container {
+    align-items: baseline;
+}
+
+.search-filter {
+    margin-top: 0.9em;
+    ::ng-deep button.mat-raised-button {
+        font-size: 14px !important;
+    }
+
+    ::ng-deep .mat-form-field-underline {
+        .filter {
+            display: none;
+        }
+    }
+}
+
+.report-table {
+    ::ng-deep button.mat-button {
+        font-size: 14px !important;
+        font-family: arial !important;
+    }
+
+    ::ng-deep button.mat-button.mat-emphasis {
+        color: black !important;
+    }
+}
+
+div#mobile-view table td {
+    padding: 15px;
+
+    div span.label {
+        font-weight: bold;
+        font-size: 0.825rem;
+        text-transform: uppercase;
+    }
+}
+
+.top-margin {
+    margin-top: 5px;
+}
+
+.grey-background {
+    // background-color: #F1F1F1;
+    border: 2px solid #285d99;
+    border-radius: 13px;
+    text-align: center;
+    // width: 100%;
+}
+
+.sub-title {
+    font-family: 'titling-gothic-fb-compressed-bold', 'arial', sans-serif;
+    color: #025f9e;
+    font-size: 28px;
+    text-transform: uppercase;
+    margin-left: 3rem;
+}
+
+.large-margin {
+    margin: 5px 90px;
+}
+
+.small-padding {
+    padding: 10px;
+}
+
+.sub-text-large {
+    line-height: 1.25;
+    font-size: 14px;
+    font-family: arial;
+}
+
+.margin-section {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.text-large {
+    /* Subheading */
+    font-family: proxima-nova, arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 20px;
+    /* identical to box height */
+    letter-spacing: 0.15px;
+
+    /* Beacon Black */
+    color: #242424;
+}
+
+.margin-cta {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.left-padding {
+    margin-left: 15px;
+}
+
+.sub-text-black {
+    font-family: arial;
+    font-size: 16px;
+}
+
+.auto-margin {
+    margin: auto;
+}
+
+.display-inline-block {
+    display: inline-block;
+}

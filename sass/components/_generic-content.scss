@@ -1,0 +1,118 @@
+.generic-content-page {
+    .right-rail {
+        margin-top: rem-calc(16px);
+
+        .callout {
+            border-width: 0px;
+        }
+    }
+
+    &,
+    .rich-text {
+        h1 {
+            @include condensed-font();
+            font-size: rem-calc(28px);
+            line-height: rem-calc(32px);
+            margin-bottom: 10px;
+            margin-top: 0;
+            color: $color-primary;
+        }
+
+        h2 {
+            font-size: rem-calc(24px);
+        }
+
+        h3 {
+            margin-bottom: 0;
+        }
+
+        .large-3 {
+            padding-bottom: 20px;
+        }
+        p,
+        ol,
+        ul {
+            color: $color-text-primary;
+            font-size: rem-calc(16px);
+            line-height: rem-calc(24px);
+            margin: rem-calc(15px 0 40px);
+            padding: 0;
+        }
+
+        ol,
+        ul {
+            padding-left: rem-calc(18px);
+        }
+    }
+    app-rich-text .rich-text {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+    }
+    img,
+    figure.image {
+        &.float-left,
+        &[align='left'],
+        &[style='float:left'] {
+            padding: 0 0 30px 0;
+        }
+
+        &.float-right,
+        &[align='right'],
+        &[style='float:right'] {
+            padding: 0 0 30px 0px;
+        }
+    }
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        &,
+        .rich-text {
+            h1 {
+                font-size: rem-calc(44px);
+                margin-top: 20px;
+            }
+
+            h2 {
+                font-size: rem-calc(28px);
+            }
+            h3 {
+                font-size: rem-calc(24px);
+                line-height: rem-calc(28px);
+            }
+            p,
+            ol,
+            ul {
+                font-size: rem-calc(18px);
+                line-height: rem-calc(26px);
+            }
+        }
+
+        figure.image {
+            figcaption {
+                font-size: rem-calc(13.5px);
+            }
+        }
+
+        img,
+        figure.image {
+            &.float-left,
+            &[align='left'],
+            &[style='float:left'] {
+                float: left !important;
+                padding: 0 30px 30px 0px;
+            }
+
+            &.float-right,
+            &[align='right'],
+            &[style='float:right'] {
+                float: right !important;
+                padding: 0 0 30px 30px;
+            }
+        }
+    }
+
+    @media (min-width: map-get($grid-breakpoints, large)) {
+        .right-rail {
+            margin-top: 0;
+        }
+    }
+}

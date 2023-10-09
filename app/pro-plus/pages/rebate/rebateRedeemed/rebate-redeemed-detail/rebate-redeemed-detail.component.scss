@@ -1,0 +1,68 @@
+@import '../../../../../../sass/variables';
+@import '../../../../../../sass/mixins';
+
+.rebateRedeemedDetailContainer .mainImage {
+    background-image: url('https://beaconproplus.com/images/viewRebate.png');
+}
+
+.rebateRedeemedDetailContainer .mainImage div.container h1 {
+    text-align: center;
+    color: #ffffff;
+    padding-top: 20px;
+    margin: 20px 0 10px;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 39.6px;
+}
+
+.rebateRedeemedDetailContainer .mainImage div.container h3 {
+    text-align: center;
+    color: #ffffff;
+    padding-bottom: 15px;
+    margin: -2px 0 10px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 26.4px;
+}
+.title {
+    color: #014c93;
+    text-align: center;
+    justify-content: center;
+}
+.promo-card {
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        height: 22ex;
+    }
+    @media (max-width: map-get($grid-breakpoints, medium)) {
+    }
+}
+.thBlue {
+    padding: 2ex;
+}
+.tdCell {
+    padding: 2ex;
+}
+
+.search-form {
+    padding: 8ex 8ex 0ex 8ex;
+}
+.search-inputs {
+    @media (min-width: map-get($grid-breakpoints, medium)) {
+        padding: 2ex;
+    }
+    @media (max-width: map-get($grid-breakpoints, medium)) {
+        // width: 60ex;
+    }
+}
+.jumbotron-card {
+    background-color: #dddddd;
+    margin: 3ex;
+}
+.info-jumbo {
+    text-align: center;
+    color: #7bb925;
+    justify-content: center;
+}
+.promo-info {
+    padding: 5ex;
+}

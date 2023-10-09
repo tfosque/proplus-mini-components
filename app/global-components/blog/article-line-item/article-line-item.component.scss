@@ -1,0 +1,37 @@
+/* .img-frame {
+    img {
+        display: none;
+    }
+} */
+div.article-container {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.blog-post {
+    margin-bottom: 15px;
+
+    h2.blog-post-title {
+        padding-top: 15px;
+        margin-bottom: 0px;
+        font-size: 1.75rem;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+span.author {
+    color: #025f9e;
+}
+
+p.body {
+    margin-top: 10px;
+}
+
+p.blog-post-meta {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

@@ -1,0 +1,53 @@
+<div *ngIf="facetGroup">
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="false">
+            <mat-expansion-panel-header>
+                <mat-panel-title class="disclaimer-title">
+                    <b>Filters</b>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="grid-x">
+                <div
+                    class="facet-container"
+                    *ngFor="let facet of facetGroup"
+                    style="width: 150px"
+                >
+                    <h3 class="facet-title">{{ facet.facetName }}</h3>
+                    <div *ngIf="facet.valuesCount <= 10; else showMoreFacets">
+                        <div
+                            class="cell facet-content"
+                            *ngFor="let value of facet.facetValues"
+                        >
+                            <mat-checkbox
+                                [checked]="value.selected"
+                                (change)="toggleFacet(value)"
+                            >
+                                {{ value.facetName }}
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <ng-template #showMoreFacets>
+                        <div
+                            class="cell facet-content"
+                            *ngFor="
+                                let value of facet.facetValues
+                                    | slice: 0:facet.facetCountShowMore * 5
+                            "
+                        >
+                            <mat-checkbox
+                                [checked]="value.selected"
+                                (change)="toggleFacet(value)"
+                            >
+                                {{ value.facetName }}
+                            </mat-checkbox>
+                        </div>
+                        <button (click)="showMoreFacetsToggle(facet)">
+                            {{ showMoreText }}
+                        </button>
+                    </ng-template>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

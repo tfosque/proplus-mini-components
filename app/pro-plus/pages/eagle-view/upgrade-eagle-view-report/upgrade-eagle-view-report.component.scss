@@ -1,0 +1,108 @@
+.text-bold {
+    font-weight: bold;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.center {
+    margin: auto;
+}
+
+.with-margin {
+    padding: 10px 0;
+}
+
+.with-margin-radio {
+    padding: 10px 5px;
+}
+
+.margin-top {
+    margin-top: 20px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
+.text-gray {
+    color: gray;
+}
+
+.bordered {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.bordered-top {
+    border-top: 1px solid lightgray;
+}
+
+.margin-left {
+    margin-left: 10px;
+}
+
+.margin-left-large {
+    margin-left: 20px;
+}
+
+.margin-top-small {
+    margin-top: 10px;
+}
+
+.text-small {
+    font-size: 12px;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header {
+    padding: 0;
+}
+
+.logo {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    display: block;
+}
+
+:host ::ng-deep .mat-radio-label {
+    width: 100%;
+    align-items: normal;
+    white-space: normal;
+}
+
+:host ::ng-deep .mat-radio-label-content {
+    width: 100%;
+}
+
+:host ::ng-deep .mat-radio-container {
+    width: 40px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.sub-title {
+    font-size: 1rem;
+}
+
+.text-red {
+    color: #EA3223;
+}
+

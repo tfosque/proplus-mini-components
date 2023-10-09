@@ -1,0 +1,61 @@
+.header-arial {
+    font-family: arial;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 46px;
+    text-align: center;
+    letter-spacing: -1px;
+    color: #025f9e;
+}
+.header-arial-text {
+    font-family: arial;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18.2039px;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 0.195041px;
+    color: #242424;
+    padding: 0.85em 0;
+}
+.sub-header-arial {
+    font-family: arial;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 32px;
+    letter-spacing: 0.15px;
+    color: #000000;
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+}
+.sub-header-text {
+    font-family: arial;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    letter-spacing: 0.15px;
+    color: #000000;
+    padding-bottom: 1.2em;
+}
+.flex-row {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.text-centered {
+    text-align: center;
+}
+.close-btn {
+    position: absolute;
+    right: 0;
+    background: transparent;
+    margin-right: -3.5em;
+    top: -1.5em;
+}
+.font-size {
+    font-size: 28px;
+}

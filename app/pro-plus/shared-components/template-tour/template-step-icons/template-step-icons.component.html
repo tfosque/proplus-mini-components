@@ -1,0 +1,15 @@
+<div class="divider">&nbsp;</div>
+<div id="step-icons">
+    <div class="grid-x">
+        <div
+            style="cursor: pointer"
+            class="cell small-3"
+            *ngFor="let item of [0, 1, 2, 3]; let i = index"
+            (click)="go2Step(i)"
+        >
+            <mat-icon *ngIf="currStep | async as step">{{
+                step >= i ? 'radio_button_checked' : 'radio_button_unchecked'
+            }}</mat-icon>
+        </div>
+    </div>
+</div>

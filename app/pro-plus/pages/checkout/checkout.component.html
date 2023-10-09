@@ -1,0 +1,1184 @@
+<div class="loading-container" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<!-- validation that the shopping cart has items -->
+<div *ngIf="cart.value.items.length; else emptyCart">
+    <mat-tab-group
+        #tabGroup
+        mat-stretch-tabs
+        (selectedTabChange)="tabChanged($event)"
+        disablePagination
+    >
+        <mat-tab>
+            <ng-template mat-tab-label> &#10123; Shipping </ng-template>
+            <h1>
+                <mat-icon style="margin-right: 10px; font-size: 30px"
+                    >local_shipping</mat-icon
+                >Shipping
+            </h1>
+            <!-- Delivery Option -->
+            <div>
+                <p style="font-weight: bold">CHOOSE YOUR DELIVERY OPTION</p>
+                <mat-divider class="divider"></mat-divider>
+                <mat-radio-group [(ngModel)]="DeliveryOpt">
+                    <div>
+                        <!-- checkboxes validate certain sreas show or not -->
+                        <mat-radio-button color="primary" [value]="true">
+                            Schedule Delivery Or Pick-Up</mat-radio-button
+                        >
+                    </div>
+                    <div>
+                        <mat-radio-button color="primary" [value]="false">
+                            Place Order On Hold</mat-radio-button
+                        >
+                    </div>
+                </mat-radio-group>
+            </div>
+            <!-- Choose Delivery Method -->
+            <div>
+                <p style="font-weight: bold">CHOOSE YOUR DELIVERY METHOD</p>
+                <mat-divider class="divider"></mat-divider>
+                <mat-radio-group [(ngModel)]="DeliveryMethod">
+                    <div>
+                        <mat-radio-button
+                            color="primary"
+                            [value]="false"
+                            [checked]=""
+                        >
+                            Pick Up In Store
+                        </mat-radio-button>
+                    </div>
+                    <div>
+                        <mat-radio-button
+                            color="primary"
+                            [value]="true"
+                            [checked]=""
+                        >
+                            Shipping To Address
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </div>
+            <!-- Pickup / Deliverty Time -->
+            <div *ngIf="DeliveryOpt">
+                <div class="grid-x">
+                    <div class="medium-7">
+                        <p style="font-weight: bold">
+                            PREFERRED PICKUP/DELIVERY DATE AND TIME
+                        </p>
+                    </div>
+                    <div
+                        *ngIf="showPickupMsg()"
+                        class="medium-5 site-color jq-select-time-in-store-notes"
+                    >
+                        Note: Preferred Pickup time is not guaranteed. We
+                        recommend verifying pickup time with branch first.
+                    </div>
+                </div>
+                <div class="grid-x">
+                    <div class="small-12 medium-12">
+                        <mat-divider class="divider"></mat-divider>
+                    </div>
+                </div>
+                <!-- date and  time inputs -->
+                <form>
+                    <div class="grid-x grid-padding-x">
+                        <div class="datetimeinputs cell small-12 medium-6">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    matInput
+                                    [matDatepickerFilter]="isWorkDay"
+                                    [max]="maxDate"
+                                    [min]="minDate"
+                                    [matDatepicker]="pick"
+                                    (focus)="pick.open()"
+                                    placeholder="Choose a date"
+                                    [(ngModel)]="date"
+                                    [formControl]="dateAndTimeFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    disabled="true"
+                                />
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="pick"
+                                ></mat-datepicker-toggle>
+                                <mat-datepicker
+                                    #pick
+                                    disabled="false"
+                                ></mat-datepicker>
+                                <mat-error
+                                    *ngIf="
+                                        dateAndTimeFormControl.hasError(
+                                            'required'
+                                        )
+                                    "
+                                >
+                                    Date is required
+                                </mat-error>
+                                <mat-error *ngIf="isValidDate"
+                                    >Date can not be before today</mat-error
+                                >
+                            </mat-form-field>
+                        </div>
+                        <div class="datetimeinputs cell small-12 medium-6">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <mat-select
+                                    placeholder="Time"
+                                    [(value)]="time"
+                                    [formControl]="timeFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    (opened)="(getTimesAvailable)"
+                                    required
+                                >
+                                    <mat-option>--Select a Time--</mat-option>
+                                    <mat-option
+                                        *ngIf="
+                                            availablePickupTimes.length === 0
+                                        "
+                                        [disabled]="true"
+                                        >No times available for pickup
+                                    </mat-option>
+                                    <mat-option
+                                        *ngFor="let t of availablePickupTimes"
+                                        [value]="t.value"
+                                    >
+                                        {{ t.value }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="timeFormControl.hasError('required')"
+                                >
+                                    Time is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Address -->
+            <div *ngIf="!DeliveryMethod">
+                <mat-divider class="divider"></mat-divider>
+                <div>
+                    <p style="font-weight: bold">
+                        STORE PICK-UP ADDRESS
+                        <span class="change-location-btn">
+                            <a
+                                *ngIf="!changeLocation"
+                                (click)="toggleChangeLocation()"
+                                >Change Location</a
+                            >
+                            <a
+                                *ngIf="changeLocation"
+                                (click)="toggleChangeLocation()"
+                                >Hide Location</a
+                            >
+                        </span>
+                    </p>
+                </div>
+                <!-- Selected Branch -->
+                <div>
+                    <div class="grid-container">
+                        <div class="grid-x grid-margin-x grid-margin-y">
+                            <div class="cell medium-7">
+                                <p style="margin-top: 0px; margin-bottom: 2px">
+                                    {{ pickupBranch?.branchName }}
+                                </p>
+                                <p style="margin-top: 0px; margin-bottom: 2px">
+                                    {{ pickupBranch?.address?.address1 }}
+                                </p>
+                                <p style="margin-top: 0px; margin-bottom: 2px">
+                                    {{ pickupBranch?.address?.address2 }}
+                                </p>
+                                <p style="margin-top: 0px; margin-bottom: 2px">
+                                    {{ pickupBranch?.address?.city }},
+                                    {{ pickupBranch?.address?.state }}
+                                    {{ pickupBranch?.address?.postalCode }}
+                                </p>
+                                <p style="margin-top: 0px; margin-bottom: 2px">
+                                    {{ pickupBranch?.branchPhone }}
+                                </p>
+                            </div>
+                            <div
+                                *ngIf="
+                                    showPickupMsg() && locationValidMsg !== ''
+                                "
+                                class="medium-5 site-color jq-select-time-in-store-notes"
+                                style="vertical-align: top"
+                            >
+                                {{ locationValidMsg }}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Form Change Location-->
+                    <div
+                        *ngIf="changeLocation"
+                        class="container-fluid"
+                        style="
+                            background: #e8e8e8;
+                            padding: 15px;
+                            margin-top: 15px;
+                        "
+                    >
+                        <div>
+                            <!-- <form style="margin-bottom: 0px"> -->
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: flex-start;
+                                "
+                            >
+                                <input
+                                    mat-input
+                                    type="search"
+                                    [(ngModel)]="mapInfo.zipSearch"
+                                    width="190"
+                                />
+                                <span>&nbsp; Search area &nbsp;</span>
+                                <mat-select
+                                    style="width: 200px"
+                                    [(ngModel)]="mapInfo.range"
+                                >
+                                    <mat-option
+                                        *ngFor="let opt of distanceOptions"
+                                        [value]="opt.value"
+                                        >{{ opt.text }}</mat-option
+                                    >
+                                </mat-select>
+                            </div>
+                            <br />
+                            <div style="text-align: left">
+                                <button mat-raised-button>Reset</button>
+                                <span>&nbsp;</span>
+                                <button
+                                    mat-button
+                                    color="primary"
+                                    (click)="mapInfo.setZipCode()"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                            <!-- </form> -->
+                        </div>
+                        <!-- Map -->
+                        <div class="grid-x">
+                            <div class="cell large-9">
+                                <div class="map-section">
+                                    <!-- TODO (Luis Sardon): to review on agm migration -->
+                                    <agm-map
+                                        class="map"
+                                        [mapDraggable]="true"
+                                        [draggableCursor]="'default'"
+                                        [disableDefaultUI]="true"
+                                        [latitude]="mapInfo.latitude"
+                                        [longitude]="mapInfo.longitude"
+                                        [zoom]="mapInfo.zoom"
+                                        [maxZoom]="mapInfo.maxZoom"
+                                        [fitBounds]="mapInfo.fitBounds"
+                                        (centerChange)="
+                                            mapInfo.mapCenterChange($event)
+                                        "
+                                        (boundsChange)="
+                                            mapInfo.boundsChange($event)
+                                        "
+                                        (zoomChange)="
+                                            mapInfo.zoomChange($event)
+                                        "
+                                    >
+                                        <agm-marker
+                                            *ngFor="
+                                                let loc of mapInfo.locations$
+                                                    | async
+                                            "
+                                            [latitude]="loc.latitude"
+                                            [longitude]="loc.longitude"
+                                            [iconUrl]="
+                                                '/assets/images/finder-icon.png'
+                                            "
+                                            [label]="{
+                                                text: loc.label,
+                                                color: '#fff',
+                                                fontWeight: '700',
+                                                fontFamily: 'Catamaran',
+                                                fontSize: '16px'
+                                            }"
+                                            [title]="' '"
+                                            [agmFitBounds]="true"
+                                            [markerClickable]="true"
+                                        >
+                                            <agm-info-window>
+                                                <div>
+                                                    <b>{{ loc.branchName }}</b>
+                                                </div>
+                                                <div>
+                                                    <i
+                                                        >Distance
+                                                        {{ loc.distance }}</i
+                                                    >
+                                                </div>
+                                                <div>
+                                                    {{ loc.address.address1 }}
+                                                </div>
+                                                <div>
+                                                    {{ loc.address.address2 }}
+                                                </div>
+                                                <div>
+                                                    {{ loc.address.city }},
+                                                    {{ loc.address.state }}
+                                                </div>
+                                                <div>
+                                                    {{ loc.address.postalCode }}
+                                                </div>
+                                                <div>
+                                                    {{
+                                                        formatPhone(
+                                                            loc.branchPhone
+                                                        )
+                                                    }}
+                                                </div>
+                                                <div>
+                                                    <a
+                                                        href="https://www.google.com/maps/dir/?api=1&destination={{
+                                                            encodeUri(
+                                                                loc.address
+                                                                    .address1
+                                                            )
+                                                        }} {{
+                                                            encodeUri(
+                                                                loc.address.city
+                                                            )
+                                                        }} {{
+                                                            encodeUri(
+                                                                loc.address
+                                                                    .state
+                                                            )
+                                                        }} {{
+                                                            encodeUri(
+                                                                loc.address
+                                                                    .postalCode
+                                                            )
+                                                        }}"
+                                                        target="_blank"
+                                                        >Get Directions</a
+                                                    >
+                                                </div>
+                                                <div
+                                                    *ngIf="
+                                                        !isBranchSelected(loc)
+                                                    "
+                                                >
+                                                    <a
+                                                        (click)="
+                                                            changePickupLocation(
+                                                                loc
+                                                            )
+                                                        "
+                                                        >Change Location to
+                                                        Here</a
+                                                    >
+                                                </div>
+                                            </agm-info-window>
+                                        </agm-marker>
+                                    </agm-map>
+                                </div>
+                            </div>
+                            <div class="cell large-3 location-options">
+                                <div
+                                    class="location-option"
+                                    *ngFor="
+                                        let loc of mapInfo.locations$ | async
+                                    "
+                                >
+                                    <div>
+                                        <div>
+                                            <b
+                                                >{{ loc.label }} -
+                                                {{ loc.branchName }}</b
+                                            >
+                                        </div>
+                                        <div>
+                                            <i>Distance {{ loc.distance }}</i>
+                                        </div>
+                                        <div>{{ loc.address.address1 }}</div>
+                                        <div>{{ loc.address.address2 }}</div>
+                                        <div>
+                                            {{ loc.address.city }},
+                                            {{ loc.address.state }}
+                                        </div>
+                                        <div>{{ loc.address.postalCode }}</div>
+                                        <div>{{ loc.branchPhone }}</div>
+                                        <div></div>
+                                        <div *ngIf="!isBranchSelected(loc)">
+                                            <a
+                                                (click)="
+                                                    changePickupLocation(loc)
+                                                "
+                                                >Change Location to Here</a
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- shipping address form -->
+            <div *ngIf="DeliveryMethod">
+                <div>
+                    <p style="font-weight: bold">ENTER THE "SHIP TO" ADDRESS</p>
+                </div>
+                <mat-divider class="divider"></mat-divider>
+                <form class="delivery-method">
+                    <div class="grid-x">
+                        <div class="cell small-12 medium-12 large-12">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <mat-select
+                                    placeholder="Address Book"
+                                    [(value)]="addressBook"
+                                >
+                                    <mat-option (click)="emptyForm()"
+                                        >Use custom one</mat-option
+                                    >
+                                    <mat-option
+                                        *ngFor="let a of addressBooks$ | async"
+                                        [value]="a"
+                                    >
+                                        {{
+                                            a.addressBookInfo.nickName ||
+                                                a.addressBookInfo.lastName
+                                        }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-x grid-padding-x align-justify">
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    placeholder="Nickname"
+                                    matInput
+                                    value=""
+                                    [(ngModel)]="
+                                        addressBook?.addressBookInfo.nickName
+                                    "
+                                    name="nickname"
+                                />
+                            </mat-form-field>
+                        </div>
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    placeholder="First Name"
+                                    matInput
+                                    value=""
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.firstName
+                                    "
+                                    name="first"
+                                />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-x grid-padding-x align-justify">
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    matInput
+                                    placeholder="Last Name"
+                                    value=""
+                                    [formControl]="lastNameFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.lastName
+                                    "
+                                    name="last"
+                                    required
+                                />
+                                <mat-error
+                                    *ngIf="
+                                        lastNameFormControl.hasError('required')
+                                    "
+                                >
+                                    This field is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    matInput
+                                    placeholder="Address 1"
+                                    value=""
+                                    [formControl]="addressFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.address1
+                                    "
+                                    name="address1"
+                                    required
+                                />
+                                <mat-error
+                                    *ngIf="
+                                        addressFormControl.hasError('required')
+                                    "
+                                >
+                                    This field is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-x grid-padding-x align-justify">
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    matInput
+                                    placeholder="Address 2"
+                                    value=""
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.address2
+                                    "
+                                    name="address2"
+                                />
+                            </mat-form-field>
+                        </div>
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    matInput
+                                    placeholder="City"
+                                    value=""
+                                    [formControl]="cityFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.city
+                                    "
+                                    name="city"
+                                    required
+                                />
+                                <mat-error
+                                    *ngIf="cityFormControl.hasError('required')"
+                                >
+                                    This field is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-x grid-padding-x align-justify">
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <mat-select
+                                    placeholder="State"
+                                    [formControl]="stateFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.state
+                                    "
+                                    required
+                                    name="state"
+                                >
+                                    <mat-option
+                                        *ngFor="let state of states"
+                                        [value]="state.value"
+                                    >
+                                        {{ state.key }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="
+                                        stateFormControl.hasError('required')
+                                    "
+                                >
+                                    This field is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    matInput
+                                    value=""
+                                    placeholder="Zip/Postal Code"
+                                    [formControl]="zipFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.postalCode
+                                    "
+                                    name="zip"
+                                    required
+                                />
+                                <mat-error
+                                    *ngIf="zipFormControl.hasError('required')"
+                                >
+                                    This field is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-x grid-padding-x align-justify">
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <mat-select
+                                    placeholder="Country"
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.countryValue
+                                    "
+                                    name="country"
+                                >
+                                    <mat-option [value]="'USA'">
+                                        United States
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="cell medium-6 large-5">
+                            <mat-form-field
+                                class="full-width"
+                                floatLabel="auto"
+                            >
+                                <input
+                                    matInput
+                                    placeholder="Phone Number"
+                                    (keyup)="addDash()"
+                                    name="phone"
+                                    [formControl]="phoneFormControl"
+                                    [errorStateMatcher]="matcher"
+                                    maxlength="12"
+                                    placeholder="Phone Number"
+                                    [(ngModel)]="
+                                        addressBook.addressBookInfo.phoneNumber
+                                    "
+                                    required
+                                />
+                                <mat-error
+                                    *ngIf="
+                                        phoneFormControl.hasError('required')
+                                    "
+                                >
+                                    This field is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <mat-checkbox color="primary" [(ngModel)]="saveAddress"
+                        >Save to Address Book</mat-checkbox
+                    >
+                </div>
+            </div>
+            <hr />
+
+            <div style="margin: 15px 0">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="editNotes.focus()"
+                >
+                    ORDER NOTES <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+
+            <div>
+                <mat-form-field
+                    id="chain-busters"
+                    class="text-area full-width"
+                    floatLabel="auto"
+                    style="margin: 0px"
+                >
+                    <textarea
+                        rows="3"
+                        matInput
+                        [(ngModel)]="orderNotes"
+                        #editNotes
+                    >
+                    </textarea>
+                </mat-form-field>
+            </div>
+            <!-- buttons to go between views -->
+            <div class="flexContainerButton">
+                <p>
+                    <button
+                        color="secondary"
+                        mat-raised-button
+                        type="button"
+                        (click)="goBack()"
+                    >
+                        <mat-icon>navigate_before</mat-icon>
+                        <span>Back</span>
+                    </button>
+                </p>
+                <div
+                    *ngIf="
+                        (shippingAddressEntered && dateAndDate) ||
+                            (!DeliveryMethod && !DeliveryOpt) ||
+                            (!DeliveryMethod && dateAndDate) ||
+                            (!DeliveryOpt && shippingAddressEntered);
+                        else Button
+                    "
+                >
+                    <p>
+                        <button
+                            color="emphasis"
+                            mat-raised-button
+                            (click)="tabGroup.selectedIndex = 2"
+                        >
+                            <span>Next</span>
+                            <mat-icon>navigate_next</mat-icon>
+                        </button>
+                    </p>
+                </div>
+                <ng-template #Button>
+                    <p>
+                        <button color="disabled" mat-raised-button disabled>
+                            <span>Next</span>
+                            <mat-icon>navigate_next</mat-icon>
+                        </button>
+                    </p>
+                </ng-template>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label> &#10124; Review </ng-template>
+            <h1>
+                <mat-icon style="margin-right: 10px; font-size: 30px"
+                    >verified</mat-icon
+                >Order Review
+            </h1>
+            <div>
+                <p style="font-weight: bolder">
+                    *** Tax, shipping and handling will be calculated at final
+                    order processing. ***
+                </p>
+            </div>
+            <mat-divider class="divider"></mat-divider>
+            <div class="callout alert" *ngIf="!canPlaceOrder">
+                <p>Please do the following before placing an order:</p>
+                <ul>
+                    <li *ngFor="let error of validationCheck()">
+                        {{ error.error }}
+                        <ul *ngIf="error.subError">
+                            <li>{{ error.subError }}</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="DeliveryOpt">
+                <div>
+                    <p style="font-weight: bold">
+                        PREFERED PICKUP/DELIVERY DATE AND TIME
+                    </p>
+                </div>
+                <!-- date with a pipe to format it -->
+                <div class="flexContainerButton">
+                    <p>
+                        <span style="font-weight: bold; margin-right: 10px"
+                            >Date:</span
+                        >
+                        {{ date }}
+                    </p>
+                    <p class="time">
+                        <span style="font-weight: bold; margin-right: 10px"
+                            >Time:</span
+                        >
+                        {{ time }}
+                    </p>
+                </div>
+                <mat-divider class="divider"></mat-divider>
+            </div>
+            <div class="grid-x">
+                <div class="medium-5 large-5">
+                    <div>
+                        <p style="font-weight: bold">Delivery Option:</p>
+                    </div>
+                    <div *ngIf="!DeliveryOpt">
+                        <p>Place Order On Hold</p>
+                    </div>
+                    <div *ngIf="DeliveryOpt">
+                        <p>Schedule Delivery or Pick Up</p>
+                    </div>
+                </div>
+                <div class="medium-5 large-5">
+                    <mat-form-field class="formInput" floatLabel="auto">
+                        <mat-label>PO#</mat-label>
+                        <input
+                            matInput
+                            value=""
+                            [(ngModel)]="PO"
+                            name="PO"
+                            [required]="poRequired"
+                        />
+                        <mat-error *ngIf="true"
+                            >You must provide a PO</mat-error
+                        >
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="grid-x">
+                <div class="medium-5 large-5">
+                    <div>
+                        <p style="font-weight: bold">Delivery Method:</p>
+                    </div>
+                    <div *ngIf="DeliveryMethod">
+                        <p>Ship to Address</p>
+                    </div>
+                    <div *ngIf="!DeliveryMethod">
+                        <p>Pick Up</p>
+                    </div>
+                </div>
+                <div class="medium-5 large-5">
+                    <mat-form-field class="formInput" floatLabel="auto">
+                        <mat-label>Jobs</mat-label>
+                        <mat-select
+                            [(ngModel)]="job"
+                            [formControl]="jobFormControl"
+                            [errorStateMatcher]="matcher"
+                            name="job"
+                            [required]="isJobAccountRequired"
+                        >
+                            <mat-option [value]="''"></mat-option>
+                            <ng-container *ngIf="jobInfo | async as ji">
+                                <mat-option
+                                    *ngFor="let job of ji?.jobs"
+                                    [value]="job"
+                                >
+                                    {{ job.jobName }} {{ job.jobNumber }}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="grid-x">
+                <div class="medium-5 large-5">
+                    <div *ngIf="DeliveryMethod">
+                        <p style="font-weight: bold">Shipping Address:</p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ addressBook.addressBookInfo.nickName }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ addressBook.addressBookInfo.firstName }}
+                            {{ addressBook.addressBookInfo.lastName }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ addressBook.addressBookInfo.address1 }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ addressBook.addressBookInfo.city }}
+                            {{ addressBook.addressBookInfo.stateValue }}
+                            {{ addressBook.addressBookInfo.postalCode }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ addressBook.addressBookInfo.country }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            Phone Number:
+                            {{ addressBook.addressBookInfo.phoneNumber }}
+                        </p>
+                    </div>
+                    <div *ngIf="!DeliveryMethod && activeAccount">
+                        <p style="font-weight: bold">Store Pick-up Address</p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ activeAccount.branch?.branchName }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ activeAccount.branch?.address?.address1 }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ activeAccount.branch?.address?.address2 }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ activeAccount.branch?.address?.city }},
+                            {{ activeAccount.branch?.address?.state }}
+                            {{ activeAccount.branch?.address?.postalCode }}
+                        </p>
+                        <p style="margin-top: 0px; margin-bottom: 2px">
+                            {{ activeAccount.branch?.branchPhone }}
+                        </p>
+                    </div>
+                </div>
+                <div class="medium-5 large-5">
+                    <p style="font-weight: bold">
+                        Add email confirmation recipients
+                        <a color="primary" (click)="add()">Add input</a>
+                    </p>
+                    <div
+                        *ngFor="let word2 of words2; let in = index"
+                        class="col-sm-3"
+                    >
+                        <div class="form-group">
+                            <mat-form-field
+                                class="form-email"
+                                floatLabel="auto"
+                            >
+                                <mat-label>E-mail</mat-label>
+                                <input
+                                    matInput
+                                    [(ngModel)]="words2[in].value"
+                                    name="name{{ in }}"
+                                />
+                            </mat-form-field>
+                            <!-- <p style="text-align: right"> -->
+                            <a color="warning" (click)="deleteInput(in)">
+                                <mat-icon>delete</mat-icon>
+                            </a>
+                            <!-- </p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <!-- table of items for checkout -->
+                <ng-container *ngIf="cart?.value?.items as items">
+                    <table
+                        mat-table
+                        [dataSource]="items"
+                        matSort
+                        class="full-width padded-table"
+                    >
+                        <ng-container matColumnDef="product">
+                            <th mat-header-cell *matHeaderCellDef>Product</th>
+                            <td mat-cell *matCellDef="let element">
+                                <img
+                                    [src]="element.productImageUrl | errorImage"
+                                    appImagePreload
+                                    [default]="
+                                        element.productOnErrorImageUrl
+                                            | errorImage
+                                                : '/assets/images/image-not-available.svg'
+                                    "
+                                    width="80"
+                                    height="80"
+                                />
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+                        <ng-container matColumnDef="details">
+                            <th mat-header-cell *matHeaderCellDef>Details</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div
+                                    [innerHTML]="
+                                        element.itemOrProductDescription
+                                    "
+                                ></div>
+                                <div>
+                                    <strong>Item #:</strong>
+                                    <span>{{ element.catalogRefId }}</span>
+                                </div>
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef>
+                                <strong>Sub-Total</strong>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef>Price</th>
+                            <td mat-cell *matCellDef="let element">
+                                <strong>
+                                    <span>{{
+                                        element.unitPrice | price: element.uom
+                                    }}</span>
+                                </strong>
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef>&nbsp;</td>
+                        </ng-container>
+                        <ng-container matColumnDef="qty">
+                            <th mat-header-cell *matHeaderCellDef>Qty</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.quantity }}
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef>&nbsp;</td>
+                        </ng-container>
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef>Total</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span>
+                                    {{
+                                        element.unitPrice * element.quantity
+                                            | totalPrice
+                                            | currency
+                                    }}</span
+                                >
+                            </td>
+                        </ng-container>
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns2"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns2"
+                        ></tr>
+                    </table>
+                </ng-container>
+            </div>
+            <div class="flexContainerButton">
+                <p>
+                    <button
+                        color="secondary"
+                        mat-raised-button
+                        type="button"
+                        (click)="goBack()"
+                    >
+                        <mat-icon>navigate_before</mat-icon>
+                        <span>Back</span>
+                    </button>
+                </p>
+                <div>
+                    <p>
+                        <button
+                            color="{{ canPlaceOrder ? 'emphasis' : 'disable' }}"
+                            [disabled]="!canPlaceOrder"
+                            mat-raised-button
+                            (click)="placeOrder()"
+                        >
+                            <span>Place Order</span>
+                            <mat-icon>done</mat-icon>
+                        </button>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <ng-container *ngIf="cart.getState() | async as c">
+                    <div
+                        *ngIf="
+                            c.summary && c.summary.total != 0;
+                            else TotalZero
+                        "
+                    >
+                        <table
+                            class="summary-table"
+                            align="right"
+                            *ngIf="
+                                c.summary && !c.summary.displayTotalMsg;
+                                else TotalZeroFirst
+                            "
+                        >
+                            <tr>
+                                <th colspan="2" class="summary-header">
+                                    <h3>Order Summary</h3>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="summary-text-default">Sub Total</td>
+                                <td class="summary-text-right-default-number">
+                                    {{ c.summary.itemsTotal | currency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="summary-text-default"
+                                    style="white-space: nowrap"
+                                >
+                                    Other Charges
+                                    <button
+                                        class="icon"
+                                        matTooltipPosition="left"
+                                        matTooltip="What is Other Charges?
+                      Other charges are typically delivery fees, but may include handling and fuel fees."
+                                        matTooltipClass="custom-tooltip"
+                                    >
+                                        <mat-icon>info</mat-icon>
+                                    </button>
+                                </td>
+                                <td [class]="otherCharges.cssClass">
+                                    {{ otherCharges.value }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="summary-text-default">Tax</td>
+                                <td [class]="tax.cssClass">{{ tax.value }}</td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="summary-text-total-default"
+                                    colspan="2"
+                                >
+                                    <div
+                                        class="summary-text-total-default-left"
+                                    >
+                                        Total
+                                    </div>
+                                    <div [class]="total.cssClass">
+                                        {{ total.value }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </ng-container>
+                <ng-template #TotalZero>
+                    <div class="total" align="right">
+                        <div>
+                            <h3>Order Summary</h3>
+                        </div>
+                        <div>
+                            <p>Will be calculated at the time of invoicing.</p>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+<ng-template #emptyCart>
+    <h1>
+        <mat-icon style="margin-right: 10px; font-size: 30px"
+            >shopping_cart</mat-icon
+        >Shopping Cart
+    </h1>
+    <div>
+        <p class="cartEmpty">Your cart is currently empty.</p>
+    </div>
+</ng-template>
+
+<ng-template #TotalZeroFirst>
+    <table class="summary-table" width="100%">
+        <tr>
+            <td class="summary-header-totalZero">
+                <h3>Order Summary</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top: 10px; padding-bottom: 20px">
+                Will be calculated at the time of invoicing.
+            </td>
+        </tr>
+    </table>
+</ng-template>

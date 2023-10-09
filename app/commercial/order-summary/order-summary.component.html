@@ -1,0 +1,188 @@
+<div class="grid-x grid-padding-x">
+    <div class="cell large-5">
+        <!-- OPTIONS  -->
+        <div class="grid-x grid-padding-x">
+            <mat-list class="cell large-9">
+                <mat-list-item>
+                    <h4 matLine>Delivery Options:</h4>
+                    <p matLine>
+                        {{ orderOption }} -
+                        {{ prettyDate }}
+                    </p>
+                </mat-list-item>
+            </mat-list>
+            <mat-list class="cell large-3">
+                <mat-list-item>
+                    <button mat-raised-button color="primary">Edit</button>
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+        <!-- METHOD -->
+        <div class="grid-x grid-padding-x">
+            <mat-list class="cell large-9">
+                <mat-list-item>
+                    <h4 matLine>Delivery Method:</h4>
+                    <p matLine>{{ orderMethod }}</p>
+                </mat-list-item>
+            </mat-list>
+            <mat-list class="cell large-3">
+                <mat-list-item>
+                    <button mat-raised-button color="primary">Edit</button>
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+        <!-- ADDRESS -->
+        <div
+            class="grid-x grid-padding-x"
+            *ngIf="
+                shippingInfo.shippingMethod === 'Ship_to';
+                else pickUpDisplay
+            "
+        >
+            <mat-list class="cell large-9">
+                <mat-list-item>
+                    <h4 matLine>Delivery Address:</h4>
+
+                    <p matLine>
+                        {{ shippingInfo.shippingAddress?.nickName || '' }}
+                    </p>
+                    <p matLine>
+                        {{ shippingInfo.shippingAddress?.address1 || '' }}
+                    </p>
+                    <p matLine>
+                        {{ shippingInfo.shippingAddress?.city }}
+                        {{ shippingInfo.shippingAddress?.state || '' }},
+                        {{ shippingInfo.shippingAddress?.zip || '' }}
+                    </p>
+                    <p matLine>
+                        Phone: {{ shippingInfo.shippingAddress?.phone || '' }}
+                    </p>
+                </mat-list-item>
+            </mat-list>
+            <mat-list class="cell large-3">
+                <mat-list-item>
+                    <button mat-raised-button color="primary">Edit</button>
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <ng-template #pickUpDisplay>
+            <div class="grid-x grid-padding-x">
+                <mat-list class="cell large-9">
+                    <mat-list-item>
+                        <h4 matLine>Pick Up Address:</h4>
+
+                        <p matLine>
+                            {{ shippingInfo.selectedPickupBranch?.branchName }}
+                        </p>
+                        <p matLine>
+                            {{
+                                shippingInfo.selectedPickupBranch?.address
+                                    .address1 || ''
+                            }}
+                        </p>
+                        <p matLine>
+                            {{
+                                shippingInfo.selectedPickupBranch?.address.city
+                            }}
+                            {{
+                                shippingInfo.selectedPickupBranch?.address
+                                    .state || ''
+                            }},
+                            {{
+                                shippingInfo.selectedPickupBranch?.address
+                                    .postalCode || ''
+                            }}
+                        </p>
+                        <p matLine>
+                            Phone:
+                            {{
+                                shippingInfo.selectedPickupBranch
+                                    ?.branchPhone || ''
+                            }}
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+                <mat-list class="cell large-3">
+                    <mat-list-item>
+                        <button mat-raised-button color="primary">Edit</button>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </ng-template>
+    </div>
+    <!-- END OF CELL-5 -->
+
+    <mat-list class="cell large-3 border-left">
+        <mat-list-item>
+            <h4 matLine>Order Name</h4>
+            <p matLine>......</p>
+        </mat-list-item>
+
+        <mat-list-item>
+            <h4 matLine>Job Name</h4>
+            <p matLine>{{ jobAccount?.jobName }}</p>
+        </mat-list-item>
+
+        <mat-list-item>
+            <h4 matLine>Email Confirmation Receipts</h4>
+            <p matLine>
+                <a matLine>Add Recipient</a>
+            </p>
+        </mat-list-item> </mat-list
+    ><!-- END OF CELL-3 -->
+
+    <!-- SUMMARY -->
+    <mat-list class="cell large-4 border-left">
+        <!--  -->
+        <mat-list-item>
+            <h4 matLine>Order Summary</h4>
+        </mat-list-item>
+
+        <!-- Subtotal -->
+        <mat-list-item>
+            <div style="width: 80%">
+                <h4>Subtotal</h4>
+            </div>
+            <p style="width: 20%">$35.25</p>
+        </mat-list-item>
+
+        <!-- Other Chares -->
+        <mat-list-item>
+            <div style="width: 80%">
+                <h4>Other Charges</h4>
+            </div>
+            <p style="width: 20%">Pending</p>
+        </mat-list-item>
+
+        <!-- Tax -->
+        <mat-list-item>
+            <div style="width: 80%">
+                <h4>Tax</h4>
+            </div>
+            <p style="width: 20%">$35.25</p>
+        </mat-list-item>
+
+        <!-- Total -->
+        <mat-list-item>
+            <div style="width: 80%">
+                <h4 style="font-weight: bold">Total</h4>
+            </div>
+            <p style="width: 20%">$35.25</p>
+        </mat-list-item>
+
+        <!-- PROCEED to checkout -->
+        <!--  <button class="btn-expand btn-warn" mat-raised-button routerLink="/proplus/commercial-order">
+      PROCEED TO CHECKOUT
+    </button> -->
+    </mat-list>
+    <!-- END CELL-4 -->
+
+    <!-- PRODUCTS -->
+
+    <app-product-table
+        style="width: 100%; margin-right: 50px"
+    ></app-product-table>
+</div>
+<!-- END GRID-X -->

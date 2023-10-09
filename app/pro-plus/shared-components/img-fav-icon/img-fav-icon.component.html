@@ -1,0 +1,15 @@
+<div [id]="createId()">
+  <img [ngStyle]="{ width: width }" [src]="imgUrl" [alt]="itemNumber" style="margin-bottom: 6px;"
+    (load)="updateImageLoaded(true)"
+    (error)="imgUrl = fallbackImage"><!-- UPDATE fallback to use larger image for hero -->
+
+  <div class="background" *ngIf="isFinishedLoading && isLoggedIn">
+    <ng-container>
+      <mat-icon (click)="[toggleFavorite($event), addToSelectedFavorites(element)]" *ngIf="(isFavorite)"
+        [ngClass]="{ active: isFavorite}">favorite</mat-icon>
+      <!--  -->
+      <mat-icon [ngClass]="{ active: isFavorite}" (click)="[toggleFavorite($event), addToSelectedFavorites(element)]"
+        *ngIf="!(isFavorite)">favorite_outline</mat-icon>
+    </ng-container>
+  </div>
+</div>

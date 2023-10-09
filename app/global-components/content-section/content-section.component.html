@@ -1,0 +1,61 @@
+<div class="content-section" id="{{ id }}">
+    <div class="grid-container">
+        <section
+            class="content-section__description grid-x grid-margin-x"
+            (click)="toggleClass()"
+            [ngClass]="status ? 'active' : 'inactive'"
+        >
+            <div class="cell">
+                <div class="content-section__section-toggle">
+                    <h2>{{ title }}</h2>
+                    <span
+                        class="content-section__toggle-icon icon-chevron-down"
+                    ></span>
+                </div>
+
+                <!-- Insert components here -->
+                <div class="content-section__wrapper">
+                    <ng-container [ngSwitch]="componentType">
+                        <app-product-description
+                            *ngSwitchCase="
+                                ContentSectionTypes.productDescription
+                            "
+                            [descriptionHTML]="data"
+                        ></app-product-description>
+                        <app-product-documents
+                            *ngSwitchCase="ContentSectionTypes.productDocuments"
+                            [productResources]="data"
+                        ></app-product-documents>
+                        <app-product-specs
+                            *ngSwitchCase="ContentSectionTypes.productSpecs"
+                            [productItemNum]="data.productItemNum"
+                            [productNum]="data.productNum"
+                            [productManuNum]="data.productManuNum"
+                            [productSpecifications]="data.productSpecifications"
+                        ></app-product-specs>
+                        <app-related-products
+                            *ngSwitchCase="ContentSectionTypes.relatedProducts"
+                            [relatedProducts]="data"
+                        ></app-related-products>
+                        <app-image-card-section-group
+                            *ngSwitchCase="
+                                ContentSectionTypes.imageCardSectionGroup
+                            "
+                            [imageCardSections]="imageCardSections"
+                        ></app-image-card-section-group>
+                        <app-rich-text
+                            *ngSwitchCase="ContentSectionTypes.richText"
+                            [htmlContent]="richTextContent"
+                        ></app-rich-text>
+                        <app-content-card-section
+                            *ngSwitchCase="
+                                ContentSectionTypes.contentCardSection
+                            "
+                            [contentCardArrayFromServer]="contentCardsContent"
+                        ></app-content-card-section>
+                    </ng-container>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

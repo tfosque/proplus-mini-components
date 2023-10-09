@@ -1,0 +1,272 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+@import '../../../sass/global_layout';
+
+.product-lead {
+    margin-bottom: rem-calc(30px);
+
+    &__color-item {
+        &.disabled {
+            img {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &__color-link {
+        cursor: pointer;
+        display: block;
+        height: 100%;
+        padding-bottom: 100%;
+        position: relative;
+        width: 100%;
+
+        img {
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+
+    &__additional-options {
+        width: 100%;
+    }
+
+    &__options-select {
+        padding-bottom: rem-calc(10px);
+        margin-bottom: rem-calc(10px);
+
+        &,
+        .mat-select {
+            width: 100%;
+        }
+
+        .mat-select {
+            max-width: rem-calc(340px);
+        }
+
+        .mat-form-field-label {
+            text-transform: capitalize;
+        }
+    }
+
+    h1 {
+        font-size: rem-calc(24px);
+        font-weight: $font-weight-semi-bold;
+        line-height: rem-calc(28px);
+        margin-bottom: 0px;
+        margin-top: 0px;
+        text-transform: none;
+    }
+
+    dl {
+        margin: 0 0 rem-calc(10px);
+        color: $color-text-primary;
+
+        dt,
+        dd {
+            display: inline;
+            font-size: rem-calc(14.5px);
+        }
+
+        dd {
+            margin-left: 0px;
+        }
+    }
+
+    &__desktop-info {
+        // NOTE: Use global class if available.
+        display: none;
+    }
+
+    &__short-desc {
+        color: $color-text-primary;
+        margin: rem-calc(20px 0 30px);
+
+        ul {
+            color: red;
+            padding-left: 0;
+        }
+    }
+
+    &__brand {
+        background: $color-background-dark;
+        color: white;
+        display: inline-block;
+        font-size: rem-calc(13px);
+        font-weight: $font-weight-heavy;
+        padding: rem-calc(2px) rem-calc(4px) 0px;
+        margin: 0px 0px rem-calc(10px);
+    }
+
+    &__color-options {
+        border-bottom: 1px solid $color-borders;
+        margin-bottom: rem-calc(30px);
+        margin-top: rem-calc(15px);
+
+        table {
+            background-color: $color-secondary;
+            border-spacing: 0px;
+            border-bottom: 1px solid $color-borders;
+            border-top: 1px solid $color-borders;
+            width: 100%;
+
+            td {
+                padding: rem-calc(10px 12px 10px 15px);
+                font-size: rem-calc(16px);
+                line-height: rem-calc(19px);
+                font-weight: $font-weight-normal;
+                color: $color-text-emphasis;
+
+                &:first-child {
+                    border-right: 1px solid $color-borders;
+                    text-transform: uppercase;
+                    font-size: rem-calc(15px);
+                    font-weight: $font-weight-bold;
+                    color: $color-text-emphasis;
+                    padding-left: rem-calc(12px);
+                }
+            }
+        }
+    }
+
+    &__color-picker {
+        padding-left: 0px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: rem-calc(-10px);
+        margin-top: rem-calc(-10px);
+
+        li {
+            display: inline-block;
+            border: 1px solid $color-borders;
+            box-sizing: border-box;
+            flex: 0 0 18%;
+            margin-left: 10px;
+            margin-top: 13px;
+            margin-right: 6px;
+            min-width: rem-calc(50px);
+            max-width: calc(20% - 16px);
+
+            &.is-active {
+                border: 4px solid white;
+                box-shadow: $box-shadow;
+                outline: 1px solid $color-borders;
+                &:hover,
+                &:focus {
+                    border: 4px solid white;
+                    cursor: default;
+                }
+            }
+            &:hover:not(.disabled),
+            &:focus:not(.disabled) {
+                box-shadow: $box-shadow;
+                border: none;
+            }
+        }
+    }
+
+    &__price {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    &__unit {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, medium)) {
+    .product-lead {
+        margin-bottom: rem-calc(80px);
+
+        &__brand {
+            font-size: rem-calc(16px);
+            line-height: rem-calc(23px);
+            padding: rem-calc(1px) rem-calc(7px) 0px;
+        }
+
+        &__color-picker {
+            li {
+                flex: 0px 0px rem-calc(55px);
+                margin-left: 8px;
+                margin-top: 8px;
+                margin-right: 0;
+                max-width: calc(20% - 10px);
+                min-width: calc(12.5% - 10px);
+            }
+        }
+
+        &__color-options {
+            margin-top: 0;
+            table {
+                td {
+                    font-size: rem-calc(16px);
+                    line-height: rem-calc(20px);
+
+                    &:first-child {
+                        width: 30%;
+                    }
+                }
+            }
+        }
+
+        h1 {
+            font-size: rem-calc(32px);
+            line-height: rem-calc(35px);
+            margin-bottom: rem-calc(5px);
+        }
+
+        dl {
+            margin: 0 0 rem-calc(20px);
+
+            dt,
+            dd {
+                font-size: rem-calc(16px);
+            }
+        }
+    }
+}
+::ng-deep .cdk-overlay-pane{
+    position: absolute !important;
+}
+.loading-container {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    padding: rem-calc(40px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.emptyPrice {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+::ng-deep .editInput {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    width: 5em;
+    padding: 5px;
+}
+
+.caption {
+    font-weight: bold;
+}
+
+.facet {
+    margin-bottom: 10px;
+}
+
+.qty-cont {
+    margin-bottom: 10px;
+}

@@ -1,0 +1,48 @@
+@import '../../../sass/variables';
+@import '../../../sass/mixins';
+
+.open-quote {
+    @include contentButtonContainer();
+    border-top: 1px solid $color-primary;
+    border-bottom: 1px solid $color-primary;
+    padding: 15px 0px 30px;
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    p {
+        color: $color-primary;
+        font-size: rem-calc(26px);
+        line-height: rem-calc(32px);
+        font-weight: $font-weight-semi-bold;
+        margin-top: 0px;
+        margin-bottom: 15px;
+        &:before {
+            content: open-quote;
+            display: inline-block;
+        }
+        &:after {
+            content: close-quote;
+            display: inline-block;
+        }
+    }
+    &--author {
+        font-style: normal;
+        font-size: rem-calc(16px);
+        line-height: 20px;
+        color: $color-text-primary;
+    }
+}
+
+@media (min-width: map-get($grid-breakpoints, large)) {
+    .open-quote {
+        margin-top: 50px;
+        p {
+            font-size: rem-calc(34px);
+            line-height: rem-calc(39px);
+        }
+        &--author {
+            font-size: rem-calc(18px);
+            line-height: 22px;
+        }
+    }
+}

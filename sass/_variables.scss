@@ -1,0 +1,197 @@
+// Global variables for use in components.  To import in a component's scss file, use '@import '../../../sass/variables';'
+@import './vendor/foundation-settings';
+
+$global-font-size: 16px;
+
+//colors
+$color-emphasis: #ffa300;
+$color-primary: #025f9e;
+$color-primary-hover: #044c94;
+$color-nav-text: #002d5b;
+$color-secondary: #f1f1f1;
+$color-page-offset: #f1f1f1;
+$color-background-light: #f1f1f1;
+$color-background-medium: #e0e2e4;
+// $color-background-dark: #242424;
+$color-background-dark: #323640;
+$color-borders: #c3c3c3;
+$color-borders-light: #dddee0;
+$color-error: #ff6e40;
+$color-white: #ffffff;
+$color-black: #000000;
+
+//text colors
+$color-text-primary: #424652;
+$color-text-emphasis: #242424;
+$color-text-light-shadow: #999999;
+
+// Pulled from foundation-settings.  If changes need to be made, edit the foundation settings file.
+$grid-breakpoints: $breakpoints;
+
+// Pulled from foundation-settings.  If changes need to be made, edit the foundation settings file.
+$gutters: $grid-margin-gutters;
+
+//Font Families
+// $font-family: 'Catamaran', sans-serif;
+$font-family: 'Proxima Nova', arial, sans-serif;
+
+//Heading Font Sizing
+$font-size-h1: rem-calc(45px);
+$font-size-h2: rem-calc(36px);
+
+//Font Weights
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-semi-bold: 600;
+$font-weight-bold: 700;
+$font-weight-heavy: 800;
+
+$box-shadow: 2px 2px 5px 0 rgba(76, 76, 76, 0.33);
+
+@mixin condensed-title {
+    // font-family: 'titling-gothic-fb-compressed-bold', 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+@mixin condensed-fb-title {
+    @include condensed-font();
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+@mixin condensed-font {
+    font-family: 'titling-gothic-fb-compressed-bold', 'arial', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@mixin proxima-nova-regular {
+    font-family: proxima-nova, arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+@mixin proxima-nova-bold {
+    font-family: proxima-nova, arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+}
+
+/////////////////////////////////////////////////////
+//             From Digital Guidelines             //
+/////////////////////////////////////////////////////
+
+@mixin guideline-highlight {
+    // border: 1px solid fuchsia !important;
+}
+
+@mixin depricated {
+    border: 1px dashed fuchsia !important;
+}
+
+@mixin top-navigation {
+    font-family: proxima-nova, arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: #ffffff;
+    text-transform: capitalize;
+    @include guideline-highlight;
+}
+
+@mixin navigation {
+    font-family: proxima-nova, arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1em;
+    color: #002d5b;
+    @include guideline-highlight;
+}
+
+@mixin button1 {
+    background-color: #ffa41a;
+    font-family: proxima-nova, arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    @include guideline-highlight;
+}
+
+@mixin page-title-h1 {
+    font-family: 'titling-gothic-fb-compressed-bold', 'arial', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 2.8em;
+    color: #005f9e;
+    @include guideline-highlight;
+}
+
+@mixin header-title-h2 {
+    font-family: proxima-nova, arial, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.75rem;
+    color: #004c97;
+    @include guideline-highlight;
+}
+
+@mixin subhead-title-h3 {
+    font-family: proxima-nova, arial, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.65em;
+    color: #75787b;
+    @include guideline-highlight;
+}
+
+@mixin feature-list-h4 {
+    font-family: proxima-nova, arial, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.15em;
+    color: #75787b;
+    text-transform: uppercase;
+    @include guideline-highlight;
+}
+
+@mixin body-copy {
+    font-family: proxima-nova, arial, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.125em;
+    color: #75787b;
+    text-transform: uppercase;
+    @include guideline-highlight;
+}
+
+@mixin footer-column-titles {
+    font-family: proxima-nova, arial, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    @include guideline-highlight;
+}
+
+@mixin footer-body-copy {
+    font-family: proxima-nova, arial, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 0.875rem;
+    color: #ffffff;
+    text-transform: capitalize;
+    @include guideline-highlight;
+}
+
+@mixin footer-divider {
+    border-bottom: 5px solid #ffa300;
+}
+
+// @mixin breadcrumbs {
+//     font
+// }

@@ -1,0 +1,82 @@
+#active-menu {
+    position: relative;
+    top: -830px;
+    left: 0;
+    height: 83px;
+    z-index: 20000;
+    padding: 13px 0;
+    font-size: 0.8rem;
+
+    .input-container {
+        margin-top: 5px;
+        margin-left: 44px;
+    }
+
+    div div.step1 {
+        background-color: #fff;
+        height: 40px;
+        width: auto;
+        visibility: hidden;
+    }
+
+    div div.step2 {
+        background-color: #025f9e;
+        padding: 6px;
+        text-align: center;
+        width: 100px;
+        height: 50px;
+        color: #fff;
+        padding-top: 16px;
+        visibility: hidden;
+    }
+
+    div div.step3 {
+        background: #025f9e;
+        padding: 6px;
+        text-align: center;
+        width: 100px;
+        height: 50px;
+        color: #fff;
+        margin: 0 10px;
+        padding-top: 16px;
+        visibility: hidden;
+    }
+
+    div div.step1.step1search {
+        visibility: visible;
+    }
+    div div.step2.step2orderhistory {
+        visibility: visible;
+    }
+    div div.step3.step3templates {
+        visibility: visible;
+    }
+
+    div.step2-container {
+        margin-left: 58px;
+    }
+
+    input {
+        width: 303px;
+        font-size: 1.2rem;
+        background: #fff;
+        height: 40px;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    #active-menu {
+        top: -1274px;
+
+        .input-container {
+            margin-left: 67px;
+        }
+        input {
+            width: auto;
+        }
+        .step2orderhistory {
+            margin-left: 11px;
+        }
+    }
+}
